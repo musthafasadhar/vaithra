@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vaithra | The Founder Discovery Engine</title>
+
+<!-- Libraries -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;1,900&family=Zen+Dots&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --neon: #DFFF00;
+  --bg: #050505;
+  --text: #ffffff;
+  --nav-bg: rgba(15,15,15,0.85);
+  --card: #111;
+  --neo-bg: #EBECF0;
+  --neo-shadow: #BABECC;
+  --neo-white: #FFF;
+  --dur: 1000ms;
+}
+
+body.light-mode {
+  --bg: #f5f5f7;
+  --text: #050505;
+  --nav-bg: rgba(255,255,255,0.85);
+  --card: #ffffff;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .4s ease, color .4s ease;
+  overflow-x: hidden;
+}
+
+section { scroll-margin-top: 120px; }
+
+.serif-italic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 900;
+}
+
+.zen { font-family: 'Zen Dots', cursive; }
+
+/* NAV */
+.nav-island {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 1200px;
+  padding: 14px 32px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(18px);
+  border-radius: 100px;
+  border: 1px solid rgba(128,128,128,.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.nav-island a {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* TOGGLE */
+.wrapper {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  perspective: 200px;
+  cursor: pointer;
+}
+
+.flexDiv {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.flexDiv div {
+  width: 25%;
+  background: #77c6ed;
+  transition: all var(--dur) ease;
+}
+
+.toggleMe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 10;
+}
+
+.toggleMe:checked ~ .flexDiv div {
+  transform: rotateX(180deg);
+  filter: grayscale(100%);
+}
+
+.circle, .circleOther {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  top: 8px;
+  transition: transform 1s;
+}
+
+.circle { background: #77c6ed; left: 10px; }
+.circleOther { background: #fff; right: 10px; }
+
+/* CAROUSEL */
+.carousel-track {
+  display: flex;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+}
+
+.carousel-track:hover { animation-play-state: paused; }
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.rep-card {
+  width: 280px;
+  height: 360px;
+  margin-right: 20px;
+  background: var(--card);
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* FORM */
+.neo-form-container {
+  background: var(--neo-bg);
+  padding: 80px 20px;
+  border-radius: 60px 60px 0 0;
+}
+
+.neo-form {
+  max-width: 320px;
+  margin: auto;
+}
+
+.neo-input {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  background: #EBECF0;
+  box-shadow: inset 2px 2px 5px #BABECC,
+              inset -5px -5px 10px #FFF;
+  border: none;
+  outline: none;
+}
+
+.neo-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 999px;
+  background: #EBECF0;
+  box-shadow: -5px -5px 20px #FFF,
+               5px 5px 20px #BABECC;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav-island">
+  <div class="zen text-xs">VAITHRA</div>
+
+  <ul class="hidden md:flex space-x-6">
+    <li><a href="#about">About</a></li>
+    <li><a href="#founders">Team</a></li>
+    <li><a href="#reps">Nodes</a></li>
+    <li><a href="#validation">Validation</a></li>
+    <li><a href="#blogs">Blogs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="wrapper">
+    <input type="checkbox" id="themeSwitcher" class="toggleMe" />
+    <div class="circle"></div>
+    <div class="circleOther"></div>
+    <div class="flexDiv">
+      <div></div><div></div><div></div><div></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="h-screen flex flex-col justify-center items-center text-center"
+style="background:
+linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.7)),
+url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2070');background-size:cover;">
+<h1 class="serif-italic text-7xl md:text-[9rem] text-white">
+VAITHRA
+<span class="inline-block w-4 h-4 rounded-full ml-2" style="background:#DFFF00"></span>
+</h1>
+<p class="text-xs tracking-[0.4em] uppercase mt-6 text-white/80">
+Built by early-stage founders for early-stage founders
+</p>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-32 px-10 bg-white text-black rounded-[60px] -mt-10">
+<div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-20">
+<h2 class="serif-italic text-7xl">The Discovery<br><span class="text-gray-300">Engine</span></h2>
+<div class="space-y-6">
+<p class="text-xl text-gray-600">
+Mapping serious founders from Tier-2 & Tier-3 cities.
+</p>
+<ul class="text-gray-500 space-y-2 text-sm">
+<li>• Application screening</li>
+<li>• Founder background review</li>
+<li>• 1-on-1 validation call</li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- FOUNDERS -->
+<section id="founders" class="py-32 px-10">
+<h2 class="serif-italic text-5xl text-center mb-20">Core Team</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto text-center">
+<div>
+<img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
+<h4 class="font-bold">Sardar Mustafa</h4>
+<p class="text-xs opacity-50">Founder</p>
+</div>
+<div>
+<img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
+<h4 class="font-bold">Rahimath</h4>
+<p class="text-xs opacity-50">Operations</p>
+</div>
+<div>
+<img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
+<h4 class="font-bold">Chinna Gopi</h4>
+<p class="text-xs opacity-50">Outreach</p>
+</div>
+<div>
+<img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
+<h4 class="font-bold">Hara Singh</h4>
+<p class="text-xs opacity-50">Media</p>
+</div>
+</div>
+</section>
+
+<!-- NODES -->
+<section id="reps" class="py-32 bg-black/20 overflow-hidden">
+<h2 class="serif-italic text-5xl text-center mb-16">Local Nodes</h2>
+<div class="carousel-track px-10">
+<div class="rep-card">Vijayawada</div>
+<div class="rep-card">Vizag</div>
+<div class="rep-card">Tirupati</div>
+<div class="rep-card">Warangal</div>
+<div class="rep-card">Nellore</div>
+</div>
+</section>
+
+<!-- VALIDATION -->
+<section id="validation" class="py-32 bg-[#DFFF00] text-black text-center">
+<h2 class="serif-italic text-7xl mb-6">Validation Pass</h2>
+<p class="text-xl font-bold mb-10">₹4,999 One-time</p>
+<button class="bg-black text-white px-10 py-4 rounded-full">
+Apply for Validation
+</button>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="neo-form-container">
+<form class="neo-form" onsubmit="event.preventDefault();alert('Submitted');">
+<h3 class="text-center font-bold mb-8">Connect</h3>
+<input type="email" class="neo-input" placeholder="Founder Email" required>
+<input type="text" class="neo-input" placeholder="Project Name" required>
+<button class="neo-btn">Submit Intent</button>
+</form>
+</section>
+
+<script>
+const toggle = document.getElementById('themeSwitcher');
+
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light-mode');
+  toggle.checked = true;
+}
+
+toggle.addEventListener('change', () => {
+  document.body.classList.toggle('light-mode');
+  localStorage.setItem(
+    'theme',
+    document.body.classList.contains('light-mode') ? 'light' : 'dark'
+  );
+});
+</script>
+
+</body>
