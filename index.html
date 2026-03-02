@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Vaithra | The Founder Discovery Engine</title>
 
-<!-- Libraries -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;1,900&family=Zen+Dots&display=swap" rel="stylesheet">
 
 <style>
@@ -77,7 +75,7 @@ section { scroll-margin-top: 120px; }
   letter-spacing: 1px;
 }
 
-/* TOGGLE */
+/* THEME TOGGLE */
 .wrapper {
   position: relative;
   width: 60px;
@@ -145,14 +143,12 @@ section { scroll-margin-top: 120px; }
   background: var(--card);
   border-radius: 25px;
   border: 1px solid rgba(255,255,255,.08);
-  padding: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
 }
 
-/* FORM */
+/* NEUMORPHIC FORM */
 .neo-form-container {
   background: var(--neo-bg);
   padding: 80px 20px;
@@ -174,6 +170,7 @@ section { scroll-margin-top: 120px; }
               inset -5px -5px 10px #FFF;
   border: none;
   outline: none;
+  color: #333;
 }
 
 .neo-btn {
@@ -184,13 +181,27 @@ section { scroll-margin-top: 120px; }
   box-shadow: -5px -5px 20px #FFF,
                5px 5px 20px #BABECC;
   font-weight: bold;
+  color: #333;
+}
+
+/* DETAILS ANIMATION */
+#vaithraDetails {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+#vaithraDetails.show {
+  max-height: 6000px;
+  opacity: 1;
+  padding-top: 24px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAV -->
 <nav class="nav-island">
   <div class="zen text-xs">VAITHRA</div>
 
@@ -198,8 +209,8 @@ section { scroll-margin-top: 120px; }
     <li><a href="#about">About</a></li>
     <li><a href="#founders">Team</a></li>
     <li><a href="#reps">Nodes</a></li>
-    <li><a href="#validation">Validate</a></li>
     <li><a href="#blogs">Blogs</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 
@@ -213,8 +224,7 @@ section { scroll-margin-top: 120px; }
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="h-screen flex flex-col justify-center items-center text-center"
+<section class="h-screen flex flex-col justify-center items-center text-center px-4"
 style="background:
 linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.7)),
 url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2070');background-size:cover;">
@@ -223,94 +233,238 @@ VAITHRA
 <span class="inline-block w-4 h-4 rounded-full ml-2" style="background:#DFFF00"></span>
 </h1>
 <p class="text-xs tracking-[0.4em] uppercase mt-6 text-white/80">
-Built by early-stage founders for early-stage founders
+Founder-first discovery & enablement network
 </p>
 </section>
 
-<!-- ABOUT -->
 <section id="about" class="py-32 px-10 bg-white text-black rounded-[60px] -mt-10">
-<div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-20">
-<h2 class="serif-italic text-7xl">The Vaithra<br><span class="text-gray-300">community</span></h2>
-<div class="space-y-6">
-<p class="text-xl text-gray-600">
-Mapping serious founders from every city in india
-</p>
-<ul class="text-gray-500 space-y-2 text-sm">
-<li>• Application screening</li>
-<li>• Founder background review</li>
-<li>• 1-on-1 validation call</li>
-</ul>
-</div>
-</div>
+  <div class="max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-20">
+      <div>
+          <h2 class="serif-italic text-7xl">The Vaithra<br><span class="text-gray-300">Identity</span></h2>
+          <button onclick="toggleDetails()" id="expandBtn" class="mt-8 px-8 py-3 border-2 border-black rounded-full font-bold hover:bg-black hover:text-white transition-all flex items-center gap-2">
+              Learn More <span id="arrowSymbol">↓</span>
+          </button>
+      </div>
+      
+      <div class="space-y-6">
+        <p class="text-xl text-gray-600 font-semibold">
+          Vaithra is a founder-first discovery and enablement network built to bring isolated early-stage founders into visibility, knowledge, and execution.
+        </p>
+        <div class="text-sm font-bold text-gray-400 uppercase tracking-widest">Core Mission</div>
+        <p class="text-gray-500 leading-relaxed">
+          Started and led by early-stage founder Sardhar Musthafa, Vaithra decentralizes access by taking events, knowledge, and founder networks directly to each city and state.
+        </p>
+      </div>
+    </div>
+
+    <div id="vaithraDetails" class="border-t border-gray-100 mt-12 pt-12 space-y-16">
+      
+      <div class="grid md:grid-cols-2 gap-12">
+        <div class="space-y-4">
+          <h3 class="serif-italic text-4xl">1. What is Vaithra?</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Vaithra operates through a centralized core team with a decentralized city and state-level presence. We reach founders who are isolated, invisible, or disconnected, bringing the startup ecosystem to their city. We do not “hunt” founders from outside; we meet them where they are.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <h3 class="serif-italic text-4xl">2. Why We Exist</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Startup ecosystems in India are heavily concentrated in a few cities such as Hyderabad, Bengaluru, and Vijayawada. Because of this, district founders remain invisible due to travel costs and lack of access to peer networks. Vaithra exists to break this centralization.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 p-10 rounded-3xl space-y-10">
+        <div class="grid md:grid-cols-2 gap-12">
+          <div class="space-y-4">
+            <h4 class="font-bold text-xl uppercase tracking-widest text-gray-400">3. Expansion Vision</h4>
+            <p class="text-gray-600 text-sm">
+              Initial focus is AP & TS, scaling from city-level events to a full district-level presence. We are built to scale region by region across other states in phases, not city-hopping randomly.
+            </p>
+          </div>
+          <div class="space-y-4">
+            <h4 class="font-bold text-xl uppercase tracking-widest text-gray-400">4. Operating Model</h4>
+            <p class="text-gray-600 text-sm">
+              We conduct city-based meetups with free entry, intentional lack of hype, and a focus on real problem statements. After events, we internally evaluate founders: Level 0 (Explorers), Level 1 (Builders), and Level 2 (High-Potential).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="p-6 border border-gray-100 rounded-2xl">
+          <h4 class="font-bold mb-3">5. Founder Benefits</h4>
+          <ul class="text-xs space-y-2 text-gray-500">
+            <li>• Reality check and honest positioning.</li>
+            <li>• Controlled access to private founder groups and strategy sessions.</li>
+            <li>• Clear progression path to visibility and incubation.</li>
+          </ul>
+        </div>
+        <div class="p-6 border border-gray-100 rounded-2xl">
+          <h4 class="font-bold mb-3">6. Income Model</h4>
+          <ul class="text-xs space-y-2 text-gray-500">
+            <li>• Optional Validation Sessions (₹999 – ₹2,499).</li>
+            <li>• Startup Listing & Visibility (₹2,999 – ₹5,000).</li>
+            <li>• Partner-driven revenue from incubators and govt.</li>
+          </ul>
+        </div>
+        <div class="p-6 border border-gray-100 rounded-2xl">
+          <h4 class="font-bold mb-3">7. City Reps (CRs)</h4>
+          <ul class="text-xs space-y-2 text-gray-500">
+            <li>• Local coordination and outreach roles.</li>
+            <li>• Must be a founder or operator (Max 2 per city).</li>
+            <li>• Benefits include recognition and authority (No Salary).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="text-center py-10 border-t border-gray-100">
+        <p class="serif-italic text-3xl">"Vaithra does not celebrate ideas. Vaithra brings isolated founders into execution reality."</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- FOUNDERS -->
 <section id="founders" class="py-32 px-10">
-<h2 class="serif-italic text-5xl text-center mb-20">org founders</h2>
+<h2 class="serif-italic text-5xl text-center mb-20">Core Team</h2>
 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto text-center">
 <div>
 <img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
 <h4 class="font-bold">Sardhar Mustafa</h4>
-<p class="text-xs opacity-50">Founder</p>
+<p class="text-xs opacity-50 uppercase tracking-widest">Founder & Ecosystem Lead</p>
 </div>
 <div>
 <img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
 <h4 class="font-bold">Rahimath</h4>
-<p class="text-xs opacity-50">Marketing Representative</p>
+<p class="text-xs opacity-50 uppercase tracking-widest">Operations & Coordination</p>
 </div>
 <div>
 <img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
-<h4 class="font-bold">Chinna Gopi</h4>
-<p class="text-xs opacity-50">Managing Director</p>
+<h4 class="font-bold">Erugoni Chinna Gopi</h4>
+<p class="text-xs opacity-50 uppercase tracking-widest">Outreach & Partnerships</p>
 </div>
 <div>
 <img src="https://via.placeholder.com/300" class="rounded-3xl mb-4 grayscale">
 <h4 class="font-bold">Hara Singh</h4>
-<p class="text-xs opacity-50">Media Partner</p>
+<p class="text-xs opacity-50 uppercase tracking-widest">Media & Event Execution</p>
 </div>
 </div>
 </section>
 
-<!-- NODES -->
 <section id="reps" class="py-32 bg-black/20 overflow-hidden">
 <h2 class="serif-italic text-5xl text-center mb-16">Local Nodes</h2>
 <div class="carousel-track px-10">
-<div class="rep-card">Vijayawada</div>
-<div class="rep-card">Vizag</div>
-<div class="rep-card">Tirupati</div>
-<div class="rep-card">Warangal</div>
-<div class="rep-card">Nellore</div>
+    <div class="rep-card group">
+        <img src="https://images.unsplash.com/photo-1590050752117-23a9d7fc9ba3?auto=format&fit=crop&w=400" class="h-48 w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+        <div class="p-6 text-center">
+            <h3 class="font-bold text-xl">Hyderabad</h3>
+            <p class="text-[10px] opacity-50 uppercase mt-2 tracking-widest">Active Hub</p>
+        </div>
+    </div>
+    <div class="rep-card group">
+        <img src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=400" class="h-48 w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+        <div class="p-6 text-center">
+            <h3 class="font-bold text-xl">Bangalore</h3>
+            <p class="text-[10px] opacity-50 uppercase mt-2 tracking-widest">Active Hub</p>
+        </div>
+    </div>
+    <div class="rep-card group">
+        <img src="https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=400" class="h-48 w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+        <div class="p-6 text-center">
+            <h3 class="font-bold text-xl">Vijayawada</h3>
+            <p class="text-[10px] opacity-50 uppercase mt-2 tracking-widest">Active Hub</p>
+        </div>
+    </div>
+    <div class="rep-card group">
+        <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=400" class="h-48 w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+        <div class="p-6 text-center">
+            <h3 class="font-bold text-xl">Chennai</h3>
+            <p class="text-[10px] opacity-50 uppercase mt-2 tracking-widest">Active Hub</p>
+        </div>
+    </div>
+    <div class="rep-card group"><div class="m-auto font-bold uppercase text-xs opacity-20">Looping...</div></div>
 </div>
 </section>
 
-<!-- VALIDATION -->
+<section id="blogs" class="py-32 px-10">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="serif-italic text-5xl mb-16">Founder Logs</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-8 bg-white/5 border border-white/10 rounded-3xl">
+        <p class="text-[10px] uppercase tracking-widest mb-4 opacity-50">Insights</p>
+        <h4 class="font-bold text-xl mb-2">Isolation is the Enemy</h4>
+        <p class="text-xs opacity-60 leading-relaxed">Why the next big thing isn't in a metro, and why distict founders die in silence.</p>
+      </div>
+      <div class="p-8 bg-white/5 border border-white/10 rounded-3xl">
+        <p class="text-[10px] uppercase tracking-widest mb-4 opacity-50">Culture</p>
+        <h4 class="font-bold text-xl mb-2">Execution Reality</h4>
+        <p class="text-xs opacity-60 leading-relaxed">Why Vaithra bans motivational speakers and focuses on real problems.</p>
+      </div>
+      <div class="p-8 bg-white/5 border border-white/10 rounded-3xl">
+        <p class="text-[10px] uppercase tracking-widest mb-4 opacity-50">Vision</p>
+        <h4 class="font-bold text-xl mb-2">Scaling the Network</h4>
+        <p class="text-xs opacity-60 leading-relaxed">A look at our roadmap for scaling node-based presence across India.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="py-32 px-10 bg-white/5">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="serif-italic text-5xl text-center mb-16">Queries</h2>
+    <div class="space-y-6">
+      <details class="p-6 border border-white/10 rounded-2xl">
+        <summary class="font-bold cursor-pointer">Is Vaithra an incubator?</summary>
+        <p class="mt-4 text-sm opacity-60">Not yet. We are a discovery layer that routes validated founders into execution pathways.</p>
+      </details>
+      <details class="p-6 border border-white/10 rounded-2xl">
+        <summary class="font-bold cursor-pointer">Why is meetup entry free?</summary>
+        <p class="mt-4 text-sm opacity-60">To remove access barriers. However, we maintain strict internal classification to filter out noise.</p>
+      </details>
+      <details class="p-6 border border-white/10 rounded-2xl">
+        <summary class="font-bold cursor-pointer">How do I become a City Representative?</summary>
+        <p class="mt-4 text-sm opacity-60">Selection is limited to founders or serious operators. Max 2 per district. No salary is provided.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section id="validation" class="py-32 bg-[#DFFF00] text-black text-center">
-<h2 class="serif-italic text-7xl mb-6">Validation your idea</h2>
-<p class="text-xl font-bold mb-10">₹4,999 One-time</p>
+<h2 class="serif-italic text-7xl mb-6">Validate your idea</h2>
+<div class="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-10 text-xs font-bold uppercase tracking-widest">
+  <div class="p-4 border border-black/10 rounded-xl">Session: ₹999 – ₹2,499</div>
+  <div class="p-4 border border-black/10 rounded-xl">Listing: ₹2,999 – ₹5,000</div>
+</div>
 <button class="bg-black text-white px-10 py-4 rounded-full">
 Apply for Validation
 </button>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" class="neo-form-container">
-<form class="neo-form" onsubmit="event.preventDefault();alert('Submitted');">
+<form class="neo-form" onsubmit="event.preventDefault();alert('Application Received');">
 <h3 class="text-center font-bold mb-8">Connect</h3>
+<input type="text" class="neo-input" placeholder="Founder Name" required>
 <input type="email" class="neo-input" placeholder="Founder Email" required>
 <input type="text" class="neo-input" placeholder="Project Name" required>
-<input type="text" class="neo-input" placeholder="Founder name" required>
+<textarea class="neo-input h-32 py-4" placeholder="Briefly describe your execution stage..."></textarea>
 <button class="neo-btn">Submit </button>
 </form>
 </section>
 
-<script>
-const toggle = document.getElementById('themeSwitcher');
+<footer>
+<div class="py-10 text-center opacity-30 text-[10px] uppercase tracking-[0.5em]">
+    VAITHRA ORGANIZATION &copy; 2026 | BUILT BY FOUNDERS
+</div>
+</footer>
 
+<script>
+// THEME SWITCHER
+const toggle = document.getElementById('themeSwitcher');
 if (localStorage.getItem('theme') === 'light') {
   document.body.classList.add('light-mode');
   toggle.checked = true;
 }
-
 toggle.addEventListener('change', () => {
   document.body.classList.toggle('light-mode');
   localStorage.setItem(
@@ -318,6 +472,32 @@ toggle.addEventListener('change', () => {
     document.body.classList.contains('light-mode') ? 'light' : 'dark'
   );
 });
+
+// EXPAND DETAILS FUNCTION
+function toggleDetails() {
+    const details = document.getElementById('vaithraDetails');
+    const btn = document.getElementById('expandBtn');
+    const symbol = document.getElementById('arrowSymbol');
+
+    if (!details.classList.contains('show')) {
+        details.classList.add('show');
+        btn.innerHTML = `Show Less <span id="arrowSymbol">↑</span>`;
+    } else {
+        details.classList.remove('show');
+        btn.innerHTML = `Learn More <span id="arrowSymbol">↓</span>`;
+    }
+}
+
+// GSAP Animations
+gsap.registerPlugin(ScrollTrigger);
+gsap.from(".rep-card", {
+    scrollTrigger: "#reps",
+    opacity: 0,
+    y: 100,
+    stagger: 0.1,
+    duration: 1
+});
 </script>
 
 </body>
+</html>
