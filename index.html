@@ -75,52 +75,55 @@ section { scroll-margin-top: 120px; }
   letter-spacing: 1px;
 }
 
-/* THEME TOGGLE */
-.wrapper {
+/* NEW TOGGLE SWITCH */
+.toggle-wrapper {
   position: relative;
+  width: 160px;
+}
+
+.toggle-wrapper input {
+  display: none;
+}
+
+.toggle-switch {
+  width: 160px;
+  height: 70px;
+  border-radius: 35px;
+  background: #1a1a1a;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.toggle-switch::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
   width: 60px;
-  height: 30px;
-  perspective: 200px;
-  cursor: pointer;
-}
-
-.flexDiv {
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.flexDiv div {
-  width: 25%;
-  background: #77c6ed;
-  transition: all var(--dur) ease;
-}
-
-.toggleMe {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  z-index: 10;
-}
-
-.toggleMe:checked ~ .flexDiv div {
-  transform: rotateX(180deg);
-  filter: grayscale(100%);
-}
-
-.circle, .circleOther {
-  position: absolute;
-  width: 14px;
-  height: 14px;
+  height: 60px;
   border-radius: 50%;
-  top: 8px;
-  transition: transform 1s;
+  background: #2a2a2a;
+  transition: left 0.35s ease;
 }
 
-.circle { background: #77c6ed; left: 10px; }
-.circleOther { background: #fff; right: 10px; }
+#themeSwitcher:checked ~ .toggle-switch::before {
+  left: 95px;
+}
+
+.styles {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+#skeuomorphism:checked ~ .styles label[for="skeuomorphism"],
+#neumorphism:checked ~ .styles label[for="neumorphism"] {
+  opacity: 1;
+}
 
 /* CAROUSEL */
 .carousel-track {
@@ -215,14 +218,19 @@ section { scroll-margin-top: 120px; }
     <li><a href="#contact">Contact</a></li>
   </ul>
 
-  <div class="wrapper">
-    <input type="checkbox" id="themeSwitcher" class="toggleMe" />
-    <div class="circle"></div>
-    <div class="circleOther"></div>
-    <div class="flexDiv">
-      <div></div><div></div><div></div><div></div>
-    </div>
+<div class="toggle-wrapper">
+  <input type="checkbox" id="themeSwitcher">
+
+  <input type="radio" id="skeuomorphism" name="style" checked>
+  <input type="radio" id="neumorphism" name="style">
+
+  <div class="toggle-switch"></div>
+
+  <div class="styles">
+    <label for="skeuomorphism">Skeuo</label>
+    <label for="neumorphism">Neuro</label>
   </div>
+</div>
 </nav>
 
 <section class="h-screen flex flex-col justify-center items-center text-center px-4"
