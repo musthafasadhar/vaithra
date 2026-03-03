@@ -457,18 +457,32 @@ Apply for Validation
 
 <script>
 // THEME SWITCHER
-const toggle = document.getElementById('themeSwitcher');
-if (localStorage.getItem('theme') === 'light') {
-  document.body.classList.add('light-mode');
-  toggle.checked = true;
-}
-toggle.addEventListener('change', () => {
-  document.body.classList.toggle('light-mode');
-  localStorage.setItem(
-    'theme',
-    document.body.classList.contains('light-mode') ? 'light' : 'dark'
-  );
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("themeSwitcher");
+
+  if (!toggle) {
+    console.error("❌ themeSwitcher not found");
+    return;
+  }
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    toggle.checked = true;
+  }
+
+  // Toggle theme
+  toggle.addEventListener("change", () => {
+    document.body.classList.toggle("light-mode");
+    localStorage.setItem(
+      "theme",
+      document.body.classList.contains("light-mode") ? "light" : "dark"
+    );
+  });
 });
+</script>
 
 // EXPAND DETAILS FUNCTION
 function toggleDetails() {
