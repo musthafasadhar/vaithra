@@ -465,54 +465,46 @@ Apply for Validation
 // THEME SWITCHER
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("themeSwitcher");
+    // THEME SWITCHER LOGIC
+    const toggle = document.getElementById("themeSwitcher");
+    if (toggle) {
+        if (localStorage.getItem("theme") === "light") {
+            document.body.classList.add("light-mode");
+            toggle.checked = true;
+        }
 
-  if (!toggle) return;
+        toggle.addEventListener("change", () => {
+            document.body.classList.toggle("light-mode");
+            localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+        });
+    }
 
-  if (localStorage.getItem("theme") === "light") {
-    document.body.classList.add("light-mode");
-    toggle.checked = true;
-  }
-
-  toggle.addEventListener("change", () => {
-    document.body.classList.toggle("light-mode");
-    localStorage.setItem(
-      "theme",
-      document.body.classList.contains("light-mode") ? "light" : "dark"
-    );
-  });
+    // GSAP ANIMATIONS
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from(".rep-card", {
+        scrollTrigger: "#reps",
+        opacity: 0,
+        y: 100,
+        stagger: 0.1,
+        duration: 1
+    });
 });
-</script>
 
 // EXPAND DETAILS FUNCTION
 function toggleDetails() {
     const details = document.getElementById('vaithraDetails');
     const btn = document.getElementById('expandBtn');
-    // We only need to target the span inside the button
     const symbol = document.getElementById('arrowSymbol');
 
     if (!details.classList.contains('show')) {
         details.classList.add('show');
-        // Update the text and arrow separately to keep it clean
-        btn.childNodes[0].textContent = "Show Less "; 
-        symbol.textContent = "↑";
+        // This updates the text while preserving your arrow span
+        btn.innerHTML = `Show Less <span id="arrowSymbol">↑</span>`;
     } else {
         details.classList.remove('show');
-        btn.childNodes[0].textContent = "Learn More ";
-        symbol.textContent = "↓";
+        btn.innerHTML = `Learn More <span id="arrowSymbol">↓</span>`;
     }
 }
-
-// GSAP Animations
-gsap.registerPlugin(ScrollTrigger);
-gsap.from(".rep-card", {
-    scrollTrigger: "#reps",
-    opacity: 0,
-    y: 100,
-    stagger: 0.1,
-    duration: 1
-});
 </script>
-
 </body>
 </html>
