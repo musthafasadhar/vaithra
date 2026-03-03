@@ -77,36 +77,41 @@ section { scroll-margin-top: 120px; }
 
 /* NAV THEME TOGGLE – FIXED */
 .toggle-wrapper {
-  position: relative;
-  width: 64px;
+  transform: scale(0.85);
 }
 
-.toggle-wrapper input {
+.toggle-label {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.toggle-label input {
   display: none;
 }
 
 .toggle-switch {
-  width: 64px;
-  height: 32px;
-  border-radius: 16px;
+  position: absolute;
+  inset: 0;
   background: #1a1a1a;
+  border-radius: 16px;
   box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
-  position: relative;
 }
 
 .toggle-switch::before {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
   width: 26px;
   height: 26px;
+  top: 3px;
+  left: 3px;
   border-radius: 50%;
   background: #2a2a2a;
   transition: transform 0.3s ease;
 }
 
-#themeSwitcher:checked ~ .toggle-switch::before {
+#themeSwitcher:checked + .toggle-switch::before {
   transform: translateX(32px);
 }
 
@@ -462,19 +467,13 @@ Apply for Validation
 document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("themeSwitcher");
 
-  if (!toggle) {
-    console.error("❌ themeSwitcher not found");
-    return;
-  }
+  if (!toggle) return;
 
-  // Load saved theme
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "light") {
+  if (localStorage.getItem("theme") === "light") {
     document.body.classList.add("light-mode");
     toggle.checked = true;
   }
 
-  // Toggle theme
   toggle.addEventListener("change", () => {
     document.body.classList.toggle("light-mode");
     localStorage.setItem(
@@ -489,14 +488,18 @@ document.addEventListener("DOMContentLoaded", () => {
 function toggleDetails() {
     const details = document.getElementById('vaithraDetails');
     const btn = document.getElementById('expandBtn');
+    // We only need to target the span inside the button
     const symbol = document.getElementById('arrowSymbol');
 
     if (!details.classList.contains('show')) {
         details.classList.add('show');
-        btn.innerHTML = `Show Less <span id="arrowSymbol">↑</span>`;
+        // Update the text and arrow separately to keep it clean
+        btn.childNodes[0].textContent = "Show Less "; 
+        symbol.textContent = "↑";
     } else {
         details.classList.remove('show');
-        btn.innerHTML = `Learn More <span id="arrowSymbol">↓</span>`;
+        btn.childNodes[0].textContent = "Learn More ";
+        symbol.textContent = "↓";
     }
 }
 
