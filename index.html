@@ -641,75 +641,70 @@ Apply for Validation
 </form>
 </section>
 
-<footer>
-<div class="py-10 text-center opacity-30 text-[10px] uppercase tracking-[0.5em]">
-    VAITHRA ORGANIZATION &copy; 2026 | BUILT BY FOUNDERS
-</div>
+<footer class="bg-[#f1f3f6] px-8 py-16 mt-32 rounded-t-[3rem]">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+
+    <!-- Brand -->
+    <div class="p-6 rounded-3xl bg-[#f1f3f6]
+                shadow-[8px_8px_16px_#d1d9e6,-8px_-8px_16px_#ffffff]">
+      <h2 class="text-3xl font-serif italic mb-4 text-gray-800">Vaithra</h2>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Vaithra is an organization for founders, built to redefine India’s startup
+        culture through execution, validation, and real-world confidence.
+      </p>
+    </div>
+
+    <!-- Explore -->
+    <div class="p-6 rounded-3xl bg-[#f1f3f6]
+                shadow-[8px_8px_16px_#d1d9e6,-8px_-8px_16px_#ffffff]">
+      <h4 class="uppercase text-xs tracking-widest mb-4 text-gray-500">Explore</h4>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li><a href="#about" class="hover:opacity-70">About</a></li>
+        <li><a href="#founders" class="hover:opacity-70">Leadership</a></li>
+        <li><a href="#events" class="hover:opacity-70">Meetups & Events</a></li>
+        <li><a href="#rules" class="hover:opacity-70">Rules & Structure</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact -->
+    <div class="p-6 rounded-3xl bg-[#f1f3f6]
+                shadow-[8px_8px_16px_#d1d9e6,-8px_-8px_16px_#ffffff]">
+      <h4 class="uppercase text-xs tracking-widest mb-4 text-gray-500">Contact</h4>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        Email:<br>
+        <a href="mailto:vaithra.org@gmail.com" class="underline">
+          vaithra.org@gmail.com
+        </a>
+      </p>
+      <p class="text-sm text-gray-700 mt-3">
+        Phone:<br>8977855998
+      </p>
+    </div>
+
+    <!-- Social & Authority -->
+    <div class="p-6 rounded-3xl bg-[#f1f3f6]
+                shadow-[8px_8px_16px_#d1d9e6,-8px_-8px_16px_#ffffff]">
+      <h4 class="uppercase text-xs tracking-widest mb-4 text-gray-500">Connect</h4>
+
+      <a href="https://www.instagram.com/wearevaithra/"
+         target="_blank"
+         class="text-sm text-gray-700 underline">
+        Instagram — @wearevaithra
+      </a>
+
+      <p class="text-xs text-gray-500 mt-6 leading-relaxed">
+        All initiatives operate under the parent company and are centrally
+        controlled by Sardhar Musthafa.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Bottom Authority Bar -->
+  <div class="mt-14 text-center text-xs text-gray-500">
+    © 2026 Vaithra. Execution-first founder ecosystem. Final authority retained.
+  </div>
 </footer>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    // THEME SWITCHER LOGIC
-    const toggle = document.getElementById("themeSwitcher");
-    if (toggle) {
-        if (localStorage.getItem("theme") === "light") {
-            document.body.classList.add("light-mode");
-            toggle.checked = true;
-        }
-
-        toggle.addEventListener("change", () => {
-            document.body.classList.toggle("light-mode");
-            localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
-        });
-    }
-
-    // GSAP ANIMATIONS
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from(".rep-card", {
-        scrollTrigger: "#reps",
-        opacity: 0,
-        y: 100,
-        stagger: 0.1,
-        duration: 1
-    });
-});
-
-// EXPAND DETAILS FUNCTION
-function toggleDetails() {
-    const details = document.getElementById('vaithraDetails');
-    const btn = document.getElementById('expandBtn');
-    const symbol = document.getElementById('arrowSymbol');
-
-    if (!details.classList.contains('show')) {
-        details.classList.add('show');
-        // This updates the text while preserving your arrow span
-        btn.innerHTML = `Show Less <span id="arrowSymbol">↑</span>`;
-    } else {
-        details.classList.remove('show');
-        btn.innerHTML = `Learn More <span id="arrowSymbol">↓</span>`;
-    }
-}
-</script>
-  </footer>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("themeSwitcher");
-  const body = document.body;
-
-  // Load saved mode
-  if (localStorage.getItem("theme") === "light") {
-    body.classList.add("light-mode");
-    toggle.checked = true;
-  }
-
-  toggle.addEventListener("change", () => {
-    body.classList.toggle("light-mode");
-    localStorage.setItem(
-      "theme",
-      body.classList.contains("light-mode") ? "light" : "dark"
-    );
-  });
-});
 </script>
 <div id="founderModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[9999]">
   <div class="bg-white text-black max-w-xl w-full rounded-3xl p-10 relative animate-scale">
