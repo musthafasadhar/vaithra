@@ -361,8 +361,7 @@ Built by early-stage founders for early-stage founders
 
     <!-- RULE LINE -->
     <div class="border-t border-white/10 pt-10 text-center text-gray-400 text-sm">
-      Rule: Anyone can organize events.  
-      Credibility comes only through validation by
+      note: The Semi centralised startup eco system is 
       <span class="text-white">Vaithra</span>.
     </div>
 
@@ -372,33 +371,25 @@ Built by early-stage founders for early-stage founders
 <section id="founders" class="py-32 px-10">
 <h2 class="serif-italic text-5xl text-center mb-20">Org Founders</h2>
 <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto text-center">
-<div>
-<img src="./assets/images/sardhar.jpeg"
-     class="rounded-3xl mb-4 grayscale"
-     alt="Sardhar Musthafa">
-<h4 class="font-bold">Sardhar Musthafa</h4>
-<p class="text-xs opacity-50 uppercase tracking-widest">Founder & Ecosystem Lead</p>
+<div onclick="openFounder('sardhar')" class="cursor-pointer">
+  <img src="./assets/images/sardhar.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
+  <h4 class="font-bold">Sardhar Musthafa</h4>
+  <p class="text-xs opacity-50 uppercase">Founder & Ecosystem Lead</p>
 </div>
-<div>
-<img src="./assets/images/rahimath.jpeg"
-     class="rounded-3xl mb-4 grayscale"
-     alt="Rahimath">
-<h4 class="font-bold">Rahimath</h4>
-<p class="text-xs opacity-50 uppercase tracking-widest">Operations & Coordination</p>
+<div onclick="openFounder('rahimath')" class="cursor-pointer">
+  <img src="./assets/images/rahimath.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
+  <h4 class="font-bold">Rahimath</h4>
+  <p class="text-xs opacity-50 uppercase">operation & management</p>
 </div>
-<div>
-<img src="./assets/images/gopi.jpeg"
-     class="rounded-3xl mb-4 grayscale"
-     alt="Erugoni Chinna Gopi">
-<h4 class="font-bold">Erugoni Chinna Gopi</h4>
-<p class="text-xs opacity-50 uppercase tracking-widest">Outreach & Partnerships</p>
+<div onclick="openFounder('gopi')" class="cursor-pointer">
+  <img src="./assets/images/gopi.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
+  <h4 class="font-bold">Erugoni Gopi</h4>
+  <p class="text-xs opacity-50 uppercase">marketing & partnerships</p>
 </div>
-<div>
-<img src="./assets/images/dhoni.jpeg"
-     class="rounded-3xl mb-4 grayscale"
-     alt="Hari Hara Singh">
-<h4 class="font-bold">Hari Hara Singh</h4>
-<p class="text-xs opacity-50 uppercase tracking-widest">Media & Event Execution</p>
+<div onclick="openFounder('dhoni')" class="cursor-pointer">
+  <img src="./assets/images/dhoni.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
+  <h4 class="font-bold">Dhoni Hari Hara Singh</h4>
+  <p class="text-xs opacity-50 uppercase">media partner</p>
 </div>
 </div>
 </section>
@@ -524,6 +515,14 @@ Built by early-stage founders for early-stage founders
 </section>
 
 <style>
+  @keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.animate-scale {
+  animation: scaleUp 0.3s ease forwards;
+}
     .carousel-track {
         display: flex;
         width: max-content;
@@ -695,8 +694,54 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+<div id="founderModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[9999]">
+  <div class="bg-white text-black max-w-xl w-full rounded-3xl p-10 relative animate-scale">
+    
+    <button onclick="closeFounder()" class="absolute top-4 right-4 text-xl font-bold">✕</button>
+    
+    <h3 id="modalName" class="text-3xl font-serif italic mb-2"></h3>
+    <p id="modalRole" class="uppercase tracking-widest text-xs text-gray-400 mb-6"></p>
+    <p id="modalBio" class="text-sm leading-relaxed text-gray-600"></p>
 
-</body>
-</html>
+  </div>
+</div>
+  <script>
+const founders = {
+  sardhar: {
+    name: "Sardhar Musthafa",
+    role: "Founder & Ecosystem Lead",
+    bio: "Built Vaithra to fix founder isolation in non-metro India. Focused on validation, execution reality, and decentralised startup access."
+  },
+  rahimath: {
+    name: "Rahimath",
+    role: "Operations & Coordination",
+    bio: "Manages internal operations, event coordination, and execution flow across Vaithra city nodes."
+  },
+  gopi: {
+    name: "Erugoni Chinna Gopi",
+    role: "Outreach & Partnerships",
+    bio: "Handles founder outreach, partnerships, and ecosystem connections."
+  },
+  hari: {
+    name: "Hari Hara Singh",
+    role: "Media & Event Execution",
+    bio: "Responsible for media, visual documentation, and on-ground event execution."
+  }
+};
+
+function openFounder(key) {
+  const data = founders[key];
+  document.getElementById("modalName").innerText = data.name;
+  document.getElementById("modalRole").innerText = data.role;
+  document.getElementById("modalBio").innerText = data.bio;
+
+  document.getElementById("founderModal").classList.remove("hidden");
+  document.getElementById("founderModal").classList.add("flex");
+}
+
+function closeFounder() {
+  document.getElementById("founderModal").classList.add("hidden");
+}
+</script>
 </body>
 </html>
