@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -673,5 +673,30 @@ function toggleDetails() {
     }
 }
 </script>
+  </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("themeSwitcher");
+  const body = document.body;
+
+  // Load saved mode
+  if (localStorage.getItem("theme") === "light") {
+    body.classList.add("light-mode");
+    toggle.checked = true;
+  }
+
+  toggle.addEventListener("change", () => {
+    body.classList.toggle("light-mode");
+    localStorage.setItem(
+      "theme",
+      body.classList.contains("light-mode") ? "light" : "dark"
+    );
+  });
+});
+</script>
+
+</body>
+</html>
 </body>
 </html>
