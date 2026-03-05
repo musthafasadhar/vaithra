@@ -1051,7 +1051,7 @@ transform:scale(1.1);
     <p id="modalBio" class="text-sm leading-relaxed text-gray-600"></p>
 
   </div>
-</div>
+</div> 
   <script>
 const founders = {
   sardhar: {
@@ -1088,6 +1088,18 @@ function openFounder(key) {
 
 function closeFounder() {
   document.getElementById("founderModal").classList.add("hidden");
+}
+    function toggleApplySection() {
+    const overlay = document.getElementById('applyOverlay');
+    if (overlay.classList.contains('translate-y-full')) {
+        overlay.classList.remove('translate-y-full');
+        overlay.classList.add('translate-y-0');
+        document.body.style.overflow = 'hidden'; // Stop scrolling background
+    } else {
+        overlay.classList.remove('translate-y-0');
+        overlay.classList.add('translate-y-full');
+        document.body.style.overflow = 'auto'; // Re-enable scrolling
+    }
 }
 </script>
 </body>
