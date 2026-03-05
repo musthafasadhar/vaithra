@@ -212,23 +212,46 @@ section { scroll-margin-top: 120px; }
 <nav class="nav-island">
   <div class="zen text-xs">VAITHRA</div>
 
-  <ul class="hidden md:flex space-x-6">
+  <ul class="hidden md:flex space-x-6 items-center">
     <li><a href="#about">About</a></li>
     <li><a href="#founders">Team</a></li>
     <li><a href="#reps">Nodes</a></li>
     <li><a href="#validation">Validate</a></li>
     <li><a href="#blogs">Blogs</a></li>
-    <li><a href="#faq">FAQ</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li>
+      <button onclick="toggleApplySection()" class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">
+        APPLY
+      </button>
+    </li>
   </ul>
-
-<div class="toggle-wrapper">
-  <label class="toggle-label">
-    <input type="checkbox" id="themeSwitcher">
-    <span class="toggle-switch"></span>
-  </label>
-</div>
 </nav>
+
+<div id="applyOverlay" class="fixed inset-0 bg-[#f5f5f7] z-[2000] translate-y-full transition-transform duration-700 ease-in-out overflow-y-auto">
+    <div class="max-w-4xl mx-auto pt-32 px-8 pb-20">
+        <button onclick="toggleApplySection()" class="fixed top-10 right-10 text-black text-2xl">✕</button>
+        
+        <h1 class="serif-italic text-6xl md:text-8xl text-black mb-8">Apply to Vaithra</h1>
+        
+        <div class="space-y-8 text-black/70 text-lg leading-relaxed">
+            <p>Vaithra is accepting applications for the <strong>Summer 2026 Batch</strong>. We focus on founders building in Tier-2 and Tier-3 cities who are ready for first-level validation.</p>
+            
+            <p>Our network is built by early-stage founders for early-stage founders, specifically targeting those who have been building in isolation without access to metro-centric networks.</p>
+
+            <div class="bg-white p-10 rounded-[40px] shadow-sm border border-black/5 mt-12">
+                <h3 class="text-2xl font-bold mb-6 text-black">Start your journey</h3>
+                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Application Submitted');">
+                    <input type="text" placeholder="Founder Name" class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50">
+                    <input type="text" placeholder="Project / Startup Name" class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50">
+                    <textarea placeholder="Tell us about your execution so far..." class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50 h-32"></textarea>
+                    <button class="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-[#DFFF00] hover:text-black transition-colors">
+                        Submit Application
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <section class="h-screen flex flex-col justify-center items-center text-center px-4"
 style="background:
