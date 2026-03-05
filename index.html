@@ -652,66 +652,165 @@ onclick="openFounder(
     }
 </style>
 
-<section id="blogs" class="blogs-section">
+<section id="blogs" class="py-32 px-8 bg-[#0f0f0f]">
 
-<div class="blogs-container">
+<style>
 
-<h2 class="blogs-title">Founder Insights</h2>
+.blog-wrapper{
+max-width:1200px;
+margin:auto;
+}
 
-<div class="blogs-grid">
+.blog-title{
+font-size:48px;
+font-style:italic;
+color:white;
+opacity:.85;
+margin-bottom:70px;
+text-align:center;
+}
+
+.blog-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:40px;
+}
+
+.blog-card{
+background:#161616;
+padding:35px;
+border-radius:28px;
+transition:0.35s;
+text-decoration:none;
+color:white;
+
+box-shadow:
+10px 10px 25px rgba(0,0,0,0.8),
+-10px -10px 25px rgba(40,40,40,0.2);
+}
+
+.blog-card:hover{
+transform:translateY(-8px) scale(1.02);
+
+box-shadow:
+14px 14px 35px rgba(0,0,0,0.9),
+-10px -10px 30px rgba(60,60,60,0.25);
+}
+
+.blog-tag{
+font-size:11px;
+letter-spacing:2px;
+text-transform:uppercase;
+opacity:.45;
+margin-bottom:12px;
+}
+
+.blog-card h3{
+font-size:22px;
+font-style:italic;
+margin-bottom:10px;
+}
+
+.blog-card p{
+font-size:13px;
+opacity:.6;
+line-height:1.6;
+}
+
+.blog-read{
+margin-top:16px;
+font-size:11px;
+letter-spacing:2px;
+opacity:.5;
+}
+
+</style>
+
+
+<div class="blog-wrapper">
+
+<h2 class="blog-title">Founder Insights</h2>
+
+<div class="blog-grid">
+
+
+<!-- Blog 1 -->
 
 <a href="startup-failure-india.html" class="blog-card">
 
-<div class="blog-content">
-<span class="blog-tag">Research</span>
+<div class="blog-tag">Research</div>
 
 <h3>Why Startups Are Failing in India</h3>
 
 <p>
-India’s startup ecosystem is growing rapidly, but many ventures collapse early due to weak business models, lack of product-market fit, and internal founder conflicts.
+India is producing thousands of startups, yet most collapse within a few years. 
+This article explores the real structural reasons — weak business models,
+poor founder alignment, and the absence of strong local startup ecosystems.
 </p>
 
-<span class="read-more">Read Article →</span>
-</div>
+<div class="blog-read">READ ARTICLE →</div>
 
 </a>
 
 
-<a href="#" class="blog-card">
+<!-- Blog 2 -->
 
-<div class="blog-content">
-<span class="blog-tag">Founder Culture</span>
+<a href="isolation-enemy.html" class="blog-card">
+
+<div class="blog-tag">Culture</div>
 
 <h3>Isolation Is The Enemy</h3>
 
 <p>
-Why talented founders in Tier-2 cities struggle silently without networks, mentorship, and capital access.
+Many talented founders in smaller cities work in complete isolation.
+Without access to networks, mentors, or early validation,
+their ideas die before reaching the market.
 </p>
 
-<span class="read-more">Read Article →</span>
-</div>
+<div class="blog-read">READ ARTICLE →</div>
 
 </a>
 
 
-<a href="#" class="blog-card">
+<!-- Blog 3 -->
 
-<div class="blog-content">
-<span class="blog-tag">Network Vision</span>
+<a href="execution-reality.html" class="blog-card">
 
-<h3>Scaling The Founder Network</h3>
+<div class="blog-tag">Execution</div>
+
+<h3>Execution Reality</h3>
 
 <p>
-How Vaithra plans to expand node-based founder communities across emerging startup ecosystems.
+Startup culture in India often promotes motivation over execution.
+Real founders succeed through relentless experimentation,
+customer feedback, and disciplined iteration.
 </p>
 
-<span class="read-more">Read Article →</span>
-</div>
+<div class="blog-read">READ ARTICLE →</div>
 
 </a>
 
-</div>
 
+<!-- Blog 4 -->
+
+<a href="founder-network-problem.html" class="blog-card">
+
+<div class="blog-tag">Network</div>
+
+<h3>The Founder Network Problem</h3>
+
+<p>
+Outside major metro cities, thousands of founders lack access to
+connections, credibility, and collaborative communities.
+This is the structural gap Vaithra aims to solve.
+</p>
+
+<div class="blog-read">READ ARTICLE →</div>
+
+</a>
+
+
+</div>
 </div>
 
 </section>
