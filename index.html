@@ -221,8 +221,7 @@ section { scroll-margin-top: 120px; }
     <li><a href="#blogs">Blogs</a></li>
     <li><a href="#contact">Contact</a></li>
     <li>
-      <button onclick="toggleApplySection()" class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">
-        JOIN
+      <button onclick="toggleApplySection()" class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">JOIN
       </button>
     </li>
   </ul>
@@ -235,7 +234,7 @@ section { scroll-margin-top: 120px; }
         <h1 class="serif-italic text-6xl md:text-8xl text-black mb-8">Apply to Vaithra</h1>
         
         <div class="space-y-8 text-black/70 text-lg leading-relaxed">
-            <p>Vaithra is accepting applications for the <strong>Summer 2026 Batch</strong>. We focus on founders building in Tier-2 and Tier-3 cities who are ready for first-level validation.</p>
+            <p>Vaithra is accepting applications for the <strong>To vaithra's ORG</strong>. We focus on founders building in Tier-2 and Tier-3 cities who are ready for first-level validation.</p>
             
             <p>Our network is built by early-stage founders for early-stage founders, specifically targeting those who have been building in isolation without access to metro-centric networks.</p>
 
@@ -1488,21 +1487,21 @@ function openFounder(key) {
   document.getElementById("founderModal").classList.add("flex");
 }
 
-function closeFounder() {
-  document.getElementById("founderModal").classList.add("hidden");
-}
-    function toggleApplySection() {
+// ... existing founder modal script ...
+
+function toggleApplySection() {
     const overlay = document.getElementById('applyOverlay');
+    if (!overlay) return; // Safety check
+
     if (overlay.classList.contains('translate-y-full')) {
         overlay.classList.remove('translate-y-full');
         overlay.classList.add('translate-y-0');
-        document.body.style.overflow = 'hidden'; // Stop scrolling background
+        document.body.style.overflow = 'hidden'; 
     } else {
         overlay.classList.remove('translate-y-0');
         overlay.classList.add('translate-y-full');
-        document.body.style.overflow = 'auto'; // Re-enable scrolling
+        document.body.style.overflow = 'auto'; 
     }
 }
-  <script>
-</body>
+</script> </body>
 </html>
