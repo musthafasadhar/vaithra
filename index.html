@@ -508,16 +508,17 @@ onclick="openFounder(
 </div>
 </div>
 </section>
-<section id="reps" class="py-40 bg-[#F5F5F7] overflow-hidden relative">
+  
+<section id="reps" class="py-32 bg-[#F5F5F7] overflow-hidden relative">
     
-    <div class="max-w-7xl mx-auto px-8 mb-24 relative z-10 grid grid-cols-12 gap-8">
-        <div class="col-span-12 md:col-span-10">
+    <div class="max-w-7xl mx-auto px-8 mb-20 relative z-10 grid grid-cols-12 gap-8">
+        <div class="col-span-12 md:col-span-11">
             <span class="text-[11px] uppercase tracking-[0.5em] font-black text-gray-400 mb-6 block">Regional Node Infrastructure</span>
             <h2 class="serif-italic text-7xl md:text-9xl leading-[0.8] tracking-tighter text-black italic">
                 Local <span class="text-gray-300">Hubs.</span>
             </h2>
-            <div class="mt-12 max-w-xl border-l-4 border-[#A5C400] pl-10">
-                <p class="text-lg text-gray-500 font-medium leading-relaxed uppercase tracking-wider">
+            <div class="mt-10 max-w-lg border-l-4 border-[#A5C400] pl-10">
+                <p class="text-base text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
                     Decentralized infrastructure bridging district builders with the global ecosystem.
                 </p>
             </div>
@@ -528,31 +529,34 @@ onclick="openFounder(
         <div class="carousel-track-premium">
             
             <script>
+                // List of your 10 cities with high-contrast status labels
                 const cities = [
-                    { name: 'Hyderabad', status: 'Main Hub', img: 'https://images.unsplash.com/photo-1605135741646-60198692782e?w=600&q=80' },
-                    { name: 'Visakhapatnam', status: 'Coastal', img: 'https://images.unsplash.com/photo-1626305041040-0255567a46e1?w=600&q=80' },
-                    { name: 'Vijayawada', status: 'Core Node', img: 'https://images.unsplash.com/photo-1590050752117-23a9d7fc9ba3?w=600&q=80' },
-                    { name: 'Tirupati', status: 'Tech Hub', img: 'https://images.unsplash.com/photo-1621319246105-0428310c85b1?w=600&q=80' },
-                    { name: 'Warangal', status: 'Expansion', img: 'https://images.unsplash.com/photo-1624300635492-95f70281b37f?w=600&q=80' },
-                    { name: 'Guntur', status: 'Growth Hub', img: 'https://images.unsplash.com/photo-1623157588301-4475440620ec?w=600&q=80' },
-                    { name: 'Bengaluru', status: 'External', img: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=600&q=80' },
-                    { name: 'Chennai', status: 'Partner', img: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80' },
-                    { name: 'Mumbai', status: 'Finance', img: 'https://images.unsplash.com/photo-1570160230261-8215da4f8ad5?w=600&q=80' },
-                    { name: 'Delhi', status: 'Capital', img: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=600&q=80' }
+                    { name: 'Hyderabad', status: 'Main Hub', file: 'hyderabad.jpeg' },
+                    { name: 'Visakhapatnam', status: 'Coastal', file: 'vizag.jpeg' },
+                    { name: 'Vijayawada', status: 'Core Node', file: 'vijayawada.jpeg' },
+                    { name: 'Tirupati', status: 'Tech Hub', file: 'tirupati.jpeg' },
+                    { name: 'Warangal', status: 'Expansion', file: 'warangal.jpeg' },
+                    { name: 'Guntur', status: 'Industrial', file: 'guntur.jpeg' },
+                    { name: 'Bengaluru', status: 'External', file: 'bengaluru.jpeg' },
+                    { name: 'Chennai', status: 'Partner', file: 'chennai.jpeg' },
+                    { name: 'Mumbai', status: 'Finance', file: 'mumbai.jpeg' },
+                    { name: 'Delhi', status: 'Capital', file: 'delhi.jpeg' }
                 ];
 
-                function createCards(cityList) {
+                function generateCards(cityList) {
                     return cityList.map(city => `
-                        <div class="node-item" onclick="openMagazine('${city.name}', '${city.status}', '${city.img}')">
+                        <div class="node-item" onclick="openMagazine('${city.name}', '${city.status}', 'assets/images/${city.file}')">
                             <div class="card-refractive">
-                                <div class="img-wrapper"><img src="${city.img}" alt="${city.name}" loading="lazy"></div>
+                                <div class="img-wrapper">
+                                    <img src="assets/images/${city.file}" alt="${city.name}" onerror="this.src='https://placehold.co/400x500?text=${city.name}'">
+                                </div>
                                 <div class="card-info">
                                     <h3>${city.name}</h3>
                                     <p>${city.status}</p>
-                                    <div class="decorative-lines mt-4 flex gap-1">
-                                        <div class="h-1 w-8 bg-[#A5C400]"></div>
-                                        <div class="h-1 w-4 bg-gray-200"></div>
-                                        <div class="h-1 w-2 bg-gray-100"></div>
+                                    <div class="decorative-grid mt-4">
+                                        <div class="line-1"></div>
+                                        <div class="line-2"></div>
+                                        <div class="line-3"></div>
                                     </div>
                                 </div>
                             </div>
@@ -560,13 +564,47 @@ onclick="openFounder(
                     `).join('');
                 }
 
-                // Render twice for infinite loop
-                document.querySelector('.carousel-track-premium').innerHTML = createCards(cities) + createCards(cities);
+                // Render for the infinite loop
+                document.write(generateCards(cities) + generateCards(cities));
             </script>
 
         </div>
     </div>
 </section>
+
+<style>
+    .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 50s linear infinite; }
+    .carousel-track-premium:hover { animation-play-state: paused; }
+    @keyframes scrollNodes { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* Studio Card Scale - Refined Sizes */
+    .node-item { width: 330px; padding: 0 15px; cursor: pointer; perspective: 1500px; }
+    
+    .card-refractive {
+        background: #FFFFFF; height: 440px; border-radius: 45px; overflow: hidden; position: relative;
+        box-shadow: 20px 20px 50px #d9d9d9, -20px -20px 50px #ffffff;
+        transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1); transform-style: preserve-3d;
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .img-wrapper { width: 100%; height: 72%; overflow: hidden; background: #eee; }
+    .card-refractive img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.8s ease; }
+    
+    .card-info { padding: 30px; background: white; height: 28%; display: flex; flex-direction: column; justify-content: center; transform: translateZ(30px); }
+    
+    /* Corrected High-Contrast Text Visibility */
+    .card-info h3 { font-size: 1.5rem; font-weight: 900; color: #000; margin: 0; letter-spacing: -0.03em; }
+    .card-info p { font-size: 10px; color: #A5C400; font-weight: 900; margin-top: 6px; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* Decorative 3 Lines Logic */
+    .decorative-grid { display: flex; gap: 4px; }
+    .line-1 { h-1; width: 40px; height: 2px; background: #A5C400; }
+    .line-2 { h-1; width: 15px; height: 2px; background: #e5e7eb; }
+    .line-3 { h-1; width: 8px; height: 2px; background: #f3f4f6; }
+
+    .node-item:hover .card-refractive { transform: rotateX(8deg) rotateY(-8deg) translateY(-20px); box-shadow: 0 50px 100px rgba(0,0,0,0.08); border-color: #A5C400; }
+    .node-item:hover img { filter: grayscale(0%); transform: scale(1.1); }
+</style>
 
 <style>
     .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 50s linear infinite; }
