@@ -222,7 +222,7 @@ section { scroll-margin-top: 120px; }
     <li><a href="#contact">Contact</a></li>
     <li>
       <button onclick="toggleApplySection()" class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">
-        APPLY
+        JOIN
       </button>
     </li>
   </ul>
@@ -475,39 +475,167 @@ to building a stronger startup culture in India.
   </div>
 </section>
 
-<section id="founders" class="py-32 px-10">
-<h2 class="serif-italic text-5xl text-center mb-20">Org Founders</h2>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto text-center">
-<div onclick="openFounder('sardhar')" class="cursor-pointer">
-  <img src="./assets/images/sardhar.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
-  <h4 class="font-bold">Sardhar Musthafa</h4>
-  <p class="text-xs opacity-50 uppercase">Founder & Final Authority — Vaithra</p>
-</div>
-<div onclick="openFounder('rahimath')" class="cursor-pointer">
-  <img src="./assets/images/rahimath.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
-  <h4 class="font-bold">Rahimath</h4>
-  <p class="text-xs opacity-50 uppercase">Core Partner — Vaithra | Founder — Glowvai.in</p>
-</div>
-<div onclick="openFounder('gopi')" class="cursor-pointer">
-  <img src="./assets/images/gopi.jpeg" class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
-  <h4 class="font-bold">Erugoni Gopi</h4>
-  <p class="text-xs opacity-50 uppercase">Strategic Owner & Internal Systems Lead</p>
-</div>
-<div class="cursor-pointer"
-onclick="openFounder(
-  'Dhoni Hari Hara Singh',
-  'Founder — Vishvarupa Creations | Media Partner — Vaithra',
-  'Founder of Vishvarupa Creations and official media partner of Vaithra. Handles media production, brand representation, and creative execution.'
-)">
-  <img src="./assets/images/dhoni.jpeg"
-       class="rounded-3xl mb-4 grayscale hover:scale-105 transition">
-  <h4 class="font-bold">Dhoni Hari Hara Singh</h4>
-  <p class="text-xs opacity-50 uppercase">
-    Founder — Vishvarupa Creations | Media Partner — Vaithra
-  </p>
-</div>
-</div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --lux-white: #ffffff; --lux-black: #000000; --lux-grey: #f8f8f8; }
+        body { background: var(--lux-white); font-family: 'Inter', sans-serif; color: var(--lux-black); margin: 0; }
+
+        /* THE MASTHEAD */
+        .boutique-header { padding: 80px 5%; text-align: left; border-bottom: 1px solid #eee; }
+        .boutique-header h1 { font-family: 'Playfair Display', serif; font-size: 5rem; margin: 0; font-style: italic; }
+        .lux-tag { text-transform: uppercase; letter-spacing: 8px; font-size: 0.7rem; font-weight: 700; opacity: 0.4; }
+
+        /* HORIZONTAL EDITORIAL STRIPS */
+        .founder-strip { 
+            display: flex; 
+            align-items: center; 
+            padding: 60px 5%; 
+            border-bottom: 1px solid #eee; 
+            cursor: pointer; 
+            transition: background 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .founder-strip:hover { background: var(--lux-grey); }
+
+        .strip-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; opacity: 0.2; width: 60px; }
+        .strip-name { font-family: 'Playfair Display', serif; font-size: 3.5rem; flex: 1; transition: transform 0.4s ease; }
+        .founder-strip:hover .strip-name { transform: translateX(20px); }
+        
+        .strip-role { text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; font-weight: 900; width: 300px; text-align: right; }
+
+        /* LUXURY SLIDE-IN MODAL */
+        .full-slide-modal { 
+            position: fixed; 
+            inset: 0; 
+            background: var(--lux-white); 
+            z-index: 10000; 
+            display: none; 
+            flex-direction: row; 
+            transform: translateY(100%);
+            transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        .full-slide-modal.active { transform: translateY(0); display: flex; }
+
+        .modal-portrait { flex: 1; background: #111; height: 100vh; }
+        .modal-portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); opacity: 0.8; }
+        
+        .modal-content-area { flex: 1.2; padding: 100px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+        
+        .close-trigger { position: absolute; top: 60px; right: 60px; font-size: 1.5rem; cursor: pointer; text-transform: uppercase; letter-spacing: 4px; font-weight: 900; }
+        
+        .m-name { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin-bottom: 20px; }
+        .m-role-tag { color: #c5a059; font-weight: 900; text-transform: uppercase; letter-spacing: 5px; font-size: 0.8rem; margin-bottom: 40px; }
+        .m-description { line-height: 2.2; font-size: 1.15rem; color: #555; max-width: 550px; border-left: 2px solid #000; padding-left: 30px; }
+
+    </style>
+</head>
+<body>
+
+    <header class="boutique-header">
+        <span class="lux-tag">Vaithra Protocol</span>
+        <h1>The Core</h1>
+    </header>
+
+    <main>
+        <div class="founder-strip" onclick="openLux('sardhar')">
+            <span class="strip-num">01</span>
+            <span class="strip-name">Sardhar Musthafa</span>
+            <span class="strip-role">Final Authority</span>
+        </div>
+
+        <div class="founder-strip" onclick="openLux('rahimath')">
+            <span class="strip-num">02</span>
+            <span class="strip-name">Rahimath</span>
+            <span class="strip-role">Glowvai.in</span>
+        </div>
+
+        <div class="founder-strip" onclick="openLux('gopi')">
+            <span class="strip-num">03</span>
+            <span class="strip-name">Erugoni Gopi</span>
+            <span class="strip-role">Strategic Owner</span>
+        </div>
+
+        <div class="founder-strip" onclick="openLux('dhoni')">
+            <span class="strip-num">04</span>
+            <span class="strip-name">Dhoni Hari Hara Singh</span>
+            <span class="strip-role">Media Partner</span>
+        </div>
+    </main>
+
+    <div id="luxModal" class="full-slide-modal">
+        <div class="modal-portrait">
+            <img id="mImg" src="" alt="">
+        </div>
+        <div class="modal-content-area">
+            <div class="close-trigger" onclick="closeLux()">Close &times;</div>
+            <span class="m-role-tag" id="mTag">Founder Profile</span>
+            <h2 class="m-name" id="mName">Name</h2>
+            <p id="mRole" style="opacity: 0.4; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Role Description</p>
+            <div style="height: 60px;"></div>
+            <p class="m-description" id="mBio">Bio content here...</p>
+        </div>
+    </div>
+
+    <script>
+        const founders = {
+            sardhar: {
+                name: "Sardhar Musthafa",
+                role: "Founder & Final Authority — Vaithra",
+                tag: "Chief Strategic Architect",
+                bio: "Leading the overarching governance of the Vaithra Protocol. As the founder of Vaivaanith Pvt Ltd, Sardhar maintains final authority over all strategic nodes and ecosystem validation.",
+                img: "./assets/images/sardhar.jpeg"
+            },
+            rahimath: {
+                name: "Rahimath",
+                role: "Core Partner — Vaithra | Founder — Glowvai.in",
+                tag: "Market Integration",
+                bio: "Overseeing the Glowvai initiative within the Vaithra ecosystem. Rahimath bridges beauty-tech innovation with the core startup infrastructure.",
+                img: "./assets/images/rahimath.jpeg"
+            },
+            gopi: {
+                name: "Erugoni Gopi",
+                role: "Strategic Owner & Systems Lead",
+                tag: "Systems Logic",
+                bio: "Gopi is a business partner at Vaithra responsible for managing internal operational systems and strategic ownership structures.",
+                img: "./assets/images/gopi.jpeg"
+            },
+            dhoni: {
+                name: "Dhoni Hari Hara Singh",
+                role: "Media Partner — Vaithra",
+                tag: "Creative Production",
+                bio: "Founder of Vishvarupa Creations and the official media partner for Vaithra. Handles brand representation and high-end media production.",
+                img: "./assets/images/dhoni.jpeg"
+            }
+        };
+
+        function openLux(key) {
+            const f = founders[key];
+            document.getElementById('mName').innerText = f.name;
+            document.getElementById('mRole').innerText = f.role;
+            document.getElementById('mTag').innerText = f.tag;
+            document.getElementById('mBio').innerText = f.bio;
+            document.getElementById('mImg').src = f.img;
+            
+            const modal = document.getElementById('luxModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLux() {
+            const modal = document.getElementById('luxModal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 700);
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
   
 <section id="reps" class="py-32 bg-[#F5F5F7] overflow-hidden relative">
     
@@ -1216,6 +1344,14 @@ transform:scale(1.1);
 <div class="sponsor-logo logo10">FutureStack</div>
 <div class="sponsor-logo logo11">LaunchPad</div>
 <div class="sponsor-logo logo12">GrowthLab</div>
+</div>
+  <div style="background-color: #1a1a1a; color: white; padding: 15px; text-align: center; width: 100%; border-radius: 8px; margin: 20px 0;">
+  <p style="margin: 0; font-family: sans-serif;">
+    Interested in supporting our ecosystem? 
+    <a href="#contact" style="color: #00d1b2; font-weight: bold; text-decoration: none; margin-left: 10px;">
+      Become a Sponsor for Vaithra Events →
+    </a>
+  </p>
 </div>
 </section>
 
