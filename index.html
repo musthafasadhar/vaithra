@@ -508,18 +508,108 @@ onclick="openFounder(
 </div>
 </div>
 </section>
-
-<section id="reps" class="py-32 bg-black/20 overflow-hidden">
-    <h2 class="serif-italic text-5xl text-center mb-16">Local Nodes</h2>
+<section id="reps" class="py-40 bg-[#f0f0f2] text-[#1a1a1a] overflow-hidden relative">
     
-   <section id="reps" class="py-32 bg-black text-white">
+    <div class="absolute top-10 left-[5%] opacity-[0.03] select-none pointer-events-none">
+        <h2 class="zen text-[10rem] leading-none uppercase">Nodes</h2>
+    </div>
 
-<h2 class="serif-italic text-5xl text-center mb-16">City Network</h2>
+    <div class="max-w-7xl mx-auto px-8 relative z-10">
+        
+        <div class="mb-20 max-w-3xl">
+            <span class="text-[10px] uppercase tracking-[0.6em] font-black text-gray-400 mb-4 block">Regional Infrastructure</span>
+            <h2 class="serif-italic text-7xl md:text-8xl leading-none tracking-tighter">
+                Local <span class="text-gray-300">Nodes.</span>
+            </h2>
+            <p class="mt-8 text-lg text-gray-500 font-light leading-relaxed border-l-2 border-[#DFFF00] pl-6">
+                Vaithra decentralizes access by building physical and digital bridges in Tier-2 and Tier-3 cities.
+            </p>
+        </div>
 
-<div id="node-map" style="width:100%;height:700px;"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            
+            <div class="node-card-3d group cursor-pointer" onclick="location.href='#contact'">
+                <div class="card-inner bg-white/70 backdrop-blur-xl p-8 rounded-[40px] shadow-[15px_15px_40px_#d1d1d1,-15px_-15px_40px_#ffffff] border border-white/40 overflow-hidden">
+                    <div class="h-48 w-full rounded-3xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1605135741646-60198692782e?w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Hyderabad">
+                    </div>
+                    <h3 class="text-2xl font-black italic">Hyderabad</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-[#DFFF00] font-bold mt-2">Active Strategic Hub</p>
+                </div>
+            </div>
 
+            <div class="node-card-3d group cursor-pointer" onclick="location.href='#contact'">
+                <div class="card-inner bg-white/70 backdrop-blur-xl p-8 rounded-[40px] shadow-[15px_15px_40px_#d1d1d1,-15px_-15px_40px_#ffffff] border border-white/40 overflow-hidden">
+                    <div class="h-48 w-full rounded-3xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1626305041040-0255567a46e1?w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Vizag">
+                    </div>
+                    <h3 class="text-2xl font-black italic">Visakhapatnam</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-2">Coastal Innovation Node</p>
+                </div>
+            </div>
+
+            <div class="node-card-3d group cursor-pointer" onclick="location.href='#contact'">
+                <div class="card-inner bg-white/70 backdrop-blur-xl p-8 rounded-[40px] shadow-[15px_15px_40px_#d1d1d1,-15px_-15px_40px_#ffffff] border border-white/40 overflow-hidden">
+                    <div class="h-48 w-full rounded-3xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1590050752117-23a9d7fc9ba3?w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Vijayawada">
+                    </div>
+                    <h3 class="text-2xl font-black italic">Vijayawada</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-2">Core Execution Node</p>
+                </div>
+            </div>
+
+            <div class="node-card-3d group cursor-pointer" onclick="location.href='#contact'">
+                <div class="card-inner bg-[#1a1a1a] p-8 rounded-[40px] shadow-[15px_15px_40px_#d1d1d1] border border-white/10 overflow-hidden">
+                    <div class="h-48 w-full rounded-3xl bg-zinc-800 flex items-center justify-center mb-6">
+                        <span class="zen text-white/10 text-4xl italic">VAI</span>
+                    </div>
+                    <h3 class="text-2xl font-black italic text-white">Guntur & Warangal</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-[#DFFF00] font-bold mt-2">Regional Expansion</p>
+                </div>
+            </div>
+
+            <div class="node-card-3d group cursor-pointer" onclick="location.href='#contact'">
+                <div class="card-inner bg-white/70 backdrop-blur-xl p-8 rounded-[40px] shadow-[15px_15px_40px_#d1d1d1,-15px_-15px_40px_#ffffff] border border-white/40 overflow-hidden">
+                    <div class="h-48 w-full rounded-3xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=600" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Bangalore">
+                    </div>
+                    <h3 class="text-2xl font-black italic">Bengaluru</h3>
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-2">External Tech Link</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 
+<style>
+    /* Premium 3D Interaction Logic */
+    .node-card-3d {
+        perspective: 1500px;
+        transition: transform 0.5s ease;
+    }
+
+    .card-inner {
+        transform-style: preserve-3d;
+        transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+    }
+
+    .node-card-3d:hover .card-inner {
+        transform: rotateX(8deg) rotateY(-8deg) translateY(-10px);
+        background: #ffffff;
+        border-color: #DFFF00;
+        shadow: 0 30px 60px rgba(0,0,0,0.1);
+    }
+
+    /* Depth Parallax */
+    .node-card-3d img {
+        transition: transform 1s ease;
+    }
+    
+    .node-card-3d:hover h3 {
+        transform: translateZ(40px);
+    }
+</style>
 <style>
   @keyframes scaleUp {
   from { transform: scale(0.9); opacity: 0; }
@@ -1009,69 +1099,5 @@ function closeFounder() {
 }
 </script>
   <script>
-
-/* 3D MAP SCRIPT */
-
-const container = document.getElementById("node-map");
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-75,
-container.clientWidth/container.clientHeight,
-0.1,
-1000
-);
-
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(container.clientWidth, container.clientHeight);
-container.appendChild(renderer.domElement);
-
-camera.position.z = 20;
-
-const light = new THREE.PointLight(0xffffff,1);
-light.position.set(10,10,10);
-scene.add(light);
-
-const cities = [
-{name:"Hyderabad",x:-8,y:2,z:0},
-{name:"Vijayawada",x:-3,y:-2,z:1},
-{name:"Visakhapatnam",x:5,y:2,z:-2},
-{name:"Tirupati",x:3,y:-5,z:0}
-];
-
-cities.forEach(city=>{
-
-const geometry = new THREE.SphereGeometry(0.6,32,32);
-
-const material = new THREE.MeshStandardMaterial({
-color:0xDFFF00,
-emissive:0x88ff00
-});
-
-const node = new THREE.Mesh(geometry,material);
-
-node.position.set(city.x,city.y,city.z);
-
-scene.add(node);
-
-});
-
-function animate(){
-
-requestAnimationFrame(animate);
-
-scene.rotation.y += 0.001;
-
-renderer.render(scene,camera);
-
-}
-
-animate();
-
-</script>
-
-</body>
-</html>
 </body>
 </html>
