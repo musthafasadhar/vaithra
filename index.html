@@ -205,6 +205,25 @@ section { scroll-margin-top: 120px; }
   opacity: 1;
   padding-top: 24px;
 }
+  /* BACKUP CSS - Paste this at the end of your existing <style> block */
+#applyOverlay {
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 9999 !important; /* Ensures it slides OVER the nav */
+}
+.translate-y-0 {
+    transform: translateY(0) !important;
+}
+.translate-y-full {
+    transform: translateY(100%) !important;
+}
+/* Premium Purple Font Fix */
+.serif-italic, .lux-header-title, .m-name {
+    font-family: 'Playfair Display', serif !important;
+    color: #000;
+}
+.text-purple-lux {
+    color: #7c3aed !important;
+}
 </style>
 </head>
 
