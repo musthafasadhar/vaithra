@@ -1247,199 +1247,267 @@ Apply for Validation
 </button>
 </section>
   
-  <!-- VAITHRA SPONSORS SECTION -->
-
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@300;400;900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500;1,600;1,700&display=swap');
+    .vaithra-scope {
+        background-color: #ffffff;
+        color: #000000;
+        font-family: 'Inter', sans-serif;
+        padding: 100px 5%;
+        text-align: center;
+    }
 
-.vaithra-sponsors{
-padding:140px 40px;
-background:#ffffff;
-text-align:center;
-font-family:'Playfair Display',serif;
-}
+    /* 1. VIEW STATES */
+    #sponsor-detail-view {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+        text-align: left;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
 
-.vaithra-sponsors h2{
-font-size:44px;
-font-style:italic;
-margin-bottom:12px;
-}
+    /* 2. TITLES - MAG STYLE */
+    .lux-header-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(45px, 10vw, 90px);
+        font-style: italic;
+        font-weight: 900;
+        margin: 0 0 20px 0;
+        letter-spacing: -4px;
+        line-height: 0.85;
+    }
 
-.vaithra-sponsors p{
-color:#666;
-font-size:15px;
-margin-bottom:70px;
-font-family:sans-serif;
-}
+    .lux-meta {
+        text-transform: uppercase;
+        letter-spacing: 8px;
+        font-size: 10px;
+        font-weight: 900;
+        color: #7c3aed; /* Deep Purple for Legibility */
+        display: block;
+        margin-bottom: 40px;
+    }
 
-.sponsor-wall{
+    /* 3. PROFESSIONAL MARQUEE */
+    .marquee-container {
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+        padding: 60px 0;
+        margin-bottom: 80px;
+        overflow: hidden;
+        display: flex;
+    }
 
-max-width:1100px;
-margin:auto;
+    .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: luxScroll 45s linear infinite;
+    }
 
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:60px;
-align-items:center;
+    @keyframes luxScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
 
-}
+    .brand-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 34px;
+        font-style: italic;
+        padding: 0 70px;
+        opacity: 0.4;
+        transition: 0.4s;
+        cursor: default;
+        white-space: nowrap;
+    }
 
-.sponsor-logo{
+    .brand-logo:hover {
+        opacity: 1;
+        color: #7c3aed !important; /* Highlights Purple on Hover */
+    }
 
-font-size:24px;
-font-style:italic;
-font-weight:600;
+    /* 4. THE ACTION BUTTON */
+    .lux-action-btn {
+        background: #000;
+        color: #fff;
+        padding: 24px 60px;
+        border-radius: 100px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 11px;
+        cursor: pointer;
+        border: none;
+        transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    }
 
-opacity:.30;
+    .lux-action-btn:hover {
+        background: #7c3aed; /* Purple Theme */
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+    }
 
-transition:all .4s ease;
+    /* 5. DETAIL VIEW (DELHI NODE STYLE) */
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 80px;
+        padding-top: 40px;
+    }
 
-}
+    @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
 
-.sponsor-logo:hover{
+    .detail-text h3 { 
+        font-family: 'Playfair Display', serif; 
+        font-size: clamp(40px, 6vw, 60px); 
+        margin: 0 0 30px 0; 
+        line-height: 1;
+    }
+    
+    .detail-text p { color: #555; line-height: 2; font-size: 1.1rem; margin-bottom: 40px; }
+    
+    .whatsapp-card {
+        background: #fdfcff; /* Very slight purple tint */
+        padding: 50px;
+        border-radius: 40px;
+        border: 1px solid #f3f0ff;
+        text-align: center;
+    }
 
-opacity:1;
-transform:scale(1.1);
+    .whatsapp-btn {
+        display: block;
+        background: #7c3aed;
+        color: #fff;
+        text-decoration: none;
+        padding: 22px;
+        border-radius: 20px;
+        font-weight: 900;
+        font-size: 12px;
+        letter-spacing: 2px;
+        transition: 0.3s;
+    }
 
-}
-
-
-/* different colors */
-
-.logo1{color:#FF6B6B;}
-.logo2{color:#6C63FF;}
-.logo3{color:#00A896;}
-.logo4{color:#F4A261;}
-.logo5{color:#118AB2;}
-.logo6{color:#EF476F;}
-.logo7{color:#2A9D8F;}
-.logo8{color:#8338EC;}
-.logo9{color:#3A86FF;}
-.logo10{color:#FB5607;}
-.logo11{color:#06D6A0;}
-.logo12{color:#E63946;}
-
+    .whatsapp-btn:hover { background: #000; }
 </style>
 
-
-<section class="vaithra-sponsors">
-
-<h2>Backed by Builders</h2>
-
-<p>Communities and founders supporting the Vaithra network</p>
-
-<div class="sponsor-wall">
-
-<div class="sponsor-logo logo1">Glowvai</div>
-<div class="sponsor-logo logo2">IndieLabs</div>
-<div class="sponsor-logo logo3">BuildStack</div>
-<div class="sponsor-logo logo4">StartupForge</div>
-<div class="sponsor-logo logo5">OpenBuilders</div>
-<div class="sponsor-logo logo6">VisionLabs</div>
-<div class="sponsor-logo logo7">NextGen</div>
-<div class="sponsor-logo logo8">FounderCircle</div>
-<div class="sponsor-logo logo9">CreatorHub</div>
-<div class="sponsor-logo logo10">FutureStack</div>
-<div class="sponsor-logo logo11">LaunchPad</div>
-<div class="sponsor-logo logo12">GrowthLab</div>
-</div>
-  <div style="background-color: #1a1a1a; color: white; padding: 15px; text-align: center; width: 100%; border-radius: 8px; margin: 20px 0;">
-  <p style="margin: 0; font-family: sans-serif;">
-    Interested in supporting our ecosystem? 
-    <a href="#contact" style="color: #00d1b2; font-weight: bold; text-decoration: none; margin-left: 10px;">
-      Become a Sponsor for Vaithra Events →
-    </a>
-  </p>
-</div>
-</section>
-
-<section id="contact" class="neo-form-container">
-<form class="neo-form" onsubmit="event.preventDefault();alert('Application Received');">
-<h3 class="text-center font-bold mb-8">Connect</h3>
-<input type="text" class="neo-input" placeholder="Founder Name" required>
-<input type="email" class="neo-input" placeholder="Founder Email" required>
-<input type="text" class="neo-input" placeholder="Project Name" required>
-<button class="neo-btn">Submit </button>
-</form>
-</section>
-
-<footer class="bg-[#f1f3f6] px-8 py-16 mt-32 rounded-t-[3rem]">
-<div class="bg-[#f5f5f7] pt-20 pb-20">
-
-    <div class="max-w-7xl mx-auto px-6 mb-10">
-        <div class="bg-black rounded-[40px] py-24 px-10 text-center relative overflow-hidden shadow-2xl">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,#DFFF0022,transparent_70%)]"></div>
-            
-            <h2 class="text-white text-4xl md:text-6xl font-bold tracking-tight mb-10 relative z-10">
-                Ready to transform your <br><span class="text-[#DFFF00]">execution?</span>
-            </h2>
-            
-            <button class="bg-white text-black px-10 py-4 rounded-xl font-bold text-sm hover:scale-105 transition-transform relative z-10 shadow-lg">
-                Start for free
-            </button>
+<div class="vaithra-scope">
+    <div id="sponsor-landing-view">
+        <span class="lux-meta">Infrastructure Support</span>
+        <h2 class="lux-header-title">Backed by Builders</h2>
+        
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
+                <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
+                <div class="brand-logo" style="color:#00A896">BuildStack</div>
+                <div class="brand-logo" style="color:#F4A261">StartupForge</div>
+                <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
+                <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
+                <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
+                <div class="brand-logo" style="color:#00A896">BuildStack</div>
+                <div class="brand-logo" style="color:#F4A261">StartupForge</div>
+                <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
+            </div>
         </div>
+
+        <button class="lux-action-btn" onclick="showSponsorDetails()">
+            Become a Sponsor
+        </button>
     </div>
 
-    <footer class="max-w-7xl mx-auto px-6">
-        <div class="bg-white rounded-[40px] p-12 md:p-20 shadow-sm border border-black/5">
-            <div class="flex flex-col md:flex-row justify-between items-start gap-16">
-                
-                <div class="md:w-1/3">
-                    <div class="zen text-black text-2xl mb-6 uppercase">VAITHRA</div>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-8 max-w-xs">
-                        Vaithra empowers founders in Tier-2 and Tier-3 cities to transform raw intent into validated startups — making execution easier to share and act on.
-                    </p>
-                    <div class="flex gap-6 text-xl text-black">
-                        <a href="#" class="hover:opacity-60 transition-opacity"><i class="ri-twitter-x-fill"></i></a>
-                        <a href="https://instagram.com/wearevaithra" class="hover:opacity-60 transition-opacity"><i class="ri-instagram-line"></i></a>
-                        <a href="#" class="hover:opacity-60 transition-opacity"><i class="ri-linkedin-box-fill"></i></a>
-                        <a href="#" class="hover:opacity-60 transition-opacity"><i class="ri-github-fill"></i></a>
-                    </div>
-                </div>
-
-                <div class="flex-1 grid grid-cols-2 md:grid-cols-3 gap-12 w-full">
-                    <div>
-                        <h4 class="font-bold text-black text-xs uppercase tracking-widest mb-6">Network</h4>
-                        <ul class="space-y-4 text-gray-500 text-sm">
-                            <li><a href="#" class="hover:text-black transition-colors">The Protocol</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Nodes</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">The Team</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Validation</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-black text-xs uppercase tracking-widest mb-6">Resources</h4>
-                        <ul class="space-y-4 text-gray-500 text-sm">
-                            <li><a href="#" class="hover:text-black transition-colors">Documentation</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Tutorials</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Blog</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Support</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-black text-xs uppercase tracking-widest mb-6">Company</h4>
-                        <ul class="space-y-4 text-gray-500 text-sm">
-                            <li><a href="#" class="hover:text-black transition-colors">About</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Careers</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Contact</a></li>
-                            <li><a href="#" class="hover:text-black transition-colors">Partners</a></li>
-                        </ul>
-                    </div>
-                </div>
+    <div id="sponsor-detail-view">
+        <button onclick="hideSponsorDetails()" style="background:none; border:none; cursor:pointer; font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:3px; color:#7c3aed; margin-bottom:40px;">← Back to Gallery</button>
+        
+        <div class="detail-grid">
+            <div class="detail-text">
+                <span style="text-transform:uppercase; letter-spacing:5px; font-size:10px; font-weight:900; color:#7c3aed;">Node Capital</span>
+                <h3>Scale the<br>New Protocol.</h3>
+                <p>Support the 2026 Batch and gain priority access to validated founders across our regional hubs. Professional clearance is managed via Vaivaanith Pvt Ltd.</p>
             </div>
-
-            <div class="mt-20 pt-10 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-gray-400 text-xs">© 2026 Vaithra. All rights reserved.</p>
-                <div class="flex gap-8 text-xs text-gray-400 font-medium">
-                    <a href="#" class="hover:text-black transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-black transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-black transition-colors">Cookies Settings</a>
-                </div>
+            
+            <div class="whatsapp-card">
+                <p style="font-weight:900; margin-bottom:10px; text-transform:uppercase; font-size:10px; color:#999;">Final Authority Clearance</p>
+                <h4 style="font-size: 1.5rem; margin-bottom: 30px;">Direct Channel</h4>
+                <a href="https://wa.me/918977855998?text=Interested%20in%20becoming%20a%20Sponsor%20for%20Vaithra" class="whatsapp-btn">CONNECT VIA WHATSAPP</a>
+                <p style="font-size:10px; margin-top:20px; opacity:0.4; font-weight:bold;">8977855998 // SARDHAR MUSTHAFA</p>
             </div>
         </div>
-    </footer>
+    </div>
 </div>
+
+<script>
+    function showSponsorDetails() {
+        document.getElementById('sponsor-landing-view').style.display = 'none';
+        const detail = document.getElementById('sponsor-detail-view');
+        detail.style.display = 'block';
+        setTimeout(() => { detail.style.opacity = '1'; }, 10);
+        window.scrollTo({ top: document.getElementById('founders').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function hideSponsorDetails() {
+        document.getElementById('sponsor-detail-view').style.display = 'none';
+        document.getElementById('sponsor-landing-view').style.display = 'block';
+        document.getElementById('sponsor-landing-view').style.opacity = '1';
+    }
+</script>
+
+<footer style="background-color: #ffffff; padding: 120px 5% 60px; border-top: 1px solid #f0f0f0; font-family: 'Inter', sans-serif; color: #000;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        
+        <div style="background: #000; border-radius: 40px; padding: 80px 40px; text-align: center; position: relative; overflow: hidden; margin-bottom: 100px; box-shadow: 0 40px 80px rgba(0,0,0,0.1);">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 120%, rgba(124, 58, 237, 0.2), transparent 70%);"></div>
+            <h2 style="color: #fff; font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-style: italic; margin: 0 0 40px 0; position: relative; z-index: 1; line-height: 1.1;">
+                Ready to transform your <br><span style="color: #7c3aed;">execution?</span>
+            </h2>
+            <button onclick="toggleApplySection()" style="background: #fff; color: #000; padding: 22px 60px; border-radius: 100px; border: none; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; font-size: 11px; cursor: pointer; position: relative; z-index: 1; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                JOIN THE PROTOCOL
+            </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 60px; align-items: start;">
+            
+            <div style="grid-column: span 1;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 0 0 25px 0; font-weight: 900; letter-spacing: -1px;">VAITHRA</h3>
+                <p style="color: #666; font-size: 0.95rem; line-height: 1.8; margin-bottom: 35px; max-width: 300px;">
+                    Identifying and validating serious builders outside traditional hubs.
+                </p>
+                <div style="display: flex; gap: 25px; align-items: center;">
+                    <a href="https://instagram.com/wearevaithra" target="_blank" style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">Instagram</a>
+                    <a href="https://wa.me/918977855998" target="_blank" style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">WhatsApp</a>
+                </div>
+            </div>
+
+            <div>
+                <h4 style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">Explore</h4>
+                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
+                    <li><a href="#about" style="color: #444; text-decoration: none; transition: 0.2s;">The Vision</a></li>
+                    <li><a href="#founders" style="color: #444; text-decoration: none; transition: 0.2s;">The Core Team</a></li>
+                    <li><a href="#reps" style="color: #444; text-decoration: none; transition: 0.2s;">Regional Nodes</a></li>
+                    <li><a href="#blogs" style="color: #444; text-decoration: none; transition: 0.2s;">Founder Insights</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">Compliance</h4>
+                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
+                    <li><a href="/privacy-policy" style="color: #444; text-decoration: none;">Privacy Policy</a></li>
+                    <li><a href="/terms-conditions" style="color: #444; text-decoration: none;">Terms & Conditions</a></li>
+                    <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry" style="color: #444; text-decoration: none;">Official Clearance</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">Corporate</h4>
+                <p style="font-size: 12px; font-weight: 900; color: #000; text-transform: uppercase; letter-spacing: 3px; margin: 0;">VAIVAANITH PVT LTD</p>
+                <p style="font-size: 11px; color: #999; margin-top: 10px; line-height: 1.6;">Holding entity for Vaithra and Glowvai.in infrastructure.</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 100px; padding-top: 40px; border-top: 1px solid #f5f5f5; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 3px; font-weight: 700;">
+            <span>© 2026 Vaithra. All rights reserved.</span>
+            <span>Authored by Sardhar Musthafa</span>
+        </div>
+    </div>
 </footer>
 </script>
 <div id="founderModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[9999]">
