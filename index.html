@@ -60,24 +60,34 @@ section { scroll-margin-top: 120px; }
 .zen { font-family: 'Zen Dots', cursive; }
 
 /* NAV */
+/* UPDATED WHITISH-GREY NAVIGATION */
 .nav-island {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
-  max-width: 1200px;
-  padding: 14px 32px;
-  background: var(--nav-bg);
-  backdrop-filter: blur(18px);
-  border-radius: 100px;
-  border: 1px solid rgba(128,128,128,.2);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 1200px;
+    padding: 14px 32px;
+    
+    /* THE COLOR CHANGE: Whitish-Grey with Glassmorphism */
+    background: rgba(245, 245, 247, 0.85); 
+    backdrop-filter: blur(20px); /* Premium frost effect */
+    
+    border-radius: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle definition */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    transition: all 0.4s ease;
 }
 
+/* Ensure text is visible on the light background */
+.nav-island a, .nav-island .zen {
+    color: #000000 !important; 
+    text-decoration: none;
+}
 .nav-island a {
   font-size: 11px;
   text-transform: uppercase;
