@@ -1376,149 +1376,104 @@ This is the structural gap Vaithra aims to solve.
   </div>
 </section>
   
-<section id="validation" class="validation-section">
+<section id="events" style="background-color: #ffffff; padding: 160px 8%; font-family: 'Inter', sans-serif; color: #000; overflow: hidden;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+        
+        <div style="text-align: center; margin-bottom: 100px;" class="reveal-up">
+            <span style="text-transform: uppercase; letter-spacing: 8px; font-size: 10px; font-weight: 900; color: #6a3df0; display: block; margin-bottom: 20px;">Protocol Expansion // 02</span>
+            <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; font-weight: 900; letter-spacing: -2px; margin: 0;">Community Growth</h2>
+        </div>
 
-<div class="validation-container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 100px;">
+            
+            <div class="stat-box reveal-up">
+                <h3 class="stat-number"><span class="counter" data-target="15000">0</span>+</h3>
+                <p class="stat-label">Community Members</p>
+            </div>
 
-<div class="validation-header reveal-up">
-<span class="validation-label">Ecosystem Distribution // 04</span>
+            <div class="stat-box reveal-up">
+                <h3 class="stat-number"><span class="counter" data-target="24">0</span>+</h3>
+                <p class="stat-label">Cities Connected</p>
+            </div>
 
-<h2 class="validation-title">
-Promote your <span>idea.</span>
-</h2>
-</div>
+            <div class="stat-box reveal-up">
+                <h3 class="stat-number"><span class="counter" data-target="1200">0</span></h3>
+                <p class="stat-label">Projects Started</p>
+            </div>
 
-<div class="validation-card reveal-up">
+            <div class="stat-box reveal-up">
+                <h3 class="stat-number"><span class="counter" data-target="850">0</span></h3>
+                <p class="stat-label">Active Contributors</p>
+            </div>
 
-<p class="validation-phase">Internal Discovery Phase</p>
+        </div>
 
-<p class="validation-description">
-List your MVP within the Vaithra network to secure your first 
-<strong>100 Users</strong>.
-</p>
+        <div style="text-align: center;" class="reveal-up">
+            <button onclick="openCommunityForm()" class="community-cta">
+                Become a Community Member
+            </button>
+            <p style="margin-top: 25px; font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: #999; font-weight: 700;">
+                Direct Access to WhatsApp & Mail Updates
+            </p>
+        </div>
 
-</div>
-
-<div class="validation-action reveal-up">
-
-<button onclick="openCommunityForm()" class="validation-button">
-Apply for Promotion
-</button>
-
-<p class="validation-note">
-Subject to Protocol Validation by Vaivaanith Pvt Ltd
-</p>
-
-</div>
-
-</div>
+    </div>
 </section>
 
-
 <style>
+    /* Premium Box Styling */
+    .stat-box {
+        padding: 80px 40px;
+        text-align: center;
+        background: #fdfdfd;
+        border: 1px solid #f0f0f0;
+        transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    }
 
-.validation-section{
-background: linear-gradient(180deg,#fafafa 0%,#f4f4f6 100%);
-padding: clamp(80px,12vw,160px) 8%;
-border-top:1px solid #eee;
-text-align:center;
-font-family:'Inter',sans-serif;
-}
+    .stat-box:hover {
+        background: #ffffff;
+        border-color: #6a3df0;
+        box-shadow: 0 30px 60px rgba(106, 61, 240, 0.05);
+        transform: translateY(-10px);
+    }
 
-.validation-container{
-max-width:1400px;
-margin:auto;
-}
+    .stat-number {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(3rem, 5vw, 5rem);
+        font-style: italic;
+        color: #6a3df0; /* Signature Purple */
+        font-weight: 900;
+        margin: 0 0 10px 0;
+        letter-spacing: -2px;
+    }
 
-.validation-header{
-margin-bottom:80px;
-}
+    .stat-label {
+        color: #999;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-weight: 900;
+    }
 
-.validation-label{
-text-transform:uppercase;
-letter-spacing:8px;
-font-size:10px;
-font-weight:900;
-color:#7c3aed;
-display:block;
-margin-bottom:25px;
-}
+    .community-cta {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 25px 60px;
+        border-radius: 4px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 11px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
 
-.validation-title{
-font-family:'Playfair Display',serif;
-font-size:clamp(3rem,8vw,6rem);
-font-style:italic;
-font-weight:900;
-letter-spacing:-3px;
-line-height:1;
-margin:0;
-}
-
-.validation-title span{
-color:#7c3aed;
-}
-
-.validation-card{
-max-width:700px;
-margin:0 auto 60px;
-padding:50px;
-background:#ffffff;
-border:1px solid #eee;
-box-shadow:0 20px 40px rgba(0,0,0,0.04);
-}
-
-.validation-phase{
-text-transform:uppercase;
-letter-spacing:4px;
-font-size:11px;
-font-weight:900;
-margin-bottom:20px;
-}
-
-.validation-description{
-font-family:'Playfair Display',serif;
-font-size:1.8rem;
-line-height:1.3;
-color:#555;
-font-style:italic;
-}
-
-.validation-description strong{
-border-bottom:2px solid #7c3aed;
-}
-
-.validation-button{
-background:#000;
-color:#fff;
-border:none;
-padding:25px 70px;
-font-weight:900;
-text-transform:uppercase;
-letter-spacing:4px;
-font-size:11px;
-cursor:pointer;
-transition:all .4s cubic-bezier(.19,1,.22,1);
-box-shadow:0 20px 40px rgba(0,0,0,.05);
-max-width:400px;
-width:100%;
-}
-
-.validation-button:hover{
-transform:translateY(-4px);
-box-shadow:0 30px 60px rgba(0,0,0,.1);
-}
-
-.validation-note{
-margin-top:30px;
-font-size:10px;
-text-transform:uppercase;
-letter-spacing:3px;
-color:#999;
-font-weight:700;
-}
-
+    .community-cta:hover {
+        background: #6a3df0;
+        transform: scale(1.05);
+    }
 </style>
-
 
 <script>
 
