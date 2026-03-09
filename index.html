@@ -1,725 +1,1137 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
+
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RD61M12V39"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RD61M12V39"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RD61M12V39');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaithra | The Founder Discovery Engine</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,900;1,900&family=Zen+Dots&family=Inter:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
 
-  gtag('config', 'G-RD61M12V39');
-</script>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Vaithra | The Founder Discovery Engine</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;1,900&family=Zen+Dots&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --neon: #DFFF00;
-  --bg: #050505;
-  --text: #ffffff;
-  --nav-bg: rgba(15,15,15,0.85);
-  --card: #111;
-  --neo-bg: #EBECF0;
-  --neo-shadow: #BABECC;
-  --neo-white: #FFF;
-  --dur: 1000ms;
-}
-
-body.light-mode {
-  --bg: #f5f5f7;
-  --text: #050505;
-  --nav-bg: rgba(255,255,255,0.85);
-  --card: #ffffff;
-}
-
-body {
-  font-family: 'Montserrat', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  transition: background .4s ease, color .4s ease;
-  overflow-x: hidden;
-}
-
-section { scroll-margin-top: 120px; }
-
-.serif-italic {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 900;
-}
-
-.zen { font-family: 'Zen Dots', cursive; }
-
-/* NAV */
-/* UPDATED WHITISH-GREY NAVIGATION */
-.nav-island {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    max-width: 1200px;
-    padding: 14px 32px;
-    
-    /* THE COLOR CHANGE: Whitish-Grey with Glassmorphism */
-    background: rgba(245, 245, 247, 0.85); 
-    backdrop-filter: blur(20px); /* Premium frost effect */
-    
-    border-radius: 100px;
-    border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle definition */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    transition: all 0.4s ease;
-}
-
-/* Ensure text is visible on the light background */
-.nav-island a, .nav-island .zen {
-    color: #000000 !important; 
-    text-decoration: none;
-}
-.nav-island a {
-  font-size: 11px;
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-/* NAV THEME TOGGLE – FIXED */
-.toggle-wrapper {
-  transform: scale(0.85);
-}
-
-.toggle-label {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  cursor: pointer;
-}
-
-.toggle-label input {
-  display: none;
-}
-
-.toggle-switch {
-  position: absolute;
-  inset: 0;
-  background: #1a1a1a;
-  border-radius: 16px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
-}
-
-.toggle-switch::before {
-  content: "";
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  top: 3px;
-  left: 3px;
-  border-radius: 50%;
-  background: #2a2a2a;
-  transition: transform 0.3s ease;
-}
-
-#themeSwitcher:checked + .toggle-switch::before {
-  transform: translateX(32px);
-}
-
-/* optional labels – small + subtle */
-.styles {
-  display: none; /* hide in navbar */
-}
-
-/* CAROUSEL */
-.carousel-track {
-  display: flex;
-  width: max-content;
-  animation: scroll 40s linear infinite;
-}
-
-.carousel-track:hover { animation-play-state: paused; }
-
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.rep-card {
-  width: 280px;
-  height: 360px;
-  margin-right: 20px;
-  background: var(--card);
-  border-radius: 25px;
-  border: 1px solid rgba(255,255,255,.08);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* NEUMORPHIC FORM */
-.neo-form-container {
-  background: var(--neo-bg);
-  padding: 80px 20px;
-  border-radius: 60px 60px 0 0;
-}
-
-.neo-form {
-  max-width: 320px;
-  margin: auto;
-}
-
-.neo-input {
-  width: 100%;
-  padding: 16px;
-  margin-bottom: 1rem;
-  border-radius: 999px;
-  background: #EBECF0;
-  box-shadow: inset 2px 2px 5px #BABECC,
-              inset -5px -5px 10px #FFF;
-  border: none;
-  outline: none;
-  color: #333;
-}
-
-.neo-btn {
-  width: 100%;
-  padding: 16px;
-  border-radius: 999px;
-  background: #EBECF0;
-  box-shadow: -5px -5px 20px #FFF,
-               5px 5px 20px #BABECC;
-  font-weight: bold;
-  color: #333;
-}
-
-/* DETAILS ANIMATION */
-#vaithraDetails {
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-}
-
-#vaithraDetails.show {
-  max-height: 6000px;
-  opacity: 1;
-  padding-top: 24px;
-}
-  /* BACKUP CSS - Paste this at the end of your existing <style> block */
-#applyOverlay {
-    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    z-index: 9999 !important; /* Ensures it slides OVER the nav */
-}
-.translate-y-0 {
-    transform: translateY(0) !important;
-}
-.translate-y-full {
-    transform: translateY(100%) !important;
-}
-/* Premium Purple Font Fix */
-.serif-italic, .lux-header-title, .m-name {
-    font-family: 'Playfair Display', serif !important;
-    color: #000;
-}
-.text-purple-lux {
-    color: #7c3aed !important;
-}
-</style>
-</head>
-
-<body>
-
-<nav class="nav-island">
-  <div class="zen text-xs">VAITHRA</div>
-
-  <ul class="hidden md:flex space-x-6 items-center">
-    <li><a href="#about">About</a></li>
-    <li><a href="#founders">Team</a></li>
-    <li><a href="#reps">Nodes</a></li>
-    <li><a href="#validation">Validate</a></li>
-    <li><a href="#blogs">Blogs</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li>
-      <button onclick="toggleApplySection()" class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">JOIN
-      </button>
-    </li>
-  </ul>
-</nav>
-
-<div id="applyOverlay" class="fixed inset-0 bg-[#f5f5f7] z-[2000] translate-y-full transition-transform duration-700 ease-in-out overflow-y-auto">
-    <div class="max-w-4xl mx-auto pt-32 px-8 pb-20">
-        <button onclick="toggleApplySection()" class="fixed top-10 right-10 text-black text-2xl">✕</button>
-        
-        <h1 class="serif-italic text-6xl md:text-8xl text-black mb-8">Apply to Vaithra</h1>
-        
-        <div class="space-y-8 text-black/70 text-lg leading-relaxed">
-            <p>Vaithra is accepting applications for the <strong>To vaithra's ORG</strong>. We focus on founders building in Tier-2 and Tier-3 cities who are ready for first-level validation.</p>
-            
-            <p>Our network is built by early-stage founders for early-stage founders, specifically targeting those who have been building in isolation without access to metro-centric networks.</p>
-
-            <div class="bg-white p-10 rounded-[40px] shadow-sm border border-black/5 mt-12">
-                <h3 class="text-2xl font-bold mb-6 text-black">Start your journey</h3>
-                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Application Submitted');">
-                    <input type="text" placeholder="Founder Name" class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50">
-                    <input type="text" placeholder="Project / Startup Name" class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50">
-                    <textarea placeholder="Tell us about your execution so far..." class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50 h-32"></textarea>
-                    <button class="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-[#DFFF00] hover:text-black transition-colors">
-                        Submit Application
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<section class="h-screen flex flex-col justify-center items-center text-center px-4"
-style="background:
-linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.7)),
-url('./assets/images/hero.jpg');
-background-size: cover;
-background-position: center;">
-<h1 class="serif-italic text-7xl md:text-[9rem] text-white">
-VAITHRA
-<span class="inline-block w-4 h-4 rounded-full ml-2" style="background:#DFFF00"></span>
-</h1>
-<p class="text-xs tracking-[0.4em] uppercase mt-6 text-white/80">
-Built by early-stage founders for early-stage founders
-</p>
-</section>
-
-  <section id="about" class="py-40 px-6 bg-[#f7f7f7] text-black">
-
-<div class="max-w-6xl mx-auto space-y-28">
-
-<!-- HEADER -->
-<div class="max-w-3xl">
-<h2 class="serif-italic text-6xl md:text-7xl leading-tight">
-About <span class="text-gray-400">Vaithra</span>
-</h2>
-
-<p class="mt-8 text-lg text-gray-600 leading-relaxed">
-Vaithra is a semi-centralized founder network built by early-stage founders 
-who understand what it means to build without connections, capital, or visibility.
-</p>
-</div>
-
-
-<!-- WHAT VAITHRA IS -->
-<div class="grid md:grid-cols-2 gap-16">
-
-<div class="bg-white rounded-[32px] p-10 shadow-lg">
-<h3 class="serif-italic text-3xl mb-6">What Vaithra Is</h3>
-
-<p class="text-gray-600 leading-relaxed">
-Vaithra is a founder discovery and collaboration network focused on
-identifying serious builders outside traditional startup hubs.
-</p>
-
-<p class="text-gray-600 leading-relaxed mt-4">
-Instead of concentrating only in major cities, Vaithra operates
-city-by-city across India to connect isolated founders,
-create meetups, and enable collaboration.
-</p>
-
-</div>
-
-
-<div class="bg-white rounded-[32px] p-10 shadow-lg">
-<h3 class="serif-italic text-3xl mb-6">Why Vaithra Exists</h3>
-
-<p class="text-gray-600 leading-relaxed">
-Many talented founders exist in smaller cities but remain invisible
-because they lack networks, funding access, or ecosystem exposure.
-</p>
-
-<p class="text-gray-600 leading-relaxed mt-4">
-Vaithra exists to change this reality by building a distributed
-network of founders and representatives across cities.
-</p>
-
-</div>
-
-</div>
-
-
-<!-- THE PROBLEM -->
-<div class="bg-black text-white rounded-[30px] p-14">
-
-<h3 class="serif-italic text-4xl mb-8">The Problem</h3>
-
-<p class="text-gray-300 leading-relaxed max-w-3xl">
-India's startup ecosystem is heavily centralized in a few cities.
-Meanwhile thousands of founders in smaller cities are building in isolation
-without mentorship, collaboration, or exposure.
-</p>
-
-<p class="text-gray-300 leading-relaxed mt-4 max-w-3xl">
-Vaithra focuses on these overlooked regions and builds connections
-through local meetups, events, and founder networks.
-</p>
-
-</div>
-
-
-<!-- HOW VAITHRA WORKS -->
-<div>
-
-<h3 class="serif-italic text-4xl mb-12">How The Network Works</h3>
-
-<div class="grid md:grid-cols-3 gap-10">
-
-<div class="bg-white rounded-3xl p-8 shadow-md">
-<h4 class="font-bold mb-3">City Meetups</h4>
-<p class="text-gray-600 text-sm leading-relaxed">
-Vaithra organizes founder meetups in cities that are often ignored
-by the mainstream startup ecosystem.
-</p>
-</div>
-
-<div class="bg-white rounded-3xl p-8 shadow-md">
-<h4 class="font-bold mb-3">Founder Collaboration</h4>
-<p class="text-gray-600 text-sm leading-relaxed">
-Founders can collaborate, share ideas, and learn from each other
-through structured events and discussions.
-</p>
-</div>
-
-<div class="bg-white rounded-3xl p-8 shadow-md">
-<h4 class="font-bold mb-3">Idea Partnerships</h4>
-<p class="text-gray-600 text-sm leading-relaxed">
-If Vaithra identifies a strong idea or team,
-the organization may collaborate or support its launch.
-</p>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- REPRESENTATIVES -->
-<div class="grid md:grid-cols-2 gap-16">
-
-<div class="bg-white rounded-[32px] p-10 shadow-lg">
-<h3 class="serif-italic text-3xl mb-6">City Representatives</h3>
-
-<p class="text-gray-600 leading-relaxed">
-Vaithra appoints representatives in different cities
-to organize meetups and act as local connectors.
-</p>
-
-<p class="text-gray-600 leading-relaxed mt-4">
-These representatives help coordinate events,
-bring founders together, and grow the network locally.
-</p>
-
-</div>
-
-
-<div class="bg-white rounded-[32px] p-10 shadow-lg">
-<h3 class="serif-italic text-3xl mb-6">Volunteer Structure</h3>
-
-<p class="text-gray-600 leading-relaxed">
-Representatives in Vaithra are volunteers.
-They are not employees and are not paid by the organization.
-</p>
-
-<p class="text-gray-600 leading-relaxed mt-4">
-Their role is to represent their city and contribute
-to building a stronger startup culture in India.
-</p>
-
-</div>
-
-</div>
-
-</div>
-</section>
-  
-<section id="community-stats" style="background-color: #ffffff; padding: 160px 8%; font-family: 'Inter', sans-serif; color: #000; overflow: hidden;">
-    <div style="max-width: 1400px; margin: 0 auto;">
-        
-        <div style="text-align: center; margin-bottom: 100px;" class="reveal-up">
-            <span style="text-transform: uppercase; letter-spacing: 8px; font-size: 10px; font-weight: 900; color: #6a3df0; display: block; margin-bottom: 20px;">Protocol Expansion</span>
-            <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; font-weight: 900; letter-spacing: -2px; margin: 0;">Community Growth</h2>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 100px;">
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="15000">0</span>+</h3>
-                <p class="stat-label">Community Members</p>
-            </div>
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="24">0</span>+</h3>
-                <p class="stat-label">Cities Connected</p>
-            </div>
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="1200">0</span></h3>
-                <p class="stat-label">Projects Started</p>
-            </div>
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="15">0</span></h3>
-                <p class="stat-label">Active Contributors</p>
-            </div>
-        </div>
-
-        <div style="text-align: center;" class="reveal-up">
-            <button onclick="openCommunityForm()" class="community-cta">
-                Become a Community Member
-            </button>
-            <p style="margin-top: 25px; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #999; font-weight: 700;">
-                Receive updates via Mail & WhatsApp
-            </p>
-        </div>
-    </div>
-</section>
-
-<div id="communityModal" style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.98); z-index:10000; overflow-y:auto; padding:50px 20px;">
-    <div style="max-width:800px; margin:0 auto; position:relative;">
-        <button onclick="closeCommunityForm()" style="position:fixed; top:30px; right:30px; background:none; border:none; font-size:30px; cursor:pointer; font-weight:200;">✕</button>
-        
-        <div style="text-align:center; margin-bottom:50px;">
-            <span style="text-transform: uppercase; letter-spacing: 5px; font-size: 10px; font-weight: 900; color: #6a3df0;">Onboarding Protocol</span>
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; font-style: italic; margin-top:10px;">Join the Network</h2>
-        </div>
-
-        <div style="width:100%; height:80vh; border-radius:20px; overflow:hidden; border:1px solid #eee; background:#fff; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* Professional Typography & Effects */
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Inter:wght@300;400;700;900&display=swap');
-
-    .stat-box {
-        padding: 80px 40px;
-        text-align: center;
-        background: #fdfdfd;
-        border: 1px solid #f0f0f0;
-        transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-    .stat-box:hover {
-        background: #ffffff;
-        border-color: #6a3df0;
-        box-shadow: 0 30px 60px rgba(106, 61, 240, 0.05);
-        transform: translateY(-10px);
-    }
-    .stat-number {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(3rem, 5vw, 5rem);
-        font-style: italic;
-        color: #6a3df0;
-        font-weight: 900;
-        margin: 0 0 10px 0;
-        letter-spacing: -2px;
-    }
-    .stat-label {
-        color: #999;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        font-weight: 900;
-    }
-    .community-cta {
-        background: #000;
-        color: #fff;
-        border: none;
-        padding: 25px 60px;
-        border-radius: 4px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        font-size: 11px;
-        cursor: pointer;
-        transition: all 0.4s;
-    }
-    .community-cta:hover {
-        background: #6a3df0;
-        transform: scale(1.05);
-    }
-    .reveal-up { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
-
-    @media (max-width: 768px) {
-        #community-stats { padding: 100px 5%; }
-        .stat-box { padding: 40px 20px; }
-    }
-</style>
-
-<script>
-// --- Community Form Logic ---
-function openCommunityForm() {
-    const modal = document.getElementById('communityModal');
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // Stop background scrolling
-}
-
-function closeCommunityForm() {
-    const modal = document.getElementById('communityModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Restore scrolling
-}
-
-// --- Smooth Live Counter Logic ---
-const startCount = (el) => {
-    const target = +el.getAttribute('data-target');
-    let count = 0; // Always start from zero for "live" feel
-    const speed = 2000; // Total duration in ms
-    const startTime = performance.now();
-
-    const update = (now) => {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / speed, 1);
-        
-        // Use easeOutQuad for smoother finish
-        const currentCount = Math.floor(progress * target);
-        el.innerText = currentCount.toLocaleString();
-
-        if (progress < 1) {
-            requestAnimationFrame(update);
-        } else {
-            el.innerText = target.toLocaleString();
-        }
-    };
-    requestAnimationFrame(update);
-};
-
-// --- Intersection Observer for Scroll Trigger ---
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = "1";
-            entry.target.style.transform = "translateY(0)";
-            const counter = entry.target.querySelector('.counter');
-            if(counter && !counter.classList.contains('started')) {
-                counter.classList.add('started');
-                startCount(counter);
-            }
-        }
-    });
-}, { threshold: 0.2 });
-
-document.querySelectorAll('.reveal-up').forEach(el => statsObserver.observe(el));
-</script>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --lux-white: #ffffff; --lux-black: #000000; --lux-grey: #f8f8f8; }
-        body { background: var(--lux-white); font-family: 'Inter', sans-serif; color: var(--lux-black); margin: 0; }
+        /* ------------------------
+       CORE VARIABLES
+    ------------------------ */
+        :root {
+            --neon: #DFFF00;
+            --bg: #050505;
+            --text: #ffffff;
+            --nav-bg: rgba(15, 15, 15, 0.85);
+            --card: #111;
+            --neo-bg: #EBECF0;
+            --neo-shadow: #BABECC;
+            --neo-white: #FFF;
+            --dur: 1000ms;
+            --lux-white: #ffffff;
+            --lux-black: #000000;
+            --lux-grey: #f8f8f8;
+        }
 
-        /* THE MASTHEAD */
-        .boutique-header { padding: 80px 5%; text-align: left; border-bottom: 1px solid #eee; }
-        .boutique-header h1 { font-family: 'Playfair Display', serif; font-size: 5rem; margin: 0; font-style: italic; }
-        .lux-tag { text-transform: uppercase; letter-spacing: 8px; font-size: 0.7rem; font-weight: 700; opacity: 0.4; }
+        body.light-mode {
+            --bg: #f5f5f7;
+            --text: #050505;
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --card: #ffffff;
+        }
 
-        /* HORIZONTAL EDITORIAL STRIPS */
-        .founder-strip { 
-            display: flex; 
-            align-items: center; 
-            padding: 60px 5%; 
-            border-bottom: 1px solid #eee; 
-            cursor: pointer; 
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background .4s ease, color .4s ease;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        section {
+            scroll-margin-top: 120px;
+        }
+
+        /* ------------------------
+       TYPOGRAPHY
+    ------------------------ */
+        .serif-italic,
+        .lux-header-title,
+        .m-name {
+            font-family: 'Playfair Display', serif !important;
+            color: #000;
+            font-style: italic;
+            font-weight: 900;
+        }
+
+        .zen {
+            font-family: 'Zen Dots', cursive;
+        }
+
+        .text-purple-lux {
+            color: #7c3aed !important;
+        }
+
+        /* ------------------------
+       NAVIGATION & OVERLAYS
+    ------------------------ */
+        .nav-island {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1200px;
+            padding: 14px 32px;
+            background: rgba(245, 245, 247, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 100px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .nav-island a,
+        .nav-island .zen {
+            color: #000000 !important;
+            text-decoration: none;
+        }
+
+        .nav-island a {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #applyOverlay {
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            z-index: 9999 !important;
+        }
+
+        .translate-y-0 {
+            transform: translateY(0) !important;
+        }
+
+        .translate-y-full {
+            transform: translateY(100%) !important;
+        }
+
+        /* ------------------------
+       FOUNDERS CORE SECTION
+    ------------------------ */
+        .boutique-header {
+            padding: 80px 5%;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            background: var(--lux-white);
+        }
+
+        .boutique-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin: 0;
+            font-style: italic;
+            color: #000;
+        }
+
+        .lux-tag {
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            opacity: 0.4;
+            color: #000;
+        }
+
+        .founder-strip {
+            display: flex;
+            align-items: center;
+            padding: 60px 5%;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
             transition: background 0.5s ease;
             position: relative;
             overflow: hidden;
+            background: var(--lux-white);
+            color: var(--lux-black);
         }
-        .founder-strip:hover { background: var(--lux-grey); }
 
-        .strip-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; opacity: 0.2; width: 60px; }
-        .strip-name { font-family: 'Playfair Display', serif; font-size: 3.5rem; flex: 1; transition: transform 0.4s ease; }
-        .founder-strip:hover .strip-name { transform: translateX(20px); }
-        
-        .strip-role { text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; font-weight: 900; width: 300px; text-align: right; }
+        .founder-strip:hover {
+            background: var(--lux-grey);
+        }
 
-        /* LUXURY SLIDE-IN MODAL */
-        .full-slide-modal { 
-            position: fixed; 
-            inset: 0; 
-            background: var(--lux-white); 
-            z-index: 10000; 
-            display: none; 
-            flex-direction: row; 
+        .strip-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            opacity: 0.2;
+            width: 60px;
+        }
+
+        .strip-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            flex: 1;
+            transition: transform 0.4s ease;
+            color: #000;
+        }
+
+        .founder-strip:hover .strip-name {
+            transform: translateX(20px);
+        }
+
+        .strip-role {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            width: 300px;
+            text-align: right;
+        }
+
+        .full-slide-modal {
+            position: fixed;
+            inset: 0;
+            background: var(--lux-white);
+            z-index: 10000;
+            display: none;
+            flex-direction: row;
             transform: translateY(100%);
             transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1);
+            color: var(--lux-black);
         }
-        .full-slide-modal.active { transform: translateY(0); display: flex; }
 
-        .modal-portrait { flex: 1; background: #111; height: 100vh; }
-        .modal-portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); opacity: 0.8; }
-        
-        .modal-content-area { flex: 1.2; padding: 100px; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        
-        .close-trigger { position: absolute; top: 60px; right: 60px; font-size: 1.5rem; cursor: pointer; text-transform: uppercase; letter-spacing: 4px; font-weight: 900; }
-        
-        .m-name { font-family: 'Playfair Display', serif; font-size: 6rem; line-height: 0.9; margin-bottom: 20px; }
-        .m-role-tag { color: #c5a059; font-weight: 900; text-transform: uppercase; letter-spacing: 5px; font-size: 0.8rem; margin-bottom: 40px; }
-        .m-description { line-height: 2.2; font-size: 1.15rem; color: #555; max-width: 550px; border-left: 2px solid #000; padding-left: 30px; }
+        .full-slide-modal.active {
+            transform: translateY(0);
+            display: flex;
+        }
 
+        .modal-portrait {
+            flex: 1;
+            background: #111;
+            height: 100vh;
+        }
+
+        .modal-portrait img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            opacity: 0.8;
+        }
+
+        .modal-content-area {
+            flex: 1.2;
+            padding: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .close-trigger {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 900;
+            color: #000;
+        }
+
+        .m-role-tag {
+            color: #c5a059;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 0.8rem;
+            margin-bottom: 40px;
+        }
+
+        .m-description {
+            line-height: 2.2;
+            font-size: 1.15rem;
+            color: #555;
+            max-width: 550px;
+            border-left: 2px solid #000;
+            padding-left: 30px;
+        }
+
+        /* ------------------------
+       REPS CAROUSEL (CONSOLIDATED)
+    ------------------------ */
+        .carousel-track-premium {
+            display: flex;
+            width: max-content;
+            animation: scrollNodes 40s linear infinite;
+            padding: 20px 0;
+        }
+
+        .carousel-track-premium:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollNodes {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .node-item {
+            width: 340px;
+            padding: 0 15px;
+            cursor: pointer;
+            perspective: 1500px;
+        }
+
+        .card-refractive {
+            background: #FFFFFF;
+            height: 440px;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 20px 20px 40px #d9d9d9, -20px -20px 40px #ffffff;
+            transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 72%;
+            overflow: hidden;
+            background: #eee;
+        }
+
+        .card-refractive img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: 0.8s ease;
+        }
+
+        .card-info {
+            padding: 30px;
+            background: white;
+            height: 28%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transform: translateZ(30px);
+        }
+
+        .card-info h3 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #000;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .card-info p {
+            font-size: 10px;
+            color: #A5C400;
+            font-weight: 900;
+            margin-top: 4px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .node-item:hover .card-refractive {
+            transform: rotateX(8deg) rotateY(-8deg) translateY(-20px);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.08);
+            border-color: #A5C400;
+        }
+
+        .node-item:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        .animate-scale {
+            animation: magazineReveal 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes magazineReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ------------------------
+       BLOG SECTION
+    ------------------------ */
+        .blog-wrapper {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .blog-title {
+            font-size: 48px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: white;
+            opacity: .85;
+            margin-bottom: 70px;
+            text-align: center;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .blog-card {
+            background: #161616;
+            padding: 35px;
+            border-radius: 28px;
+            transition: 0.35s;
+            text-decoration: none;
+            color: white;
+            box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.8), -10px -10px 25px rgba(40, 40, 40, 0.2);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 14px 14px 35px rgba(0, 0, 0, 0.9), -10px -10px 30px rgba(60, 60, 60, 0.25);
+        }
+
+        .blog-tag {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: .45;
+            margin-bottom: 12px;
+        }
+
+        .blog-card h3 {
+            font-size: 22px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .blog-card p {
+            font-size: 13px;
+            opacity: .6;
+            line-height: 1.6;
+        }
+
+        .blog-read {
+            margin-top: 16px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: .5;
+        }
+
+        /* ------------------------
+       COMMUNITY SECTION
+    ------------------------ */
+        .stat-box {
+            padding: 80px 40px;
+            text-align: center;
+            background: #fdfdfd;
+            border: 1px solid #f0f0f0;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .stat-box:hover {
+            background: #ffffff;
+            border-color: #6a3df0;
+            box-shadow: 0 30px 60px rgba(106, 61, 240, 0.05);
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-style: italic;
+            color: #6a3df0;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+            letter-spacing: -2px;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 900;
+        }
+
+        .community-cta {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 25px 60px;
+            border-radius: 4px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+
+        .community-cta:hover {
+            background: #6a3df0;
+            transform: scale(1.05);
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* ------------------------
+       SPONSOR SECTION
+    ------------------------ */
+        .vaithra-scope {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: 'Inter', sans-serif;
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        #sponsor-detail-view {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            text-align: left;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .lux-header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(45px, 10vw, 90px);
+            font-style: italic;
+            font-weight: 900;
+            margin: 0 0 20px 0;
+            letter-spacing: -4px;
+            line-height: 0.85;
+        }
+
+        .lux-meta {
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            font-size: 10px;
+            font-weight: 900;
+            color: #7c3aed;
+            display: block;
+            margin-bottom: 40px;
+        }
+
+        .marquee-container {
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 60px 0;
+            margin-bottom: 80px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: luxScroll 45s linear infinite;
+        }
+
+        @keyframes luxScroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 34px;
+            font-style: italic;
+            padding: 0 70px;
+            opacity: 0.4;
+            transition: 0.4s;
+            cursor: default;
+            white-space: nowrap;
+        }
+
+        .brand-logo:hover {
+            opacity: 1;
+            color: #7c3aed !important;
+        }
+
+        .lux-action-btn {
+            background: #000;
+            color: #fff;
+            padding: 24px 60px;
+            border-radius: 100px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 11px;
+            cursor: pointer;
+            border: none;
+            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .lux-action-btn:hover {
+            background: #7c3aed;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
+            padding-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 6vw, 60px);
+            margin: 0 0 30px 0;
+            line-height: 1;
+            color: #000;
+        }
+
+        .detail-text p {
+            color: #555;
+            line-height: 2;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        .whatsapp-card {
+            background: #fdfcff;
+            padding: 50px;
+            border-radius: 40px;
+            border: 1px solid #f3f0ff;
+            text-align: center;
+        }
+
+        .whatsapp-btn {
+            display: block;
+            background: #7c3aed;
+            color: #fff;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 20px;
+            font-weight: 900;
+            font-size: 12px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            background: #000;
+        }
     </style>
 </head>
+
 <body>
 
-    <header class="boutique-header">
-        <span class="lux-tag">Vaithra Protocol</span>
-        <h1>The Core</h1>
-    </header>
+    <!-- NAVIGATION -->
+    <nav class="nav-island">
+        <div class="zen text-xs">VAITHRA</div>
+        <ul class="hidden md:flex space-x-6 items-center">
+            <li><a href="#about">About</a></li>
+            <li><a href="#founders">Team</a></li>
+            <li><a href="#reps">Nodes</a></li>
+            <li><a href="#validation">Validate</a></li>
+            <li><a href="#blogs">Blogs</a></li>
+            <li><a href="#sponsor">Sponsor</a></li>
+            <li>
+                <button onclick="toggleApplySection()"
+                    class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">JOIN
+                </button>
+            </li>
+        </ul>
+    </nav>
 
-    <main>
-        <div class="founder-strip" onclick="openLux('sardhar')">
-            <span class="strip-num">01</span>
-            <span class="strip-name">Sardhar Musthafa</span>
-            <span class="strip-role">Final Authority</span>
-        </div>
-
-        <div class="founder-strip" onclick="openLux('rahimath')">
-            <span class="strip-num">02</span>
-            <span class="strip-name">Rahimath</span>
-            <span class="strip-role">Glowvai.in</span>
-        </div>
-
-        <div class="founder-strip" onclick="openLux('gopi')">
-            <span class="strip-num">03</span>
-            <span class="strip-name">Erugoni Gopi</span>
-            <span class="strip-role">Strategic Owner</span>
-        </div>
-
-        <div class="founder-strip" onclick="openLux('dhoni')">
-            <span class="strip-num">04</span>
-            <span class="strip-name">Dhoni Hari Hara Singh</span>
-            <span class="strip-role">Media Partner</span>
-        </div>
-    </main>
-
-    <div id="luxModal" class="full-slide-modal">
-        <div class="modal-portrait">
-            <img id="mImg" src="" alt="">
-        </div>
-        <div class="modal-content-area">
-            <div class="close-trigger" onclick="closeLux()">Close &times;</div>
-            <span class="m-role-tag" id="mTag">Founder Profile</span>
-            <h2 class="m-name" id="mName">Name</h2>
-            <p id="mRole" style="opacity: 0.4; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Role Description</p>
-            <div style="height: 60px;"></div>
-            <p class="m-description" id="mBio">Bio content here...</p>
+    <!-- APPLY OVERLAY -->
+    <div id="applyOverlay"
+        class="fixed inset-0 bg-[#f5f5f7] z-[2000] translate-y-full transition-transform duration-700 ease-in-out overflow-y-auto">
+        <div class="max-w-4xl mx-auto pt-32 px-8 pb-20">
+            <button onclick="toggleApplySection()" class="fixed top-10 right-10 text-black text-2xl">✕</button>
+            <h1 class="serif-italic text-6xl md:text-8xl text-black mb-8">Apply to Vaithra</h1>
+            <div class="space-y-8 text-black/70 text-lg leading-relaxed">
+                <p>Vaithra is accepting applications for the <strong>Vaithra ORG</strong>. We focus on founders building
+                    in Tier-2 and Tier-3 cities who are ready for first-level validation.</p>
+                <p>Our network is built by early-stage founders for early-stage founders, specifically targeting those
+                    who have been building in isolation without access to metro-centric networks.</p>
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border border-black/5 mt-12">
+                    <h3 class="text-2xl font-bold mb-6 text-black">Start your journey</h3>
+                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Application Submitted');">
+                        <input type="text" placeholder="Founder Name"
+                            class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50">
+                        <input type="text" placeholder="Project / Startup Name"
+                            class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50">
+                        <textarea placeholder="Tell us about your execution so far..."
+                            class="w-full p-4 rounded-2xl border border-black/10 bg-gray-50 h-32"></textarea>
+                        <button
+                            class="w-full bg-black text-white py-4 rounded-full font-bold hover:bg-[#DFFF00] hover:text-black transition-colors">
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- HERO -->
+    <section class="h-screen flex flex-col justify-center items-center text-center px-4"
+        style="background: linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.7)), url('./assets/images/hero.jpg'); background-size: cover; background-position: center;">
+        <h1 class="serif-italic text-7xl md:text-[9rem] text-white">
+            VAITHRA
+            <span class="inline-block w-4 h-4 rounded-full ml-2" style="background:#DFFF00"></span>
+        </h1>
+        <p class="text-xs tracking-[0.4em] uppercase mt-6 text-white/80">
+            Built by early-stage founders for early-stage founders
+        </p>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-40 px-6 bg-[#f7f7f7] text-black">
+        <div class="max-w-6xl mx-auto space-y-28">
+            <div class="max-w-3xl">
+                <h2 class="serif-italic text-6xl md:text-7xl leading-tight">About <span
+                        class="text-gray-400">Vaithra</span></h2>
+                <p class="mt-8 text-lg text-gray-600 leading-relaxed">Vaithra is a semi-centralized founder network
+                    built by early-stage founders who understand what it means to build without connections, capital, or
+                    visibility.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="bg-white rounded-[32px] p-10 shadow-lg">
+                    <h3 class="serif-italic text-3xl mb-6">What Vaithra Is</h3>
+                    <p class="text-gray-600 leading-relaxed">Vaithra is a founder discovery and collaboration network
+                        focused on identifying serious builders outside traditional startup hubs.</p>
+                    <p class="text-gray-600 leading-relaxed mt-4">Instead of concentrating only in major cities, Vaithra
+                        operates city-by-city across India to connect isolated founders, create meetups, and enable
+                        collaboration.</p>
+                </div>
+
+                <div class="bg-white rounded-[32px] p-10 shadow-lg">
+                    <h3 class="serif-italic text-3xl mb-6">Why Vaithra Exists</h3>
+                    <p class="text-gray-600 leading-relaxed">Many talented founders exist in smaller cities but remain
+                        invisible because they lack networks, funding access, or ecosystem exposure.</p>
+                    <p class="text-gray-600 leading-relaxed mt-4">Vaithra exists to change this reality by building a
+                        distributed network of founders and representatives across cities.</p>
+                </div>
+            </div>
+
+            <div class="bg-black text-white rounded-[30px] p-14">
+                <h3 class="serif-italic text-4xl mb-8">The Problem</h3>
+                <p class="text-gray-300 leading-relaxed max-w-3xl">India's startup ecosystem is heavily centralized in a
+                    few cities. Meanwhile thousands of founders in smaller cities are building in isolation without
+                    mentorship, collaboration, or exposure.</p>
+                <p class="text-gray-300 leading-relaxed mt-4 max-w-3xl">Vaithra focuses on these overlooked regions and
+                    builds connections through local meetups, events, and founder networks.</p>
+            </div>
+
+            <div>
+                <h3 class="serif-italic text-4xl mb-12">How The Network Works</h3>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="bg-white rounded-3xl p-8 shadow-md">
+                        <h4 class="font-bold mb-3">City Meetups</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed">Vaithra organizes founder meetups in cities
+                            that are often ignored by the mainstream startup ecosystem.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-md">
+                        <h4 class="font-bold mb-3">Founder Collaboration</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed">Founders can collaborate, share ideas, and
+                            learn from each other through structured events and discussions.</p>
+                    </div>
+                    <div class="bg-white rounded-3xl p-8 shadow-md">
+                        <h4 class="font-bold mb-3">Idea Partnerships</h4>
+                        <p class="text-gray-600 text-sm leading-relaxed">If Vaithra identifies a strong idea or team,
+                            the organization may collaborate or support its launch.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-16">
+                <div class="bg-white rounded-[32px] p-10 shadow-lg">
+                    <h3 class="serif-italic text-3xl mb-6">City Representatives</h3>
+                    <p class="text-gray-600 leading-relaxed">Vaithra appoints representatives in different cities to
+                        organize meetups and act as local connectors.</p>
+                </div>
+                <div class="bg-white rounded-[32px] p-10 shadow-lg">
+                    <h3 class="serif-italic text-3xl mb-6">Volunteer Structure</h3>
+                    <p class="text-gray-600 leading-relaxed">Representatives in Vaithra are volunteers. They are not
+                        employees and are not paid by the organization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE CORE TEAM -->
+    <section id="founders">
+        <header class="boutique-header">
+            <span class="lux-tag">Vaithra Protocol</span>
+            <h1>The Core</h1>
+        </header>
+        <main>
+            <div class="founder-strip" onclick="openLux('sardhar')">
+                <span class="strip-num">01</span>
+                <span class="strip-name">Sardhar Musthafa</span>
+                <span class="strip-role">Final Authority</span>
+            </div>
+            <div class="founder-strip" onclick="openLux('rahimath')">
+                <span class="strip-num">02</span>
+                <span class="strip-name">Rahimath</span>
+                <span class="strip-role">Glowvai.in</span>
+            </div>
+            <div class="founder-strip" onclick="openLux('gopi')">
+                <span class="strip-num">03</span>
+                <span class="strip-name">Erugoni Gopi</span>
+                <span class="strip-role">Strategic Owner</span>
+            </div>
+            <div class="founder-strip" onclick="openLux('dhoni')">
+                <span class="strip-num">04</span>
+                <span class="strip-name">Dhoni Hari Hara Singh</span>
+                <span class="strip-role">Media Partner</span>
+            </div>
+        </main>
+
+        <div id="luxModal" class="full-slide-modal">
+            <div class="modal-portrait">
+                <img id="mImg" src="" alt="">
+            </div>
+            <div class="modal-content-area">
+                <div class="close-trigger" onclick="closeLux()">Close &times;</div>
+                <span class="m-role-tag" id="mTag">Founder Profile</span>
+                <h2 class="m-name" id="mName">Name</h2>
+                <p id="mRole" style="opacity: 0.4; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
+                    Role Description</p>
+                <div style="height: 60px;"></div>
+                <p class="m-description" id="mBio">Bio content here...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- REGIONAL NODES CAROUSEL -->
+    <section id="reps" class="py-32 bg-[#F5F5F7] overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-8 mb-20 relative z-10 grid grid-cols-12 gap-8">
+            <div class="col-span-12 md:col-span-11">
+                <span class="text-[11px] uppercase tracking-[0.5em] font-black text-gray-400 mb-6 block">Regional Node
+                    Infrastructure</span>
+                <h2 class="serif-italic text-7xl md:text-9xl leading-[0.8] tracking-tighter text-black italic">
+                    Local <span class="text-gray-300">Hubs.</span>
+                </h2>
+                <div class="mt-10 max-w-lg border-l-4 border-[#A5C400] pl-10">
+                    <p class="text-base text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
+                        Decentralized infrastructure bridging district builders with the global ecosystem.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-container relative">
+            <div class="carousel-track-premium" id="nodesTrack"></div>
+        </div>
+    </section>
+
+    <!-- MAGAZINE MODAL FOR NODES -->
+    <div id="magazineModal"
+        class="fixed inset-0 z-[3000] hidden items-center justify-center p-6 bg-black/60 backdrop-blur-xl">
+        <div
+            class="bg-[#FAFAFA] w-full max-w-5xl h-[75vh] rounded-[40px] overflow-hidden flex flex-col md:flex-row relative shadow-2xl">
+            <button onclick="closeMagazine()"
+                class="absolute top-8 left-8 z-50 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">✕</button>
+            <div class="w-full md:w-1/2 p-12 md:p-20 flex flex-col justify-center bg-white">
+                <span class="text-[9px] uppercase tracking-[0.6em] text-[#A5C400] font-black mb-4 block">Validation
+                    Node</span>
+                <h2 id="magCity" class="serif-italic text-5xl text-black mb-4 italic">City</h2>
+                <p id="magStatus" class="text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-8">Protocol
+                    Active</p>
+                <p class="text-gray-500 leading-relaxed font-light text-base">
+                    Bridging the gap between isolated district builders and metro-centric startup ecosystems. This hub
+                    serves as a validation engine for Tier-2 and Tier-3 founders.
+                </p>
+                <button
+                    class="mt-10 w-fit border-b border-black font-black text-[9px] uppercase tracking-[0.3em] pb-2 hover:opacity-50 transition-all text-black">Request
+                    Node Access</button>
+            </div>
+            <div class="w-full md:w-1/2 h-full bg-zinc-100">
+                <img id="magImg" src=""
+                    class="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
+            </div>
+        </div>
+    </div>
+
+    <!-- COMMUNITY / STATS -->
+    <section id="community-stats"
+        style="background-color: #ffffff; padding: 160px 8%; font-family: 'Inter', sans-serif; color: #000; overflow: hidden;">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 100px;" class="reveal-up">
+                <span
+                    style="text-transform: uppercase; letter-spacing: 8px; font-size: 10px; font-weight: 900; color: #6a3df0; display: block; margin-bottom: 20px;">Protocol
+                    Expansion</span>
+                <h2
+                    style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; font-weight: 900; letter-spacing: -2px; margin: 0;">
+                    Community Growth</h2>
+            </div>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 100px;">
+                <div class="stat-box reveal-up">
+                    <h3 class="stat-number"><span class="counter" data-target="15000">0</span>+</h3>
+                    <p class="stat-label">Community Members</p>
+                </div>
+                <div class="stat-box reveal-up">
+                    <h3 class="stat-number"><span class="counter" data-target="24">0</span>+</h3>
+                    <p class="stat-label">Cities Connected</p>
+                </div>
+                <div class="stat-box reveal-up">
+                    <h3 class="stat-number"><span class="counter" data-target="1200">0</span></h3>
+                    <p class="stat-label">Projects Started</p>
+                </div>
+                <div class="stat-box reveal-up">
+                    <h3 class="stat-number"><span class="counter" data-target="15">0</span></h3>
+                    <p class="stat-label">Active Contributors</p>
+                </div>
+            </div>
+            <div style="text-align: center;" class="reveal-up">
+                <button onclick="openCommunityForm()" class="community-cta">Become a Community Member</button>
+                <p
+                    style="margin-top: 25px; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #999; font-weight: 700;">
+                    Receive updates via Mail & WhatsApp</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMUNITY MODAL -->
+    <div id="communityModal"
+        style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.98); z-index:10000; overflow-y:auto; padding:50px 20px;">
+        <div style="max-width:800px; margin:0 auto; position:relative;">
+            <button onclick="closeCommunityForm()"
+                style="position:fixed; top:30px; right:30px; background:none; border:none; font-size:30px; cursor:pointer; font-weight:200;">✕</button>
+            <div style="text-align:center; margin-bottom:50px;">
+                <span
+                    style="text-transform: uppercase; letter-spacing: 5px; font-size: 10px; font-weight: 900; color: #6a3df0;">Onboarding
+                    Protocol</span>
+                <h2
+                    style="font-family: 'Playfair Display', serif; font-size: 3rem; font-style: italic; margin-top:10px; color:#000;">
+                    Join the Network</h2>
+            </div>
+            <div
+                style="width:100%; height:80vh; border-radius:20px; overflow:hidden; border:1px solid #eee; background:#fff; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
+                <iframe
+                    src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true"
+                    width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- BLOGS -->
+    <section id="blogs" class="py-32 px-8 bg-[#0f0f0f]">
+        <div class="blog-wrapper">
+            <h2 class="blog-title">Founder Insights</h2>
+            <div class="blog-grid">
+                <a href="startup-failure-india.html" class="blog-card">
+                    <div class="blog-tag">Research</div>
+                    <h3>Why Startups Are Failing in India</h3>
+                    <p>India is producing thousands of startups, yet most collapse within a few years. This article
+                        explores the real structural reasons...</p>
+                    <div class="blog-read">READ ARTICLE →</div>
+                </a>
+                <a href="isolation-enemy.html" class="blog-card">
+                    <div class="blog-tag">Culture</div>
+                    <h3>Isolation Is The Enemy</h3>
+                    <p>Many talented founders in smaller cities work in complete isolation. Without access to networks,
+                        mentors, or early validation...</p>
+                    <div class="blog-read">READ ARTICLE →</div>
+                </a>
+                <a href="execution-reality.html" class="blog-card">
+                    <div class="blog-tag">Execution</div>
+                    <h3>Execution Reality</h3>
+                    <p>Startup culture in India often promotes motivation over execution. Real founders succeed through
+                        relentless experimentation...</p>
+                    <div class="blog-read">READ ARTICLE →</div>
+                </a>
+                <a href="founder-network-problem.html" class="blog-card">
+                    <div class="blog-tag">Network</div>
+                    <h3>The Founder Network Problem</h3>
+                    <p>Outside major metro cities, thousands of founders lack access to connections, credibility, and
+                        collaborative communities...</p>
+                    <div class="blog-read">READ ARTICLE →</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPONSOR / BACKERS SECTION -->
+    <section id="sponsor" class="vaithra-scope">
+        <div id="sponsor-landing-view">
+            <span class="lux-meta">Infrastructure Support</span>
+            <h2 class="lux-header-title">Backed by Builders</h2>
+            <div class="marquee-container">
+                <div class="marquee-track">
+                    <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
+                    <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
+                    <div class="brand-logo" style="color:#00A896">BuildStack</div>
+                    <div class="brand-logo" style="color:#F4A261">StartupForge</div>
+                    <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
+                    <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
+                    <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
+                    <div class="brand-logo" style="color:#00A896">BuildStack</div>
+                    <div class="brand-logo" style="color:#F4A261">StartupForge</div>
+                    <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
+                </div>
+            </div>
+            <button class="lux-action-btn" onclick="showSponsorDetails()">Become a Sponsor</button>
+        </div>
+
+        <div id="sponsor-detail-view">
+            <button onclick="hideSponsorDetails()"
+                style="background:none; border:none; cursor:pointer; font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:3px; color:#7c3aed; margin-bottom:40px;">←
+                Back to Gallery</button>
+            <div class="detail-grid">
+                <div class="detail-text">
+                    <span
+                        style="text-transform:uppercase; letter-spacing:5px; font-size:10px; font-weight:900; color:#7c3aed;">Node
+                        Capital</span>
+                    <h3>Scale the<br>New Protocol.</h3>
+                    <p>Support the early stage founders and gain priority access to validated founders across our
+                        regional hubs. Professional clearance is managed via Vaivaanith Pvt Ltd.</p>
+                </div>
+                <div class="whatsapp-card">
+                    <p
+                        style="font-weight:900; margin-bottom:10px; text-transform:uppercase; font-size:10px; color:#999;">
+                        Final Authority Clearance</p>
+                    <h4 style="font-size: 1.5rem; margin-bottom: 30px; color: #000;">Direct Channel</h4>
+                    <a href="https://wa.me/918977855998?text=Interested%20in%20becoming%20a%20Sponsor%20for%20Vaithra"
+                        class="whatsapp-btn">CONNECT VIA WHATSAPP</a>
+                    <p style="font-size:10px; margin-top:20px; opacity:0.4; font-weight:bold; color: #000;">8977855998
+                        // SARDHAR MUSTHAFA</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer
+        style="background-color: #ffffff; padding: 120px 5% 60px; border-top: 1px solid #f0f0f0; font-family: 'Inter', sans-serif; color: #000;">
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 60px; align-items: start;">
+            <div style="grid-column: span 1;">
+                <h3
+                    style="font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 0 0 25px 0; font-weight: 900; letter-spacing: -1px;">
+                    VAITHRA</h3>
+                <p style="color: #666; font-size: 0.95rem; line-height: 1.8; margin-bottom: 35px; max-width: 300px;">
+                    Identifying and validating serious builders outside traditional hubs.
+                </p>
+                <div style="display: flex; gap: 25px; align-items: center;">
+                    <a href="https://instagram.com/wearevaithra" target="_blank"
+                        style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">Instagram</a>
+                    <a href="https://wa.me/918977855998" target="_blank"
+                        style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">WhatsApp</a>
+                </div>
+            </div>
+            <div>
+                <h4
+                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">
+                    Explore</h4>
+                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
+                    <li><a href="#about" style="color: #444; text-decoration: none; transition: 0.2s;">The Vision</a>
+                    </li>
+                    <li><a href="#founders" style="color: #444; text-decoration: none; transition: 0.2s;">The Core
+                            Team</a></li>
+                    <li><a href="#reps" style="color: #444; text-decoration: none; transition: 0.2s;">Regional Nodes</a>
+                    </li>
+                    <li><a href="#blogs" style="color: #444; text-decoration: none; transition: 0.2s;">Founder
+                            Insights</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4
+                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">
+                    Compliance</h4>
+                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
+                    <li><a href="/privacy-policy" style="color: #444; text-decoration: none;">Privacy Policy</a></li>
+                    <li><a href="/terms-conditions" style="color: #444; text-decoration: none;">Terms & Conditions</a>
+                    </li>
+                    <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry"
+                            style="color: #444; text-decoration: none;">Official Clearance</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4
+                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">
+                    Corporate</h4>
+                <p
+                    style="font-size: 12px; font-weight: 900; color: #000; text-transform: uppercase; letter-spacing: 3px; margin: 0;">
+                    VAIVAANITH PVT LTD</p>
+                <p style="font-size: 11px; color: #999; margin-top: 10px; line-height: 1.6;">Holding entity for Vaithra
+                    and Glowvai.in infrastructure.</p>
+            </div>
+        </div>
+        <div
+            style="margin-top: 100px; padding-top: 40px; border-top: 1px solid #f5f5f5; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 3px; font-weight: 700;">
+            <span>© 2026 Vaithra. All rights reserved.</span>
+            <span>Authored by Sardhar Musthafa</span>
+        </div>
+    </footer>
+
+    <!-- MASTER JAVASCRIPT LOGIC -->
     <script>
+        // --- Applying/Joining logic ---
+        function toggleApplySection() {
+            const overlay = document.getElementById('applyOverlay');
+            if (!overlay) return;
+            if (overlay.classList.contains('translate-y-full')) {
+                overlay.classList.remove('translate-y-full');
+                overlay.classList.add('translate-y-0');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.remove('translate-y-0');
+                overlay.classList.add('translate-y-full');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // --- Founders Modal Logic ---
         const founders = {
             sardhar: {
                 name: "Sardhar Musthafa",
@@ -730,7 +1142,7 @@ document.querySelectorAll('.reveal-up').forEach(el => statsObserver.observe(el))
             },
             rahimath: {
                 name: "Rahimath",
-                role: "Core Partner — Vaithra | Founder — Glowvai.in",
+                role: "Core Partner — Vaithra | Founder — Glowvai",
                 tag: "Market Integration",
                 bio: "Overseeing the Glowvai initiative within the Vaithra ecosystem. Rahimath bridges beauty-tech innovation with the core startup infrastructure.",
                 img: "./assets/images/rahimath.jpeg"
@@ -758,7 +1170,7 @@ document.querySelectorAll('.reveal-up').forEach(el => statsObserver.observe(el))
             document.getElementById('mTag').innerText = f.tag;
             document.getElementById('mBio').innerText = f.bio;
             document.getElementById('mImg').src = f.img;
-            
+
             const modal = document.getElementById('luxModal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('active'), 10);
@@ -771,1046 +1183,119 @@ document.querySelectorAll('.reveal-up').forEach(el => statsObserver.observe(el))
             setTimeout(() => { modal.style.display = 'none'; }, 700);
             document.body.style.overflow = 'auto';
         }
-    </script>
-</body>
-</html>
-  
-<section id="reps" class="py-32 bg-[#F5F5F7] overflow-hidden relative">
-    
-    <div class="max-w-7xl mx-auto px-8 mb-20 relative z-10 grid grid-cols-12 gap-8">
-        <div class="col-span-12 md:col-span-11">
-            <span class="text-[11px] uppercase tracking-[0.5em] font-black text-gray-400 mb-6 block">Regional Node Infrastructure</span>
-            <h2 class="serif-italic text-7xl md:text-9xl leading-[0.8] tracking-tighter text-black italic">
-                Local <span class="text-gray-300">Hubs.</span>
-            </h2>
-            <div class="mt-10 max-w-lg border-l-4 border-[#A5C400] pl-10">
-                <p class="text-base text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
-                    Decentralized infrastructure bridging district builders with the global ecosystem.
-                </p>
-            </div>
-        </div>
-    </div>
 
-    <div class="carousel-container relative">
-        <div class="carousel-track-premium">
-            
-            <script>
-                // List of your 10 cities with high-contrast status labels
-                const cities = [
-                    { name: 'Hyderabad', status: 'Main Hub', file: 'hyderabad.jpeg' },
-                    { name: 'Visakhapatnam', status: 'Coastal', file: 'vizag.jpeg' },
-                    { name: 'Vijayawada', status: 'Core Node', file: 'vijayawada.jpeg' },
-                    { name: 'Tirupati', status: 'Tech Hub', file: 'tirupati.jpeg' },
-                    { name: 'Warangal', status: 'Expansion', file: 'warangal.jpeg' },
-                    { name: 'Guntur', status: 'Industrial', file: 'guntur.jpeg' },
-                    { name: 'Bengaluru', status: 'External', file: 'bengaluru.jpeg' },
-                    { name: 'Chennai', status: 'Partner', file: 'chennai.jpeg' },
-                    { name: 'Mumbai', status: 'Finance', file: 'mumbai.jpeg' },
-                    { name: 'Delhi', status: 'Capital', file: 'delhi.jpeg' }
-                ];
-
-                function generateCards(cityList) {
-                    return cityList.map(city => `
-                        <div class="node-item" onclick="openMagazine('${city.name}', '${city.status}', 'assets/images/${city.file}')">
-                            <div class="card-refractive">
-                                <div class="img-wrapper">
-                                    <img src="assets/images/${city.file}" alt="${city.name}" onerror="this.src='https://placehold.co/400x500?text=${city.name}'">
-                                </div>
-                                <div class="card-info">
-                                    <h3>${city.name}</h3>
-                                    <p>${city.status}</p>
-                                    <div class="decorative-grid mt-4">
-                                        <div class="line-1"></div>
-                                        <div class="line-2"></div>
-                                        <div class="line-3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-
-                // Render for the infinite loop
-                document.write(generateCards(cities) + generateCards(cities));
-            </script>
-
-        </div>
-    </div>
-</section>
-
-<style>
-    .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 50s linear infinite; }
-    .carousel-track-premium:hover { animation-play-state: paused; }
-    @keyframes scrollNodes { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-    /* Studio Card Scale - Refined Sizes */
-    .node-item { width: 330px; padding: 0 15px; cursor: pointer; perspective: 1500px; }
-    
-    .card-refractive {
-        background: #FFFFFF; height: 440px; border-radius: 45px; overflow: hidden; position: relative;
-        box-shadow: 20px 20px 50px #d9d9d9, -20px -20px 50px #ffffff;
-        transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1); transform-style: preserve-3d;
-        border: 1px solid rgba(0,0,0,0.03);
-    }
-
-    .img-wrapper { width: 100%; height: 72%; overflow: hidden; background: #eee; }
-    .card-refractive img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.8s ease; }
-    
-    .card-info { padding: 30px; background: white; height: 28%; display: flex; flex-direction: column; justify-content: center; transform: translateZ(30px); }
-    
-    /* Corrected High-Contrast Text Visibility */
-    .card-info h3 { font-size: 1.5rem; font-weight: 900; color: #000; margin: 0; letter-spacing: -0.03em; }
-    .card-info p { font-size: 10px; color: #A5C400; font-weight: 900; margin-top: 6px; letter-spacing: 2px; text-transform: uppercase; }
-
-    /* Decorative 3 Lines Logic */
-    .decorative-grid { display: flex; gap: 4px; }
-    .line-1 { h-1; width: 40px; height: 2px; background: #A5C400; }
-    .line-2 { h-1; width: 15px; height: 2px; background: #e5e7eb; }
-    .line-3 { h-1; width: 8px; height: 2px; background: #f3f4f6; }
-
-    .node-item:hover .card-refractive { transform: rotateX(8deg) rotateY(-8deg) translateY(-20px); box-shadow: 0 50px 100px rgba(0,0,0,0.08); border-color: #A5C400; }
-    .node-item:hover img { filter: grayscale(0%); transform: scale(1.1); }
-</style>
-
-<style>
-    .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 50s linear infinite; }
-    .carousel-track-premium:hover { animation-play-state: paused; }
-    
-    @keyframes scrollNodes { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-    /* Studio Card Scale */
-    .node-item { width: 340px; padding: 0 15px; cursor: pointer; perspective: 1500px; }
-    
-    .card-refractive {
-        background: #FFFFFF; height: 440px; border-radius: 40px; overflow: hidden; position: relative;
-        box-shadow: 20px 20px 40px #d9d9d9, -20px -20px 40px #ffffff;
-        transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1); transform-style: preserve-3d;
-        border: 1px solid rgba(255,255,255,0.8);
-    }
-
-    .img-wrapper { width: 100%; height: 72%; overflow: hidden; background: #eee; }
-    .card-refractive img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.8s ease; }
-    
-    .card-info { padding: 30px; background: white; height: 28%; display: flex; flex-direction: column; justify-content: center; transform: translateZ(30px); }
-    
-    /* High-Contrast Yellow/Lime Text */
-    .card-info h3 { font-size: 1.5rem; font-weight: 900; color: #000; margin: 0; letter-spacing: -0.02em; }
-    .card-info p { font-size: 10px; color: #A5C400; font-weight: 900; margin-top: 4px; letter-spacing: 2px; text-transform: uppercase; }
-
-    .node-item:hover .card-refractive { transform: rotateX(8deg) rotateY(-8deg) translateY(-20px); box-shadow: 0 50px 100px rgba(0,0,0,0.08); border-color: #A5C400; }
-    .node-item:hover img { filter: grayscale(0%); transform: scale(1.1); }
-</style>
-
-<style>
-    .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 40s linear infinite; }
-    .carousel-track-premium:hover { animation-play-state: paused; }
-    
-    @keyframes scrollNodes { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-    /* Studio Card Scale - Refined */
-    .node-item { width: 340px; padding: 0 15px; cursor: pointer; perspective: 1500px; }
-    
-    .card-refractive {
-        background: #FFFFFF; height: 420px; border-radius: 40px; overflow: hidden; position: relative;
-        box-shadow: 20px 20px 40px #d9d9d9, -20px -20px 40px #ffffff;
-        transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1); transform-style: preserve-3d;
-    }
-
-    .img-wrapper { width: 100%; height: 75%; overflow: hidden; }
-    .card-refractive img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.8s ease; }
-    
-    /* Corrected High-Contrast Info Block */
-    .card-info { padding: 30px; background: white; height: 25%; display: flex; flex-direction: column; justify-content: center; transform: translateZ(30px); }
-    .card-info h3 { font-size: 1.5rem; font-weight: 900; margin: 0; color: #000; letter-spacing: -0.02em; }
-    .card-info p { font-size: 10px; color: #8BA800; font-weight: 900; margin-top: 6px; letter-spacing: 2px; text-transform: uppercase; }
-
-    .node-item:hover .card-refractive { transform: rotateX(10deg) rotateY(-8deg) translateY(-20px); box-shadow: 0 50px 100px rgba(0,0,0,0.08); border: 2px solid #C8E600; }
-    .node-item:hover img { filter: grayscale(0%); transform: scale(1.1); }
-</style>
-
-<div id="magazineModal" class="fixed inset-0 z-[3000] hidden items-center justify-center p-6 bg-black/60 backdrop-blur-xl">
-    <div class="bg-[#FAFAFA] w-full max-w-5xl h-[75vh] rounded-[40px] overflow-hidden flex flex-col md:flex-row relative shadow-2xl animate-scale">
-        <button onclick="closeMagazine()" class="absolute top-8 left-8 z-50 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">✕</button>
-        
-        <div class="w-full md:w-1/2 p-12 md:p-20 flex flex-col justify-center bg-white">
-            <span class="text-[9px] uppercase tracking-[0.6em] text-[#DFFF00] font-black mb-4 block">Validation Node</span>
-            <h2 id="magCity" class="serif-italic text-5xl text-black mb-4 italic">City</h2>
-            <p id="magStatus" class="text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-8">Protocol Active</p>
-            <p class="text-gray-500 leading-relaxed font-light text-base">
-                Bridging the gap between isolated district builders and metro-centric startup ecosystems. This hub serves as a validation engine for Tier-2 and Tier-3 founders.
-            </p>
-            <button class="mt-10 w-fit border-b border-black font-black text-[9px] uppercase tracking-[0.3em] pb-2 hover:opacity-50 transition-all">Request Node Access</button>
-        </div>
-
-        <div class="w-full md:w-1/2 h-full bg-zinc-100">
-            <img id="magImg" src="" class="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
-        </div>
-    </div>
-</div>
-
-<style>
-    .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 60s linear infinite; }
-    .carousel-track-premium:hover { animation-play-state: paused; }
-    
-    @keyframes scrollNodes { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-    /* Balanced Studio Card Scale */
-    .node-item { width: 300px; padding: 0 15px; cursor: pointer; perspective: 1200px; }
-    
-    .card-refractive {
-        background: #FFFFFF; height: 380px; border-radius: 35px; overflow: hidden; position: relative;
-        box-shadow: 15px 15px 35px #d9d9d9, -15px -15px 35px #ffffff;
-        transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1); transform-style: preserve-3d;
-    }
-
-    .card-refractive img { width: 100%; height: 70%; object-fit: cover; filter: grayscale(100%); transition: 0.6s ease; }
-    .card-info { padding: 25px; background: white; height: 30%; display: flex; flex-direction: column; justify-content: center; transform: translateZ(25px); }
-
-    .node-item:hover .card-refractive { transform: rotateX(8deg) rotateY(-8deg) translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.06); border: 1px solid #DFFF00; }
-    .node-item:hover img { filter: grayscale(0%); transform: scale(1.05); }
-    
-    .card-info h3 { font-size: 1.2rem; font-weight: 900; margin: 0; letter-spacing: -0.02em; }
-    .card-info p { font-size: 9px; color: #DFFF00; font-weight: 900; margin-top: 4px; letter-spacing: 2px; text-transform: uppercase; }
-
-    .animate-scale { animation: magazineReveal 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
-    @keyframes magazineReveal { from { opacity: 0; transform: scale(0.97) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-</style>
-
-<div id="magazineModal" class="fixed inset-0 z-[3000] hidden items-center justify-center p-6 bg-black/60 backdrop-blur-xl">
-    <div class="bg-[#FBFBFB] w-full max-w-6xl h-[85vh] rounded-[50px] overflow-hidden flex flex-col md:flex-row relative shadow-2xl animate-scale">
-        <button onclick="closeMagazine()" class="absolute top-10 left-10 z-50 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">✕</button>
-        
-        <div class="w-full md:w-1/2 p-16 md:p-24 flex flex-col justify-center">
-            <span class="text-[10px] uppercase tracking-[0.6em] text-[#DFFF00] font-black mb-6">Validation Node</span>
-            <h2 id="magCity" class="serif-italic text-7xl text-black mb-8 leading-none italic">City</h2>
-            <p id="magStatus" class="text-gray-400 font-bold uppercase text-xs tracking-widest mb-10">Active Hub</p>
-            <p class="text-gray-500 leading-relaxed font-light text-xl">
-                Serving as a validation bridge for isolated founders. We bring the metro-centric ecosystem to the district level, ensuring visibility and execution support.
-            </p>
-            <button class="mt-14 w-fit border-b-2 border-black font-black text-xs uppercase tracking-widest pb-3">Request Node Access</button>
-        </div>
-
-        <div class="w-full md:w-1/2 h-full bg-black">
-            <img id="magImg" src="" class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
-        </div>
-    </div>
-</div>
-
-<style>
-    .carousel-track-premium { display: flex; width: max-content; animation: scrollNodes 60s linear infinite; }
-    .carousel-track-premium:hover { animation-play-state: paused; }
-    
-    @keyframes scrollNodes { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-    .node-item { width: 400px; padding: 0 25px; cursor: pointer; perspective: 2000px; }
-    
-    .card-refractive {
-        background: #FFFFFF; height: 500px; border-radius: 50px; overflow: hidden; position: relative;
-        box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
-        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1); transform-style: preserve-3d;
-    }
-
-    .card-refractive img { width: 100%; height: 75%; object-fit: cover; filter: grayscale(100%); transition: 0.8s ease; }
-    .card-info { padding: 30px; background: white; height: 25%; display: flex; flex-direction: column; justify-content: center; transform: translateZ(30px); }
-
-    .node-item:hover .card-refractive { transform: rotateX(10deg) rotateY(-5deg) translateY(-30px); box-shadow: 0 60px 100px rgba(0,0,0,0.1); }
-    .node-item:hover img { filter: grayscale(0%); transform: scale(1.1); }
-    
-    .card-info h3 { font-size: 1.8rem; font-weight: 900; italic: true; margin: 0; }
-    .card-info p { font-size: 10px; color: #DFFF00; font-weight: bold; margin-top: 5px; letter-spacing: 3px; text-transform: uppercase; }
-
-    .animate-scale { animation: magazineReveal 0.7s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
-    @keyframes magazineReveal { from { opacity: 0; transform: scale(0.95) translateY(50px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-</style>
-
-<script>
-function openMagazine(city, status, imgUrl) {
-    document.getElementById('magCity').innerText = city;
-    document.getElementById('magStatus').innerText = status;
-    document.getElementById('magImg').src = imgUrl;
-    document.getElementById('magazineModal').classList.remove('hidden');
-    document.getElementById('magazineModal').classList.add('flex');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeMagazine() {
-    document.getElementById('magazineModal').classList.remove('flex');
-    document.getElementById('magazineModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
-}
-</script>
-
-<div id="magazineModal" class="fixed inset-0 z-[3000] hidden items-center justify-center p-6 bg-black/40 backdrop-blur-md">
-    <div class="bg-[#fcfcfc] w-full max-w-5xl h-[80vh] rounded-[40px] overflow-hidden flex flex-col md:flex-row relative shadow-2xl animate-scale">
-        <button onclick="closeMagazine()" class="absolute top-8 left-8 z-50 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center">✕</button>
-        
-        <div class="w-full md:w-1/2 p-12 md:p-20 flex flex-col justify-center bg-white">
-            <span class="text-[10px] uppercase tracking-[0.6em] text-[#DFFF00] font-black mb-4">Node Profile</span>
-            <h2 id="magCity" class="serif-italic text-6xl text-black mb-6">City Name</h2>
-            <p id="magStatus" class="text-gray-400 font-bold uppercase text-xs tracking-widest mb-8">Status</p>
-            <p class="text-gray-500 leading-relaxed font-light text-lg">
-                This node serves as a validation bridge for founders in Tier-2 and Tier-3 regions. Our network takes the ecosystem to the builder, ensuring visibility and execution support.
-            </p>
-            <button class="mt-12 w-fit border-b border-black font-black text-xs uppercase tracking-widest pb-2">Apply for Node Access →</button>
-        </div>
-
-        <div class="w-full md:w-1/2 h-full">
-            <img id="magImg" src="" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="City View">
-        </div>
-    </div>
-</div>
-
-<style>
-    .carousel-track-premium {
-        display: flex;
-        width: max-content;
-        animation: scrollNodes 40s linear infinite;
-        padding: 40px 0;
-    }
-    .carousel-track-premium:hover { animation-play-state: paused; }
-    
-    @keyframes scrollNodes { 
-        0% { transform: translateX(0); } 
-        100% { transform: translateX(-50%); } 
-    }
-
-    .node-item { width: 320px; padding: 0 15px; cursor: pointer; perspective: 1000px; }
-    
-    .card-glass {
-        background: white;
-        padding: 40px;
-        border-radius: 40px;
-        border: 1px solid rgba(255,255,255,0.8);
-        box-shadow: 15px 15px 40px #d1d1d1, -15px -15px 40px #ffffff;
-        transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-        transform-style: preserve-3d;
-    }
-
-    .node-item:hover .card-glass {
-        transform: rotateX(10deg) rotateY(-10deg) translateY(-20px);
-        background: #fcfcfc;
-        border-color: #DFFF00;
-    }
-
-    .card-glass h3 { font-size: 1.5rem; font-weight: 900; color: #1a1a1a; transform: translateZ(30px); }
-    .card-glass p { font-size: 10px; text-transform: uppercase; color: #aaa; transform: translateZ(15px); letter-spacing: 2px; margin-top: 10px;}
-
-    .animate-scale { animation: magazineReveal 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
-    @keyframes magazineReveal { from { opacity: 0; transform: scale(0.9) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-</style>
-
-<script>
-function openMagazine(city, status, imgUrl) {
-    document.getElementById('magCity').innerText = city;
-    document.getElementById('magStatus').innerText = status;
-    document.getElementById('magImg').src = imgUrl;
-    const modal = document.getElementById('magazineModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeMagazine() {
-    const modal = document.getElementById('magazineModal');
-    modal.classList.remove('flex');
-    modal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
-}
-</script>
-
-<style>
-    /* Premium 3D Interaction Logic */
-    .node-card-3d {
-        perspective: 1500px;
-        transition: transform 0.5s ease;
-    }
-
-    .card-inner {
-        transform-style: preserve-3d;
-        transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-
-    .node-card-3d:hover .card-inner {
-        transform: rotateX(8deg) rotateY(-8deg) translateY(-10px);
-        background: #ffffff;
-        border-color: #DFFF00;
-        shadow: 0 30px 60px rgba(0,0,0,0.1);
-    }
-
-    /* Depth Parallax */
-    .node-card-3d img {
-        transition: transform 1s ease;
-    }
-    
-    .node-card-3d:hover h3 {
-        transform: translateZ(40px);
-    }
-</style>
-<style>
-  @keyframes scaleUp {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.animate-scale {
-  animation: scaleUp 0.3s ease forwards;
-}
-    .carousel-track {
-        display: flex;
-        width: max-content;
-        animation: scrollNodes 40s linear infinite;
-    }
-
-    /* Pause animation on hover */
-    .carousel-track:hover {
-        animation-play-state: paused;
-    }
-
-    @keyframes scrollNodes {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); } /* Scrolls exactly halfway then snaps back */
-    }
-
-    .city-img {
-        height: 200px;
-        width: 100%;
-        object-fit: cover;
-        filter: grayscale(100%);
-        transition: all 0.5s ease;
-    }
-
-    .rep-card:hover .city-img {
-        filter: grayscale(0%);
-        transform: scale(1.05);
-    }
-
-    .node-status {
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        opacity: 0.5;
-        margin-top: 8px;
-    }
-</style>
-
-<section id="blogs" class="py-32 px-8 bg-[#0f0f0f]">
-
-<style>
-
-.blog-wrapper{
-max-width:1200px;
-margin:auto;
-}
-
-.blog-title{
-font-size:48px;
-font-style:italic;
-color:white;
-opacity:.85;
-margin-bottom:70px;
-text-align:center;
-}
-
-.blog-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:40px;
-}
-
-.blog-card{
-background:#161616;
-padding:35px;
-border-radius:28px;
-transition:0.35s;
-text-decoration:none;
-color:white;
-
-box-shadow:
-10px 10px 25px rgba(0,0,0,0.8),
--10px -10px 25px rgba(40,40,40,0.2);
-}
-
-.blog-card:hover{
-transform:translateY(-8px) scale(1.02);
-
-box-shadow:
-14px 14px 35px rgba(0,0,0,0.9),
--10px -10px 30px rgba(60,60,60,0.25);
-}
-
-.blog-tag{
-font-size:11px;
-letter-spacing:2px;
-text-transform:uppercase;
-opacity:.45;
-margin-bottom:12px;
-}
-
-.blog-card h3{
-font-size:22px;
-font-style:italic;
-margin-bottom:10px;
-}
-
-.blog-card p{
-font-size:13px;
-opacity:.6;
-line-height:1.6;
-}
-
-.blog-read{
-margin-top:16px;
-font-size:11px;
-letter-spacing:2px;
-opacity:.5;
-}
-
-</style>
-
-
-<div class="blog-wrapper">
-
-<h2 class="blog-title">Founder Insights</h2>
-
-<div class="blog-grid">
-
-
-<!-- Blog 1 -->
-
-<a href="startup-failure-india.html" class="blog-card">
-
-<div class="blog-tag">Research</div>
-
-<h3>Why Startups Are Failing in India</h3>
-
-<p>
-India is producing thousands of startups, yet most collapse within a few years. 
-This article explores the real structural reasons — weak business models,
-poor founder alignment, and the absence of strong local startup ecosystems.
-</p>
-
-<div class="blog-read">READ ARTICLE →</div>
-
-</a>
-
-
-<!-- Blog 2 -->
-
-<a href="isolation-enemy.html" class="blog-card">
-
-<div class="blog-tag">Culture</div>
-
-<h3>Isolation Is The Enemy</h3>
-
-<p>
-Many talented founders in smaller cities work in complete isolation.
-Without access to networks, mentors, or early validation,
-their ideas die before reaching the market.
-</p>
-
-<div class="blog-read">READ ARTICLE →</div>
-
-</a>
-
-
-<!-- Blog 3 -->
-
-<a href="execution-reality.html" class="blog-card">
-
-<div class="blog-tag">Execution</div>
-
-<h3>Execution Reality</h3>
-
-<p>
-Startup culture in India often promotes motivation over execution.
-Real founders succeed through relentless experimentation,
-customer feedback, and disciplined iteration.
-</p>
-
-<div class="blog-read">READ ARTICLE →</div>
-
-</a>
-
-
-<!-- Blog 4 -->
-
-<a href="founder-network-problem.html" class="blog-card">
-
-<div class="blog-tag">Network</div>
-
-<h3>The Founder Network Problem</h3>
-
-<p>
-Outside major metro cities, thousands of founders lack access to
-connections, credibility, and collaborative communities.
-This is the structural gap Vaithra aims to solve.
-</p>
-
-<div class="blog-read">READ ARTICLE →</div>
-
-</a>
-
-
-</div>
-</div>
-
-</section>
-
-<section id="faq" class="py-32 px-10 bg-white/5">
-  <div class="max-w-4xl mx-auto">
-    <h2 class="serif-italic text-5xl text-center mb-16">Queries</h2>
-    <div class="space-y-6">
-      <details class="p-6 border border-white/10 rounded-2xl">
-        <summary class="font-bold cursor-pointer">Is Vaithra an incubator?</summary>
-        <p class="mt-4 text-sm opacity-60">Not yet. We are a discovery layer that routes validated founders into execution pathways.</p>
-      </details>
-      <details class="p-6 border border-white/10 rounded-2xl">
-        <summary class="font-bold cursor-pointer">Why is meetup entry free?</summary>
-        <p class="mt-4 text-sm opacity-60">To remove access barriers. However, we maintain strict internal classification to filter out noise.</p>
-      </details>
-      <details class="p-6 border border-white/10 rounded-2xl">
-        <summary class="font-bold cursor-pointer">How do I become a City Representative?</summary>
-        <p class="mt-4 text-sm opacity-60">Selection is limited to founders or serious operators. Max 2 per district. No salary is provided.</p>
-      </details>
-    </div>
-  </div>
-</section>
-  
-<section id="events" style="background-color: #ffffff; padding: 160px 8%; font-family: 'Inter', sans-serif; color: #000; overflow: hidden;">
-    <div style="max-width: 1400px; margin: 0 auto;">
-        
-        <div style="text-align: center; margin-bottom: 100px;" class="reveal-up">
-            <span style="text-transform: uppercase; letter-spacing: 8px; font-size: 10px; font-weight: 900; color: #6a3df0; display: block; margin-bottom: 20px;">Protocol Expansion // 02</span>
-            <h2 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; font-weight: 900; letter-spacing: -2px; margin: 0;">Community Growth</h2>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 100px;">
-            
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="15000">0</span>+</h3>
-                <p class="stat-label">Community Members</p>
-            </div>
-
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="24">0</span>+</h3>
-                <p class="stat-label">Cities Connected</p>
-            </div>
-
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="1200">0</span></h3>
-                <p class="stat-label">Projects Started</p>
-            </div>
-
-            <div class="stat-box reveal-up">
-                <h3 class="stat-number"><span class="counter" data-target="850">0</span></h3>
-                <p class="stat-label">Active Contributors</p>
-            </div>
-
-        </div>
-
-        <div style="text-align: center;" class="reveal-up">
-            <button onclick="openCommunityForm()" class="community-cta">
-                Become a Community Member
-            </button>
-            <p style="margin-top: 25px; font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: #999; font-weight: 700;">
-                Direct Access to WhatsApp & Mail Updates
-            </p>
-        </div>
-
-    </div>
-</section>
-
-<style>
-    /* Premium Box Styling */
-    .stat-box {
-        padding: 80px 40px;
-        text-align: center;
-        background: #fdfdfd;
-        border: 1px solid #f0f0f0;
-        transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .stat-box:hover {
-        background: #ffffff;
-        border-color: #6a3df0;
-        box-shadow: 0 30px 60px rgba(106, 61, 240, 0.05);
-        transform: translateY(-10px);
-    }
-
-    .stat-number {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(3rem, 5vw, 5rem);
-        font-style: italic;
-        color: #6a3df0; /* Signature Purple */
-        font-weight: 900;
-        margin: 0 0 10px 0;
-        letter-spacing: -2px;
-    }
-
-    .stat-label {
-        color: #999;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        font-weight: 900;
-    }
-
-    .community-cta {
-        background: #000;
-        color: #fff;
-        border: none;
-        padding: 25px 60px;
-        border-radius: 4px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        font-size: 11px;
-        cursor: pointer;
-        transition: 0.4s;
-    }
-
-    .community-cta:hover {
-        background: #6a3df0;
-        transform: scale(1.05);
-    }
-</style>
-
-<script>
-
-function openCommunityForm(){
-const modal=document.getElementById("communityModal");
-
-if(modal){
-modal.style.display="block";
-document.body.style.overflow="hidden";
-}else{
-console.error("Community Modal not found");
-}
-
-}
-
-</script>
-  
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&family=Inter:wght@300;400;900&display=swap');
-
-    .vaithra-scope {
-        background-color: #ffffff;
-        color: #000000;
-        font-family: 'Inter', sans-serif;
-        padding: 100px 5%;
-        text-align: center;
-    }
-
-    /* 1. VIEW STATES */
-    #sponsor-detail-view {
-        display: none;
-        opacity: 0;
-        transition: opacity 0.8s ease;
-        text-align: left;
-        max-width: 1100px;
-        margin: 0 auto;
-    }
-
-    /* 2. TITLES - MAG STYLE */
-    .lux-header-title {
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(45px, 10vw, 90px);
-        font-style: italic;
-        font-weight: 900;
-        margin: 0 0 20px 0;
-        letter-spacing: -4px;
-        line-height: 0.85;
-    }
-
-    .lux-meta {
-        text-transform: uppercase;
-        letter-spacing: 8px;
-        font-size: 10px;
-        font-weight: 900;
-        color: #7c3aed; /* Deep Purple for Legibility */
-        display: block;
-        margin-bottom: 40px;
-    }
-
-    /* 3. PROFESSIONAL MARQUEE */
-    .marquee-container {
-        border-top: 1px solid #f0f0f0;
-        border-bottom: 1px solid #f0f0f0;
-        padding: 60px 0;
-        margin-bottom: 80px;
-        overflow: hidden;
-        display: flex;
-    }
-
-    .marquee-track {
-        display: flex;
-        width: max-content;
-        animation: luxScroll 45s linear infinite;
-    }
-
-    @keyframes luxScroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-
-    .brand-logo {
-        font-family: 'Playfair Display', serif;
-        font-size: 34px;
-        font-style: italic;
-        padding: 0 70px;
-        opacity: 0.4;
-        transition: 0.4s;
-        cursor: default;
-        white-space: nowrap;
-    }
-
-    .brand-logo:hover {
-        opacity: 1;
-        color: #7c3aed !important; /* Highlights Purple on Hover */
-    }
-
-    /* 4. THE ACTION BUTTON */
-    .lux-action-btn {
-        background: #000;
-        color: #fff;
-        padding: 24px 60px;
-        border-radius: 100px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        font-size: 11px;
-        cursor: pointer;
-        border: none;
-        transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .lux-action-btn:hover {
-        background: #7c3aed; /* Purple Theme */
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
-    }
-
-    /* 5. DETAIL VIEW (DELHI NODE STYLE) */
-    .detail-grid {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 80px;
-        padding-top: 40px;
-    }
-
-    @media (max-width: 768px) { .detail-grid { grid-template-columns: 1fr; } }
-
-    .detail-text h3 { 
-        font-family: 'Playfair Display', serif; 
-        font-size: clamp(40px, 6vw, 60px); 
-        margin: 0 0 30px 0; 
-        line-height: 1;
-    }
-    
-    .detail-text p { color: #555; line-height: 2; font-size: 1.1rem; margin-bottom: 40px; }
-    
-    .whatsapp-card {
-        background: #fdfcff; /* Very slight purple tint */
-        padding: 50px;
-        border-radius: 40px;
-        border: 1px solid #f3f0ff;
-        text-align: center;
-    }
-
-    .whatsapp-btn {
-        display: block;
-        background: #7c3aed;
-        color: #fff;
-        text-decoration: none;
-        padding: 22px;
-        border-radius: 20px;
-        font-weight: 900;
-        font-size: 12px;
-        letter-spacing: 2px;
-        transition: 0.3s;
-    }
-
-    .whatsapp-btn:hover { background: #000; }
-</style>
-
-<div class="vaithra-scope">
-    <div id="sponsor-landing-view">
-        <span class="lux-meta">Infrastructure Support</span>
-        <h2 class="lux-header-title">Backed by Builders</h2>
-        
-        <div class="marquee-container">
-            <div class="marquee-track">
-                <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
-                <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
-                <div class="brand-logo" style="color:#00A896">BuildStack</div>
-                <div class="brand-logo" style="color:#F4A261">StartupForge</div>
-                <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
-                <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
-                <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
-                <div class="brand-logo" style="color:#00A896">BuildStack</div>
-                <div class="brand-logo" style="color:#F4A261">StartupForge</div>
-                <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
-            </div>
-        </div>
-
-        <button class="lux-action-btn" onclick="showSponsorDetails()">
-            Become a Sponsor
-        </button>
-    </div>
-
-    <div id="sponsor-detail-view">
-        <button onclick="hideSponsorDetails()" style="background:none; border:none; cursor:pointer; font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:3px; color:#7c3aed; margin-bottom:40px;">← Back to Gallery</button>
-        
-        <div class="detail-grid">
-            <div class="detail-text">
-                <span style="text-transform:uppercase; letter-spacing:5px; font-size:10px; font-weight:900; color:#7c3aed;">Node Capital</span>
-                <h3>Scale the<br>New Protocol.</h3>
-                <p>Support the early stage founders and gain priority access to validated founders across our regional hubs. Professional clearance is managed via Vaivaanith Pvt Ltd.</p>
-            </div>
-            
-            <div class="whatsapp-card">
-                <p style="font-weight:900; margin-bottom:10px; text-transform:uppercase; font-size:10px; color:#999;">Final Authority Clearance</p>
-                <h4 style="font-size: 1.5rem; margin-bottom: 30px;">Direct Channel</h4>
-                <a href="https://wa.me/918977855998?text=Interested%20in%20becoming%20a%20Sponsor%20for%20Vaithra" class="whatsapp-btn">CONNECT VIA WHATSAPP</a>
-                <p style="font-size:10px; margin-top:20px; opacity:0.4; font-weight:bold;">8977855998 // SARDHAR MUSTHAFA</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function showSponsorDetails() {
-        document.getElementById('sponsor-landing-view').style.display = 'none';
-        const detail = document.getElementById('sponsor-detail-view');
-        detail.style.display = 'block';
-        setTimeout(() => { detail.style.opacity = '1'; }, 10);
-        window.scrollTo({ top: document.getElementById('founders').offsetTop - 100, behavior: 'smooth' });
-    }
-
-    function hideSponsorDetails() {
-        document.getElementById('sponsor-detail-view').style.display = 'none';
-        document.getElementById('sponsor-landing-view').style.display = 'block';
-        document.getElementById('sponsor-landing-view').style.opacity = '1';
-    }
-</script>
-
-<footer style="background-color: #ffffff; padding: 120px 5% 60px; border-top: 1px solid #f0f0f0; font-family: 'Inter', sans-serif; color: #000;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 60px; align-items: start;">
-          
-            <div style="grid-column: span 1;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 0 0 25px 0; font-weight: 900; letter-spacing: -1px;">VAITHRA</h3>
-                <p style="color: #666; font-size: 0.95rem; line-height: 1.8; margin-bottom: 35px; max-width: 300px;">
-                    Identifying and validating serious builders outside traditional hubs.
-                </p>
-                <div style="display: flex; gap: 25px; align-items: center;">
-                    <a href="https://instagram.com/wearevaithra" target="_blank" style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">Instagram</a>
-                    <a href="https://wa.me/918977855998" target="_blank" style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">WhatsApp</a>
+        // --- Regional Nodes Carousel Logic ---
+        const cities = [
+            { name: 'Hyderabad', status: 'Main Hub', file: 'hyderabad.jpeg' },
+            { name: 'Visakhapatnam', status: 'Coastal', file: 'vizag.jpeg' },
+            { name: 'Vijayawada', status: 'Core Node', file: 'vijayawada.jpeg' },
+            { name: 'Tirupati', status: 'Tech Hub', file: 'tirupati.jpeg' },
+            { name: 'Warangal', status: 'Expansion', file: 'warangal.jpeg' },
+            { name: 'Guntur', status: 'Industrial', file: 'guntur.jpeg' },
+            { name: 'Bengaluru', status: 'External', file: 'bengaluru.jpeg' },
+            { name: 'Chennai', status: 'Partner', file: 'chennai.jpeg' },
+            { name: 'Mumbai', status: 'Finance', file: 'mumbai.jpeg' },
+            { name: 'Delhi', status: 'Capital', file: 'delhi.jpeg' }
+        ];
+
+        function generateCards(cityList) {
+            return cityList.map(city => `
+        <div class="node-item" onclick="openMagazine('${city.name}', '${city.status}', 'assets/images/${city.file}')">
+            <div class="card-refractive">
+                <div class="img-wrapper">
+                    <img src="assets/images/${city.file}" alt="${city.name}" onerror="this.src='https://placehold.co/400x500?text=${city.name}'">
+                </div>
+                <div class="card-info">
+                    <h3>${city.name}</h3>
+                    <p>${city.status}</p>
                 </div>
             </div>
-
-            <div>
-                <h4 style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">Explore</h4>
-                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
-                    <li><a href="#about" style="color: #444; text-decoration: none; transition: 0.2s;">The Vision</a></li>
-                    <li><a href="#founders" style="color: #444; text-decoration: none; transition: 0.2s;">The Core Team</a></li>
-                    <li><a href="#reps" style="color: #444; text-decoration: none; transition: 0.2s;">Regional Nodes</a></li>
-                    <li><a href="#blogs" style="color: #444; text-decoration: none; transition: 0.2s;">Founder Insights</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">Compliance</h4>
-                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
-                    <li><a href="/privacy-policy" style="color: #444; text-decoration: none;">Privacy Policy</a></li>
-                    <li><a href="/terms-conditions" style="color: #444; text-decoration: none;">Terms & Conditions</a></li>
-                    <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry" style="color: #444; text-decoration: none;">Official Clearance</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">Corporate</h4>
-                <p style="font-size: 12px; font-weight: 900; color: #000; text-transform: uppercase; letter-spacing: 3px; margin: 0;">VAIVAANITH PVT LTD</p>
-                <p style="font-size: 11px; color: #999; margin-top: 10px; line-height: 1.6;">Holding entity for Vaithra and Glowvai.in infrastructure.</p>
-            </div>
         </div>
+    `).join('');
+        }
+        document.getElementById('nodesTrack').innerHTML = generateCards(cities) + generateCards(cities);
 
-        <div style="margin-top: 100px; padding-top: 40px; border-top: 1px solid #f5f5f5; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 3px; font-weight: 700;">
-            <span>© 2026 Vaithra. All rights reserved.</span>
-            <span>Authored by Sardhar Musthafa</span>
-        </div>
-    </div>
-</footer>
-</script>
-<div id="founderModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-[9999]">
-  <div class="bg-white text-black max-w-xl w-full rounded-3xl p-10 relative animate-scale">
-    
-    <button onclick="closeFounder()" class="absolute top-4 right-4 text-xl font-bold">✕</button>
-    
-    <h3 id="modalName" class="text-3xl font-serif italic mb-2"></h3>
-    <p id="modalRole" class="uppercase tracking-widest text-xs text-gray-400 mb-6"></p>
-    <p id="modalBio" class="text-sm leading-relaxed text-gray-600"></p>
+        function openMagazine(city, status, imgUrl) {
+            document.getElementById('magCity').innerText = city;
+            document.getElementById('magStatus').innerText = status;
+            document.getElementById('magImg').src = imgUrl;
 
-  </div>
-</div> 
-  <script>
-const founders = {
-  sardhar: {
-    name: "Sardhar Musthafa",
-    role: "Founder & Final Authority — Vaithra",
-    bio: "the founder and final decision-maker of Vaithra.He leads the vision, strategy, and long-term direction of the entire ecosystem.Beyond Vaithra, he is a content creator and YouTuber, and the originator of multiple ideas that operate under the parent company.Every initiative,partnership, and expansion ultimately aligns with his execution standards and vision."
-  },
-  rahimath: {
-    name: "Rahimath",
-    role: "Core Partner — Vaithra | Founder — Glowvai.in",
-    bio: "the core partner of Sardhar Musthafa and a foundational force behind Vaithra’s operations.He plays a key role in coordination, execution, and internal stability.He is also the founder of Glowvai.in, operating it with sardhar musthafa while maintaining strategic alignment with the parent ecosystem."
-  },
-  gopi: {
-    name: "Erugoni Chinna Gopi",
-    role: "Strategic Owner & Internal Systems Lead",
-    bio: "Gopi is a strategic owner within the organization and oversees internal software systems and technical operations.The platforms and systems managed by him are acquired and operated under the parent company, ensuring scalability, security, and long-term control."
-  },
-  hari: {
-    name: "Hari Hara Singh",
-    role: "Founder — Vishvarupa Creations | Media Partner — Vaithra",
-    bio: "Hari Hara Singh is the founder of Vishvarupa Creations and serves as Vaithra’s official media partner and organizational representative.He leads media execution, event documentation, and brand representation across platforms and public engagements"
-  }
-};
+            const modal = document.getElementById('magazineModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
 
-function openFounder(key) {
-  const data = founders[key];
-  document.getElementById("modalName").innerText = data.name;
-  document.getElementById("modalRole").innerText = data.role;
-  document.getElementById("modalBio").innerText = data.bio;
+        function closeMagazine() {
+            const modal = document.getElementById('magazineModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
 
-  document.getElementById("founderModal").classList.remove("hidden");
-  document.getElementById("founderModal").classList.add("flex");
-}
+        // --- Community Form Logic ---
+        function openCommunityForm() {
+            const modal = document.getElementById('communityModal');
+            if (modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeCommunityForm() {
+            const modal = document.getElementById('communityModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
 
-// ... existing founder modal script ...
+        // --- Smooth Live Counter Logic ---
+        const startCount = (el) => {
+            const target = +el.getAttribute('data-target');
+            const speed = 2000;
+            const startTime = performance.now();
+            const update = (now) => {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / speed, 1);
+                const currentCount = Math.floor(progress * target);
+                el.innerText = currentCount.toLocaleString();
+                if (progress < 1) requestAnimationFrame(update);
+                else el.innerText = target.toLocaleString();
+            };
+            requestAnimationFrame(update);
+        };
 
-function toggleApplySection() {
-    const overlay = document.getElementById('applyOverlay');
-    if (!overlay) return; // Safety check
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                    const counter = entry.target.querySelector('.counter');
+                    if (counter && !counter.classList.contains('started')) {
+                        counter.classList.add('started');
+                        startCount(counter);
+                    }
+                }
+            });
+        }, { threshold: 0.2 });
 
-    if (overlay.classList.contains('translate-y-full')) {
-        overlay.classList.remove('translate-y-full');
-        overlay.classList.add('translate-y-0');
-        document.body.style.overflow = 'hidden'; 
-    } else {
-        overlay.classList.remove('translate-y-0');
-        overlay.classList.add('translate-y-full');
-        document.body.style.overflow = 'auto'; 
-    }
-}
-    #applyOverlay {
-    transition: transform 0.7s ease-in-out;
-}
-.translate-y-0 {
-    transform: translateY(0) !important;
-}
-.translate-y-full {
-    transform: translateY(100%) !important;
-}
-</script> </body>
+        document.querySelectorAll('.reveal-up').forEach(el => statsObserver.observe(el));
+
+        // --- Sponsors Logic ---
+        function showSponsorDetails() {
+            document.getElementById('sponsor-landing-view').style.display = 'none';
+            const detail = document.getElementById('sponsor-detail-view');
+            detail.style.display = 'block';
+            setTimeout(() => { detail.style.opacity = '1'; }, 10);
+            window.scrollTo({ top: document.getElementById('sponsor').offsetTop - 100, behavior: 'smooth' });
+        }
+        function hideSponsorDetails() {
+            document.getElementById('sponsor-detail-view').style.display = 'none';
+            document.getElementById('sponsor-landing-view').style.display = 'block';
+            document.getElementById('sponsor-landing-view').style.opacity = '1';
+        }
+    </script>
+
+</body>
+
 </html>
