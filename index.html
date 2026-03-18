@@ -1,1375 +1,1307 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
-
+<html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RD61M12V39"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-RD61M12V39');
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vaithra | The Founder Community</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,900;1,900&family=Zen+Dots&family=Inter:wght@300;400;700;900&display=swap"
-        rel="stylesheet">
-
-    <style>
-        /* ------------------------
-       CORE VARIABLES
-    ------------------------ */
-        :root {
-            --neon: #DFFF00;
-            --bg: #050505;
-            --text: #ffffff;
-            --nav-bg: rgba(15, 15, 15, 0.85);
-            --card: #111;
-            --neo-bg: #EBECF0;
-            --neo-shadow: #BABECC;
-            --neo-white: #FFF;
-            --dur: 1000ms;
-            --lux-white: #ffffff;
-            --lux-black: #000000;
-            --lux-grey: #f8f8f8;
-        }
-
-        body.light-mode {
-            --bg: #f5f5f7;
-            --text: #050505;
-            --nav-bg: rgba(255, 255, 255, 0.85);
-            --card: #ffffff;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            transition: background .4s ease, color .4s ease;
-            overflow-x: hidden;
-            margin: 0;
-        }
-
-        section {
-            scroll-margin-top: 120px;
-        }
-
-        /* ------------------------
-       TYPOGRAPHY
-    ------------------------ */
-        .serif-italic,
-        .lux-header-title,
-        .m-name {
-            font-family: 'Playfair Display', serif !important;
-            color: #000;
-            font-style: italic;
-            font-weight: 900;
-        }
-
-        .zen {
-            font-family: 'Zen Dots', cursive;
-        }
-
-        .text-purple-lux {
-            color: #7c3aed !important;
-        }
-
-        /* ------------------------
-       NAVIGATION & OVERLAYS
-    ------------------------ */
-        .nav-island {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 92%;
-            max-width: 1200px;
-            padding: 14px 32px;
-            background: rgba(245, 245, 247, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 100px;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            transition: all 0.4s ease;
-        }
-
-        .nav-island a,
-        .nav-island .zen {
-            color: #000000 !important;
-            text-decoration: none;
-        }
-
-        .nav-island a {
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        #applyOverlay {
-            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            z-index: 9999 !important;
-        }
-
-        .translate-y-0 {
-            transform: translateY(0) !important;
-        }
-
-        .translate-y-full {
-            transform: translateY(100%) !important;
-        }
-
-        /* ------------------------
-       FOUNDERS CORE SECTION
-    ------------------------ */
-        .boutique-header {
-            padding: 80px 5%;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-            background: var(--lux-white);
-        }
-
-        .boutique-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 5rem;
-            margin: 0;
-            font-style: italic;
-            color: #000;
-        }
-
-        .lux-tag {
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            opacity: 0.4;
-            color: #000;
-        }
-
-        .founder-strip {
-            display: flex;
-            align-items: center;
-            padding: 60px 5%;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.5s ease;
-            position: relative;
-            overflow: hidden;
-            background: var(--lux-white);
-            color: var(--lux-black);
-        }
-
-        .founder-strip:hover {
-            background: var(--lux-grey);
-        }
-
-        .strip-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            opacity: 0.2;
-            width: 60px;
-        }
-
-        .strip-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            flex: 1;
-            transition: transform 0.4s ease;
-            color: #000;
-        }
-
-        .founder-strip:hover .strip-name {
-            transform: translateX(20px);
-        }
-
-        .strip-role {
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.75rem;
-            font-weight: 900;
-            width: 300px;
-            text-align: right;
-        }
-
-        .full-slide-modal {
-            position: fixed;
-            inset: 0;
-            background: var(--lux-white);
-            z-index: 10000;
-            display: none;
-            flex-direction: row;
-            transform: translateY(100%);
-            transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1);
-            color: var(--lux-black);
-        }
-
-        .full-slide-modal.active {
-            transform: translateY(0);
-            display: flex;
-        }
-
-        .modal-portrait {
-            flex: 1;
-            background: #111;
-            height: 100vh;
-        }
-
-        .modal-portrait img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%);
-            opacity: 0.8;
-        }
-
-        .modal-content-area {
-            flex: 1.2;
-            padding: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-        }
-
-        .close-trigger {
-            position: absolute;
-            top: 60px;
-            right: 60px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 900;
-            color: #000;
-        }
-
-        .m-role-tag {
-            color: #c5a059;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-size: 0.8rem;
-            margin-bottom: 40px;
-        }
-
-        .m-description {
-            line-height: 2.2;
-            font-size: 1.15rem;
-            color: #555;
-            max-width: 550px;
-            border-left: 2px solid #000;
-            padding-left: 30px;
-        }
-
-        /* ------------------------
-       REPS CAROUSEL (CONSOLIDATED)
-    ------------------------ */
-        .carousel-track-premium {
-            display: flex;
-            width: max-content;
-            animation: scrollNodes 40s linear infinite;
-            padding: 20px 0;
-        }
-
-        .carousel-track-premium:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes scrollNodes {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        .node-item {
-            width: 340px;
-            padding: 0 15px;
-            cursor: pointer;
-            perspective: 1500px;
-        }
-
-        .card-refractive {
-            background: #FFFFFF;
-            height: 440px;
-            border-radius: 40px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 20px 20px 40px #d9d9d9, -20px -20px 40px #ffffff;
-            transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
-            transform-style: preserve-3d;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-        }
-
-        .img-wrapper {
-            width: 100%;
-            height: 72%;
-            overflow: hidden;
-            background: #eee;
-        }
-
-        .card-refractive img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%);
-            transition: 0.8s ease;
-        }
-
-        .card-info {
-            padding: 30px;
-            background: white;
-            height: 28%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            transform: translateZ(30px);
-        }
-
-        .card-info h3 {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #000;
-            margin: 0;
-            letter-spacing: -0.02em;
-        }
-
-        .card-info p {
-            font-size: 10px;
-            color: #A5C400;
-            font-weight: 900;
-            margin-top: 4px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .node-item:hover .card-refractive {
-            transform: rotateX(8deg) rotateY(-8deg) translateY(-20px);
-            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.08);
-            border-color: #A5C400;
-        }
-
-        .node-item:hover img {
-            filter: grayscale(0%);
-            transform: scale(1.1);
-        }
-
-        .animate-scale {
-            animation: magazineReveal 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes magazineReveal {
-            from {
-                opacity: 0;
-                transform: scale(0.97) translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        /* ------------------------
-       BLOG SECTION
-    ------------------------ */
-        .blog-wrapper {
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        .blog-title {
-            font-size: 48px;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: white;
-            opacity: .85;
-            margin-bottom: 70px;
-            text-align: center;
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-        }
-
-        .blog-card {
-            background: #161616;
-            padding: 35px;
-            border-radius: 28px;
-            transition: 0.35s;
-            text-decoration: none;
-            color: white;
-            box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.8), -10px -10px 25px rgba(40, 40, 40, 0.2);
-        }
-
-        .blog-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 14px 14px 35px rgba(0, 0, 0, 0.9), -10px -10px 30px rgba(60, 60, 60, 0.25);
-        }
-
-        .blog-tag {
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: .45;
-            margin-bottom: 12px;
-        }
-
-        .blog-card h3 {
-            font-size: 22px;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .blog-card p {
-            font-size: 13px;
-            opacity: .6;
-            line-height: 1.6;
-        }
-
-        .blog-read {
-            margin-top: 16px;
-            font-size: 11px;
-            letter-spacing: 2px;
-            opacity: .5;
-        }
-
-        /* ------------------------
-       COMMUNITY SECTION
-    ------------------------ */
-        .stat-box {
-            padding: 80px 40px;
-            text-align: center;
-            background: #fdfdfd;
-            border: 1px solid #f0f0f0;
-            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .stat-box:hover {
-            background: #ffffff;
-            border-color: #6a3df0;
-            box-shadow: 0 30px 60px rgba(106, 61, 240, 0.05);
-            transform: translateY(-10px);
-        }
-
-        .stat-number {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 5vw, 5rem);
-            font-style: italic;
-            color: #6a3df0;
-            font-weight: 900;
-            margin: 0 0 10px 0;
-            letter-spacing: -2px;
-        }
-
-        .stat-label {
-            color: #999;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 900;
-        }
-
-        .community-cta {
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 25px 60px;
-            border-radius: 4px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.4s;
-        }
-
-        .community-cta:hover {
-            background: #6a3df0;
-            transform: scale(1.05);
-        }
-
-        .reveal-up {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: 1s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        /* ------------------------
-       SPONSOR SECTION
-    ------------------------ */
-        .vaithra-scope {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: 'Inter', sans-serif;
-            padding: 100px 5%;
-            text-align: center;
-        }
-
-        #sponsor-detail-view {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-            text-align: left;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .lux-header-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(45px, 10vw, 90px);
-            font-style: italic;
-            font-weight: 900;
-            margin: 0 0 20px 0;
-            letter-spacing: -4px;
-            line-height: 0.85;
-        }
-
-        .lux-meta {
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            font-size: 10px;
-            font-weight: 900;
-            color: #7c3aed;
-            display: block;
-            margin-bottom: 40px;
-        }
-
-        .marquee-container {
-            border-top: 1px solid #f0f0f0;
-            border-bottom: 1px solid #f0f0f0;
-            padding: 60px 0;
-            margin-bottom: 80px;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .marquee-track {
-            display: flex;
-            width: max-content;
-            animation: luxScroll 45s linear infinite;
-        }
-
-        @keyframes luxScroll {
-            0% {
-                transform: translateX(0);
-            }
-
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        .brand-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 34px;
-            font-style: italic;
-            padding: 0 70px;
-            opacity: 0.4;
-            transition: 0.4s;
-            cursor: default;
-            white-space: nowrap;
-        }
-
-        .brand-logo:hover {
-            opacity: 1;
-            color: #7c3aed !important;
-        }
-
-        .lux-action-btn {
-            background: #000;
-            color: #fff;
-            padding: 24px 60px;
-            border-radius: 100px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 11px;
-            cursor: pointer;
-            border: none;
-            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .lux-action-btn:hover {
-            background: #7c3aed;
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 80px;
-            padding-top: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .detail-text h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(40px, 6vw, 60px);
-            margin: 0 0 30px 0;
-            line-height: 1;
-            color: #000;
-        }
-
-        .detail-text p {
-            color: #555;
-            line-height: 2;
-            font-size: 1.1rem;
-            margin-bottom: 40px;
-        }
-
-        .whatsapp-card {
-            background: #fdfcff;
-            padding: 50px;
-            border-radius: 40px;
-            border: 1px solid #f3f0ff;
-            text-align: center;
-        }
-
-        .whatsapp-btn {
-            display: block;
-            background: #7c3aed;
-            color: #fff;
-            text-decoration: none;
-            padding: 22px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 12px;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-
-        .whatsapp-btn:hover {
-            background: #000;
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vaithra | The Founder Community</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;
+  --OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;
+  --INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;
+  --GD:#B8A060;--GDl:#D4BB80;
+  --BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22);
+  --SS:0 2px 20px rgba(24,22,15,.05);
+  --SM:0 8px 48px rgba(24,22,15,.09);
+  --SL:0 20px 80px rgba(24,22,15,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
+.ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OL);display:block}
+.bp{background:var(--INK);color:var(--W);border:none;padding:14px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.bp:hover{background:var(--OL);transform:translateY(-2px);box-shadow:0 10px 28px rgba(74,92,58,.28)}
+.bs{background:transparent;color:var(--INK);border:1px solid var(--BD2);padding:14px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center}
+.bs:hover{background:var(--INK);color:var(--W)}
+.xb{width:40px;height:40px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--INK)}
+.xb:hover{background:var(--INK);color:var(--W)}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rv.on{opacity:1;transform:none}
+.rl{opacity:0;transform:translateX(-34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rl.on{opacity:1;transform:none}
+.rr{opacity:0;transform:translateX(34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.rr.on{opacity:1;transform:none}
+.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}
+
+/* NAV */
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK)}
+.nav-links{display:flex;gap:22px;list-style:none;align-items:center}
+.nav-links a{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--OL)}
+.nav-r{display:flex;gap:10px;align-items:center}
+.plat-btn{display:flex;align-items:center;gap:8px;background:var(--OL);color:var(--W);border:none;padding:9px 18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.plat-btn:hover,.plat-btn.act{background:var(--OLd)}
+.pdots{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:12px}
+.pd{width:4px;height:4px;background:rgba(255,255,255,.65);border-radius:50%}
+
+/* APPLY OVERLAY */
+#applyOv{position:fixed;inset:0;background:var(--W2);z-index:10000;transform:translateY(100%);transition:transform .7s cubic-bezier(.4,0,.2,1);overflow:hidden}
+#applyOv.open{transform:translateY(0)}
+.ov-hd{padding:18px 36px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--BD);background:var(--W2);position:sticky;top:0;z-index:5}
+.ov-body{height:calc(100vh - 72px);overflow-y:auto}
+.fw{max-width:860px;margin:36px auto;padding:0 20px 80px}
+.fb{background:#fff;border-radius:28px;overflow:hidden;border:1px solid var(--BD);box-shadow:var(--SM)}
+
+/* FEATURE HUB */
+#fHub{position:fixed;inset:0;z-index:9500;pointer-events:none;display:flex;align-items:center;justify-content:center}
+#fHub.open{pointer-events:all}
+.fh-bd{position:absolute;inset:0;background:rgba(24,22,15,.55);backdrop-filter:blur(18px);opacity:0;transition:opacity .4s;pointer-events:none}
+#fHub.open .fh-bd{opacity:1;pointer-events:all}
+.fh-panel{position:relative;z-index:2;width:90vw;max-width:1100px;max-height:86vh;background:var(--W);border-radius:28px;box-shadow:0 36px 100px rgba(24,22,15,.2);overflow:hidden;display:flex;flex-direction:column;transform:scale(.93) translateY(22px);opacity:0;transition:transform .42s cubic-bezier(.16,1,.3,1),opacity .32s;pointer-events:none}
+#fHub.open .fh-panel{transform:none;opacity:1;pointer-events:all}
+.fh-head{padding:26px 32px 22px;border-bottom:1px solid var(--BD);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.fh-head h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--INK)}
+.fh-head p{font-size:11px;color:var(--INKm);margin-top:2px;font-weight:300}
+.fh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--BD);overflow-y:auto;flex:1}
+.ft{background:var(--W);padding:32px 28px;cursor:pointer;transition:all .35s;position:relative;display:flex;flex-direction:column;gap:12px}
+.ft:hover{background:var(--W2)}
+.ft::after{content:'→';position:absolute;bottom:22px;right:22px;font-size:14px;color:var(--OL);opacity:0;transform:translateX(-6px);transition:all .3s}
+.ft:hover::after{opacity:1;transform:none}
+.ft-cv{width:60px;height:60px;display:block;border-radius:14px}
+.ft-badge{display:inline-flex;align-items:center;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:3px 9px;border-radius:100px;width:fit-content}
+.bc{background:rgba(74,92,58,.1);color:var(--OL);border:1px solid var(--BD2)}
+.bn{background:rgba(184,160,96,.1);color:var(--GD);border:1px solid rgba(184,160,96,.25)}
+.bpr{background:rgba(24,22,15,.06);color:var(--INK);border:1px solid rgba(24,22,15,.12)}
+.ft h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--INK);line-height:1.1}
+.ft p{font-size:11px;color:var(--INKm);line-height:1.65;font-weight:300;flex:1}
+
+/* FEATURE DETAIL */
+#fDet{position:fixed;inset:0;z-index:10200;display:flex;align-items:center;justify-content:center;padding:18px;pointer-events:none;opacity:0;transition:opacity .3s}
+#fDet.open{pointer-events:all;opacity:1}
+.fd-bd{position:absolute;inset:0;background:rgba(24,22,15,.68);backdrop-filter:blur(22px)}
+.fd-box{position:relative;z-index:2;background:var(--W);border-radius:26px;width:100%;max-width:960px;max-height:86vh;overflow:hidden;display:flex;box-shadow:0 40px 120px rgba(24,22,15,.22);transform:translateY(18px) scale(.97);transition:transform .38s cubic-bezier(.16,1,.3,1)}
+#fDet.open .fd-box{transform:none}
+.fd-vis{width:40%;background:var(--OLd);position:relative;overflow:hidden;min-height:460px}
+.fd-vis canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.fd-vis-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(46,58,36,.75),rgba(74,92,58,.3))}
+.fd-vis-lbl{position:absolute;bottom:28px;left:28px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.35)}
+.fd-cnt{flex:1;padding:48px 44px;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;position:relative}
+.fd-ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--OL);margin-bottom:12px}
+.fd-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,52px);font-weight:300;font-style:italic;color:var(--INK);line-height:.9;margin-bottom:18px}
+.fd-desc{font-size:13px;color:var(--INKm);line-height:1.85;font-weight:300;margin-bottom:28px}
+.fd-items{display:flex;flex-direction:column}
+.fd-item{display:flex;gap:12px;padding:14px 0;border-top:1px solid var(--BD);align-items:flex-start}
+.fd-item:last-child{border-bottom:1px solid var(--BD)}
+.fd-dot{width:5px;height:5px;background:var(--OL);border-radius:50%;margin-top:5px;flex-shrink:0}
+.fd-item h5{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:3px}
+.fd-item p{font-size:11px;color:var(--INKm);line-height:1.6;font-weight:300}
+.fd-acts{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;background:var(--W);padding:120px 5% 80px;text-align:center}
+#hcv{position:absolute;inset:0;width:100%;height:100%;opacity:.32;pointer-events:none}
+.hgr{position:absolute;inset:0;opacity:.5;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E")}
+.hero-in{position:relative;z-index:2;max-width:1060px}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;padding:7px 18px;border:1px solid var(--BD2);border-radius:100px;margin-bottom:40px;background:rgba(74,92,58,.06)}
+.hdot{width:6px;height:6px;background:var(--OL);border-radius:50%;animation:bk 2s ease-in-out infinite}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(54px,10vw,126px);font-weight:300;line-height:.88;letter-spacing:-.03em;color:var(--INK)}
+.hero-title em{font-style:italic;color:var(--OL)}
+.hero-title span{display:block;font-style:italic;font-weight:600}
+.hero-sub{font-size:clamp(13px,1.4vw,16px);color:var(--INKm);max-width:520px;margin:28px auto 46px;line-height:1.85;font-weight:300}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:68px}
+.hscroll{display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.28}
+.hsb{width:1px;height:42px;background:var(--INK);animation:sb 2s ease-in-out infinite}
+@keyframes sb{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.hscroll span{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.24em;text-transform:uppercase}
+
+/* ABOUT */
+#about{background:var(--W2);padding:140px 5%}
+.ab-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.abl{position:relative}
+.abq{font-family:'Cormorant Garamond',serif;font-size:clamp(80px,14vw,180px);color:var(--OL);opacity:.07;line-height:1;font-style:italic;font-weight:600;position:absolute;top:-40px;left:-16px;pointer-events:none;user-select:none}
+.ab-lead{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.6vw,32px);font-weight:300;font-style:italic;line-height:1.5;color:var(--INK);margin-bottom:22px;position:relative;z-index:1}
+.ab-body{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;position:relative;z-index:1}
+.abr{display:flex;flex-direction:column;gap:18px}
+.acard{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:28px;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.acard:hover{transform:translateY(-4px);box-shadow:var(--SM);border-color:var(--BD2)}
+.acn{font-family:'Cormorant Garamond',serif;font-size:40px;font-style:italic;color:var(--OL);opacity:.3;line-height:1;margin-bottom:8px}
+.acard h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px;color:var(--INK)}
+.acard p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300}
+
+/* POB */
+#pob{background:var(--W3);padding:140px 5%;overflow:hidden}
+.pob-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.pob-cv{height:440px;border-radius:22px;overflow:hidden;background:var(--OLd);position:relative;box-shadow:var(--SL)}
+#pcv{width:100%!important;height:100%!important}
+.pob-steps{margin-top:40px;display:flex;flex-direction:column}
+.pob-s{display:flex;gap:18px;padding:22px 0;border-bottom:1px solid var(--BD);align-items:flex-start;transition:padding .3s}
+.pob-s:hover{padding-left:8px}
+.pob-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-style:italic;color:var(--OL);opacity:.24;line-height:1;min-width:40px;transition:opacity .3s}
+.pob-s:hover .pob-n{opacity:.65}
+.pob-t h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.pob-t p{font-size:12px;color:var(--INKm);line-height:1.7;font-weight:300}
+
+/* BADGE */
+#vbadge{background:var(--W);padding:120px 5%}
+.vb-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:center}
+.badge-show{display:flex;justify-content:center}
+.badge-orb{position:relative;width:290px;height:290px;display:flex;align-items:center;justify-content:center}
+.badge-ring{position:absolute;border-radius:50%;border:1px solid var(--BD2);animation:spin 22s linear infinite}
+.badge-ring:nth-child(1){width:290px;height:290px;animation-duration:28s}
+.badge-ring:nth-child(2){width:228px;height:228px;animation-duration:18s;animation-direction:reverse;border-style:dashed}
+.badge-ring:nth-child(3){width:168px;height:168px;animation-duration:11s}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.badge-core{position:relative;z-index:2;width:120px;height:120px;background:var(--INK);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--OL),0 0 44px rgba(74,92,58,.18);transition:transform .4s}
+.badge-core:hover{transform:scale(1.06)}
+.badge-icon{font-size:24px;margin-bottom:4px}
+.badge-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--OLl);text-align:center}
+.vchecks{display:flex;flex-direction:column;gap:0;max-width:400px;margin:36px 0}
+.vc{display:flex;gap:12px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--BD)}
+.vc:last-child{border-bottom:1px solid var(--BD)}
+.vc-tick{color:var(--OL);font-size:15px;margin-top:2px;flex-shrink:0}
+.vc h5{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:3px}
+.vc p{font-size:11px;color:var(--INKm);font-weight:300}
+
+/* GRANTS */
+#grants{background:var(--OLd);padding:140px 5%;position:relative;overflow:hidden}
+.gr-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:260px;font-weight:600;font-style:italic;color:rgba(255,255,255,.025);top:-30px;right:-20px;pointer-events:none;line-height:1;user-select:none}
+.gr-in{max-width:1280px;margin:0 auto}
+.gr-top{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-bottom:64px;align-items:end}
+.gr-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,84px);font-weight:300;color:var(--W);line-height:.88;letter-spacing:-.03em}
+.gr-title em{font-style:italic;color:var(--GDl)}
+.gr-desc{font-size:13px;color:rgba(250,250,248,.48);line-height:1.9;font-weight:300}
+.gr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.gc{background:rgba(250,250,248,.05);border:1px solid rgba(250,250,248,.1);border-radius:20px;padding:36px 28px;transition:all .45s cubic-bezier(.16,1,.3,1)}
+.gc:hover{background:rgba(250,250,248,.08);border-color:rgba(184,160,96,.28);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.gc-amt{font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;font-weight:600;color:var(--GDl);margin-bottom:6px;line-height:1}
+.gc-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(250,250,248,.33);margin-bottom:18px}
+.gc h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--W);margin-bottom:8px}
+.gc p{font-size:11px;color:rgba(250,250,248,.44);line-height:1.8;font-weight:300}
+
+/* BUILD IN PUBLIC */
+#bip{background:var(--W2);padding:140px 5%}
+.bip-in{max-width:1280px;margin:0 auto}
+.bip-hd{display:grid;grid-template-columns:1fr auto;align-items:end;margin-bottom:52px}
+.bip-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.bpost{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:24px;transition:all .4s;position:relative;overflow:hidden}
+.bpost::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--OL),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.bpost:hover::before{transform:scaleX(1)}
+.bpost:hover{transform:translateY(-4px);box-shadow:var(--SM);border-color:var(--BD2)}
+.bpost.feat{grid-column:span 2;background:var(--INK);border-color:transparent}
+.bpav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;font-weight:600;flex-shrink:0}
+.bphd{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.bpnm{font-size:11px;font-weight:700;color:var(--INK)}
+.bpost.feat .bpnm{color:var(--W)}
+.bpmt{font-size:9px;color:var(--INKl);font-weight:300}
+.bpost.feat .bpmt{color:rgba(250,250,248,.33)}
+.bptxt{font-size:11px;color:var(--INKm);line-height:1.7;font-weight:300;margin-bottom:12px}
+.bpost.feat .bptxt{color:rgba(250,250,248,.58);font-size:12px}
+.bptags{display:flex;flex-wrap:wrap;gap:5px}
+.bptag{font-size:8px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl)}
+.bpost.feat .bptag{border-color:rgba(74,92,58,.4);color:var(--OLl)}
+
+/* DAILY DROP */
+#dkd{background:var(--W);padding:120px 5%}
+.dkd-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start}
+.dkd-stack{position:relative;height:360px}
+.dcard{position:absolute;width:100%;background:#fff;border-radius:20px;padding:32px;border:1px solid var(--BD);box-shadow:var(--SS);transition:all .5s}
+.dcard:nth-child(1){top:0;z-index:3}
+.dcard:nth-child(2){top:13px;left:13px;z-index:2;opacity:.55;transform:scale(.97)}
+.dcard:nth-child(3){top:26px;left:26px;z-index:1;opacity:.28;transform:scale(.94)}
+.dcard:nth-child(1):hover{transform:translateY(-7px) rotate(-.5deg)}
+.dkd-dt{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--OL);margin-bottom:16px}
+.dkd-ttl{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--INK);margin-bottom:10px;line-height:1.2}
+.dkd-prev{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300}
+.dkd-rm{margin-top:20px;display:inline-flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);text-decoration:none;border-bottom:1px solid rgba(74,92,58,.28);padding-bottom:3px;transition:all .3s}
+.dkd-rm:hover{color:var(--OL);border-color:var(--OL)}
+.dkd-sub{background:var(--W2);border-radius:20px;padding:36px;border:1px solid var(--BD);margin-top:32px}
+.dkd-sub h4{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--INK);margin-bottom:7px}
+.dkd-sub p{font-size:12px;color:var(--INKm);line-height:1.7;margin-bottom:18px}
+.sub-grp{display:flex;border:1px solid var(--BD2);border-radius:100px;overflow:hidden;background:var(--W)}
+.sub-inp{flex:1;border:none;background:transparent;padding:12px 18px;font-size:12px;color:var(--INK);outline:none;font-family:'DM Sans',sans-serif}
+.sub-inp::placeholder{color:var(--INKl)}
+.sub-btn{background:var(--INK);color:var(--W);border:none;padding:12px 20px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:background .3s}
+.sub-btn:hover{background:var(--OL)}
+
+/* FOUNDERS */
+#founders{background:var(--W2)}
+.fnd-hd{padding:96px 5% 0;max-width:1280px;margin:0 auto}
+.fnd-row{display:flex;align-items:center;padding:34px 5%;border-bottom:1px solid var(--BD);cursor:pointer;transition:all .45s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;background:var(--W2)}
+.fnd-row::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--OL);transform:scaleY(0);transition:transform .35s}
+.fnd-row:hover::after{transform:scaleY(1)}
+.fnd-row:hover{background:var(--W3);padding-left:calc(5% + 12px)}
+.fr-num{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;opacity:.2;width:52px;color:var(--INK)}
+.fr-name{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,50px);font-weight:300;flex:1;color:var(--INK);letter-spacing:-.02em;transition:all .3s}
+.fnd-row:hover .fr-name{font-style:italic}
+.fr-role{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl);width:210px;text-align:right}
+.fr-arr{font-size:16px;margin-left:24px;opacity:0;transform:translateX(-8px);transition:all .3s;color:var(--OL)}
+.fnd-row:hover .fr-arr{opacity:1;transform:none}
+.fmod{position:fixed;inset:0;z-index:10000;background:var(--W);display:none;transform:translateY(100%);transition:transform .72s cubic-bezier(.85,0,.15,1)}
+.fmod.open{display:flex;transform:translateY(0)}
+.fmod-l{width:40%;background:var(--INK);position:relative;overflow:hidden}
+.fmod-l img{width:100%;height:100%;object-fit:cover;filter:grayscale(28%);opacity:.82}
+.fmod-r{flex:1;padding:72px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;background:var(--W);position:relative}
+.fmod-tag{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--OL);margin-bottom:14px}
+.fmod-name{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-style:italic;font-weight:600;color:var(--INK);line-height:.9;letter-spacing:-.02em;margin-bottom:7px}
+.fmod-role{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl);margin-bottom:40px}
+.fmod-bio{font-size:14px;color:var(--INKm);line-height:2;font-weight:300;border-left:2px solid var(--OL);padding-left:22px;max-width:480px}
+
+/* NODES */
+#reps{background:var(--W3);padding:120px 0;overflow:hidden}
+.reps-hd{padding:0 5%;max-width:1280px;margin:0 auto 52px;display:grid;grid-template-columns:1fr auto;align-items:end}
+.reps-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,104px);font-weight:300;line-height:.85;letter-spacing:-.03em;color:var(--INK)}
+.reps-ttl em{font-style:italic;color:var(--OL)}
+.car-track{display:flex;width:max-content;animation:csc 40s linear infinite;padding:12px 0}
+.car-track:hover{animation-play-state:paused}
+@keyframes csc{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ncard{width:270px;margin:0 9px;cursor:pointer;flex-shrink:0}
+.nci{background:#fff;border-radius:24px;overflow:hidden;border:1px solid var(--BD);transition:all .5s;box-shadow:var(--SS)}
+.ncard:hover .nci{transform:translateY(-8px) rotate(-.5deg);box-shadow:var(--SL);border-color:var(--BD2)}
+.ncimg{width:100%;height:190px;overflow:hidden;background:var(--W3)}
+.ncimg img{width:100%;height:100%;object-fit:cover;filter:grayscale(55%);transition:all .8s}
+.ncard:hover .ncimg img{filter:grayscale(0%);transform:scale(1.08)}
+.ncinfo{padding:20px 24px 26px}
+.ncinfo h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:3px}
+.nc-st{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--OL)}
+.nmod{position:fixed;inset:0;z-index:8000;background:rgba(24,22,15,.5);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px}
+.nmod.open{display:flex}
+.nmb{background:#fff;border-radius:26px;overflow:hidden;width:100%;max-width:800px;display:flex;max-height:78vh;box-shadow:var(--SL);animation:npop .38s cubic-bezier(.16,1,.3,1)}
+@keyframes npop{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
+.nmi{width:44%;overflow:hidden}
+.nmi img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%)}
+.nmc{flex:1;padding:48px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
+.nmc h2{font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:5px}
+.nm-stat{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--OL);margin-bottom:24px}
+.nmc p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300;margin-bottom:28px}
+.nm-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:none;border-bottom:1px solid var(--BD2);padding-bottom:4px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK);cursor:pointer;transition:all .3s}
+.nm-btn:hover{color:var(--OL);border-color:var(--OL)}
+
+/* STATS */
+#stats{background:var(--W2);padding:120px 5%}
+.stats-wr{max-width:1280px;margin:0 auto}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--BD);border:1px solid var(--BD);border-radius:20px;overflow:hidden;margin-bottom:64px}
+.sbox{background:var(--W2);padding:56px 32px;text-align:center;transition:all .45s}
+.sbox:hover{background:var(--W);transform:translateY(-4px);box-shadow:var(--SM);position:relative;z-index:1}
+.snum{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,64px);font-style:italic;font-weight:600;color:var(--OL);margin-bottom:6px;line-height:1}
+.slbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--INKl)}
+
+/* BLOGS */
+#blogs{background:var(--INK);padding:140px 5%}
+.blogs-wr{max-width:1280px;margin:0 auto}
+.blogs-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,90px);font-weight:300;font-style:italic;color:var(--W);line-height:.88;letter-spacing:-.03em;margin-bottom:64px}
+.blogs-ttl em{color:var(--OLl)}
+.blogs-grid{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:18px}
+.bcard{background:rgba(250,250,248,.04);border:1px solid rgba(250,250,248,.07);border-radius:20px;padding:36px;text-decoration:none;color:var(--W);display:flex;flex-direction:column;transition:all .4s;position:relative;overflow:hidden}
+.bcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--OL),transparent);opacity:0;transition:opacity .4s}
+.bcard:hover::before{opacity:1}
+.bcard:hover{background:rgba(250,250,248,.06);transform:translateY(-3px);border-color:rgba(74,92,58,.3)}
+.bcard.feat{grid-row:span 2;padding:52px}
+.bcat{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--OLl);margin-bottom:16px}
+.bcard h3{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.2vw,28px);font-style:italic;font-weight:600;line-height:1.2;color:var(--W);margin-bottom:12px;flex:1}
+.bcard.feat h3{font-size:clamp(24px,3vw,42px)}
+.bexc{font-size:11px;color:rgba(250,250,248,.4);line-height:1.8;font-weight:300;margin-bottom:22px}
+.bft{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(250,250,248,.07);padding-top:16px;margin-top:auto}
+.brl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.33);transition:color .3s}
+.bcard:hover .brl{color:var(--OLl)}
+
+/* SPONSOR */
+#sponsor{background:var(--W3);padding:140px 5%}
+.sp-wr{max-width:1280px;margin:0 auto}
+.sp-hd{text-align:center;margin-bottom:64px}
+.sp-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,90px);font-weight:300;font-style:italic;color:var(--INK);line-height:.88;margin-bottom:16px}
+.sp-ttl em{color:var(--OL)}
+.mq-wr{overflow:hidden;border-top:1px solid var(--BD);border-bottom:1px solid var(--BD);padding:40px 0;margin-bottom:64px}
+.mq-tr{display:flex;width:max-content;animation:mqsc 42s linear infinite}
+.mq-tr:hover{animation-play-state:paused}
+@keyframes mqsc{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mq-it{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;padding:0 52px;opacity:.26;transition:opacity .3s;white-space:nowrap;color:var(--INK)}
+.mq-it:hover{opacity:1;color:var(--OL)}
+.sp-cta{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
+.sp-txt h3{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.6vw,48px);font-style:italic;font-weight:300;color:var(--INK);line-height:1.1;margin-bottom:18px}
+.sp-txt p{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300}
+.sp-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center;padding:22px 0;border-top:1px solid var(--BD);border-bottom:1px solid var(--BD);margin-top:28px}
+.smn{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--OL)}
+.wa-card{background:var(--INK);border-radius:26px;padding:44px 36px;text-align:center}
+.wa-card h4{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--W);margin-bottom:5px}
+.wa-card p{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.28);margin-bottom:24px}
+.wa-btn{display:block;background:var(--OL);color:var(--W);text-decoration:none;padding:15px 26px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;transition:all .3s;margin-bottom:14px}
+.wa-btn:hover{background:var(--OLd);transform:translateY(-2px)}
+.wa-meta{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.16)}
+
+/* FOOTER */
+footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
+.ft-wr{max-width:1280px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:52px;margin-bottom:64px}
+.ft-brand h3{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;letter-spacing:.18em;color:var(--INK);margin-bottom:16px}
+.ft-brand p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300;max-width:252px;margin-bottom:24px}
+.ft-socials{display:flex;gap:12px}
+.ft-socials a{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK);text-decoration:none;border-bottom:1px solid rgba(74,92,58,.28);padding-bottom:3px;transition:all .2s}
+.ft-socials a:hover{color:var(--OL);border-color:var(--OL)}
+.ft-col h4{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--INKl);margin-bottom:18px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.ft-col ul li a{font-size:12px;color:var(--INKm);text-decoration:none;font-weight:300;transition:color .2s}
+.ft-col ul li a:hover{color:var(--INK)}
+.ft-bot{border-top:1px solid var(--BD);padding-top:26px;display:flex;justify-content:space-between;align-items:center}
+.ft-bot span{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl)}
+
+/* COMMUNITY MODAL */
+.cmm{position:fixed;inset:0;z-index:10000;background:rgba(243,240,232,.97);display:none;overflow-y:auto;padding:32px 18px}
+.cmm.open{display:block}
+.cmm-in{max-width:760px;margin:0 auto;position:relative}
+.cmm-hd{text-align:center;margin-bottom:40px;padding-top:52px}
+.cmm-hd h2{font-family:'Cormorant Garamond',serif;font-size:48px;font-style:italic;font-weight:600;color:var(--INK)}
+.cmm-form{background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--BD);box-shadow:var(--SM)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .ab-in,.pob-in,.vb-in,.gr-top,.dkd-in,.sp-cta{grid-template-columns:1fr}
+  .fh-grid,.gr-grid{grid-template-columns:repeat(2,1fr)}
+  .bip-wall{grid-template-columns:repeat(2,1fr)}
+  .bpost.feat{grid-column:span 2}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .blogs-grid{grid-template-columns:1fr}
+  .bcard.feat{grid-row:auto}
+  .ft-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .fh-grid,.gr-grid,.bip-wall{grid-template-columns:1fr}
+  .bpost.feat{grid-column:span 1}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .fr-role,.fr-arr{display:none}
+  .fmod-l{display:none}
+  .ft-top{grid-template-columns:1fr}
+  .pob-cv{height:260px}
+  .ft-bot{flex-direction:column;gap:8px;text-align:center}
+  .fd-box{flex-direction:column}
+  .fd-vis{width:100%;min-height:200px}
+}
+</style>
 </head>
-
 <body>
 
-    <!-- NAVIGATION -->
-    <nav class="nav-island">
-        <div class="zen text-xs">VAITHRA</div>
-        <ul class="hidden md:flex space-x-6 items-center">
-            <li><a href="#about">About</a></li>
-            <li><a href="#founders">Team</a></li>
-            <li><a href="#reps">Nodes</a></li>
-            <li><a href="#validation">Validate</a></li>
-            <li><a href="#blogs">Blogs</a></li>
-            <li><a href="#sponsor">Sponsor</a></li>
-            <li>
-                <button onclick="toggleApplySection()"
-                    class="bg-black text-white px-6 py-2 rounded-full text-[10px] font-bold tracking-widest hover:bg-[#DFFF00] hover:text-black transition-all">JOIN
-                </button>
-            </li>
-        </ul>
-    </nav>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">VAITHRA</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#founders">Core</a></li>
+    <li><a href="#reps">Nodes</a></li>
+    <li><a href="#blogs">Insights</a></li>
+    <li><a href="#sponsor">Sponsor</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="plat-btn" id="platBtn" onclick="toggleHub()">
+      <div class="pdots"><div class="pd"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div></div>
+      Platform
+    </button>
+    <button class="bp" onclick="openApply()">Join &rarr;</button>
+  </div>
+</nav>
 
-    <!-- APPLY OVERLAY -->
- <div id="applyOverlay" class="fixed inset-0 bg-white z-[5000] translate-y-full transition-transform duration-700 ease-in-out overflow-hidden">
-        <div class="w-full p-6 flex justify-between items-center border-b border-gray-100 bg-white sticky top-0 z-10">
-            <div class="zen text-lg text-black font-black">VAITHRA</div>
-            <button onclick="toggleApplySection()" class="text-black text-2xl font-bold hover:bg-gray-100 w-12 h-12 rounded-full flex items-center justify-center transition-all">✕</button>
-        </div>
-
-        <div class="w-full h-full overflow-y-auto pb-32 bg-[#f9f9f9]">
-            <div class="max-w-4xl mx-auto py-12 px-6">
-                <div class="bg-white rounded-[40px] shadow-2xl border border-gray-100 overflow-hidden">
-                    <iframe 
-                        src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" 
-                        width="100%" 
-                        height="800" 
-                        frameborder="0" 
-                        marginheight="0" 
-                        marginwidth="0"
-                        style="display: block;">
-                        Loading…
-                    </iframe>
-                </div>
-            </div>
-        </div>
+<!-- APPLY OVERLAY -->
+<div id="applyOv">
+  <div class="ov-hd">
+    <div class="nav-logo">VAITHRA</div>
+    <button class="xb" onclick="closeApply()">&#10005;</button>
+  </div>
+  <div class="ov-body">
+    <div class="fw">
+      <div style="text-align:center;margin-bottom:32px">
+        <span class="ey" style="margin-bottom:12px">Onboarding Protocol</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;color:var(--INK)">Join the Network</h2>
+      </div>
+      <div class="fb">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading</iframe>
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- HERO -->
-   <section id="hero" class="relative h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-white text-black">
-    
-    <div class="absolute inset-0 pointer-events-none opacity-40">
-        <div id="particles-container" class="w-full h-full"></div>
+<!-- FEATURE HUB -->
+<div id="fHub">
+  <div class="fh-bd" onclick="closeHub()"></div>
+  <div class="fh-panel">
+    <div class="fh-head">
+      <div><h2>Platform Features</h2><p>Click any feature to explore details and functionality</p></div>
+      <button class="xb" onclick="closeHub()">&#10005;</button>
     </div>
+    <div class="fh-grid" id="fGrid"></div>
+  </div>
+</div>
 
-    <div class="relative z-10 flex flex-col items-center px-6 max-w-6xl">
-        
-        <div class="flex items-center space-x-2 mb-10 opacity-0 translate-y-4 animate-fade-in">
-            <div class="zen text-xl tracking-tighter font-black" style="font-family: 'Zen Dots', cursive;">VAITHRA</div>
-            <span class="text-gray-400 text-lg font-medium">Community</span>
-        </div>
-
-        <h1 class="text-5xl md:text-[7.5rem] font-black text-center leading-[0.85] tracking-tighter mb-10" style="font-family: 'Inter', sans-serif; letter-spacing: -0.05em;">
-           Vaithra is for early stage founders</h1>
-
-        <p class="text-lg md:text-2xl text-gray-500 text-center max-w-3xl mb-12 font-medium leading-relaxed">
-            We focus on learning,real struggles and community — not promotion.Vaithra follow's a Duo-Model 
-        </p>
-
-        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <button onclick="toggleApplySection()" class="bg-black text-white px-12 py-5 rounded-2xl font-bold flex items-center justify-center hover:bg-gray-800 transition-all shadow-xl text-lg">
-                Join the Network <span class="ml-2">→</span>
-            </button>
-            <a href="#about" class="bg-gray-100 text-black px-12 py-5 rounded-2xl font-bold flex items-center justify-center hover:bg-gray-200 transition-all text-lg">
-                BECOME A SELECTED MEMBER
-            </a>
-        </div>
+<!-- FEATURE DETAIL -->
+<div id="fDet">
+  <div class="fd-bd" onclick="closeDet()"></div>
+  <div class="fd-box">
+    <div class="fd-vis">
+      <canvas id="fdcv"></canvas>
+      <div class="fd-vis-ov"></div>
+      <div class="fd-vis-lbl" id="fdlbl"></div>
     </div>
+    <div class="fd-cnt">
+      <button class="xb" style="position:absolute;top:18px;right:18px" onclick="closeDet()">&#10005;</button>
+      <div class="fd-ey" id="fdey"></div>
+      <h2 class="fd-ttl" id="fdttl"></h2>
+      <p class="fd-desc" id="fddesc"></p>
+      <div class="fd-items" id="fditems"></div>
+      <div class="fd-acts">
+        <button class="bp" onclick="openApply();closeDet();closeHub()">Get Access &rarr;</button>
+        <button class="bs" onclick="closeDet()">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hcv"></canvas>
+  <div class="hgr"></div>
+  <div class="hero-in">
+    <div class="hero-pill rv">
+      <div class="hdot"></div>
+      <span class="ey" style="color:var(--OL)">Early Stage Founders Network &middot; India</span>
+    </div>
+    <h1 class="hero-title rv d1">Where Serious<br><span>Builders <em>Converge</em></span></h1>
+    <p class="hero-sub rv d2">Vaithra is a semi-centralized founder network built across India &mdash; for early-stage builders who create without connections, capital, or visibility.</p>
+    <div class="hero-cta rv d3">
+      <button class="bp" onclick="openApply()">Join the Network &rarr;</button>
+      <a href="#about" class="bs">Discover More</a>
+    </div>
+    <div class="hscroll rv d4"><div class="hsb"></div><span>Scroll</span></div>
+  </div>
 </section>
 
-<style>
-    /* Blue Highlight Box Style */
-    .highlight-box {
-        background-color: #3b71db; /* Exact Google Blue */
-        color: white;
-        padding: 0 15px;
-        display: inline-block;
-        line-height: 1.1;
-        margin-left: 5px;
-    }
+<!-- ABOUT -->
+<section id="about">
+  <div class="ab-in">
+    <div class="abl rl">
+      <div class="abq">"</div>
+      <span class="ey" style="margin-bottom:16px">The Foundation</span>
+      <p class="ab-lead">India's next great founders aren't just in Bengaluru or Mumbai. They're everywhere &mdash; isolated, talented, invisible.</p>
+      <p class="ab-body">Vaithra is a founder discovery and validation network operating city-by-city across India. We identify serious builders outside traditional startup hubs, organize local meetups, and create structured pathways for collaboration and visibility.</p>
+      <p class="ab-body" style="margin-top:12px">Built by founders for founders. Governed by a clear protocol. Powered by a community that values execution over noise.</p>
+    </div>
+    <div class="abr">
+      <div class="acard rv d1"><div class="acn">01</div><h4>Distributed Infrastructure</h4><p>20&ndash;40 meetups per state with 1&ndash;3 major events. Local representatives organize ground-level connections in cities ignored by mainstream ecosystems.</p></div>
+      <div class="acard rv d2"><div class="acn">02</div><h4>Duo Model Protocol</h4><p>Vaithra operates two parallel tracks: open community participation and selective verified membership with elevated access.</p></div>
+      <div class="acard rv d3"><div class="acn">03</div><h4>Open Organization</h4><p>Anyone can join, participate, and run events under Vaithra's name. City Representatives receive free idea promotion as a benefit.</p></div>
+    </div>
+  </div>
+</section>
 
-    /* Entry Animation */
-    @keyframes fadeIn {
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in {
-        animation: fadeIn 0.8s ease forwards;
-    }
+<!-- PROOF OF BUILD -->
+<section id="pob">
+  <div class="pob-in">
+    <div class="pob-cv rl"><canvas id="pcv"></canvas></div>
+    <div class="rr">
+      <span class="ey" style="margin-bottom:16px">New Feature</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-weight:300;line-height:.9;color:var(--INK);margin-bottom:16px">Proof of <em style="font-style:italic;color:var(--OL)">Build</em></h2>
+      <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:8px">Stop pitching. Start proving. PoB replaces pitch decks with a structured system of verified build milestones that signal real progress to the community.</p>
+      <div class="pob-steps">
+        <div class="pob-s"><span class="pob-n">I</span><div class="pob-t"><h4>Submit Your Build Log</h4><p>Document weekly progress &mdash; what you shipped, what broke, what you learned.</p></div></div>
+        <div class="pob-s"><span class="pob-n">II</span><div class="pob-t"><h4>Community Validation</h4><p>Vetted community members verify milestone claims. Peer accountability replaces investor gatekeeping.</p></div></div>
+        <div class="pob-s"><span class="pob-n">III</span><div class="pob-t"><h4>Earn PoB Score</h4><p>Verified builds accumulate into a score linked to grants and profile visibility.</p></div></div>
+        <div class="pob-s"><span class="pob-n">IV</span><div class="pob-t"><h4>Unlock Opportunities</h4><p>High PoB scores unlock micro-grants, partnerships, and priority event access.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    /* Grid Overlay (Subtle) */
-    #particles-container {
-        background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0);
-        background-size: 40px 40px;
-    }
-</style>
+<!-- VERIFICATION BADGE -->
+<section id="vbadge">
+  <div class="vb-in">
+    <div class="badge-show rl">
+      <div class="badge-orb">
+        <div class="badge-ring"></div><div class="badge-ring"></div><div class="badge-ring"></div>
+        <div class="badge-core"><div class="badge-icon">&#10022;</div><div class="badge-lbl">VERIFIED<br>FOUNDER</div></div>
+      </div>
+    </div>
+    <div class="rr">
+      <span class="ey" style="margin-bottom:16px">Founder Verification Badge</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,60px);font-weight:300;line-height:.9;color:var(--INK);margin-bottom:22px">Your Credibility,<br><em style="font-style:italic">Verified.</em></h2>
+      <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;max-width:440px;margin-bottom:36px">The Vaithra Verification Badge is a community-issued credential for founders who have completed the protocol checks &mdash; demonstrating authenticity, commitment, and network standing.</p>
+      <div class="vchecks">
+        <div class="vc"><span class="vc-tick">&#10003;</span><div><h5>Identity Verified</h5><p>Real person, real founder &mdash; no anonymous profiles.</p></div></div>
+        <div class="vc"><span class="vc-tick">&#10003;</span><div><h5>Build Verified</h5><p>At least one PoB milestone confirmed by the community.</p></div></div>
+        <div class="vc"><span class="vc-tick">&#10003;</span><div><h5>Community Standing</h5><p>Active network participation confirmed.</p></div></div>
+      </div>
+      <button class="bp" style="margin-top:32px" onclick="openApply()">Apply for Verification &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- MICRO GRANTS -->
+<section id="grants">
+  <div class="gr-bg">&#8377;</div>
+  <div class="gr-in">
+    <div class="gr-top">
+      <div class="rl"><span class="ey" style="color:rgba(250,250,248,.45);margin-bottom:16px">New Feature</span><h2 class="gr-title">Micro-<br><em>Grant</em><br>Rounds</h2></div>
+      <div class="rr">
+        <p class="gr-desc">Community-backed micro-funding for vetted founders with real traction. No lengthy applications &mdash; just verified builds and community trust signals.</p>
+        <button class="bp" style="margin-top:28px;background:var(--GDl);color:var(--INK)" onclick="openApply()">Apply as Founder</button>
+      </div>
+    </div>
+    <div class="gr-grid">
+      <div class="gc rv"><div class="gc-amt">&#8377;5K</div><div class="gc-lbl">Seed Spark</div><h3>First Build Grant</h3><p>For founders with a live product or validated prototype and a minimum PoB score of 10.</p></div>
+      <div class="gc rv d1"><div class="gc-amt">&#8377;25K</div><div class="gc-lbl">Growth Round</div><h3>Traction Grant</h3><p>For founders with early users, measurable retention, and a PoB score above 25.</p></div>
+      <div class="gc rv d2"><div class="gc-amt">&#8377;1L</div><div class="gc-lbl">Scale Grant</div><h3>Verified Builder Grant</h3><p>Reserved for Vaithra Verified founders with multiple PoB rounds and documented community impact.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD IN PUBLIC -->
+<section id="bip">
+  <div class="bip-in">
+    <div class="bip-hd">
+      <div><span class="ey rv" style="margin-bottom:12px">Live Community Wall</span><h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,6vw,72px);font-weight:300;line-height:.9;color:var(--INK)" class="rv d1">Build in <em style="font-style:italic;color:var(--OL)">Public</em></h2></div>
+      <button class="bp rv d2" onclick="openApply()">Post Update &rarr;</button>
+    </div>
+    <div class="bip-wall">
+      <div class="bpost feat rv">
+        <div class="bphd"><div class="bpav" style="background:var(--OLl);color:#fff">S</div><div><div class="bpnm">Sardhar Musthafa</div><div class="bpmt">Vaithra &middot; Hyderabad &middot; 2h ago</div></div><span style="margin-left:auto;font-size:8px;font-family:'Syne',sans-serif;letter-spacing:.18em;color:var(--OLl);text-transform:uppercase">Verified &#10022;</span></div>
+        <p class="bptxt">Week 12 update: Crossed 50 active members. Didn't celebrate &mdash; just started planning week 13. City reps from Warangal and Guntur onboarded. First regional meetup confirmed for April. This is what building in public looks like &mdash; not highlight reels, just honest progress.</p>
+        <div class="bptags"><span class="bptag">Milestone</span><span class="bptag">Network Growth</span><span class="bptag">Week 12</span></div>
+      </div>
+      <div class="bpost rv d1">
+        <div class="bphd"><div class="bpav" style="background:var(--GDl);color:var(--INK)">R</div><div><div class="bpnm">Rahimath</div><div class="bpmt">Glowvai &middot; Hyderabad &middot; 5h ago</div></div></div>
+        <p class="bptxt">Glowvai v0.2 shipped. 3 new treatment catalog features based on real salon feedback. Zero users yet, but the product finally feels honest.</p>
+        <div class="bptags"><span class="bptag">Product</span><span class="bptag">Launch</span></div>
+      </div>
+      <div class="bpost rv d2">
+        <div class="bphd"><div class="bpav" style="background:var(--OL);color:#fff">G</div><div><div class="bpnm">Erugoni Gopi</div><div class="bpmt">Strategic &middot; Hyderabad &middot; 1d ago</div></div></div>
+        <p class="bptxt">Systems audit complete. 6 processes documented. 2 redundancies removed. The most important build is often internal infrastructure.</p>
+        <div class="bptags"><span class="bptag">Operations</span></div>
+      </div>
+      <div class="bpost rv d3">
+        <div class="bphd"><div class="bpav" style="background:var(--INK);color:var(--W)">D</div><div><div class="bpnm">Dhoni H.H. Singh</div><div class="bpmt">Vishvarupa &middot; Hyderabad &middot; 2d ago</div></div></div>
+        <p class="bptxt">First brand shoot for a Vaithra member wrapped. Early-stage founders don't need polished &mdash; they need authentic.</p>
+        <div class="bptags"><span class="bptag">Media</span><span class="bptag">Learning</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAILY DROP -->
+<section id="dkd">
+  <div class="dkd-in">
+    <div class="dkd-stack rl">
+      <div class="dcard">
+        <div class="dkd-dt">Today &middot; March 18, 2026</div>
+        <h3 class="dkd-ttl">Why most founder communities fail: The activity trap</h3>
+        <p class="dkd-prev">Communities mistake engagement metrics for value creation. Likes and check-ins are vanity. The only metric that matters is whether a member's trajectory changed...</p>
+        <a href="#blogs" class="dkd-rm">Read Full Drop &rarr;</a>
+      </div>
+      <div class="dcard"></div>
+      <div class="dcard"></div>
+    </div>
+    <div class="rr">
+      <span class="ey" style="margin-bottom:16px">Daily Signal</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.2vw,56px);font-weight:300;line-height:.9;color:var(--INK);margin-bottom:18px">Daily Knowledge <em style="font-style:italic;color:var(--OL)">Drop</em></h2>
+      <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;max-width:440px">One curated lesson, resource, or insight every day &mdash; specifically for early-stage founders navigating the chaos of building from scratch.</p>
+      <div class="dkd-sub">
+        <h4>Get It Daily</h4>
+        <p>Subscribe to receive the knowledge drop every morning before 7 AM.</p>
+        <div class="sub-grp">
+          <input type="email" class="sub-inp" placeholder="your@email.com">
+          <button class="sub-btn" onclick="handleSub(this)">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section id="founders">
+  <div class="fnd-hd rv">
+    <span class="ey" style="margin-bottom:16px">Vaithra Protocol</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,112px);font-weight:300;line-height:.85;color:var(--INK)">The <em style="font-style:italic">Core</em></h2>
+    <div style="width:100%;height:1px;background:linear-gradient(90deg,rgba(74,92,58,.22),transparent);margin-top:32px"></div>
+  </div>
+  <div class="fnd-row rv" onclick="openFounder('sardhar')"><span class="fr-num">01</span><span class="fr-name">Sardhar Musthafa</span><span class="fr-role">Final Authority</span><span class="fr-arr">&rarr;</span></div>
+  <div class="fnd-row rv d1" onclick="openFounder('rahimath')"><span class="fr-num">02</span><span class="fr-name">Rahimath</span><span class="fr-role">Glowvai.in</span><span class="fr-arr">&rarr;</span></div>
+  <div class="fnd-row rv d2" onclick="openFounder('gopi')"><span class="fr-num">03</span><span class="fr-name">Erugoni Gopi</span><span class="fr-role">Strategic Owner</span><span class="fr-arr">&rarr;</span></div>
+  <div class="fnd-row rv d3" onclick="openFounder('dhoni')"><span class="fr-num">04</span><span class="fr-name">Dhoni Hari Hara Singh</span><span class="fr-role">Media Partner</span><span class="fr-arr">&rarr;</span></div>
+</section>
+
+<!-- FOUNDER MODAL -->
+<div id="founderModal" class="fmod">
+  <div class="fmod-l"><img id="fmod-img" src="" alt=""></div>
+  <div class="fmod-r">
+    <button class="xb" style="position:absolute;top:32px;right:32px" onclick="closeFounder()">&#10005;</button>
+    <div class="fmod-tag" id="fmod-tag"></div>
+    <h2 class="fmod-name" id="fmod-name"></h2>
+    <div class="fmod-role" id="fmod-role"></div>
+    <p class="fmod-bio" id="fmod-bio"></p>
+  </div>
+</div>
+
+<!-- NODES -->
+<section id="reps">
+  <div class="reps-hd">
+    <div class="rl"><span class="ey" style="margin-bottom:12px">Regional Node Infrastructure</span><h2 class="reps-ttl">Local <em>Hubs.</em></h2></div>
+    <p style="font-size:12px;color:var(--INKm);max-width:230px;font-weight:300;line-height:1.7;text-align:right" class="rr">Decentralized infrastructure bridging district builders with the global ecosystem.</p>
+  </div>
+  <div style="overflow:hidden"><div class="car-track" id="nodesTrack"></div></div>
+</section>
+
+<!-- NODE MODAL -->
+<div id="nodeModal" class="nmod">
+  <div class="nmb">
+    <div class="nmi"><img id="nmod-img" src="" alt=""></div>
+    <div class="nmc">
+      <button class="xb" style="position:absolute;top:18px;right:18px" onclick="closeNode()">&#10005;</button>
+      <span class="ey" style="margin-bottom:9px">Validation Node</span>
+      <h2 id="nmod-city"></h2>
+      <div class="nm-stat" id="nmod-stat"></div>
+      <p>Bridging the gap between isolated district builders and metro-centric startup ecosystems. This hub serves as a validation engine for Tier-2 and Tier-3 founders &mdash; organizing meetups, identifying serious builders, and connecting them to the broader Vaithra network.</p>
+      <button class="nm-btn" onclick="openApply();closeNode()">Request Node Access &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-wr">
+    <div style="text-align:center;margin-bottom:52px" class="rv">
+      <span class="ey" style="margin-bottom:12px">Protocol Expansion</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,60px);font-weight:300;font-style:italic;color:var(--INK)">Community Growth</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="sbox rv"><div class="snum"><span class="cnt" data-t="7">0</span>+</div><div class="slbl">Community Members</div></div>
+      <div class="sbox rv d1"><div class="snum"><span class="cnt" data-t="4">0</span></div><div class="slbl">Cities Connected</div></div>
+      <div class="sbox rv d2"><div class="snum"><span class="cnt" data-t="3">0</span></div><div class="slbl">Projects Validated</div></div>
+      <div class="sbox rv d3"><div class="snum"><span class="cnt" data-t="4">0</span></div><div class="slbl">Core Contributors</div></div>
+    </div>
+    <div style="text-align:center;margin-top:56px" class="rv">
+      <button class="bp" onclick="openCommunity()">Become a Community Member</button>
+      <p style="margin-top:16px;font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--INKl)">Receive updates via Mail &amp; WhatsApp</p>
+    </div>
+  </div>
+</section>
+
+<!-- BLOGS -->
+<section id="blogs">
+  <div class="blogs-wr">
+    <h2 class="blogs-ttl rv">Founder <em>Insights</em></h2>
+    <div class="blogs-grid">
+      <a href="blog-startup-failure.html" class="bcard feat rl"><div class="bcat">Research &middot; Feature</div><h3>Why Startups Are Failing in India &mdash; And What Nobody Wants to Admit</h3><p class="bexc">India is producing thousands of startups every year, yet most collapse before finding traction. This piece explores structural, cultural, and psychological reasons behind the failure epidemic.</p><div class="bft"><span class="brl">Read Full Article &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">12 min</span></div></a>
+      <a href="blog-isolation.html" class="bcard rv d1"><div class="bcat">Culture</div><h3>Isolation Is The Enemy</h3><p class="bexc">Talented founders in smaller cities work in complete isolation without networks, mentors, or validation.</p><div class="bft"><span class="brl">Read &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">7 min</span></div></a>
+      <a href="blog-execution.html" class="bcard rv d2"><div class="bcat">Execution</div><h3>Execution Reality</h3><p class="bexc">Real founders succeed through relentless experimentation and honest feedback loops, not motivation.</p><div class="bft"><span class="brl">Read &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">5 min</span></div></a>
+      <a href="blog-network-problem.html" class="bcard rv d3"><div class="bcat">Network</div><h3>The Founder Network Problem</h3><p class="bexc">Outside major metro cities, thousands of founders lack access to connections and collaborative communities.</p><div class="bft"><span class="brl">Read &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">6 min</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSOR -->
+<section id="sponsor">
+  <div class="sp-wr">
+    <div class="sp-hd rv"><span class="ey" style="margin-bottom:16px">Infrastructure Support</span><h2 class="sp-ttl">Backed by <em>Builders</em></h2></div>
+    <div class="mq-wr rv">
+      <div class="mq-tr">
+        <span class="mq-it" style="color:#c0523a">Glowvai</span><span class="mq-it" style="color:#3a6b52">IndieLabs</span><span class="mq-it">BuildStack</span><span class="mq-it" style="color:var(--GD)">StartupForge</span><span class="mq-it" style="color:#6b4a8a">FounderCircle</span><span class="mq-it">VaivaanithPvt</span>
+        <span class="mq-it" style="color:#c0523a">Glowvai</span><span class="mq-it" style="color:#3a6b52">IndieLabs</span><span class="mq-it">BuildStack</span><span class="mq-it" style="color:var(--GD)">StartupForge</span><span class="mq-it" style="color:#6b4a8a">FounderCircle</span><span class="mq-it">VaivaanithPvt</span>
+      </div>
+    </div>
+    <div class="sp-cta">
+      <div class="sp-txt rl">
+        <h3>Scale the New Protocol.</h3>
+        <p>Support early-stage founders and gain priority access to validated builders across regional hubs. Professional clearance managed via Vaivaanith Pvt Ltd.</p>
+        <div class="sp-mini">
+          <div><div class="smn">10+</div><span class="ey">Cities</span></div>
+          <div><div class="smn">50+</div><span class="ey">Events/Yr</span></div>
+          <div><div class="smn">&infin;</div><span class="ey">Reach</span></div>
+        </div>
+      </div>
+      <div class="wa-card rr">
+        <h4>Direct Channel</h4>
+        <p>Final Authority Clearance</p>
+        <a href="https://wa.me/918977855998?text=Interested%20in%20becoming%20a%20Sponsor%20for%20Vaithra" class="wa-btn">Connect via WhatsApp</a>
+        <div class="wa-meta">8977855998 &middot; Sardhar Musthafa</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-wr">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <h3>VAITHRA</h3>
+        <p>Identifying and validating serious builders outside traditional startup hubs. Powered by Vaivaanith Pvt Ltd.</p>
+        <div class="ft-socials"><a href="https://instagram.com/wearevaithra" target="_blank">Instagram</a><a href="https://wa.me/918977855998" target="_blank">WhatsApp</a></div>
+      </div>
+      <div class="ft-col"><h4>Explore</h4><ul><li><a href="#about">The Vision</a></li><li><a href="#founders">Core Team</a></li><li><a href="#reps">Regional Nodes</a></li><li><a href="#blogs">Founder Insights</a></li></ul></div>
+      <div class="ft-col"><h4>Platform</h4><ul><li><a href="#pob">Proof of Build</a></li><li><a href="#grants">Micro Grants</a></li><li><a href="#vbadge">Verification Badge</a></li><li><a href="#bip">Build in Public</a></li><li><a href="#dkd">Daily Drop</a></li></ul></div>
+      <div class="ft-col"><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms-conditions.html">Terms &amp; Conditions</a></li><li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry">Official Clearance</a></li></ul><div style="margin-top:24px"><div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK)">VAIVAANITH PVT LTD</div><p style="font-size:10px;color:var(--INKm);margin-top:4px;line-height:1.5;font-weight:300">Holding entity for Vaithra and Glowvai.in</p></div></div>
+    </div>
+    <div class="ft-bot"><span>&copy; 2026 Vaithra. All rights reserved.</span><span>Authored by Sardhar Musthafa</span></div>
+  </div>
+</footer>
+
+<!-- COMMUNITY MODAL -->
+<div id="communityModal" class="cmm">
+  <button class="xb" style="position:fixed;top:26px;right:26px;z-index:10001;background:white" onclick="closeCommunity()">&#10005;</button>
+  <div class="cmm-in">
+    <div class="cmm-hd"><span class="ey" style="margin-bottom:12px">Onboarding Protocol</span><h2>Join the Network</h2></div>
+    <div class="cmm-form"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading</iframe></div>
+  </div>
+</div>
 
 <script>
-    // Lift-off Particle Logic
-    function createParticles() {
-        const container = document.getElementById('particles-container');
-        if(!container) return;
-        
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            const size = Math.random() * 3 + 1 + 'px';
-            particle.style.position = 'absolute';
-            particle.style.width = size;
-            particle.style.height = size;
-            particle.style.backgroundColor = i % 3 === 0 ? '#3b71db' : '#000';
-            particle.style.borderRadius = '50%';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.opacity = Math.random() * 0.3;
-            
-            // Floating upward animation using GSAP
-            gsap.to(particle, {
-                y: -200 - Math.random() * 200,
-                opacity: 0,
-                duration: 5 + Math.random() * 5,
-                repeat: -1,
-                ease: "none",
-                delay: Math.random() * 5
-            });
-            container.appendChild(particle);
-        }
+/* =============================================
+   FEATURE DATA
+============================================= */
+var FEATURES = [
+  {id:'ip',badge:'core',bc:'bc',title:'Idea Promotion',sub:'Visibility Engine',desc:'Founders pay to promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and potential co-founders across all city nodes.',items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Representatives share promoted ideas in local communities.'}],shape:'pyramid',color:0x4A5C3A},
+  {id:'cr',badge:'core',bc:'bc',title:'City Representatives',sub:'Ground Network',desc:'Local nodes in every major city. Representatives organize ground meetups, bridge district builders with the ecosystem, and receive free idea promotion as a core benefit.',items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network at no cost.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct communication channel with Vaithra core.'}],shape:'network',color:0x6B7F58},
+  {id:'dk',badge:'core',bc:'bc',title:'Daily Knowledge Drop',sub:'Daily Signal',desc:'One curated lesson, resource, or topic every single day, for early-stage founders navigating product, growth, fundraising, and team building.',items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered to your inbox and WhatsApp before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full historical archive.'}],shape:'sphere',color:0x2E3A24},
+  {id:'pb',badge:'new',bc:'bn',title:'Proof of Build',sub:'New Feature',desc:'Stop pitching. Start proving. PoB replaces pitch decks with a structured system of verified build milestones that signal real progress to the community.',items:[{t:'Weekly Build Logs',p:'Submit honest weekly progress including shipped features, failures, and learnings.'},{t:'Peer Validation',p:'Vetted community members verify milestone claims. No self-reported vanity metrics.'},{t:'PoB Score',p:'Verified builds accumulate into a score that unlocks grants and opportunities.'}],shape:'blocks',color:0x4A5C3A},
+  {id:'mg',badge:'new',bc:'bn',title:'Micro-Grant Rounds',sub:'New Feature',desc:'Community-backed micro-funding for vetted founders who have proven traction. No lengthy applications, just verified builds and community trust signals.',items:[{t:'Three Tiers',p:'Rs 5K seed spark, Rs 25K traction grant, Rs 1L verified builder grant with clear eligibility.'},{t:'PoB-Gated',p:'You must have a minimum PoB score to apply. No shortcuts, no connections bias.'},{t:'Community Vote',p:'For larger grants, final allocation is determined by community vote.'}],shape:'coin',color:0xB8A060},
+  {id:'vb',badge:'premium',bc:'bpr',title:'Verification Badge',sub:'Premium Credential',desc:'A verifiable community-issued credential for founders who pass protocol checks, signaling authenticity, commitment, and network standing.',items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles in the verified tier.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by the community.'},{t:'Profile Visibility',p:'Verified badge displayed on your public profile and grant applications.'}],shape:'badge',color:0x4A5C3A},
+  {id:'fc',badge:'core',bc:'bc',title:'Founder CRM',sub:'Internal System',desc:'Internal tracking of every verified founder including city, stage, vertical, and build status, enabling smarter connections, targeted outreach, and network intelligence.',items:[{t:'Smart Matching',p:'CRM data powers intelligent founder-to-founder introductions based on complementary skills.'},{t:'Stage Tracking',p:'Every founder current build stage is tracked so the right resources reach them.'},{t:'Connection History',p:'Log every meaningful interaction, collaboration, and referral across the network.'}],shape:'grid',color:0x2E3A24},
+  {id:'bw',badge:'new',bc:'bn',title:'Build in Public Wall',sub:'New Feature',desc:'A live public wall where verified founders share real updates, wins, failures, and milestones. Accountability meets community visibility.',items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post, ensuring quality over noise.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type for easy discovery.'},{t:'Weekly Highlights',p:'The best build updates are featured in the weekly community digest.'}],shape:'wall',color:0x6B7F58},
+  {id:'oo',badge:'core',bc:'bc',title:'Open Organization',sub:'Core Structure',desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just a commitment to the founder-first culture.',items:[{t:'Run Events',p:'Any member can organize a Vaithra-branded event in their city with full support.'},{t:'Contribution Vault',p:'Contribute guides, resources, and templates to the shared community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become official City Representatives.'}],shape:'torus',color:0x4A5C3A}
+];
+
+/* =============================================
+   3D MINI RENDERER
+============================================= */
+function makeMini(canvas, shape, color) {
+  if (!canvas || typeof THREE === 'undefined') return;
+  var r = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
+  r.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  r.setSize(60, 60);
+  var sc = new THREE.Scene();
+  var cam = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
+  cam.position.z = 3;
+  sc.add(new THREE.AmbientLight(0xffffff, 0.5));
+  var dl = new THREE.DirectionalLight(0xffffff, 1.2);
+  dl.position.set(2, 3, 4);
+  sc.add(dl);
+  var mat = new THREE.MeshStandardMaterial({color: color, roughness: 0.4, metalness: 0.15});
+  var mesh;
+  if (shape === 'sphere') {
+    mesh = new THREE.Mesh(new THREE.SphereGeometry(0.8, 18, 18), mat);
+  } else if (shape === 'pyramid') {
+    mesh = new THREE.Mesh(new THREE.ConeGeometry(0.7, 1.3, 4), mat);
+  } else if (shape === 'coin') {
+    mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.16, 30), mat);
+  } else if (shape === 'torus') {
+    mesh = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.22, 10, 44), mat);
+  } else if (shape === 'badge') {
+    var g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.16, 6), mat));
+    var sm = new THREE.Mesh(new THREE.SphereGeometry(0.2, 10, 10), new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.3}));
+    sm.position.y = 0.18;
+    g.add(sm);
+    mesh = g;
+  } else if (shape === 'blocks') {
+    var g = new THREE.Group();
+    var cols = [0x4A5C3A, 0x6B7F58, 0x2E3A24];
+    for (var i = 0; i < 3; i++) {
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.28, 0.65), new THREE.MeshStandardMaterial({color: cols[i], roughness: 0.5}));
+      bk.position.y = i * 0.32 - 0.32;
+      g.add(bk);
     }
-    window.addEventListener('load', createParticles);
+    mesh = g;
+  } else if (shape === 'network') {
+    var g = new THREE.Group();
+    var nm = new THREE.MeshStandardMaterial({color: color});
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), nm));
+    for (var i = 0; i < 5; i++) {
+      var a = (i / 5) * Math.PI * 2;
+      var sp = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 8), nm);
+      sp.position.set(Math.cos(a) * 0.68, Math.sin(a) * 0.68, 0);
+      g.add(sp);
+    }
+    mesh = g;
+  } else if (shape === 'grid') {
+    var g = new THREE.Group();
+    var lm = new THREE.LineBasicMaterial({color: color, transparent: true, opacity: 0.75});
+    for (var i = -1; i <= 1; i++) {
+      g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-1, i*0.5, 0), new THREE.Vector3(1, i*0.5, 0)]), lm));
+      g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i*0.5, -1, 0), new THREE.Vector3(i*0.5, 1, 0)]), lm));
+    }
+    mesh = g;
+  } else if (shape === 'wall') {
+    var g = new THREE.Group();
+    var rows = [[-0.5, 0.28], [0, 0.28], [0.5, 0.28], [-0.25, -0.05], [0.25, -0.05], [-0.5, -0.38], [0, -0.38], [0.5, -0.38]];
+    for (var i = 0; i < rows.length; i++) {
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.24, 0.1), mat);
+      bk.position.set(rows[i][0], rows[i][1], 0);
+      g.add(bk);
+    }
+    mesh = g;
+  } else {
+    mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 0.9), mat);
+  }
+  sc.add(mesh);
+  function anim() {
+    requestAnimationFrame(anim);
+    if (mesh) mesh.rotation.y += 0.013;
+    r.render(sc, cam);
+  }
+  anim();
+}
+
+/* =============================================
+   BUILD FEATURE GRID
+============================================= */
+function buildGrid() {
+  var grid = document.getElementById('fGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (var i = 0; i < FEATURES.length; i++) {
+    (function(f) {
+      var el = document.createElement('div');
+      el.className = 'ft';
+      el.innerHTML = '<canvas class="ft-cv" id="ftc-' + f.id + '" width="60" height="60"></canvas>' +
+        '<span class="ft-badge ' + f.bc + '">' + f.badge + '</span>' +
+        '<h3>' + f.title + '</h3>' +
+        '<p>' + f.desc.substring(0, 90) + '...</p>';
+      el.onclick = function() { openDet(f); };
+      grid.appendChild(el);
+      setTimeout(function() {
+        makeMini(document.getElementById('ftc-' + f.id), f.shape, f.color);
+      }, 50);
+    })(FEATURES[i]);
+  }
+}
+
+/* =============================================
+   HUB TOGGLE
+============================================= */
+var hubOpen = false;
+function toggleHub() {
+  if (hubOpen) { closeHub(); } else { openHub(); }
+}
+function openHub() {
+  hubOpen = true;
+  document.getElementById('fHub').classList.add('open');
+  document.getElementById('platBtn').classList.add('act');
+  document.body.style.overflow = 'hidden';
+  if (!document.querySelector('.ft')) buildGrid();
+}
+function closeHub() {
+  hubOpen = false;
+  document.getElementById('fHub').classList.remove('open');
+  document.getElementById('platBtn').classList.remove('act');
+  if (!document.getElementById('fDet').classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+/* =============================================
+   FEATURE DETAIL
+============================================= */
+var fdR = null, fdRaf = null;
+function openDet(f) {
+  closeHub();
+  document.getElementById('fdlbl').textContent = f.sub;
+  document.getElementById('fdey').textContent = f.sub;
+  document.getElementById('fdttl').textContent = f.title;
+  document.getElementById('fddesc').textContent = f.desc;
+  var html = '';
+  for (var i = 0; i < f.items.length; i++) {
+    html += '<div class="fd-item"><div class="fd-dot"></div><div><h5>' + f.items[i].t + '</h5><p>' + f.items[i].p + '</p></div></div>';
+  }
+  document.getElementById('fditems').innerHTML = html;
+  document.getElementById('fDet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (fdRaf) cancelAnimationFrame(fdRaf);
+  if (fdR) { fdR.dispose(); fdR = null; }
+  setTimeout(function() {
+    var cv = document.getElementById('fdcv');
+    var w = cv.offsetWidth || 400;
+    var h = cv.offsetHeight || 460;
+    fdR = new THREE.WebGLRenderer({canvas: cv, alpha: true, antialias: true});
+    fdR.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    fdR.setSize(w, h);
+    var sc = new THREE.Scene();
+    var cam = new THREE.PerspectiveCamera(54, w/h, 0.1, 100);
+    cam.position.z = 4.8;
+    sc.add(new THREE.AmbientLight(0xfaf8ee, 0.38));
+    var dl = new THREE.DirectionalLight(0xfaf8ee, 1.5);
+    dl.position.set(3, 4, 5);
+    sc.add(dl);
+    var dl2 = new THREE.DirectionalLight(0x9aad80, 0.55);
+    dl2.position.set(-3, -2, -2);
+    sc.add(dl2);
+    var mat = new THREE.MeshStandardMaterial({color: f.color, roughness: 0.3, metalness: 0.22, transparent: true, opacity: 0.88});
+    var mesh;
+    if (f.shape === 'sphere') {
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(1.35, 32, 32), mat);
+    } else if (f.shape === 'pyramid') {
+      mesh = new THREE.Mesh(new THREE.ConeGeometry(1.15, 2.1, 4), mat);
+    } else if (f.shape === 'coin') {
+      var gr = new THREE.Group();
+      gr.add(new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, 0.26, 36), mat));
+      mesh = gr;
+    } else if (f.shape === 'torus') {
+      mesh = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.36, 16, 80), mat);
+    } else if (f.shape === 'badge') {
+      var gr = new THREE.Group();
+      gr.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.26, 6), mat));
+      var sm = new THREE.Mesh(new THREE.SphereGeometry(0.36, 16, 16), new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.4, roughness: 0.2}));
+      sm.position.y = 0.32;
+      gr.add(sm);
+      mesh = gr;
+    } else if (f.shape === 'blocks') {
+      var gr = new THREE.Group();
+      var cs = [0x4A5C3A, 0x6B7F58, 0x2E3A24, 0x8EA070, 0x4A5C3A];
+      for (var i = 0; i < 5; i++) {
+        var bk = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.42, 1.15), new THREE.MeshStandardMaterial({color: cs[i], roughness: 0.5, metalness: 0.1}));
+        bk.position.y = i * 0.52 - 1.1;
+        gr.add(bk);
+      }
+      mesh = gr;
+    } else if (f.shape === 'network') {
+      var gr = new THREE.Group();
+      var nm = new THREE.MeshStandardMaterial({color: f.color, roughness: 0.4});
+      var lm = new THREE.LineBasicMaterial({color: 0x8EA070, transparent: true, opacity: 0.45});
+      gr.add(new THREE.Mesh(new THREE.SphereGeometry(0.42, 14, 14), nm));
+      var ps = [];
+      for (var i = 0; i < 6; i++) {
+        var a = (i / 6) * Math.PI * 2;
+        var sp = new THREE.Mesh(new THREE.SphereGeometry(0.24, 12, 12), nm);
+        sp.position.set(Math.cos(a) * 1.4, Math.sin(a) * 1.4, 0);
+        gr.add(sp);
+        ps.push(sp.position.clone());
+      }
+      for (var i = 0; i < ps.length; i++) {
+        gr.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), ps[i]]), lm));
+      }
+      mesh = gr;
+    } else if (f.shape === 'grid') {
+      var gr = new THREE.Group();
+      var lm = new THREE.LineBasicMaterial({color: f.color, transparent: true, opacity: 0.65});
+      for (var i = -2; i <= 2; i++) {
+        gr.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-2, i*0.6, 0), new THREE.Vector3(2, i*0.6, 0)]), lm));
+        gr.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i*0.6, -2, 0), new THREE.Vector3(i*0.6, 2, 0)]), lm));
+      }
+      mesh = gr;
+    } else if (f.shape === 'wall') {
+      var gr = new THREE.Group();
+      var rows = [[-1, 0.58], [-0.2, 0.58], [0.6, 0.58], [-0.6, 0.1], [0.2, 0.1], [-1, -0.38], [-0.2, -0.38], [0.6, -0.38]];
+      for (var i = 0; i < rows.length; i++) {
+        var bk = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.36, 0.18), mat);
+        bk.position.set(rows[i][0], rows[i][1], 0);
+        gr.add(bk);
+      }
+      mesh = gr;
+    } else {
+      mesh = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.6, 1.6), mat);
+    }
+    sc.add(mesh);
+    var pGeo = new THREE.BufferGeometry();
+    var pPos = new Float32Array(60 * 3);
+    for (var i = 0; i < 60; i++) {
+      pPos[i*3] = (Math.random()-0.5)*9;
+      pPos[i*3+1] = (Math.random()-0.5)*9;
+      pPos[i*3+2] = (Math.random()-0.5)*4;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    sc.add(new THREE.Points(pGeo, new THREE.PointsMaterial({color: 0x8EA070, size: 0.05, transparent: true, opacity: 0.35})));
+    var mx = {x: 0, y: 0};
+    cv.onmousemove = function(e) {
+      var rc = cv.getBoundingClientRect();
+      mx.x = ((e.clientX - rc.left) / rc.width - 0.5) * 2;
+      mx.y = -((e.clientY - rc.top) / rc.height - 0.5) * 2;
+    };
+    function anim() {
+      fdRaf = requestAnimationFrame(anim);
+      if (mesh) {
+        mesh.rotation.y += 0.008;
+        mesh.rotation.x += (mx.y * 0.35 - mesh.rotation.x) * 0.05;
+      }
+      fdR.render(sc, cam);
+    }
+    anim();
+  }, 60);
+}
+function closeDet() {
+  document.getElementById('fDet').classList.remove('open');
+  if (!hubOpen) document.body.style.overflow = '';
+  if (fdRaf) cancelAnimationFrame(fdRaf);
+}
+
+/* =============================================
+   APPLY
+============================================= */
+function openApply() {
+  document.getElementById('applyOv').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeApply() {
+  document.getElementById('applyOv').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* =============================================
+   COMMUNITY
+============================================= */
+function openCommunity() {
+  document.getElementById('communityModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCommunity() {
+  document.getElementById('communityModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* =============================================
+   FOUNDERS
+============================================= */
+var FOUNDERS = {
+  sardhar: {name:'Sardhar Musthafa', role:'Founder & Final Authority - Vaithra', tag:'Chief Strategic Architect', bio:'Leading the overarching governance of the Vaithra Protocol. As the founder of Vaivaanith Pvt Ltd, Sardhar maintains final authority over all strategic nodes and ecosystem validation.', img:'./assets/images/sardhar.jpeg'},
+  rahimath: {name:'Rahimath', role:'Core Partner - Vaithra | Founder - Glowvai', tag:'Market Integration', bio:'Overseeing the Glowvai initiative within the Vaithra ecosystem. Rahimath bridges beauty-tech innovation with the core startup infrastructure.', img:'./assets/images/rahimath.jpeg'},
+  gopi: {name:'Erugoni Gopi', role:'Strategic Owner & Systems Lead', tag:'Systems Logic', bio:'Gopi is a business partner at Vaithra responsible for managing internal operational systems and strategic ownership structures.', img:'./assets/images/gopi.jpeg'},
+  dhoni: {name:'Dhoni Hari Hara Singh', role:'Media Partner - Vaithra', tag:'Creative Production', bio:'Founder of Vishvarupa Creations and the official media partner for Vaithra. Handles brand representation and high-end media production.', img:'./assets/images/dhoni.jpeg'}
+};
+function openFounder(key) {
+  var f = FOUNDERS[key];
+  document.getElementById('fmod-name').textContent = f.name;
+  document.getElementById('fmod-role').textContent = f.role;
+  document.getElementById('fmod-tag').textContent = f.tag;
+  document.getElementById('fmod-bio').textContent = f.bio;
+  document.getElementById('fmod-img').src = f.img;
+  var m = document.getElementById('founderModal');
+  m.style.display = 'flex';
+  setTimeout(function() { m.classList.add('open'); }, 10);
+  document.body.style.overflow = 'hidden';
+}
+function closeFounder() {
+  var m = document.getElementById('founderModal');
+  m.classList.remove('open');
+  setTimeout(function() { m.style.display = 'none'; }, 750);
+  document.body.style.overflow = '';
+}
+
+/* =============================================
+   NODES
+============================================= */
+var CITIES = [
+  {name:'Hyderabad', status:'Main Hub', file:'hyderabad.jpeg'},
+  {name:'Visakhapatnam', status:'Coastal Node', file:'vizag.jpeg'},
+  {name:'Vijayawada', status:'Core Node', file:'vijayawada.jpeg'},
+  {name:'Tirupati', status:'Tech Hub', file:'tirupati.jpeg'},
+  {name:'Warangal', status:'Expansion', file:'warangal.jpeg'},
+  {name:'Guntur', status:'Industrial', file:'guntur.jpeg'},
+  {name:'Bengaluru', status:'External', file:'bengaluru.jpeg'},
+  {name:'Chennai', status:'Partner', file:'chennai.jpeg'},
+  {name:'Mumbai', status:'Finance Hub', file:'mumbai.jpeg'},
+  {name:'Delhi', status:'Capital Node', file:'delhi.jpeg'}
+];
+function buildNodeCards() {
+  var html = '';
+  var all = CITIES.concat(CITIES);
+  for (var i = 0; i < all.length; i++) {
+    var c = all[i];
+    html += '<div class="ncard" onclick="openNode(\'' + c.name + '\',\'' + c.status + '\',\'assets/images/' + c.file + '\')">' +
+      '<div class="nci">' +
+      '<div class="ncimg"><img src="assets/images/' + c.file + '" alt="' + c.name + '" onerror="this.src=\'https://placehold.co/270x190/EAE7DC/6B6456?text=' + c.name + '\'"></div>' +
+      '<div class="ncinfo"><h3>' + c.name + '</h3><div class="nc-st">' + c.status + '</div></div>' +
+      '</div></div>';
+  }
+  document.getElementById('nodesTrack').innerHTML = html;
+}
+buildNodeCards();
+
+function openNode(city, status, img) {
+  document.getElementById('nmod-city').textContent = city;
+  document.getElementById('nmod-stat').textContent = status;
+  var el = document.getElementById('nmod-img');
+  el.src = img;
+  el.onerror = function() { this.src = 'https://placehold.co/400x600/2E3A24/B8A060?text=' + city; };
+  document.getElementById('nodeModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeNode() {
+  document.getElementById('nodeModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('nodeModal').onclick = function(e) {
+  if (e.target === this) closeNode();
+};
+
+/* =============================================
+   SCROLL REVEAL
+============================================= */
+var ro = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold: 0.08, rootMargin: '0px 0px -36px 0px'});
+document.querySelectorAll('.rv,.rl,.rr').forEach(function(el) { ro.observe(el); });
+
+/* =============================================
+   COUNTERS
+============================================= */
+var co = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      var c = e.target.querySelector('.cnt');
+      if (c && !c.dataset.s) {
+        c.dataset.s = 1;
+        var target = parseInt(c.dataset.t);
+        var start = performance.now();
+        var dur = 2200;
+        function tick(now) {
+          var p = Math.min((now - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 4);
+          c.textContent = Math.floor(eased * target);
+          if (p < 1) requestAnimationFrame(tick); else c.textContent = target;
+        }
+        requestAnimationFrame(tick);
+      }
+    }
+  });
+}, {threshold: 0.3});
+document.querySelectorAll('.sbox').forEach(function(el) { co.observe(el); });
+
+/* =============================================
+   SUBSCRIBE
+============================================= */
+function handleSub(btn) {
+  var inp = btn.parentElement.querySelector('.sub-inp');
+  if (inp && inp.value.indexOf('@') > -1) {
+    inp.value = '';
+    btn.textContent = 'Done!';
+    setTimeout(function() { btn.textContent = 'Subscribe'; }, 3000);
+  }
+}
+
+/* =============================================
+   HERO THREE.JS
+============================================= */
+(function() {
+  var canvas = document.getElementById('hcv');
+  if (!canvas || typeof THREE === 'undefined') return;
+  var renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(70, 1, 0.1, 100);
+  camera.position.z = 5;
+  function resize() {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  var geo = new THREE.BufferGeometry();
+  var n = 140;
+  var pos = new Float32Array(n * 3);
+  var vel = [];
+  for (var i = 0; i < n; i++) {
+    pos[i*3] = (Math.random()-0.5)*14;
+    pos[i*3+1] = (Math.random()-0.5)*14;
+    pos[i*3+2] = (Math.random()-0.5)*6;
+    vel.push({x:(Math.random()-0.5)*0.004, y:(Math.random()-0.5)*0.004+0.002});
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  var pts = new THREE.Points(geo, new THREE.PointsMaterial({color: 0x4A5C3A, size: 0.04, transparent: true, opacity: 0.5}));
+  scene.add(pts);
+  var lm = new THREE.LineBasicMaterial({color: 0x4A5C3A, opacity: 0.05, transparent: true});
+  for (var i = -7; i <= 7; i += 2) {
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-9,i,0),new THREE.Vector3(9,i,0)]), lm));
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i,-9,0),new THREE.Vector3(i,9,0)]), lm));
+  }
+  function anim() {
+    requestAnimationFrame(anim);
+    var p = geo.attributes.position.array;
+    for (var i = 0; i < n; i++) {
+      p[i*3] += vel[i].x; p[i*3+1] += vel[i].y;
+      if (p[i*3+1] > 8) p[i*3+1] = -8;
+      if (p[i*3] > 8) p[i*3] = -8;
+      if (p[i*3] < -8) p[i*3] = 8;
+    }
+    geo.attributes.position.needsUpdate = true;
+    pts.rotation.z += 0.0001;
+    renderer.render(scene, camera);
+  }
+  anim();
+})();
+
+/* =============================================
+   POB THREE.JS
+============================================= */
+(function() {
+  var canvas = document.getElementById('pcv');
+  if (!canvas || typeof THREE === 'undefined') return;
+  var renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(58, 1, 0.1, 100);
+  camera.position.set(0, 0, 6);
+  function resize() {
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  scene.add(new THREE.AmbientLight(0xfaf8ee, 0.4));
+  var dl = new THREE.DirectionalLight(0x9aad80, 1.8);
+  dl.position.set(4, 5, 6);
+  scene.add(dl);
+  var grp = new THREE.Group();
+  scene.add(grp);
+  var cols = [0x4A5C3A, 0x6B7F58, 0x2E3A24, 0x8EA070, 0x4A5C3A];
+  for (var i = 0; i < 5; i++) {
+    var m = new THREE.MeshStandardMaterial({color: cols[i], roughness: 0.45, metalness: 0.15});
+    var bk = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.38, 1.3), m);
+    bk.position.y = i * 0.5 - 1.1;
+    grp.add(bk);
+  }
+  var ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.025, 12, 100), new THREE.MeshBasicMaterial({color: 0x6B7F58, transparent: true, opacity: 0.18}));
+  ring.rotation.x = Math.PI / 3;
+  scene.add(ring);
+  var pGeo = new THREE.BufferGeometry();
+  var pPos = new Float32Array(80*3);
+  for (var i = 0; i < 80; i++) {
+    pPos[i*3] = (Math.random()-0.5)*10;
+    pPos[i*3+1] = (Math.random()-0.5)*10;
+    pPos[i*3+2] = (Math.random()-0.5)*4;
+  }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({color: 0x6B7F58, size: 0.06, transparent: true, opacity: 0.3})));
+  var mouse = {x: 0, y: 0};
+  canvas.onmousemove = function(e) {
+    var rc = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX - rc.left) / rc.width - 0.5) * 2;
+    mouse.y = -((e.clientY - rc.top) / rc.height - 0.5) * 2;
+  };
+  function anim() {
+    requestAnimationFrame(anim);
+    grp.rotation.y += 0.007;
+    grp.rotation.x += (mouse.y * 0.35 - grp.rotation.x) * 0.05;
+    ring.rotation.z += 0.002;
+    renderer.render(scene, camera);
+  }
+  anim();
+})();
+
+/* =============================================
+   KEYBOARD ESC
+============================================= */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeApply();
+    closeFounder();
+    closeNode();
+    closeCommunity();
+    closeDet();
+    closeHub();
+  }
+});
 </script>
-
-    <!-- ABOUT -->
-    <section id="about" class="py-40 px-6 bg-[#f7f7f7] text-black">
-        <div class="max-w-6xl mx-auto space-y-28">
-            <div class="max-w-3xl">
-                <h2 class="serif-italic text-6xl md:text-7xl leading-tight">About <span
-                        class="text-gray-400">Vaithra</span></h2>
-                <p class="mt-8 text-lg text-gray-600 leading-relaxed">Vaithra is a semi-centralized founder network
-                    built by early-stage founders who understand what it means to build without connections, capital, or
-                    visibility.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-16">
-                <div class="bg-white rounded-[32px] p-10 shadow-lg">
-                    <h3 class="serif-italic text-3xl mb-6">What Vaithra Is</h3>
-                    <p class="text-gray-600 leading-relaxed">Vaithra is a founder discovery and collaboration network
-                        focused on identifying serious builders outside traditional startup hubs.</p>
-                    <p class="text-gray-600 leading-relaxed mt-4">Instead of concentrating only in major cities, Vaithra
-                        operates city-by-city across India to connect isolated founders, create meetups, and enable
-                        collaboration.</p>
-                </div>
-
-                <div class="bg-white rounded-[32px] p-10 shadow-lg">
-                    <h3 class="serif-italic text-3xl mb-6">Why Vaithra Exists</h3>
-                    <p class="text-gray-600 leading-relaxed">Many talented founders exist in smaller cities but remain
-                        invisible because they lack networks, funding access, or ecosystem exposure.</p>
-                    <p class="text-gray-600 leading-relaxed mt-4">Vaithra exists to change this reality by building a
-                        distributed network of founders and representatives across cities.</p>
-                </div>
-            </div>
-
-            <div class="bg-black text-white rounded-[30px] p-14">
-                <h3 class="serif-italic text-4xl mb-8">The Problem</h3>
-                <p class="text-gray-300 leading-relaxed max-w-3xl">India's startup ecosystem is heavily centralized in a
-                    few cities. Meanwhile thousands of founders in smaller cities are building in isolation without
-                    mentorship, collaboration, or exposure.</p>
-                <p class="text-gray-300 leading-relaxed mt-4 max-w-3xl">Vaithra focuses on these overlooked regions and
-                    builds connections through local meetups, events, and founder networks.</p>
-            </div>
-
-            <div>
-                <h3 class="serif-italic text-4xl mb-12">How The Network Works</h3>
-                <div class="grid md:grid-cols-3 gap-10">
-                    <div class="bg-white rounded-3xl p-8 shadow-md">
-                        <h4 class="font-bold mb-3">City Meetups</h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">Vaithra organizes founder meetups in cities
-                            that are often ignored by the mainstream startup ecosystem.</p>
-                    </div>
-                    <div class="bg-white rounded-3xl p-8 shadow-md">
-                        <h4 class="font-bold mb-3">Founder Collaboration</h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">Founders can collaborate, share ideas, and
-                            learn from each other through structured events and discussions.</p>
-                    </div>
-                    <div class="bg-white rounded-3xl p-8 shadow-md">
-                        <h4 class="font-bold mb-3">Idea Partnerships</h4>
-                        <p class="text-gray-600 text-sm leading-relaxed">If Vaithra identifies a strong idea or team,
-                            the organization may collaborate or support its launch.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-16">
-                <div class="bg-white rounded-[32px] p-10 shadow-lg">
-                    <h3 class="serif-italic text-3xl mb-6">City Representatives</h3>
-                    <p class="text-gray-600 leading-relaxed">Vaithra appoints representatives in different cities to
-                        organize meetups and act as local connectors.</p>
-                </div>
-                <div class="bg-white rounded-[32px] p-10 shadow-lg">
-                    <h3 class="serif-italic text-3xl mb-6">Volunteer Structure</h3>
-                    <p class="text-gray-600 leading-relaxed">Representatives in Vaithra are volunteers. They are not
-                        employees and are not paid by the organization.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- THE CORE TEAM -->
-    <section id="founders">
-        <header class="boutique-header">
-            <span class="lux-tag">Vaithra Protocol</span>
-            <h1>The Core</h1>
-        </header>
-        <main>
-            <div class="founder-strip" onclick="openLux('sardhar')">
-                <span class="strip-num">01</span>
-                <span class="strip-name">Sardhar Musthafa</span>
-                <span class="strip-role">Final Authority</span>
-            </div>
-            <div class="founder-strip" onclick="openLux('rahimath')">
-                <span class="strip-num">02</span>
-                <span class="strip-name">Rahimath</span>
-                <span class="strip-role">Glowvai.in</span>
-            </div>
-            <div class="founder-strip" onclick="openLux('gopi')">
-                <span class="strip-num">03</span>
-                <span class="strip-name">Erugoni Gopi</span>
-                <span class="strip-role">Strategic Owner</span>
-            </div>
-            <div class="founder-strip" onclick="openLux('dhoni')">
-                <span class="strip-num">04</span>
-                <span class="strip-name">Dhoni Hari Hara Singh</span>
-                <span class="strip-role">Media Partner</span>
-            </div>
-        </main>
-
-        <div id="luxModal" class="full-slide-modal">
-            <div class="modal-portrait">
-                <img id="mImg" src="" alt="">
-            </div>
-            <div class="modal-content-area">
-                <div class="close-trigger" onclick="closeLux()">Close &times;</div>
-                <span class="m-role-tag" id="mTag">Founder Profile</span>
-                <h2 class="m-name" id="mName">Name</h2>
-                <p id="mRole" style="opacity: 0.4; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">
-                    Role Description</p>
-                <div style="height: 60px;"></div>
-                <p class="m-description" id="mBio">Bio content here...</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- REGIONAL NODES CAROUSEL -->
-    <section id="reps" class="py-32 bg-[#F5F5F7] overflow-hidden relative">
-        <div class="max-w-7xl mx-auto px-8 mb-20 relative z-10 grid grid-cols-12 gap-8">
-            <div class="col-span-12 md:col-span-11">
-                <span class="text-[11px] uppercase tracking-[0.5em] font-black text-gray-400 mb-6 block">Regional Node
-                    Infrastructure</span>
-                <h2 class="serif-italic text-7xl md:text-9xl leading-[0.8] tracking-tighter text-black italic">
-                    Local <span class="text-gray-300">Hubs.</span>
-                </h2>
-                <div class="mt-10 max-w-lg border-l-4 border-[#A5C400] pl-10">
-                    <p class="text-base text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
-                        Decentralized infrastructure bridging district builders with the global ecosystem.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="carousel-container relative">
-            <div class="carousel-track-premium" id="nodesTrack"></div>
-        </div>
-    </section>
-
-    <!-- MAGAZINE MODAL FOR NODES -->
-    <div id="magazineModal"
-        class="fixed inset-0 z-[3000] hidden items-center justify-center p-6 bg-black/60 backdrop-blur-xl">
-        <div
-            class="bg-[#FAFAFA] w-full max-w-5xl h-[75vh] rounded-[40px] overflow-hidden flex flex-col md:flex-row relative shadow-2xl">
-            <button onclick="closeMagazine()"
-                class="absolute top-8 left-8 z-50 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">✕</button>
-            <div class="w-full md:w-1/2 p-12 md:p-20 flex flex-col justify-center bg-white">
-                <span class="text-[9px] uppercase tracking-[0.6em] text-[#A5C400] font-black mb-4 block">Validation
-                    Node</span>
-                <h2 id="magCity" class="serif-italic text-5xl text-black mb-4 italic">City</h2>
-                <p id="magStatus" class="text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-8">Protocol
-                    Active</p>
-                <p class="text-gray-500 leading-relaxed font-light text-base">
-                    Bridging the gap between isolated district builders and metro-centric startup ecosystems. This hub
-                    serves as a validation engine for Tier-2 and Tier-3 founders.
-                </p>
-                <button
-                    class="mt-10 w-fit border-b border-black font-black text-[9px] uppercase tracking-[0.3em] pb-2 hover:opacity-50 transition-all text-black">Request
-                    Node Access</button>
-            </div>
-            <div class="w-full md:w-1/2 h-full bg-zinc-100">
-                <img id="magImg" src=""
-                    class="w-full h-full object-cover grayscale opacity-90 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
-            </div>
-        </div>
-    </div>
-
-    <!-- COMMUNITY / STATS -->
-    <section id="community-stats"
-        style="background-color: #ffffff; padding: 160px 8%; font-family: 'Inter', sans-serif; color: #000; overflow: hidden;">
-        <div style="max-width: 1400px; margin: 0 auto;">
-            <div style="text-align: center; margin-bottom: 100px;" class="reveal-up">
-                <span
-                    style="text-transform: uppercase; letter-spacing: 8px; font-size: 10px; font-weight: 900; color: #6a3df0; display: block; margin-bottom: 20px;">Protocol
-                    Expansion</span>
-                <h2
-                    style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-style: italic; font-weight: 900; letter-spacing: -2px; margin: 0;">
-                    Community Growth</h2>
-            </div>
-            <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 100px;">
-                <div class="stat-box reveal-up">
-                    <h3 class="stat-number"><span class="counter" data-target="07">0</span>+</h3>
-                    <p class="stat-label">Community Members</p>
-                </div>
-                <div class="stat-box reveal-up">
-                    <h3 class="stat-number"><span class="counter" data-target="0">0</span>+</h3>
-                    <p class="stat-label">Cities Connected</p>
-                </div>
-                <div class="stat-box reveal-up">
-                    <h3 class="stat-number"><span class="counter" data-target="0">0</span></h3>
-                    <p class="stat-label">Projects Started</p>
-                </div>
-                <div class="stat-box reveal-up">
-                    <h3 class="stat-number"><span class="counter" data-target="15">02</span></h3>
-                    <p class="stat-label">Active Contributors</p>
-                </div>
-            </div>
-            <div style="text-align: center;" class="reveal-up">
-                <button onclick="openCommunityForm()" class="community-cta">Become a Community Member</button>
-                <p
-                    style="margin-top: 25px; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #999; font-weight: 700;">
-                    Receive updates via Mail & WhatsApp</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- COMMUNITY MODAL -->
-    <div id="communityModal"
-        style="display:none; position:fixed; inset:0; background:rgba(255,255,255,0.98); z-index:10000; overflow-y:auto; padding:50px 20px;">
-        <div style="max-width:800px; margin:0 auto; position:relative;">
-            <button onclick="closeCommunityForm()"
-                style="position:fixed; top:30px; right:30px; background:none; border:none; font-size:30px; cursor:pointer; font-weight:200;">✕</button>
-            <div style="text-align:center; margin-bottom:50px;">
-                <span
-                    style="text-transform: uppercase; letter-spacing: 5px; font-size: 10px; font-weight: 900; color: #6a3df0;">Onboarding
-                    Protocol</span>
-                <h2
-                    style="font-family: 'Playfair Display', serif; font-size: 3rem; font-style: italic; margin-top:10px; color:#000;">
-                    Join the Network</h2>
-            </div>
-            <div
-                style="width:100%; height:80vh; border-radius:20px; overflow:hidden; border:1px solid #eee; background:#fff; box-shadow: 0 20px 50px rgba(0,0,0,0.05);">
-                <iframe
-                    src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true"
-                    width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- BLOGS -->
-    <section id="blogs" class="py-32 px-8 bg-[#0f0f0f]">
-        <div class="blog-wrapper">
-            <h2 class="blog-title">Founder Insights</h2>
-            <div class="blog-grid">
-                <a href="startup-failure-india.html" class="blog-card">
-                    <div class="blog-tag">Research</div>
-                    <h3>Why Startups Are Failing in India</h3>
-                    <p>India is producing thousands of startups, yet most collapse within a few years. This article
-                        explores the real structural reasons...</p>
-                    <div class="blog-read">READ ARTICLE →</div>
-                </a>
-                <a href="isolation-enemy.html" class="blog-card">
-                    <div class="blog-tag">Culture</div>
-                    <h3>Isolation Is The Enemy</h3>
-                    <p>Many talented founders in smaller cities work in complete isolation. Without access to networks,
-                        mentors, or early validation...</p>
-                    <div class="blog-read">READ ARTICLE →</div>
-                </a>
-                <a href="execution-reality.html" class="blog-card">
-                    <div class="blog-tag">Execution</div>
-                    <h3>Execution Reality</h3>
-                    <p>Startup culture in India often promotes motivation over execution. Real founders succeed through
-                        relentless experimentation...</p>
-                    <div class="blog-read">READ ARTICLE →</div>
-                </a>
-                <a href="founder-network-problem.html" class="blog-card">
-                    <div class="blog-tag">Network</div>
-                    <h3>The Founder Network Problem</h3>
-                    <p>Outside major metro cities, thousands of founders lack access to connections, credibility, and
-                        collaborative communities...</p>
-                    <div class="blog-read">READ ARTICLE →</div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- SPONSOR / BACKERS SECTION -->
-    <section id="sponsor" class="vaithra-scope">
-        <div id="sponsor-landing-view">
-            <span class="lux-meta">Infrastructure Support</span>
-            <h2 class="lux-header-title">Backed by Builders</h2>
-            <div class="marquee-container">
-                <div class="marquee-track">
-                    <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
-                    <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
-                    <div class="brand-logo" style="color:#00A896">BuildStack</div>
-                    <div class="brand-logo" style="color:#F4A261">StartupForge</div>
-                    <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
-                    <div class="brand-logo" style="color:#FF6B6B">Glowvai</div>
-                    <div class="brand-logo" style="color:#6C63FF">IndieLabs</div>
-                    <div class="brand-logo" style="color:#00A896">BuildStack</div>
-                    <div class="brand-logo" style="color:#F4A261">StartupForge</div>
-                    <div class="brand-logo" style="color:#8338EC">FounderCircle</div>
-                </div>
-            </div>
-            <button class="lux-action-btn" onclick="showSponsorDetails()">Become a Sponsor</button>
-        </div>
-
-        <div id="sponsor-detail-view">
-            <button onclick="hideSponsorDetails()"
-                style="background:none; border:none; cursor:pointer; font-weight:900; font-size:11px; text-transform:uppercase; letter-spacing:3px; color:#7c3aed; margin-bottom:40px;">←
-                Back to Gallery</button>
-            <div class="detail-grid">
-                <div class="detail-text">
-                    <span
-                        style="text-transform:uppercase; letter-spacing:5px; font-size:10px; font-weight:900; color:#7c3aed;">Node
-                        Capital</span>
-                    <h3>Scale the<br>New Protocol.</h3>
-                    <p>Support the early stage founders and gain priority access to validated founders across our
-                        regional hubs. Professional clearance is managed via Vaivaanith Pvt Ltd.</p>
-                </div>
-                <div class="whatsapp-card">
-                    <p
-                        style="font-weight:900; margin-bottom:10px; text-transform:uppercase; font-size:10px; color:#999;">
-                        Final Authority Clearance</p>
-                    <h4 style="font-size: 1.5rem; margin-bottom: 30px; color: #000;">Direct Channel</h4>
-                    <a href="https://wa.me/918977855998?text=Interested%20in%20becoming%20a%20Sponsor%20for%20Vaithra"
-                        class="whatsapp-btn">CONNECT VIA WHATSAPP</a>
-                    <p style="font-size:10px; margin-top:20px; opacity:0.4; font-weight:bold; color: #000;">8977855998
-                        // SARDHAR MUSTHAFA</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer
-        style="background-color: #ffffff; padding: 120px 5% 60px; border-top: 1px solid #f0f0f0; font-family: 'Inter', sans-serif; color: #000;">
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 60px; align-items: start;">
-            <div style="grid-column: span 1;">
-                <h3
-                    style="font-family: 'Playfair Display', serif; font-size: 2.2rem; margin: 0 0 25px 0; font-weight: 900; letter-spacing: -1px;">
-                    VAITHRA</h3>
-                <p style="color: #666; font-size: 0.95rem; line-height: 1.8; margin-bottom: 35px; max-width: 300px;">
-                    Identifying and validating serious builders outside traditional hubs.
-                </p>
-                <div style="display: flex; gap: 25px; align-items: center;">
-                    <a href="https://instagram.com/wearevaithra" target="_blank"
-                        style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">Instagram</a>
-                    <a href="https://wa.me/918977855998" target="_blank"
-                        style="text-decoration: none; color: #000; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #7c3aed; padding-bottom: 4px;">WhatsApp</a>
-                </div>
-            </div>
-            <div>
-                <h4
-                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">
-                    Explore</h4>
-                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
-                    <li><a href="#about" style="color: #444; text-decoration: none; transition: 0.2s;">The Vision</a>
-                    </li>
-                    <li><a href="#founders" style="color: #444; text-decoration: none; transition: 0.2s;">The Core
-                            Team</a></li>
-                    <li><a href="#reps" style="color: #444; text-decoration: none; transition: 0.2s;">Regional Nodes</a>
-                    </li>
-                    <li><a href="#blogs" style="color: #444; text-decoration: none; transition: 0.2s;">Founder
-                            Insights</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4
-                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">
-                    Compliance</h4>
-                <ul style="list-style: none; padding: 0; line-height: 2.8; font-size: 0.9rem; font-weight: 500;">
-                    <li><a href="/privacy-policy" style="color: #444; text-decoration: none;">Privacy Policy</a></li>
-                    <li><a href="/terms-conditions" style="color: #444; text-decoration: none;">Terms & Conditions</a>
-                    </li>
-                    <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry"
-                            style="color: #444; text-decoration: none;">Official Clearance</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4
-                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 11px; font-weight: 900; margin-bottom: 30px; color: #999;">
-                    Corporate</h4>
-                <p
-                    style="font-size: 12px; font-weight: 900; color: #000; text-transform: uppercase; letter-spacing: 3px; margin: 0;">
-                    VAIVAANITH PVT LTD</p>
-                <p style="font-size: 11px; color: #999; margin-top: 10px; line-height: 1.6;">Holding entity for Vaithra
-                    and Glowvai.in infrastructure.</p>
-            </div>
-        </div>
-        <div
-            style="margin-top: 100px; padding-top: 40px; border-top: 1px solid #f5f5f5; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 3px; font-weight: 700;">
-            <span>© 2026 Vaithra. All rights reserved.</span>
-            <span>Authored by Sardhar Musthafa</span>
-        </div>
-    </footer>
-
-    <!-- MASTER JAVASCRIPT LOGIC -->
-    <script>
-        // --- Applying/Joining logic ---
-        function toggleApplySection() {
-            const overlay = document.getElementById('applyOverlay');
-            if (!overlay) return;
-            if (overlay.classList.contains('translate-y-full')) {
-                overlay.classList.remove('translate-y-full');
-                overlay.classList.add('translate-y-0');
-                document.body.style.overflow = 'hidden';
-            } else {
-                overlay.classList.remove('translate-y-0');
-                overlay.classList.add('translate-y-full');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // --- Founders Modal Logic ---
-        const founders = {
-            sardhar: {
-                name: "Sardhar Musthafa",
-                role: "Founder & Final Authority — Vaithra",
-                tag: "Chief Strategic Architect",
-                bio: "Leading the overarching governance of the Vaithra Protocol. As the founder of Vaivaanith Pvt Ltd, Sardhar maintains final authority over all strategic nodes and ecosystem validation.",
-                img: "./assets/images/sardhar.jpeg"
-            },
-            rahimath: {
-                name: "Rahimath",
-                role: "Core Partner — Vaithra | Founder — Glowvai",
-                tag: "Market Integration",
-                bio: "Overseeing the Glowvai initiative within the Vaithra ecosystem. Rahimath bridges beauty-tech innovation with the core startup infrastructure.",
-                img: "./assets/images/rahimath.jpeg"
-            },
-            gopi: {
-                name: "Erugoni Gopi",
-                role: "Strategic Owner & Systems Lead",
-                tag: "Systems Logic",
-                bio: "Gopi is a business partner at Vaithra responsible for managing internal operational systems and strategic ownership structures.",
-                img: "./assets/images/gopi.jpeg"
-            },
-            dhoni: {
-                name: "Dhoni Hari Hara Singh",
-                role: "Media Partner — Vaithra",
-                tag: "Creative Production",
-                bio: "Founder of Vishvarupa Creations and the official media partner for Vaithra. Handles brand representation and high-end media production.",
-                img: "./assets/images/dhoni.jpeg"
-            }
-        };
-
-        function openLux(key) {
-            const f = founders[key];
-            document.getElementById('mName').innerText = f.name;
-            document.getElementById('mRole').innerText = f.role;
-            document.getElementById('mTag').innerText = f.tag;
-            document.getElementById('mBio').innerText = f.bio;
-            document.getElementById('mImg').src = f.img;
-
-            const modal = document.getElementById('luxModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLux() {
-            const modal = document.getElementById('luxModal');
-            modal.classList.remove('active');
-            setTimeout(() => { modal.style.display = 'none'; }, 700);
-            document.body.style.overflow = 'auto';
-        }
-
-        // --- Regional Nodes Carousel Logic ---
-        const cities = [
-            { name: 'Hyderabad', status: 'Main Hub', file: 'hyderabad.jpeg' },
-            { name: 'Visakhapatnam', status: 'Coastal', file: 'vizag.jpeg' },
-            { name: 'Vijayawada', status: 'Core Node', file: 'vijayawada.jpeg' },
-            { name: 'Tirupati', status: 'Tech Hub', file: 'tirupati.jpeg' },
-            { name: 'Warangal', status: 'Expansion', file: 'warangal.jpeg' },
-            { name: 'Guntur', status: 'Industrial', file: 'guntur.jpeg' },
-            { name: 'Bengaluru', status: 'External', file: 'bengaluru.jpeg' },
-            { name: 'Chennai', status: 'Partner', file: 'chennai.jpeg' },
-            { name: 'Mumbai', status: 'Finance', file: 'mumbai.jpeg' },
-            { name: 'Delhi', status: 'Capital', file: 'delhi.jpeg' }
-        ];
-
-        function generateCards(cityList) {
-            return cityList.map(city => `
-        <div class="node-item" onclick="openMagazine('${city.name}', '${city.status}', 'assets/images/${city.file}')">
-            <div class="card-refractive">
-                <div class="img-wrapper">
-                    <img src="assets/images/${city.file}" alt="${city.name}" onerror="this.src='https://placehold.co/400x500?text=${city.name}'">
-                </div>
-                <div class="card-info">
-                    <h3>${city.name}</h3>
-                    <p>${city.status}</p>
-                </div>
-            </div>
-        </div>
-    `).join('');
-        }
-        document.getElementById('nodesTrack').innerHTML = generateCards(cities) + generateCards(cities);
-
-        function openMagazine(city, status, imgUrl) {
-            document.getElementById('magCity').innerText = city;
-            document.getElementById('magStatus').innerText = status;
-            document.getElementById('magImg').src = imgUrl;
-
-            const modal = document.getElementById('magazineModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMagazine() {
-            const modal = document.getElementById('magazineModal');
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // --- Community Form Logic ---
-        function openCommunityForm() {
-            const modal = document.getElementById('communityModal');
-            if (modal) {
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
-        }
-        function closeCommunityForm() {
-            const modal = document.getElementById('communityModal');
-            if (modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-
-        // --- Smooth Live Counter Logic ---
-        const startCount = (el) => {
-            const target = +el.getAttribute('data-target');
-            const speed = 2000;
-            const startTime = performance.now();
-            const update = (now) => {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / speed, 1);
-                const currentCount = Math.floor(progress * target);
-                el.innerText = currentCount.toLocaleString();
-                if (progress < 1) requestAnimationFrame(update);
-                else el.innerText = target.toLocaleString();
-            };
-            requestAnimationFrame(update);
-        };
-
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
-                    const counter = entry.target.querySelector('.counter');
-                    if (counter && !counter.classList.contains('started')) {
-                        counter.classList.add('started');
-                        startCount(counter);
-                    }
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.reveal-up').forEach(el => statsObserver.observe(el));
-
-        // --- Sponsors Logic ---
-        function showSponsorDetails() {
-            document.getElementById('sponsor-landing-view').style.display = 'none';
-            const detail = document.getElementById('sponsor-detail-view');
-            detail.style.display = 'block';
-            setTimeout(() => { detail.style.opacity = '1'; }, 10);
-            window.scrollTo({ top: document.getElementById('sponsor').offsetTop - 100, behavior: 'smooth' });
-        }
-        function hideSponsorDetails() {
-            document.getElementById('sponsor-detail-view').style.display = 'none';
-            document.getElementById('sponsor-landing-view').style.display = 'block';
-            document.getElementById('sponsor-landing-view').style.opacity = '1';
-        }
-    </script>
-
 </body>
-
 </html>
