@@ -120,21 +120,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .hscroll span{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.24em;text-transform:uppercase}
 
 /* ABOUT */
-#about{background:var(--W2);padding:140px 5%}
-.ab-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+#about{background:var(--W2);padding:120px 5% 40px}
+.ab-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 .abl{position:relative}
 .abq{font-family:'Cormorant Garamond',serif;font-size:clamp(80px,14vw,180px);color:var(--OL);opacity:.07;line-height:1;font-style:italic;font-weight:600;position:absolute;top:-40px;left:-16px;pointer-events:none;user-select:none}
 .ab-lead{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.6vw,32px);font-weight:300;font-style:italic;line-height:1.5;color:var(--INK);margin-bottom:22px;position:relative;z-index:1}
 .ab-body{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;position:relative;z-index:1}
 .abr{display:flex;flex-direction:column;gap:18px}
-.acard{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:28px;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.acard{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:20px 28px;transition:all .4s cubic-bezier(.16,1,.3,1)}
 .acard:hover{transform:translateY(-4px);box-shadow:var(--SM);border-color:var(--BD2)}
-.acn{font-family:'Cormorant Garamond',serif;font-size:40px;font-style:italic;color:var(--OL);opacity:.3;line-height:1;margin-bottom:8px}
+.acn{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:var(--OL);opacity:.3;line-height:1;margin-bottom:4px}
 .acard h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px;color:var(--INK)}
 .acard p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300}
 
 /* POB */
-#pob{background:var(--W3);padding:140px 5%;overflow:hidden}
+#pob{background:var(--W3);padding:60px 5%;overflow:hidden}
 .pob-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 .pob-cv{height:440px;border-radius:22px;overflow:hidden;background:var(--OLd);position:relative;box-shadow:var(--SL)}
 #pcv{width:100%!important;height:100%!important}
@@ -1109,14 +1109,26 @@ document.querySelectorAll('.sbox').forEach(function(el) { co.observe(el); });
    SUBSCRIBE
 ============================================= */
 function handleSub(btn) {
-  var inp = btn.parentElement.querySelector('.sub-inp');
-  if (inp && inp.value.indexOf('@') > -1) {
-    inp.value = '';
-    btn.textContent = 'Done!';
-    setTimeout(function() { btn.textContent = 'Subscribe'; }, 3000);
+  const inp = btn.parentElement.querySelector('.sub-inp');
+  const email = inp.value;
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwaMDI-WUfpX9BjhDSHIOrYYeFUQE4QlobR0TctDvAiMOluQjy-FJCTMaxbBm6gV9w/exec';
+
+  if (email && email.indexOf('@') > -1) {
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: 'email=' + encodeURIComponent(email),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(() => {
+      inp.value = '';
+      btn.textContent = 'Welcome!';
+      setTimeout(() => { btn.textContent = 'Subscribe'; btn.disabled = false; }, 4000);
+    });
   }
 }
-
 /* =============================================
    HERO THREE.JS
 ============================================= */
