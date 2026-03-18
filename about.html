@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Protocol — Vaithra</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --W:#FAFAF8; --W2:#F3F0E8; --W3:#E8E5DC;
+  --OL:#4A5C3A; --OLl:#6B7F58; --OLd:#2E3A24;
+  --INK:#18160F; --INKm:#6B6456; --INKl:#9E9488;
+  --BD:rgba(74,92,58,.1); --BD2:rgba(74,92,58,.22);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden; -webkit-font-smoothing: antialiased;}
+
+/* NAV */
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);text-decoration:none}
+.nav-links{display:flex;gap:22px;list-style:none;align-items:center}
+.nav-links a{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--OL)}
+
+/* HERO */
+#hero{min-height:80vh;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;background:var(--INK);padding:0 5%; text-align:center;}
+#hcv{position:absolute;inset:0;width:100%;height:100%;opacity:.25;pointer-events:none}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(54px,8vw,120px);font-weight:300;line-height:.85;letter-spacing:-.04em;color:var(--W);position:relative;z-index:2}
+.hero-title em{font-style:italic;color:var(--OLl)}
+
+/* 9-DOT TIMELINE */
+#story{background:var(--W);padding:140px 5%}
+.str-timeline { max-width: 1100px; margin: 0 auto; position: relative; padding-bottom: 150px; }
+.str-timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--BD2); transform: translateX(-50%); }
+#line-progress { position: absolute; left: 50%; top: 0; width: 2px; background: var(--OL); transform: translateX(-50%); height: 0%; z-index: 1; transition: height 0.1s linear; }
+
+.str-item { display: grid; grid-template-columns: 1fr 100px 1fr; align-items: start; position: relative; z-index: 2; margin-bottom: 120px; }
+.str-spine { display: flex; flex-direction: column; align-items: center; position: relative; }
+.str-dot { width: 14px; height: 14px; background: var(--W3); border: 2px solid var(--BD2); border-radius: 50%; margin-top: 10px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 0 8px var(--W); }
+
+.str-item.is-active .str-dot { background: var(--OL); border-color: var(--OL); transform: scale(1.6); box-shadow: 0 0 25px rgba(74,92,58,0.4), 0 0 0 8px var(--W); }
+.str-content { padding: 0 40px; opacity: 0.15; transform: translateY(20px); transition: all 0.8s ease; }
+.str-item.is-active .str-content { opacity: 1; transform: translateY(0); }
+
+.str-content h4 { font-family: 'Syne', sans-serif; font-size: 10px; color: var(--OL); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+.str-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-style: italic; margin-bottom: 14px; color: var(--INK); line-height: 1.1; }
+.str-content p { font-size: 14px; color: var(--INKm); line-height: 1.7; font-weight: 300; }
+
+/* FOUNDERS */
+#founders{background:var(--W2); padding:120px 5%}
+.fnd-title{font-family:'Cormorant Garamond',serif; font-size: clamp(44px, 6vw, 84px); font-weight:300; margin-bottom: 60px; text-align:center;}
+.t-row{display:flex; align-items:center; padding:30px; border-bottom:1px solid var(--BD); cursor:pointer; transition:all .4s ease; background:var(--W2); max-width:1100px; margin:0 auto;}
+.t-row:hover{background:var(--W3); padding-left:50px;}
+.t-avatar{width:80px; height:80px; border-radius:50%; overflow:hidden; margin-right:40px; border:1px solid var(--BD2); background:var(--OLd);}
+.t-avatar img{width:100%; height:100%; object-fit:cover; filter:grayscale(100%); transition:.4s}
+.t-row:hover .t-avatar img{filter:grayscale(0%)}
+.t-name{font-family:'Cormorant Garamond',serif; font-size: 38px; font-weight:300; flex:1}
+
+/* MODAL */
+.tmod{position:fixed;inset:0;z-index:10000;background:var(--W);display:none;transform:translateY(100%);transition:transform .7s cubic-bezier(.85,0,.15,1)}
+.tmod.open{display:flex;transform:translateY(0)}
+.tmod-left{width:40%;background:var(--INK); position:relative;}
+.tmod-left img{width:100%; height:100%; object-fit:cover; opacity: 0.8;}
+.tmod-right{flex:1; padding:80px; display:flex; flex-direction:column; justify-content:center; position:relative;}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .str-timeline::before, #line-progress { left: 20px; transform: none; }
+  .str-item { grid-template-columns: 40px 1fr; margin-bottom: 80px; }
+  .str-item .str-empty { display: none; }
+  .str-content { padding: 0 0 0 30px; text-align: left !important; }
+  .t-avatar{ width:60px; height:60px; margin-right:20px;}
+  .tmod-left{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">VAITHRA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#story">Protocol</a></li>
+    <li><a href="#founders">Founders</a></li>
+  </ul>
+  <button class="nav-logo" style="background:var(--OL); color:white; border:none; padding:8px 22px; border-radius:100px; cursor:pointer;" onclick="window.location.href='index.html#apply'">JOIN &rarr;</button>
+</nav>
+
+<section id="hero">
+  <canvas id="hcv"></canvas>
+  <h1 class="hero-title">The <em>Vaithra</em><br>Architecture</h1>
+</section>
+
+<section id="story">
+  <div class="str-timeline" id="timeline-container">
+    <div id="line-progress"></div>
+
+    <div class="str-item timeline-node">
+        <div class="str-content" style="text-align: right;">
+            <h4>01 / Concept</h4>
+            <h3>What is Vaithra?</h3>
+            <p>Vaithra is a distributed founder discovery network. We operate as the "invisible layer" connecting serious builders who exist outside the traditional venture hubs.</p>
+        </div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-empty"></div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-empty"></div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-content">
+            <h4>02 / Purpose</h4>
+            <h3>Why we exist?</h3>
+            <p>Talent is everywhere, but networks are not. We bridge the gap for founders in Tier-2 and Tier-3 cities who are building in total isolation.</p>
+        </div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-content" style="text-align: right;">
+            <h4>03 / Trust</h4>
+            <h3>Proof of Build</h3>
+            <p>We replace the 'Pitch' with the 'Build'. Our protocol requires founders to submit verified weekly logs of their progress to earn credibility.</p>
+        </div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-empty"></div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-empty"></div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-content">
+            <h4>04 / Presence</h4>
+            <h3>Regional Nodes</h3>
+            <p>We build local hubs managed by City Representatives. Each node is a sanctuary for builders to meet, collaborate, and find co-founders.</p>
+        </div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-content" style="text-align: right;">
+            <h4>05 / Standard</h4>
+            <h3>Verified Badge</h3>
+            <p>Not everyone is a builder. Our verification badge is only awarded to founders who pass protocol checks and community validation.</p>
+        </div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-empty"></div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-empty"></div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-content">
+            <h4>06 / Capital</h4>
+            <h3>Micro-Grants</h3>
+            <p>We provide frictionless micro-grants (₹5K to ₹1L) based on Build Score. No long applications, just verified traction.</p>
+        </div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-content" style="text-align: right;">
+            <h4>07 / Knowledge</h4>
+            <h3>Daily Signal</h3>
+            <p>A curated daily knowledge drop for our members. Real insights on building, growth, and survival, delivered every morning.</p>
+        </div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-empty"></div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-empty"></div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-content">
+            <h4>08 / Growth</h4>
+            <h3>Build in Public</h3>
+            <p>Our live wall where founders share real wins and failures. We foster a culture of radical honesty over startup theatre.</p>
+        </div>
+    </div>
+
+    <div class="str-item timeline-node">
+        <div class="str-content" style="text-align: right;">
+            <h4>09 / Horizon</h4>
+            <h3>Scale the Protocol</h3>
+            <p>Moving city by city across India to create a permanent, unified infrastructure for the next generation of builders.</p>
+        </div>
+        <div class="str-spine"><div class="str-dot"></div></div>
+        <div class="str-empty"></div>
+    </div>
+  </div>
+</section>
+
+<section id="founders">
+  <h2 class="fnd-title">The <em>Core</em> Team</h2>
+  
+  <div class="t-row" onclick="openTeam('sardhar')">
+    <div class="t-avatar"><img src="./assets/images/sardhar.jpeg" alt="" onerror="this.style.opacity='0'"></div>
+    <div class="t-name">Sardhar Musthafa</div>
+    <span class="ey">Founder</span>
+  </div>
+
+  <div class="t-row" onclick="openTeam('rahimath')">
+    <div class="t-avatar"><img src="./assets/images/rahimath.jpeg" alt="" onerror="this.style.opacity='0'"></div>
+    <div class="t-name">Rahimath</div>
+    <span class="ey">Core Partner</span>
+  </div>
+
+  <div class="t-row" onclick="openTeam('gopi')">
+    <div class="t-avatar"><img src="./assets/images/gopi.jpeg" alt="" onerror="this.style.opacity='0'"></div>
+    <div class="t-name">Erugoni Gopi</div>
+    <span class="ey">Systems Lead</span>
+  </div>
+
+  <div class="t-row" onclick="openTeam('dhoni')">
+    <div class="t-avatar"><img src="./assets/images/dhoni.jpeg" alt="" onerror="this.style.opacity='0'"></div>
+    <div class="t-name">Dhoni Hari Hara Singh</div>
+    <span class="ey">Media Partner</span>
+  </div>
+</section>
+
+<div id="teamModal" class="tmod">
+  <div class="tmod-left"><img id="tm-img" src="" alt=""></div>
+  <div class="tmod-right">
+    <button style="position:absolute; top:30px; right:30px; background:none; border:1px solid var(--BD2); border-radius:50%; width:40px; height:40px; cursor:pointer;" onclick="closeTeam()">&#10005;</button>
+    <h2 id="tm-name" style="font-family:'Cormorant Garamond', serif; font-size:54px; margin-bottom:20px;"></h2>
+    <p id="tm-bio" style="font-size:18px; color:var(--INKm); line-height:2; border-left:3px solid var(--OL); padding-left:24px; max-width:550px;"></p>
+  </div>
+</div>
+
+<script>
+const TEAM = {
+  sardhar: { name: 'Sardhar Musthafa', bio: 'Architect of the Vaithra Protocol. Managing core strategic direction and network governance.', img: './assets/images/sardhar.jpeg' },
+  rahimath: { name: 'Rahimath', bio: 'Founder of Glowvai.in. Expert in beauty-tech integration and product validation.', img: './assets/images/rahimath.jpeg' },
+  gopi: { name: 'Erugoni Gopi', bio: 'Strategic owner responsible for internal systems logic and operational scaling.', img: './assets/images/gopi.jpeg' },
+  dhoni: { name: 'Dhoni Hari Hara Singh', bio: 'Founder of Vishvarupa Creations. Leading visual storytelling and brand identity.', img: './assets/images/dhoni.jpeg' }
+};
+
+function openTeam(key){
+  const t = TEAM[key];
+  document.getElementById('tm-name').textContent = t.name;
+  document.getElementById('tm-bio').textContent = t.bio;
+  document.getElementById('tm-img').src = t.img;
+  const m = document.getElementById('teamModal');
+  m.style.display = 'flex';
+  setTimeout(() => m.classList.add('open'), 50);
+  document.body.style.overflow = 'hidden';
+}
+function closeTeam(){
+  const m = document.getElementById('teamModal');
+  m.classList.remove('open');
+  setTimeout(() => m.style.display = 'none', 700);
+  document.body.style.overflow = '';
+}
+
+// Scroll Trigger Logic
+window.addEventListener('scroll', () => {
+    const container = document.getElementById('timeline-container');
+    const progressLine = document.getElementById('line-progress');
+    const nodes = document.querySelectorAll('.timeline-node');
+    const rect = container.getBoundingClientRect();
+    const winH = window.innerHeight;
+    
+    let progress = (winH / 1.5 - rect.top) / rect.height;
+    progress = Math.max(0, Math.min(1, progress));
+    progressLine.style.height = (progress * 100) + "%";
+
+    nodes.forEach(node => {
+        if (node.getBoundingClientRect().top < winH / 1.5) node.classList.add('is-active');
+        else node.classList.remove('is-active');
+    });
+});
+
+// Three.js BG
+(function(){
+  const canvas = document.getElementById('hcv');
+  const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(70, canvas.clientWidth/canvas.clientHeight, 0.1, 100);
+  camera.position.z = 5;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(500 * 3);
+  for(let i=0; i<1500; i++) pos[i] = (Math.random()-0.5) * 18;
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const pts = new THREE.Points(geo, new THREE.PointsMaterial({color:0x6B7F58, size:0.04}));
+  scene.add(pts);
+  function animate() {
+    requestAnimationFrame(animate);
+    pts.rotation.y += 0.0012;
+    renderer.render(scene, camera);
+  }
+  function resize(){
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    camera.aspect = canvas.clientWidth/canvas.clientHeight;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+  resize(); animate();
+})();
+</script>
+</body>
+</html>
