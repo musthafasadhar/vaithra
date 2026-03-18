@@ -228,29 +228,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .sub-btn{background:var(--INK);color:var(--W);border:none;padding:12px 20px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:background .3s}
 .sub-btn:hover{background:var(--OL)}
 
-/* FOUNDERS */
-#founders{background:var(--W2)}
-.fnd-hd{padding:96px 5% 0;max-width:1280px;margin:0 auto}
-.fnd-row{display:flex;align-items:center;padding:34px 5%;border-bottom:1px solid var(--BD);cursor:pointer;transition:all .45s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;background:var(--W2)}
-.fnd-row::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--OL);transform:scaleY(0);transition:transform .35s}
-.fnd-row:hover::after{transform:scaleY(1)}
-.fnd-row:hover{background:var(--W3);padding-left:calc(5% + 12px)}
-.fr-num{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;opacity:.2;width:52px;color:var(--INK)}
-.fr-name{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,50px);font-weight:300;flex:1;color:var(--INK);letter-spacing:-.02em;transition:all .3s}
-.fnd-row:hover .fr-name{font-style:italic}
-.fr-role{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl);width:210px;text-align:right}
-.fr-arr{font-size:16px;margin-left:24px;opacity:0;transform:translateX(-8px);transition:all .3s;color:var(--OL)}
-.fnd-row:hover .fr-arr{opacity:1;transform:none}
-.fmod{position:fixed;inset:0;z-index:10000;background:var(--W);display:none;transform:translateY(100%);transition:transform .72s cubic-bezier(.85,0,.15,1)}
-.fmod.open{display:flex;transform:translateY(0)}
-.fmod-l{width:40%;background:var(--INK);position:relative;overflow:hidden}
-.fmod-l img{width:100%;height:100%;object-fit:cover;filter:grayscale(28%);opacity:.82}
-.fmod-r{flex:1;padding:72px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto;background:var(--W);position:relative}
-.fmod-tag{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--OL);margin-bottom:14px}
-.fmod-name{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-style:italic;font-weight:600;color:var(--INK);line-height:.9;letter-spacing:-.02em;margin-bottom:7px}
-.fmod-role{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl);margin-bottom:40px}
-.fmod-bio{font-size:14px;color:var(--INKm);line-height:2;font-weight:300;border-left:2px solid var(--OL);padding-left:22px;max-width:480px}
-
 /* NODES */
 #reps{background:var(--W3);padding:120px 0;overflow:hidden}
 .reps-hd{padding:0 5%;max-width:1280px;margin:0 auto 52px;display:grid;grid-template-columns:1fr auto;align-items:end}
@@ -389,8 +366,7 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
 <nav class="nav">
   <div class="nav-logo">VAITHRA</div>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#founders">Core</a></li>
+    <li><a href="#about.html">About</a></li>
     <li><a href="#reps">Nodes</a></li>
     <li><a href="#blogs">Insights</a></li>
     <li><a href="#sponsor">Sponsor</a></li>
@@ -471,7 +447,7 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
     <p class="hero-sub rv d2">Vaithra is a semi-centralized founder network built across India &mdash; for early-stage builders who create without connections, capital, or visibility.</p>
     <div class="hero-cta rv d3">
       <button class="bp" onclick="openApply()">Join the Network &rarr;</button>
-      <a href="#about" class="bs">Discover More</a>
+     <a href="about.html" class="bs">Discover More</a>
     </div>
     <div class="hscroll rv d4"><div class="hsb"></div><span>Scroll</span></div>
   </div>
@@ -483,10 +459,16 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
     <div class="abl rl">
       <div class="abq">"</div>
       <span class="ey" style="margin-bottom:16px">The Foundation</span>
-      <p class="ab-lead">India's next great founders aren't just in Bengaluru or Mumbai. They're everywhere &mdash; isolated, talented, invisible.</p>
+      <p class="ab-lead">India's next great founders aren't just in Bengaluru or Mumbai. They're everywhere but &mdash; isolated, talented, invisible.</p>
       <p class="ab-body">Vaithra is a founder discovery and validation network operating city-by-city across India. We identify serious builders outside traditional startup hubs, organize local meetups, and create structured pathways for collaboration and visibility.</p>
       <p class="ab-body" style="margin-top:12px">Built by founders for founders. Governed by a clear protocol. Powered by a community that values execution over noise.</p>
     </div>
+    <p class="ab-body" style="margin-top:12px">Built by founders for founders. Governed by a clear protocol. Powered by a community that values execution over noise.</p>
+<div style="margin-top: 32px;">
+    <a href="about.html" class="bp">
+        Read more &rarr;
+    </a>
+</div>
     <div class="abr">
       <div class="acard rv d1"><div class="acn">01</div><h4>Distributed Infrastructure</h4><p>20&ndash;40 meetups per state with 1&ndash;3 major events. Local representatives organize ground-level connections in cities ignored by mainstream ecosystems.</p></div>
       <div class="acard rv d2"><div class="acn">02</div><h4>Duo Model Protocol</h4><p>Vaithra operates two parallel tracks: open community participation and selective verified membership with elevated access.</p></div>
@@ -614,19 +596,6 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
       </div>
     </div>
   </div>
-</section>
-
-<!-- FOUNDERS -->
-<section id="founders">
-  <div class="fnd-hd rv">
-    <span class="ey" style="margin-bottom:16px">Vaithra Protocol</span>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,112px);font-weight:300;line-height:.85;color:var(--INK)">The <em style="font-style:italic">Core</em></h2>
-    <div style="width:100%;height:1px;background:linear-gradient(90deg,rgba(74,92,58,.22),transparent);margin-top:32px"></div>
-  </div>
-  <div class="fnd-row rv" onclick="openFounder('sardhar')"><span class="fr-num">01</span><span class="fr-name">Sardhar Musthafa</span><span class="fr-role">Final Authority</span><span class="fr-arr">&rarr;</span></div>
-  <div class="fnd-row rv d1" onclick="openFounder('rahimath')"><span class="fr-num">02</span><span class="fr-name">Rahimath</span><span class="fr-role">Glowvai.in</span><span class="fr-arr">&rarr;</span></div>
-  <div class="fnd-row rv d2" onclick="openFounder('gopi')"><span class="fr-num">03</span><span class="fr-name">Erugoni Gopi</span><span class="fr-role">Strategic Owner</span><span class="fr-arr">&rarr;</span></div>
-  <div class="fnd-row rv d3" onclick="openFounder('dhoni')"><span class="fr-num">04</span><span class="fr-name">Dhoni Hari Hara Singh</span><span class="fr-role">Media Partner</span><span class="fr-arr">&rarr;</span></div>
 </section>
 
 <!-- FOUNDER MODAL -->
@@ -1053,34 +1022,6 @@ function openCommunity() {
 }
 function closeCommunity() {
   document.getElementById('communityModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* =============================================
-   FOUNDERS
-============================================= */
-var FOUNDERS = {
-  sardhar: {name:'Sardhar Musthafa', role:'Founder & Final Authority - Vaithra', tag:'Chief Strategic Architect', bio:'Leading the overarching governance of the Vaithra Protocol. As the founder of Vaivaanith Pvt Ltd, Sardhar maintains final authority over all strategic nodes and ecosystem validation.', img:'./assets/images/sardhar.jpeg'},
-  rahimath: {name:'Rahimath', role:'Core Partner - Vaithra | Founder - Glowvai', tag:'Market Integration', bio:'Overseeing the Glowvai initiative within the Vaithra ecosystem. Rahimath bridges beauty-tech innovation with the core startup infrastructure.', img:'./assets/images/rahimath.jpeg'},
-  gopi: {name:'Erugoni Gopi', role:'Strategic Owner & Systems Lead', tag:'Systems Logic', bio:'Gopi is a business partner at Vaithra responsible for managing internal operational systems and strategic ownership structures.', img:'./assets/images/gopi.jpeg'},
-  dhoni: {name:'Dhoni Hari Hara Singh', role:'Media Partner - Vaithra', tag:'Creative Production', bio:'Founder of Vishvarupa Creations and the official media partner for Vaithra. Handles brand representation and high-end media production.', img:'./assets/images/dhoni.jpeg'}
-};
-function openFounder(key) {
-  var f = FOUNDERS[key];
-  document.getElementById('fmod-name').textContent = f.name;
-  document.getElementById('fmod-role').textContent = f.role;
-  document.getElementById('fmod-tag').textContent = f.tag;
-  document.getElementById('fmod-bio').textContent = f.bio;
-  document.getElementById('fmod-img').src = f.img;
-  var m = document.getElementById('founderModal');
-  m.style.display = 'flex';
-  setTimeout(function() { m.classList.add('open'); }, 10);
-  document.body.style.overflow = 'hidden';
-}
-function closeFounder() {
-  var m = document.getElementById('founderModal');
-  m.classList.remove('open');
-  setTimeout(function() { m.style.display = 'none'; }, 750);
   document.body.style.overflow = '';
 }
 
