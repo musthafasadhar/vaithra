@@ -477,47 +477,6 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
   </div>
 </section>
 
-<!-- PROOF OF BUILD -->
-<section id="pob">
-  <div class="pob-in">
-    <div class="pob-cv rl"><canvas id="pcv"></canvas></div>
-    <div class="rr">
-      <span class="ey" style="margin-bottom:16px">New Feature</span>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,64px);font-weight:300;line-height:.9;color:var(--INK);margin-bottom:16px">Proof of <em style="font-style:italic;color:var(--OL)">Build</em></h2>
-      <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:8px">Stop pitching. Start proving. PoB replaces pitch decks with a structured system of verified build milestones that signal real progress to the community.</p>
-      <div class="pob-steps">
-        <div class="pob-s"><span class="pob-n">I</span><div class="pob-t"><h4>Submit Your Build Log</h4><p>Document weekly progress &mdash; what you shipped, what broke, what you learned.</p></div></div>
-        <div class="pob-s"><span class="pob-n">II</span><div class="pob-t"><h4>Community Validation</h4><p>Vetted community members verify milestone claims. Peer accountability replaces investor gatekeeping.</p></div></div>
-        <div class="pob-s"><span class="pob-n">III</span><div class="pob-t"><h4>Earn PoB Score</h4><p>Verified builds accumulate into a score linked to grants and profile visibility.</p></div></div>
-        <div class="pob-s"><span class="pob-n">IV</span><div class="pob-t"><h4>Unlock Opportunities</h4><p>High PoB scores unlock micro-grants, partnerships, and priority event access.</p></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- VERIFICATION BADGE -->
-<section id="vbadge">
-  <div class="vb-in">
-    <div class="badge-show rl">
-      <div class="badge-orb">
-        <div class="badge-ring"></div><div class="badge-ring"></div><div class="badge-ring"></div>
-        <div class="badge-core"><div class="badge-icon">&#10022;</div><div class="badge-lbl">VERIFIED<br>FOUNDER</div></div>
-      </div>
-    </div>
-    <div class="rr">
-      <span class="ey" style="margin-bottom:16px">Founder Verification Badge</span>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,60px);font-weight:300;line-height:.9;color:var(--INK);margin-bottom:22px">Your Credibility,<br><em style="font-style:italic">Verified.</em></h2>
-      <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;max-width:440px;margin-bottom:36px">The Vaithra Verification Badge is a community-issued credential for founders who have completed the protocol checks &mdash; demonstrating authenticity, commitment, and network standing.</p>
-      <div class="vchecks">
-        <div class="vc"><span class="vc-tick">&#10003;</span><div><h5>Identity Verified</h5><p>Real person, real founder &mdash; no anonymous profiles.</p></div></div>
-        <div class="vc"><span class="vc-tick">&#10003;</span><div><h5>Build Verified</h5><p>At least one PoB milestone confirmed by the community.</p></div></div>
-        <div class="vc"><span class="vc-tick">&#10003;</span><div><h5>Community Standing</h5><p>Active network participation confirmed.</p></div></div>
-      </div>
-      <button class="bp" style="margin-top:32px" onclick="openApply()">Apply for Verification &rarr;</button>
-    </div>
-  </div>
-</section>
-
 <!-- MICRO GRANTS -->
 <section id="grants">
   <div class="gr-bg">&#8377;</div>
@@ -731,10 +690,8 @@ var FEATURES = [
   {id:'ip',badge:'core',bc:'bc',title:'Idea Promotion',sub:'Visibility Engine',desc:'Founders pay to promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and potential co-founders across all city nodes.',items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Representatives share promoted ideas in local communities.'}],shape:'pyramid',color:0x4A5C3A},
   {id:'cr',badge:'core',bc:'bc',title:'City Representatives',sub:'Ground Network',desc:'Local nodes in every major city. Representatives organize ground meetups, bridge district builders with the ecosystem, and receive free idea promotion as a core benefit.',items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network at no cost.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct communication channel with Vaithra core.'}],shape:'network',color:0x6B7F58},
   {id:'dk',badge:'core',bc:'bc',title:'Daily Knowledge Drop',sub:'Daily Signal',desc:'One curated lesson, resource, or topic every single day, for early-stage founders navigating product, growth, fundraising, and team building.',items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered to your inbox and WhatsApp before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full historical archive.'}],shape:'sphere',color:0x2E3A24},
-  {id:'pb',badge:'new',bc:'bn',title:'Proof of Build',sub:'New Feature',desc:'Stop pitching. Start proving. PoB replaces pitch decks with a structured system of verified build milestones that signal real progress to the community.',items:[{t:'Weekly Build Logs',p:'Submit honest weekly progress including shipped features, failures, and learnings.'},{t:'Peer Validation',p:'Vetted community members verify milestone claims. No self-reported vanity metrics.'},{t:'PoB Score',p:'Verified builds accumulate into a score that unlocks grants and opportunities.'}],shape:'blocks',color:0x4A5C3A},
   {id:'mg',badge:'new',bc:'bn',title:'Micro-Grant Rounds',sub:'New Feature',desc:'Community-backed micro-funding for vetted founders who have proven traction. No lengthy applications, just verified builds and community trust signals.',items:[{t:'Three Tiers',p:'Rs 5K seed spark, Rs 25K traction grant, Rs 1L verified builder grant with clear eligibility.'},{t:'PoB-Gated',p:'You must have a minimum PoB score to apply. No shortcuts, no connections bias.'},{t:'Community Vote',p:'For larger grants, final allocation is determined by community vote.'}],shape:'coin',color:0xB8A060},
   {id:'vb',badge:'premium',bc:'bpr',title:'Verification Badge',sub:'Premium Credential',desc:'A verifiable community-issued credential for founders who pass protocol checks, signaling authenticity, commitment, and network standing.',items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles in the verified tier.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by the community.'},{t:'Profile Visibility',p:'Verified badge displayed on your public profile and grant applications.'}],shape:'badge',color:0x4A5C3A},
-  {id:'fc',badge:'core',bc:'bc',title:'Founder CRM',sub:'Internal System',desc:'Internal tracking of every verified founder including city, stage, vertical, and build status, enabling smarter connections, targeted outreach, and network intelligence.',items:[{t:'Smart Matching',p:'CRM data powers intelligent founder-to-founder introductions based on complementary skills.'},{t:'Stage Tracking',p:'Every founder current build stage is tracked so the right resources reach them.'},{t:'Connection History',p:'Log every meaningful interaction, collaboration, and referral across the network.'}],shape:'grid',color:0x2E3A24},
   {id:'bw',badge:'new',bc:'bn',title:'Build in Public Wall',sub:'New Feature',desc:'A live public wall where verified founders share real updates, wins, failures, and milestones. Accountability meets community visibility.',items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post, ensuring quality over noise.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type for easy discovery.'},{t:'Weekly Highlights',p:'The best build updates are featured in the weekly community digest.'}],shape:'wall',color:0x6B7F58},
   {id:'oo',badge:'core',bc:'bc',title:'Open Organization',sub:'Core Structure',desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just a commitment to the founder-first culture.',items:[{t:'Run Events',p:'Any member can organize a Vaithra-branded event in their city with full support.'},{t:'Contribution Vault',p:'Contribute guides, resources, and templates to the shared community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become official City Representatives.'}],shape:'torus',color:0x4A5C3A}
 ];
