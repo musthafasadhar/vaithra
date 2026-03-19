@@ -427,8 +427,8 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
       <p class="fd-desc" id="fddesc"></p>
       <div class="fd-items" id="fditems"></div>
       <div class="fd-acts">
-        <button class="bp" onclick="openApply();closeDet();closeHub()">Get Access &rarr;</button>
-        <button class="bs" onclick="closeDet()">Back</button>
+       <button class="bp" onclick="goToFeature()">Explore More &rarr;</button>
+<button class="bs" onclick="closeDet()">Back</button>
       </div>
     </div>
   </div>
@@ -588,7 +588,7 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
       <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;max-width:440px">One curated lesson, resource, or insight every day &mdash; specifically for early-stage founders navigating the chaos of building from scratch.</p>
       <div class="dkd-sub">
         <h4>Get It Daily</h4>
-        <p>Subscribe to receive the knowledge drop every morning before 7 AM.</p>
+        <p>Subscribe to receive the knowledge drop every morning before 7 PM.</p>
         <div class="sub-grp">
           <input type="email" class="sub-inp" placeholder="your@email.com">
           <button class="sub-btn" onclick="handleSub(this)">Subscribe</button>
@@ -740,6 +740,28 @@ var FEATURES = [
 ];
 
 /* =============================================
+   ✅ CHANGE 1 — FEATURE PAGE REDIRECT MAP
+   (Added before fdR declaration)
+============================================= */
+var FEATURE_PAGES = {
+  'ip': 'idea-promotion.html',
+  'cr': 'city-reps.html',
+  'dk': 'daily-drop.html',
+  'pb': 'index.html',
+  'mg': 'micro-grants.html',
+  'vb': 'verify.html',
+  'fc': 'index.html',
+  'bw': 'build-wall.html',
+  'oo': 'vaithra-open.html'
+};
+var currentFeatureId = null;
+function goToFeature() {
+  if (currentFeatureId && FEATURE_PAGES[currentFeatureId]) {
+    window.location.href = FEATURE_PAGES[currentFeatureId];
+  }
+}
+
+/* =============================================
    3D MINI RENDERER
 ============================================= */
 function makeMini(canvas, shape, color) {
@@ -871,7 +893,10 @@ function closeHub() {
    FEATURE DETAIL
 ============================================= */
 var fdR = null, fdRaf = null;
+
+/* ✅ CHANGE 2 — added: currentFeatureId = f.id as FIRST line inside openDet */
 function openDet(f) {
+  currentFeatureId = f.id;
   closeHub();
   document.getElementById('fdlbl').textContent = f.sub;
   document.getElementById('fdey').textContent = f.sub;
@@ -1111,35 +1136,27 @@ document.querySelectorAll('.sbox').forEach(function(el) { co.observe(el); });
 function handleSub(btn) {
   const inp = btn.parentElement.querySelector('.sub-inp');
   const email = inp.value;
-  
-  // Your NEW Version 3 URL from the screenshot
   const scriptURL = 'https://script.google.com/macros/s/AKfycbz3orlc0rs2SpbEjA2AiNzcnlmjrivrRH49QPYYDleU1KEszpWwO6aRsAuXGZHZyPDR/exec';
-
   if (email && email.indexOf('@') > -1) {
     btn.textContent = 'Joining...';
     btn.disabled = true;
-
-    // This part ensures Google Script reads the "email" variable correctly
     const params = new URLSearchParams();
     params.append('email', email);
-
     fetch(scriptURL, {
       method: 'POST',
-      mode: 'no-cors', // Required for Google Apps Script
+      mode: 'no-cors',
       cache: 'no-cache',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: params.toString()
     })
     .then(() => {
-      // Success Feedback
       inp.value = '';
       btn.textContent = 'Welcome!';
-      btn.style.background = '#4A5C3A'; // Olive Green feedback
-      
-      setTimeout(() => { 
-        btn.textContent = 'Subscribe'; 
+      btn.style.background = '#4A5C3A';
+      setTimeout(() => {
+        btn.textContent = 'Subscribe';
         btn.disabled = false;
-        btn.style.background = ''; // Resets to original CSS
+        btn.style.background = '';
       }, 4000);
     })
     .catch(error => {
@@ -1151,6 +1168,7 @@ function handleSub(btn) {
     alert("Please enter a valid email address.");
   }
 }
+
 /* =============================================
    HERO THREE.JS
 ============================================= */
