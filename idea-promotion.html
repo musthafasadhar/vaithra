@@ -1,1 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Idea Promotion — Vaithra</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;--OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;--INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;--GD:#B8A060;--GDl:#D4BB80;--BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
+.ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OL);display:block}
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);text-decoration:none}
+.nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--OL)}
+.bp{background:var(--INK);color:var(--W);border:none;padding:14px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.bp:hover{background:var(--OL);transform:translateY(-2px)}
 
+/* HERO */
+#hero{min-height:70vh;background:var(--OLd);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 5% 80px;position:relative;overflow:hidden}
+.hero-bg-txt{position:absolute;font-family:'Cormorant Garamond',serif;font-size:360px;font-weight:600;font-style:italic;color:rgba(255,255,255,.03);bottom:-40px;right:-20px;pointer-events:none;user-select:none;line-height:1}
+.hero-in{max-width:1280px;margin:0 auto;width:100%}
+.hero-pretag{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.hero-dot{width:7px;height:7px;background:var(--OLl);border-radius:50%;animation:bk 2s ease-in-out infinite}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,10vw,120px);font-weight:300;line-height:.88;letter-spacing:-.04em;color:var(--W);margin-bottom:28px}
+.hero-title em{font-style:italic;color:var(--GDl)}
+.hero-desc{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.5);max-width:560px;line-height:1.9;font-weight:300}
+
+/* HOW IT WORKS */
+#how{background:var(--W2);padding:120px 5%}
+.how-inner{max-width:1280px;margin:0 auto}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--BD);border:1px solid var(--BD);border-radius:20px;overflow:hidden;margin-top:60px}
+.how-step{background:var(--W2);padding:44px 32px;position:relative}
+.how-step:hover{background:var(--W3)}
+.how-n{font-family:'Cormorant Garamond',serif;font-size:72px;font-style:italic;font-weight:600;color:var(--OL);opacity:.15;line-height:1;margin-bottom:12px}
+.how-step h3{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;color:var(--INK)}
+.how-step p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300}
+
+/* PRICING */
+#pricing{background:var(--W);padding:120px 5%}
+.price-inner{max-width:1280px;margin:0 auto}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
+.price-card{background:var(--W2);border:1px solid var(--BD);border-radius:20px;padding:44px 36px;transition:all .4s;cursor:default}
+.price-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(74,92,58,.12);border-color:var(--BD2)}
+.price-card.featured{background:var(--INK);border-color:transparent}
+.price-amt{font-family:'Cormorant Garamond',serif;font-size:64px;font-style:italic;font-weight:600;color:var(--OL);line-height:1;margin-bottom:4px}
+.price-card.featured .price-amt{color:var(--GDl)}
+.price-period{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--INKl);margin-bottom:24px}
+.price-card.featured .price-period{color:rgba(250,250,248,.3)}
+.price-card h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-style:italic;color:var(--INK);margin-bottom:12px}
+.price-card.featured h3{color:var(--W)}
+.price-card p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300;margin-bottom:28px}
+.price-card.featured p{color:rgba(250,250,248,.45)}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.price-features li{font-size:12px;color:var(--INKm);font-weight:300;display:flex;align-items:center;gap:8px}
+.price-card.featured .price-features li{color:rgba(250,250,248,.55)}
+.price-features li::before{content:'✓';color:var(--OL);font-size:11px;font-weight:700;flex-shrink:0}
+.price-card.featured .price-features li::before{color:var(--GDl)}
+
+/* SUBMIT FORM */
+#submit{background:var(--W3);padding:120px 5%}
+.submit-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start}
+.submit-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;line-height:.88;letter-spacing:-.03em;color:var(--INK);margin-bottom:24px}
+.submit-left h2 em{font-style:italic;color:var(--OL)}
+.submit-left p{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300}
+.form-box{background:var(--W);border-radius:20px;padding:48px;border:1px solid var(--BD);box-shadow:0 8px 48px rgba(24,22,15,.08)}
+.form-row{margin-bottom:24px}
+.form-row label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:8px}
+.form-row input,.form-row textarea,.form-row select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--INK);background:var(--W);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:var(--OL)}
+.form-row textarea{resize:vertical;min-height:100px}
+.form-row select{appearance:none;cursor:pointer}
+.plan-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.plan-opt{border:1px solid var(--BD2);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.plan-opt:hover,.plan-opt.selected{border-color:var(--OL);background:rgba(74,92,58,.06)}
+.plan-opt span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:4px}
+.plan-opt strong{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--OL)}
+.submit-btn{width:100%;background:var(--INK);color:var(--W);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px}
+.submit-btn:hover{background:var(--OL)}
+
+/* SUCCESS */
+#success-overlay{display:none;position:fixed;inset:0;background:rgba(243,240,232,.97);z-index:9999;align-items:center;justify-content:center;text-align:center;padding:20px}
+#success-overlay.show{display:flex}
+.success-box{max-width:520px}
+.success-icon{font-size:64px;margin-bottom:24px}
+.success-box h2{font-family:'Cormorant Garamond',serif;font-size:52px;font-style:italic;color:var(--INK);margin-bottom:16px}
+.success-box p{font-size:14px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:36px}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.how-steps{grid-template-columns:1fr 1fr}.price-grid{grid-template-columns:1fr}.submit-inner{grid-template-columns:1fr}}
+@media(max-width:768px){.how-steps{grid-template-columns:1fr}.price-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">VAITHRA</a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg-txt">₹</div>
+  <div class="hero-in">
+    <div class="hero-pretag">
+      <div class="hero-dot"></div>
+      <span class="ey" style="color:rgba(250,250,248,.45)">Platform Feature</span>
+    </div>
+    <h1 class="hero-title">Idea <em>Promotion</em></h1>
+    <p class="hero-desc">Submit your startup, pay a flat promotion fee, and get your idea in front of vetted founders, collaborators, and potential co-founders across the entire Vaithra network.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="how-inner">
+    <span class="ey" style="margin-bottom:14px">How It Works</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,68px);font-weight:300;font-style:italic;color:var(--INK);line-height:.9">Four Steps to Visibility</h2>
+    <div class="how-steps">
+      <div class="how-step"><div class="how-n">1</div><h3>Submit Your Idea</h3><p>Fill out the form below with your startup name, website, description, and what kind of collaborators you're looking for.</p></div>
+      <div class="how-step"><div class="how-n">2</div><h3>Choose a Plan</h3><p>Pick a 7, 14, or 30-day promotion window. Your listing gets featured across the Vaithra network based on the plan.</p></div>
+      <div class="how-step"><div class="how-n">3</div><h3>Pay & Go Live</h3><p>Make a simple payment via UPI. Your idea goes live within 24 hours and is shared with all verified city nodes.</p></div>
+      <div class="how-step"><div class="how-n">4</div><h3>Receive Connections</h3><p>Interested founders, collaborators, and early adopters reach out directly to your listed contact or website.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="price-inner">
+    <span class="ey" style="margin-bottom:14px">Promotion Plans</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,68px);font-weight:300;font-style:italic;color:var(--INK);line-height:.9">Flat Rate, No Commission</h2>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-amt">₹99</div>
+        <div class="price-period">7 Days</div>
+        <h3>Starter Visibility</h3>
+        <p>Best for testing your idea description and getting initial feedback from the network.</p>
+        <ul class="price-features">
+          <li>Listed for 7 days</li>
+          <li>Shared in 3 city nodes</li>
+          <li>Basic founder profile</li>
+          <li>Direct contact listed</li>
+        </ul>
+        <button class="bp" onclick="selectPlan('starter',299,7)">Choose Starter</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-amt">₹299</div>
+        <div class="price-period">14 Days · Most Popular</div>
+        <h3>Network Reach</h3>
+        <p>Full network distribution. Shared in all active city nodes with your complete startup profile.</p>
+        <ul class="price-features">
+          <li>Listed for 14 days</li>
+          <li>All active city nodes</li>
+          <li>Featured in Daily Drop</li>
+          <li>WhatsApp broadcast</li>
+          <li>Collaboration tags</li>
+        </ul>
+        <button class="bp" style="background:var(--GDl);color:var(--INK)" onclick="selectPlan('network',599,14)">Choose Network</button>
+      </div>
+      <div class="price-card">
+        <div class="price-amt">₹399</div>
+        <div class="price-period">30 Days</div>
+        <h3>Full Month Push</h3>
+        <p>Maximum exposure. Pinned at top of listings for a full month with priority rep amplification.</p>
+        <ul class="price-features">
+          <li>Listed for 30 days</li>
+          <li>Pinned position</li>
+          <li>All nodes + broadcast</li>
+          <li>2× Daily Drop features</li>
+          <li>Rep-assisted outreach</li>
+          <li>Monthly report</li>
+        </ul>
+        <button class="bp" onclick="selectPlan('full',999,30)">Choose Full Month</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="submit">
+  <div class="submit-inner">
+    <div class="submit-left">
+      <span class="ey" style="margin-bottom:16px">Submit Your Startup</span>
+      <h2>Get Your Idea <em>Seen</em></h2>
+      <p>Fill in your startup details. After submission, our team reviews within 24 hours and activates your promotion. Payment is collected via UPI after review approval.</p>
+      <div style="margin-top:48px;padding:32px;background:var(--W);border-radius:16px;border:1px solid var(--BD)">
+        <span class="ey" style="margin-bottom:12px;color:var(--INK)">What Happens After?</span>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0">→</span><p style="font-size:12px;color:var(--INKm);font-weight:300">Team reviews within 24 hours</p></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0">→</span><p style="font-size:12px;color:var(--INKm);font-weight:300">UPI payment link sent via WhatsApp</p></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0">→</span><p style="font-size:12px;color:var(--INKm);font-weight:300">Goes live across the network same day</p></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0">→</span><p style="font-size:12px;color:var(--INKm);font-weight:300">Connections reach out to your listed contact</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="form-box">
+      <form id="ideaForm" onsubmit="handleSubmit(event)">
+        <div class="form-row"><label>Startup / Idea Name *</label><input type="text" id="f-name" placeholder="e.g. Glowvai" required></div>
+        <div class="form-row"><label>Your Name *</label><input type="text" id="f-founder" placeholder="Your full name" required></div>
+        <div class="form-row"><label>WhatsApp Number *</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX" required></div>
+        <div class="form-row"><label>Website / App URL</label><input type="url" id="f-url" placeholder="https://yourstartup.com"></div>
+        <div class="form-row"><label>One-line description *</label><input type="text" id="f-tagline" placeholder="What do you do in one sentence?" required></div>
+        <div class="form-row"><label>Tell us more (what, who for, traction if any)</label><textarea id="f-desc" placeholder="Describe your idea, target users, and current stage..."></textarea></div>
+        <div class="form-row"><label>What are you looking for?</label>
+          <select id="f-looking"><option value="">Select one</option><option>Co-founder</option><option>Early users / beta testers</option><option>Collaborators / team members</option><option>Mentors / advisors</option><option>Investors</option><option>General visibility</option></select>
+        </div>
+        <div class="form-row">
+          <label>Choose Promotion Plan *</label>
+          <div class="plan-selector">
+            <div class="plan-opt" id="plan-starter" onclick="selectPlan('starter',299,7)"><span>Starter</span><strong>₹299</strong></div>
+            <div class="plan-opt selected" id="plan-network" onclick="selectPlan('network',599,14)"><span>Network</span><strong>₹599</strong></div>
+            <div class="plan-opt" id="plan-full" onclick="selectPlan('full',999,30)"><span>Full Month</span><strong>₹999</strong></div>
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Submit for Review →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div id="success-overlay">
+  <div class="success-box">
+    <div class="success-icon">🌱</div>
+    <h2>Idea Submitted!</h2>
+    <p>We'll review your submission within 24 hours and send a WhatsApp message with the payment link. Once payment is confirmed, your idea goes live across the Vaithra network.</p>
+    <a href="index.html" class="bp">Back to Vaithra →</a>
+  </div>
+</div>
+
+<footer style="background:var(--INK);padding:48px 5%;text-align:center">
+  <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(250,250,248,.3);text-decoration:none">← VAITHRA HOME</a>
+</footer>
+
+<script>
+var selectedPlan = {id:'network',amount:599,days:14};
+function selectPlan(id,amount,days){
+  selectedPlan = {id:id,amount:amount,days:days};
+  document.querySelectorAll('.plan-opt').forEach(function(el){el.classList.remove('selected');});
+  document.getElementById('plan-'+id).classList.add('selected');
+}
+function handleSubmit(e){
+  e.preventDefault();
+  var name = document.getElementById('f-name').value;
+  var founder = document.getElementById('f-founder').value;
+  var phone = document.getElementById('f-phone').value;
+  if(!name||!founder||!phone){alert('Please fill all required fields.');return;}
+  var msg = 'Idea Promotion Request%0A%0AStartup: '+encodeURIComponent(name)+'%0AFounder: '+encodeURIComponent(founder)+'%0APhone: '+encodeURIComponent(phone)+'%0APlan: '+selectedPlan.id+' (Rs '+selectedPlan.amount+' / '+selectedPlan.days+' days)';
+  window.open('https://wa.me/918977855998?text='+msg,'_blank');
+  document.getElementById('success-overlay').classList.add('show');
+}
+</script>
+</body>
+</html>
