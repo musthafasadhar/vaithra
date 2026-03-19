@@ -1,1 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Build in Public Wall — Vaithra</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;--OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;--INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;--GD:#B8A060;--GDl:#D4BB80;--BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
+.ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OL);display:block}
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);text-decoration:none}
+.nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none}
+.nav-back:hover{color:var(--OL)}
 
+/* HEADER */
+#header{background:var(--INK);padding:120px 5% 80px;position:relative;overflow:hidden}
+.hd-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:40px}
+.hd-title{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,10vw,120px);font-weight:300;line-height:.85;letter-spacing:-.04em;color:var(--W)}
+.hd-title em{font-style:italic;color:var(--OLl)}
+.hd-right{display:flex;flex-direction:column;align-items:flex-end;gap:16px}
+.live-count{display:flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(74,92,58,.1);border:1px solid rgba(74,92,58,.2);border-radius:100px}
+.live-d{width:6px;height:6px;background:var(--OLl);border-radius:50%;animation:pk 1.5s ease-in-out infinite}
+@keyframes pk{0%,100%{opacity:1}50%{opacity:.3}}
+.live-count span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--OLl)}
+.post-btn{background:var(--OL);color:var(--W);border:none;padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.post-btn:hover{background:var(--OLl)}
+
+/* BRICK WALL */
+#wall{background:var(--W2);padding:60px 5% 80px}
+.wall-inner{max-width:1280px;margin:0 auto}
+.wall-filters{display:flex;gap:8px;margin-bottom:40px;flex-wrap:wrap}
+.wf{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:7px 16px;border-radius:100px;border:1px solid var(--BD2);background:transparent;cursor:pointer;color:var(--INKm);transition:all .2s}
+.wf.active,.wf:hover{background:var(--INK);color:var(--W);border-color:var(--INK)}
+
+/* THE BRICK WALL */
+.brick-wall{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.brick{border-radius:8px;cursor:pointer;position:relative;overflow:hidden;transition:all .3s;min-height:72px;display:flex;align-items:center;justify-content:center}
+.brick:hover{transform:scale(1.04);z-index:2;box-shadow:0 8px 24px rgba(24,22,15,.15)}
+.brick.wide{grid-column:span 2}
+.brick.tall{min-height:140px}
+.brick-inner{padding:16px;width:100%;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.brick-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;font-weight:600;margin-bottom:8px;flex-shrink:0}
+.brick-startup{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;font-weight:600;line-height:1.1;margin-bottom:4px}
+.brick-name{font-size:9px;font-weight:300;opacity:.6}
+.brick-preview{font-size:10px;line-height:1.5;font-weight:300;opacity:.7;margin-top:6px}
+.brick-tag{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:6px}
+
+/* EXPANDED POST MODAL */
+#postModal{position:fixed;inset:0;z-index:9000;background:rgba(24,22,15,.6);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px}
+#postModal.open{display:flex}
+.pm-box{background:var(--W);border-radius:24px;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;padding:52px;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
+@keyframes mpop{from{opacity:0;transform:scale(.95) translateY(14px)}to{opacity:1;transform:none}}
+.pm-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;color:var(--INK);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.pm-close:hover{background:var(--INK);color:var(--W)}
+.pm-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--BD)}
+.pm-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;flex-shrink:0}
+.pm-meta h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:2px}
+.pm-meta p{font-size:11px;color:var(--INKl);font-weight:300}
+.pm-verified{margin-left:auto;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--OL);background:rgba(74,92,58,.08);border:1px solid var(--BD2);padding:4px 10px;border-radius:100px}
+.pm-body{font-size:14px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:28px}
+.pm-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px}
+.pm-tag{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl)}
+.pm-reactions{display:flex;gap:10px;padding-top:24px;border-top:1px solid var(--BD)}
+.react-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;border:1px solid var(--BD);background:var(--W2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--INKm);transition:all .2s}
+.react-btn:hover{border-color:var(--OL);color:var(--OL)}
+.react-btn.reacted{background:rgba(74,92,58,.08);border-color:var(--OL);color:var(--OL)}
+.react-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700}
+
+/* SUBMIT POST FORM */
+#postForm{position:fixed;inset:0;z-index:10000;background:rgba(243,240,232,.97);display:none;overflow-y:auto;padding:80px 20px 40px}
+#postForm.open{display:block}
+.pf-inner{max-width:680px;margin:0 auto}
+.pf-close{position:fixed;top:24px;right:24px;width:40px;height:40px;border-radius:50%;border:1px solid var(--BD2);background:var(--W);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--INK);z-index:10}
+.pf-close:hover{background:var(--INK);color:var(--W)}
+.pf-title{font-family:'Cormorant Garamond',serif;font-size:48px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:8px}
+.pf-sub{font-size:13px;color:var(--INKm);font-weight:300;margin-bottom:40px}
+.fr{margin-bottom:22px}
+.fr label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:8px}
+.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--INK);background:var(--W);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.fr input:focus,.fr textarea:focus{border-color:var(--OL)}
+.fr textarea{resize:vertical;min-height:120px}
+.sbtn{width:100%;background:var(--INK);color:var(--W);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.sbtn:hover{background:var(--OL)}
+
+@media(max-width:768px){.brick-wall{grid-template-columns:repeat(3,1fr)}.brick.wide{grid-column:span 3}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">VAITHRA</a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div id="header">
+  <div class="hd-inner">
+    <div>
+      <span class="ey" style="color:rgba(250,250,248,.35);margin-bottom:20px">Community Wall</span>
+      <h1 class="hd-title">Build in <em>Public</em><br>Wall</h1>
+    </div>
+    <div class="hd-right">
+      <div class="live-count"><div class="live-d"></div><span id="postCount">8 Updates Today</span></div>
+      <button class="post-btn" onclick="openPostForm()">Post an Update →</button>
+    </div>
+  </div>
+</div>
+
+<section id="wall">
+  <div class="wall-inner">
+    <div class="wall-filters">
+      <button class="wf active" onclick="filterWall('all',this)">All Updates</button>
+      <button class="wf" onclick="filterWall('milestone',this)">Milestones</button>
+      <button class="wf" onclick="filterWall('launch',this)">Launches</button>
+      <button class="wf" onclick="filterWall('learning',this)">Learnings</button>
+      <button class="wf" onclick="filterWall('stuck',this)">Stuck? Help</button>
+    </div>
+    <div class="brick-wall" id="brickWall"></div>
+  </div>
+</section>
+
+<div id="postModal">
+  <div class="pm-box">
+    <button class="pm-close" onclick="closePost()">✕</button>
+    <div class="pm-header">
+      <div class="pm-avatar" id="pmAv"></div>
+      <div class="pm-meta"><h3 id="pmStartup"></h3><p id="pmFounder"></p></div>
+      <span class="pm-verified" id="pmVerified" style="display:none">Verified ✦</span>
+    </div>
+    <div class="pm-body" id="pmBody"></div>
+    <div class="pm-tags" id="pmTags"></div>
+    <div class="pm-reactions" id="pmReactions"></div>
+  </div>
+</div>
+
+<div id="postForm">
+  <button class="pf-close" onclick="closePostForm()">✕</button>
+  <div class="pf-inner">
+    <h2 class="pf-title">Post an Update</h2>
+    <p class="pf-sub">Share your real progress — what shipped, what broke, what you learned. Raw and honest beats polished and fake.</p>
+    <form onsubmit="submitPost(event)">
+      <div class="fr"><label>Your Name *</label><input type="text" id="pf-name" required placeholder="Your full name"></div>
+      <div class="fr"><label>Startup / Idea Name *</label><input type="text" id="pf-startup" required placeholder="Your startup name"></div>
+      <div class="fr"><label>WhatsApp (for verification)</label><input type="tel" id="pf-phone" placeholder="+91 XXXXX XXXXX"></div>
+      <div class="fr"><label>Update Type</label>
+        <select id="pf-type"><option value="milestone">Milestone Reached</option><option value="launch">Something Launched</option><option value="learning">Learning / Failure</option><option value="stuck">Need Help / Stuck</option></select>
+      </div>
+      <div class="fr"><label>Your Update *</label><textarea id="pf-text" required placeholder="What happened this week? Be honest — the wall rewards candor, not curation."></textarea></div>
+      <div class="fr"><label>Tags (comma separated)</label><input type="text" id="pf-tags" placeholder="e.g. Product, Week 4, Launch"></div>
+      <button type="submit" class="sbtn">Post to the Wall →</button>
+    </form>
+  </div>
+</div>
+
+<footer style="background:var(--INK);padding:48px 5%;text-align:center">
+  <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(250,250,248,.2);text-decoration:none">← VAITHRA HOME</a>
+</footer>
+
+<script>
+var POSTS = [
+  {startup:'Vaithra',founder:'Sardhar Musthafa',verified:true,av:'S',avBg:'#4A5C3A',avColor:'#fff',body:'Week 12 update: Crossed 50 active members. Didn\'t celebrate — just started planning week 13. City reps from Warangal and Guntur onboarded. First regional meetup confirmed for April. This is what building in public looks like — not highlight reels, just honest progress.',tags:['Milestone','Network Growth','Week 12'],type:'milestone',reactions:{fire:14,clap:22,heart:8},time:'2h ago',size:'wide tall'},
+  {startup:'Glowvai',founder:'Rahimath',av:'R',avBg:'#D4BB80',avColor:'#18160F',body:'Glowvai v0.2 shipped. 3 new treatment catalog features based on real salon feedback. Zero users yet, but the product finally feels honest. Tomorrow: cold calls.',tags:['Product','Launch'],type:'launch',reactions:{fire:9,clap:16,heart:5},time:'5h ago',size:''},
+  {startup:'Vaithra Systems',founder:'Erugoni Gopi',av:'G',avBg:'#4A5C3A',avColor:'#fff',body:'Systems audit complete. 6 processes documented. 2 redundancies removed. The most important build is often internal infrastructure.',tags:['Operations'],type:'learning',reactions:{fire:6,clap:11,heart:3},time:'1d ago',size:''},
+  {startup:'Vishvarupa',founder:'Dhoni H.H. Singh',av:'D',avBg:'#18160F',avColor:'#F3F0E8',body:'First brand shoot for a Vaithra member wrapped. Early-stage founders don\'t need polished — they need authentic. Adjusting production approach accordingly.',tags:['Media','Learning'],type:'learning',reactions:{fire:7,clap:9,heart:4},time:'2d ago',size:''},
+  {startup:'AgriConnect',founder:'Priya Sharma',av:'P',avBg:'#6B7F58',avColor:'#fff',body:'Signed first paying farmer. ₹0 in revenue last month, ₹500 this month. Tiny but real. The jump from zero to any number is everything.',tags:['Revenue','Milestone'],type:'milestone',reactions:{fire:18,clap:24,heart:12},time:'3d ago',size:'wide'},
+  {startup:'SkillBridge',founder:'Ravi Kumar',av:'R',avBg:'#B8A060',avColor:'#fff',body:'Failed our first pilot. 40 signups, 2 exchanges actually happened. The platform works — the behavior doesn\'t. Rethinking incentive design from scratch.',tags:['Learning','Failure','Pivot'],type:'learning',reactions:{fire:12,clap:19,heart:7},time:'4d ago',size:''},
+  {startup:'MediRoute',founder:'Ananya Reddy',av:'A',avBg:'#2E3A24',avColor:'#D4BB80',body:'3 pharmacies signed MoUs. No tech yet, just WhatsApp coordination. Proving demand before building.',tags:['Traction','Pre-product'],type:'milestone',reactions:{fire:8,clap:13,heart:6},time:'5d ago',size:''},
+  {startup:'BuildBrick',founder:'Sai Kiran',av:'S',avBg:'#9E9488',avColor:'#fff',body:'Stuck on pricing. Free plan keeps bringing tire-kickers. Paid plan converts nobody. Has anyone solved this? Open to advice.',tags:['Stuck','Pricing','Help'],type:'stuck',reactions:{fire:3,clap:5,heart:9},time:'6d ago',size:''}
+];
+
+var reacted = {};
+var currentFilter = 'all';
+var currentPost = null;
+
+var colors = {milestone:'#4A5C3A',launch:'#B8A060',learning:'#2E3A24',stuck:'#6B6456'};
+var textColors = {milestone:'#fff',launch:'#18160F',learning:'#D4BB80',stuck:'#F3F0E8'};
+
+function buildWall(){
+  var wall = document.getElementById('brickWall');
+  var filtered = currentFilter==='all' ? POSTS : POSTS.filter(function(p){return p.type===currentFilter;});
+  var html = '';
+  for(var i=0;i<filtered.length;i++){
+    var p = filtered[i];
+    var bg = colors[p.type]||'#4A5C3A';
+    var tc = textColors[p.type]||'#fff';
+    var sizeClass = p.size||'';
+    html += '<div class="brick '+sizeClass+'" style="background:'+bg+';color:'+tc+'" onclick="openPostModal('+POSTS.indexOf(p)+'">' +
+      '<div class="brick-inner">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div class="brick-av" style="background:'+p.avBg+';color:'+p.avColor+'">'+p.av+'</div><span style="font-size:9px;opacity:.6;font-weight:300">'+p.time+'</span></div>' +
+      '<div class="brick-startup" style="color:'+tc+'">'+p.startup+'</div>' +
+      '<div class="brick-name" style="color:'+tc+'">'+p.founder+'</div>' +
+      (sizeClass.includes('tall') ? '<div class="brick-preview" style="color:'+tc+'">'+p.body.substring(0,80)+'...</div>' : '') +
+      '<div><span class="brick-tag" style="background:rgba(255,255,255,.12);color:'+tc+'">'+p.tags[0]+'</span></div>' +
+      '</div></div>';
+  }
+  wall.innerHTML = html;
+}
+
+function filterWall(type, btn){
+  currentFilter = type;
+  document.querySelectorAll('.wf').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  buildWall();
+}
+
+function openPostModal(i){
+  var p = POSTS[i];
+  currentPost = i;
+  document.getElementById('pmAv').textContent = p.av;
+  document.getElementById('pmAv').style.background = p.avBg;
+  document.getElementById('pmAv').style.color = p.avColor;
+  document.getElementById('pmStartup').textContent = p.startup;
+  document.getElementById('pmFounder').textContent = p.founder+' · '+p.time;
+  document.getElementById('pmBody').textContent = p.body;
+  var vEl = document.getElementById('pmVerified');
+  vEl.style.display = p.verified ? 'inline-flex' : 'none';
+  var tagsHtml = p.tags.map(function(t){return '<span class="pm-tag">'+t+'</span>';}).join('');
+  document.getElementById('pmTags').innerHTML = tagsHtml;
+  var rKey = 'post'+i;
+  var r = reacted[rKey]||{};
+  document.getElementById('pmReactions').innerHTML =
+    '<button class="react-btn'+(r.fire?' reacted':'')+'" onclick="react('+i+',\'fire\')">🔥 <span class="react-num">'+p.reactions.fire+'</span></button>' +
+    '<button class="react-btn'+(r.clap?' reacted':'')+'" onclick="react('+i+',\'clap\')">👏 <span class="react-num">'+p.reactions.clap+'</span></button>' +
+    '<button class="react-btn'+(r.heart?' reacted':'')+'" onclick="react('+i+',\'heart\')">❤️ <span class="react-num">'+p.reactions.heart+'</span></button>';
+  document.getElementById('postModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function react(i, type){
+  var rKey = 'post'+i;
+  if(!reacted[rKey]) reacted[rKey]={};
+  if(reacted[rKey][type]) return;
+  reacted[rKey][type] = true;
+  POSTS[i].reactions[type]++;
+  openPostModal(i);
+}
+
+function closePost(){document.getElementById('postModal').classList.remove('open');document.body.style.overflow='';}
+
+function openPostForm(){document.getElementById('postForm').classList.add('open');document.body.style.overflow='hidden';}
+function closePostForm(){document.getElementById('postForm').classList.remove('open');document.body.style.overflow='';}
+
+function submitPost(e){
+  e.preventDefault();
+  var name=document.getElementById('pf-name').value;
+  var startup=document.getElementById('pf-startup').value;
+  var text=document.getElementById('pf-text').value;
+  var type=document.getElementById('pf-type').value;
+  var tags=document.getElementById('pf-tags').value.split(',').map(function(t){return t.trim();}).filter(Boolean);
+  if(!tags.length) tags=[type.charAt(0).toUpperCase()+type.slice(1)];
+  POSTS.unshift({startup:startup,founder:name,av:name.charAt(0).toUpperCase(),avBg:'#9E9488',avColor:'#fff',body:text,tags:tags,type:type,reactions:{fire:0,clap:0,heart:0},time:'Just now',size:''});
+  buildWall();
+  document.getElementById('postCount').textContent=(POSTS.length)+' Updates Today';
+  closePostForm();
+  var msg='Build+in+Public+Post%0AFounder%3A+'+encodeURIComponent(name)+'%0AStartup%3A+'+encodeURIComponent(startup)+'%0A%0A'+encodeURIComponent(text.substring(0,200));
+  window.open('https://wa.me/918977855998?text='+msg,'_blank');
+}
+
+document.getElementById('postModal').onclick=function(e){if(e.target===this)closePost();};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePost();closePostForm();}});
+buildWall();
+</script>
+</body>
+</html>
