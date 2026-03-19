@@ -1,1 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>City Representatives — Vaithra</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;--OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;--INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;--GD:#B8A060;--GDl:#D4BB80;--BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var(--INK);color:var(--W);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OLl);border-radius:2px}
+.ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OLl);display:block}
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(24,22,15,.85);backdrop-filter:blur(22px);border-radius:100px;border:1px solid rgba(107,127,88,.2);display:flex;justify-content:space-between;align-items:center;z-index:8000}
+.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--W);text-decoration:none}
+.nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(250,250,248,.4);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--OLl)}
+.bp{background:var(--OL);color:var(--W);border:none;padding:12px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.bp:hover{background:var(--OLl);transform:translateY(-2px)}
 
+/* CINEMATIC HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;padding:120px 5% 80px;background:var(--INK)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(107,127,88,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(107,127,88,.06) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(74,92,58,.25) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hero-in{position:relative;z-index:2}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,12vw,150px);font-weight:300;line-height:.82;letter-spacing:-.04em;color:var(--W);margin-bottom:28px}
+.hero-title em{font-style:italic;color:var(--OLl)}
+.hero-desc{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.45);max-width:540px;margin:0 auto 48px;line-height:1.9;font-weight:300}
+.city-count{display:inline-flex;align-items:center;gap:16px;padding:12px 24px;border:1px solid rgba(107,127,88,.25);border-radius:100px;background:rgba(107,127,88,.08);margin-bottom:48px}
+.city-count-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:600;color:var(--GDl)}
+.city-count-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(250,250,248,.3)}
+
+/* FILM STRIP SCROLL */
+#filmstrip{background:var(--INK);padding:40px 0;overflow:hidden;border-top:1px solid rgba(107,127,88,.1);border-bottom:1px solid rgba(107,127,88,.1)}
+.strip-track{display:flex;width:max-content;animation:stripscroll 30s linear infinite}
+.strip-track:hover{animation-play-state:paused}
+@keyframes stripscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.strip-city{padding:0 32px;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:rgba(250,250,248,.2);white-space:nowrap;transition:color .3s}
+.strip-city:hover{color:var(--OLl)}
+.strip-sep{color:rgba(107,127,88,.3);padding:0 8px}
+
+/* REP CARDS - MOVIE POSTER STYLE */
+#reps{background:var(--INK);padding:120px 5%}
+.reps-inner{max-width:1280px;margin:0 auto}
+.reps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:60px}
+.rep-card{position:relative;cursor:pointer;overflow:hidden;border-radius:16px;aspect-ratio:.7/1;background:var(--OLd)}
+.rep-card-img{width:100%;height:100%;object-fit:cover;filter:grayscale(70%);transition:all .6s}
+.rep-card-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--OLd),var(--INK));font-family:'Cormorant Garamond',serif;font-size:72px;font-style:italic;color:rgba(107,127,88,.3)}
+.rep-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(24,22,15,.95) 0%,rgba(24,22,15,.2) 50%,transparent 100%);transition:opacity .4s}
+.rep-card-info{position:absolute;bottom:0;left:0;right:0;padding:28px 24px;transform:translateY(8px);transition:transform .4s}
+.rep-card-city{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--OLl);margin-bottom:6px}
+.rep-card-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;font-style:italic;color:var(--W);margin-bottom:4px;line-height:1.1}
+.rep-card-role{font-size:10px;color:rgba(250,250,248,.4);font-weight:300;opacity:0;transform:translateY(8px);transition:all .4s}
+.rep-card:hover .rep-card-img{filter:grayscale(20%);transform:scale(1.05)}
+.rep-card:hover .rep-card-overlay{opacity:.85}
+.rep-card:hover .rep-card-info{transform:translateY(0)}
+.rep-card:hover .rep-card-role{opacity:1;transform:translateY(0)}
+.rep-badge{position:absolute;top:16px;right:16px;background:rgba(74,92,58,.9);color:var(--W);font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:5px 10px;border-radius:100px}
+
+/* EMPTY SLOTS */
+.rep-card.empty{background:rgba(107,127,88,.04);border:1px dashed rgba(107,127,88,.15);cursor:default;display:flex;align-items:center;justify-content:center}
+.rep-card.empty .empty-inner{text-align:center}
+.rep-card.empty .empty-inner h4{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:rgba(250,250,248,.18);margin-bottom:6px}
+.rep-card.empty .empty-inner span{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.1)}
+
+/* DETAIL MODAL */
+#repModal{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(24,22,15,.85);backdrop-filter:blur(20px)}
+#repModal.open{display:flex}
+.rep-modal-box{background:var(--INK);border:1px solid rgba(107,127,88,.2);border-radius:24px;overflow:hidden;width:100%;max-width:860px;display:flex;max-height:85vh;animation:mpop .35s cubic-bezier(.16,1,.3,1)}
+@keyframes mpop{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
+.rep-modal-img{width:40%;background:var(--OLd);position:relative;overflow:hidden}
+.rep-modal-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%)}
+.rep-modal-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:120px;font-style:italic;color:rgba(107,127,88,.2)}
+.rep-modal-body{flex:1;padding:52px 44px;overflow-y:auto;position:relative}
+.rep-modal-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(107,127,88,.25);background:none;cursor:pointer;color:var(--W);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.rep-modal-close:hover{background:rgba(107,127,88,.2)}
+.rep-modal-city{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--OLl);margin-bottom:12px}
+.rep-modal-name{font-family:'Cormorant Garamond',serif;font-size:48px;font-style:italic;font-weight:600;color:var(--W);line-height:.9;margin-bottom:8px}
+.rep-modal-role{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.28);margin-bottom:36px}
+.rep-modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.rep-stat{background:rgba(107,127,88,.06);border:1px solid rgba(107,127,88,.1);border-radius:12px;padding:16px;text-align:center}
+.rep-stat-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:var(--GDl);line-height:1;margin-bottom:4px}
+.rep-stat-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.25)}
+.rep-modal-bio{font-size:13px;color:rgba(250,250,248,.45);line-height:1.85;font-weight:300;border-left:2px solid var(--OLl);padding-left:18px;margin-bottom:32px}
+.wa-link{display:inline-flex;align-items:center;gap:8px;background:var(--OL);color:var(--W);text-decoration:none;padding:12px 24px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;transition:all .3s}
+.wa-link:hover{background:var(--OLl)}
+
+/* APPLY SECTION */
+#apply-rep{background:rgba(74,92,58,.06);border-top:1px solid rgba(107,127,88,.1);padding:120px 5%}
+.apply-inner{max-width:900px;margin:0 auto;text-align:center}
+.apply-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,96px);font-weight:300;line-height:.85;letter-spacing:-.04em;color:var(--W);margin-bottom:24px}
+.apply-title em{font-style:italic;color:var(--OLl)}
+.apply-desc{font-size:14px;color:rgba(250,250,248,.42);line-height:1.9;font-weight:300;max-width:520px;margin:0 auto 48px}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:52px;text-align:left}
+.benefit{background:rgba(107,127,88,.06);border:1px solid rgba(107,127,88,.1);border-radius:14px;padding:24px}
+.benefit h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--OLl);margin-bottom:8px}
+.benefit p{font-size:12px;color:rgba(250,250,248,.38);line-height:1.7;font-weight:300}
+
+@media(max-width:1024px){.reps-grid{grid-template-columns:repeat(3,1fr)}.benefits{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.reps-grid{grid-template-columns:repeat(2,1fr)}.rep-modal-box{flex-direction:column}.rep-modal-img{width:100%;height:200px}.benefits{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">VAITHRA</a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-in">
+    <div class="city-count rv">
+      <span class="city-count-num">10+</span>
+      <span class="city-count-lbl">Cities Active</span>
+    </div>
+    <h1 class="hero-title">City <em>Representatives</em></h1>
+    <p class="hero-desc">Meet the founders on the ground — organizers, connectors, and builders who bring Vaithra to life in their city.</p>
+    <a href="#apply-rep" class="bp">Become a City Rep →</a>
+  </div>
+</section>
+
+<div id="filmstrip">
+  <div class="strip-track" id="cityStrip"></div>
+</div>
+
+<section id="reps">
+  <div class="reps-inner">
+    <span class="ey" style="margin-bottom:14px">Active Nodes</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;font-style:italic;color:var(--W);line-height:.9">The Network on the Ground</h2>
+    <div class="reps-grid" id="repsGrid"></div>
+  </div>
+</section>
+
+<div id="repModal">
+  <div class="rep-modal-box" id="repModalBox">
+    <div class="rep-modal-img" id="rmImg">
+      <div class="rep-modal-fallback" id="rmFallback"></div>
+    </div>
+    <div class="rep-modal-body">
+      <button class="rep-modal-close" onclick="closeRep()">✕</button>
+      <div class="rep-modal-city" id="rmCity"></div>
+      <div class="rep-modal-name" id="rmName"></div>
+      <div class="rep-modal-role" id="rmRole"></div>
+      <div class="rep-modal-stats">
+        <div class="rep-stat"><div class="rep-stat-num" id="rmMeetups">0</div><div class="rep-stat-lbl">Meetups Run</div></div>
+        <div class="rep-stat"><div class="rep-stat-num" id="rmFounders">0</div><div class="rep-stat-lbl">Founders Connected</div></div>
+        <div class="rep-stat"><div class="rep-stat-num" id="rmSince">—</div><div class="rep-stat-lbl">Active Since</div></div>
+      </div>
+      <p class="rep-modal-bio" id="rmBio"></p>
+      <a id="rmWa" href="#" target="_blank" class="wa-link">Connect on WhatsApp →</a>
+    </div>
+  </div>
+</div>
+
+<section id="apply-rep">
+  <div class="apply-inner">
+    <span class="ey" style="margin-bottom:20px;color:var(--OLl)">Join as City Rep</span>
+    <h2 class="apply-title">Represent Your <em>City</em></h2>
+    <p class="apply-desc">City Representatives are volunteers who organize Vaithra meetups, connect local founders, and earn network benefits. No pay — just purpose and privilege.</p>
+    <div class="benefits">
+      <div class="benefit"><h4>Free Idea Promotion</h4><p>Your venture gets promoted across the full Vaithra network at no cost — forever, as long as you're an active rep.</p></div>
+      <div class="benefit"><h4>Official Brand Access</h4><p>Run official Vaithra-branded events in your city. Use our name, materials, and support to organize meetups.</p></div>
+      <div class="benefit"><h4>Direct Core Line</h4><p>Direct WhatsApp access to Vaithra core team. Priority for grant referrals, partnerships, and media features.</p></div>
+    </div>
+    <a href="https://wa.me/918977855998?text=I%20want%20to%20become%20a%20City%20Representative%20for%20Vaithra" target="_blank" class="bp" style="font-size:11px;padding:18px 40px">Apply via WhatsApp →</a>
+  </div>
+</section>
+
+<footer style="background:var(--INK);padding:48px 5%;text-align:center;border-top:1px solid rgba(107,127,88,.1)">
+  <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(250,250,248,.2);text-decoration:none">← VAITHRA HOME</a>
+</footer>
+
+<script>
+var REPS = [
+  {city:'Hyderabad',name:'Sardhar Musthafa',role:'Core Lead',bio:'Founder of Vaithra and Vaivaanith Pvt Ltd. Organizing the main Hyderabad node and setting the standard for every other city rep.',meetups:4,founders:50,since:'2024',phone:'918977855998',initial:'S'},
+  {city:'Vijayawada',name:'Open Position',role:'City Representative',bio:'Vijayawada is a high-priority expansion city for Vaithra. We are actively looking for a serious founder to represent this node.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'V',empty:false},
+  {city:'Visakhapatnam',name:'Open Position',role:'City Representative',bio:'Visakhapatnam coastal node is open. If you are an active founder in Vizag interested in building the local community, reach out.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'V',empty:false},
+  {city:'Warangal',name:'Open Position',role:'City Representative',bio:'Warangal expansion node. Looking for a dedicated founder-organizer.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'W',empty:false},
+  {city:'Bengaluru',name:'Open Position',role:'External Node',bio:'Bengaluru external node — connecting the mainstream ecosystem to the Vaithra network.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'B',empty:false},
+  {city:'Chennai',name:'Open Position',role:'Partner Node',bio:'Chennai partner node. Open for applications.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'C',empty:false},
+  {city:'Tirupati',name:'Open Position',role:'Tech Hub Node',bio:'Tirupati node targeting tech founders around the educational hub cluster.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'T',empty:false},
+  {city:'Guntur',name:'Open Position',role:'Industrial Node',bio:'Guntur industrial node. Open for an active rep.',meetups:0,founders:0,since:'—',phone:'918977855998',initial:'G',empty:false}
+];
+
+var CITIES_STRIP = ['Hyderabad','Vijayawada','Visakhapatnam','Warangal','Tirupati','Guntur','Bengaluru','Chennai','Mumbai','Delhi','Kurnool','Nellore','Karimnagar','Nizamabad','Rajahmundry'];
+
+function buildStrip(){
+  var html='';
+  var all = CITIES_STRIP.concat(CITIES_STRIP);
+  for(var i=0;i<all.length;i++){
+    html+='<span class="strip-city">'+all[i]+'</span><span class="strip-sep">·</span>';
+  }
+  document.getElementById('cityStrip').innerHTML=html;
+}
+
+function buildGrid(){
+  var grid=document.getElementById('repsGrid');
+  var html='';
+  for(var i=0;i<REPS.length;i++){
+    var r=REPS[i];
+    var isOpen = r.name==='Open Position';
+    if(isOpen){
+      html+='<div class="rep-card empty" onclick="openRep('+i+')"><div class="empty-inner"><h4>'+r.city+'</h4><span>Open Position</span></div></div>';
+    } else {
+      html+='<div class="rep-card" onclick="openRep('+i+')">' +
+        '<div class="rep-card-fallback">'+r.initial+'</div>' +
+        '<div class="rep-badge">'+r.city.split(' ')[0]+'</div>' +
+        '<div class="rep-card-overlay"></div>' +
+        '<div class="rep-card-info"><div class="rep-card-city">'+r.city+'</div><div class="rep-card-name">'+r.name+'</div><div class="rep-card-role">'+r.role+'</div></div>' +
+        '</div>';
+    }
+  }
+  grid.innerHTML=html;
+}
+
+function openRep(i){
+  var r=REPS[i];
+  document.getElementById('rmCity').textContent=r.city;
+  document.getElementById('rmName').textContent=r.name;
+  document.getElementById('rmRole').textContent=r.role;
+  document.getElementById('rmBio').textContent=r.bio;
+  document.getElementById('rmMeetups').textContent=r.meetups;
+  document.getElementById('rmFounders').textContent=r.founders;
+  document.getElementById('rmSince').textContent=r.since;
+  document.getElementById('rmFallback').textContent=r.initial;
+  document.getElementById('rmWa').href='https://wa.me/'+r.phone+'?text=Hi%2C%20I%20saw%20the%20Vaithra%20'+encodeURIComponent(r.city)+'%20node';
+  document.getElementById('repModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeRep(){
+  document.getElementById('repModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('repModal').onclick=function(e){if(e.target===this)closeRep();};
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeRep();});
+buildStrip();
+buildGrid();
+</script>
+</body>
+</html>
