@@ -4,48 +4,146 @@
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Micro-Grant Rounds — Vaithra</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, doc, addDoc, onSnapshot, runTransaction, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
+    authDomain: "vaithra-grants.firebaseapp.com",
+    projectId: "vaithra-grants",
+    storageBucket: "vaithra-grants.firebasestorage.app",
+    messagingSenderId: "655290922548",
+    appId: "1:655290922548:web:991b339e2475aa9f443c61",
+    measurementId: "G-PGMC34PLKR"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Submit a new idea — instantly appears for ALL users
+  window.submitNewIdea = async function(ideaData) {
+    try {
+      const ref = await addDoc(collection(db, 'ideas'), {
+        name: ideaData.name,
+        founder: ideaData.founder + ' · ' + ideaData.city,
+        desc: ideaData.desc,
+        votes: 0,
+        category: ideaData.category,
+        tags: ideaData.tags,
+        createdAt: Date.now()
+      });
+      return { success: true, id: ref.id };
+    } catch(e) {
+      console.error('Submit error:', e);
+      return { success: false, error: e.message };
+    }
+  };
+
+  // Vote — atomic, one per user per idea
+  window.castVote = async function(ideaId) {
+    if (localStorage.getItem('voted_' + ideaId)) return;
+    try {
+      const ideaRef = doc(db, 'ideas', ideaId);
+      await runTransaction(db, async (tx) => {
+        const snap = await tx.get(ideaRef);
+        if (!snap.exists()) return;
+        tx.update(ideaRef, { votes: snap.data().votes + 1 });
+      });
+      localStorage.setItem('voted_' + ideaId, '1');
+      window.updateVoteUI && window.updateVoteUI(ideaId);
+    } catch(e) { console.error('Vote error:', e); }
+  };
+
+  window.hasVoted = (id) => !!localStorage.getItem('voted_' + id);
+
+  // Real-time listener — fires for votes AND new ideas
+  window.startRealtime = function(onUpdate) {
+    return onSnapshot(collection(db, 'ideas'), (snapshot) => {
+      const ideas = [];
+      snapshot.forEach(d => ideas.push({ ...d.data(), id: d.id }));
+      ideas.sort((a, b) => b.votes - a.votes);
+      onUpdate(ideas);
+    });
+  };
+</script>
+
 <style>
-:root{--W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;--OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;--INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;--GD:#B8A060;--GDl:#D4BB80;--BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22)}
+:root{
+  --W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;
+  --OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;
+  --INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;
+  --GD:#B8A060;--GDl:#D4BB80;
+  --BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22);
+  --GREEN:#2D6A2D;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
 .ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OL);display:block}
-.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
+
+/* NAV */
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.92);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
 .nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);text-decoration:none}
 .nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none}
 .nav-back:hover{color:var(--OL)}
-.bp{background:var(--INK);color:var(--W);border:none;padding:14px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.bp:hover{background:var(--OL);transform:translateY(-2px)}
+.nav-submit-btn{background:var(--OL);color:var(--W);border:none;padding:9px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.nav-submit-btn:hover{background:var(--OLd)}
+
+/* LIVE DOT */
+.live-dot{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:rgba(74,92,58,.08);border:1px solid rgba(74,92,58,.18);border-radius:100px}
+.live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:#4A7C44;animation:pulse 1.6s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.live-dot span{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--OLl)}
 
 /* HERO */
 #hero{min-height:80vh;background:var(--OLd);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 5% 80px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:480px;font-weight:600;font-style:italic;color:rgba(255,255,255,.025);bottom:-60px;right:-30px;pointer-events:none;user-select:none;line-height:1}
+.hero-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:480px;font-weight:600;font-style:italic;color:rgba(255,255,255,.025);bottom:-60px;right:-30px;pointer-events:none;line-height:1}
+.hero-in{max-width:1280px;margin:0 auto;width:100%;position:relative;z-index:1}
+.round-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(212,187,128,.12);border:1px solid rgba(212,187,128,.25);border-radius:100px;margin-bottom:24px}
+.round-badge span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--GDl)}
 .hero-timer{display:inline-flex;align-items:center;gap:16px;padding:12px 24px;background:rgba(107,127,88,.1);border:1px solid rgba(107,127,88,.2);border-radius:100px;margin-bottom:32px;width:fit-content}
 .timer-units{display:flex;gap:16px;align-items:center}
 .tu{text-align:center}
 .tu-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--GDl);line-height:1;display:block}
 .tu-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.3);display:block}
 .tu-sep{font-family:'Cormorant Garamond',serif;font-size:28px;color:rgba(107,127,88,.3)}
-.hero-in{max-width:1280px;margin:0 auto;width:100%;position:relative;z-index:1}
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,10vw,120px);font-weight:300;line-height:.85;letter-spacing:-.04em;color:var(--W);margin-bottom:28px}
 .hero-title em{font-style:italic;color:var(--GDl)}
-.hero-desc{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.48);max-width:540px;line-height:1.9;font-weight:300}
-.round-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(212,187,128,.12);border:1px solid rgba(212,187,128,.25);border-radius:100px;margin-bottom:24px}
-.round-badge span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--GDl)}
+.hero-desc{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.48);max-width:540px;line-height:1.9;font-weight:300;margin-bottom:32px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{background:var(--GDl);color:var(--OLd);border:none;padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.btn-primary:hover{background:var(--GD);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:rgba(250,250,248,.7);border:1px solid rgba(250,250,248,.2);padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--W)}
 
-/* LEADERBOARD */
-#board{background:var(--W2);padding:120px 5%}
+/* STATS BAR */
+.stats-bar{background:var(--OL);padding:16px 5%}
+.stats-inner{max-width:1280px;margin:0 auto;display:flex;gap:40px;align-items:center;flex-wrap:wrap}
+.stat-item{display:flex;align-items:baseline;gap:8px}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--GDl)}
+.stat-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.5)}
+
+/* BOARD */
+#board{background:var(--W2);padding:100px 5%}
 .board-inner{max-width:1280px;margin:0 auto}
 .board-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:48px;flex-wrap:wrap;gap:20px}
-.filter-tabs{display:flex;gap:8px}
+.filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
 .ftab{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:8px 18px;border-radius:100px;border:1px solid var(--BD2);background:transparent;cursor:pointer;color:var(--INKm);transition:all .2s}
 .ftab.active,.ftab:hover{background:var(--INK);color:var(--W);border-color:var(--INK)}
 .idea-list{display:flex;flex-direction:column;gap:12px}
-.idea-row{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:52px 1fr 140px 120px;gap:20px;align-items:center;cursor:pointer;transition:all .3s}
+
+/* IDEA ROW */
+.idea-row{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:52px 1fr 140px 120px;gap:20px;align-items:center;cursor:pointer;transition:all .3s;animation:rowIn .4s cubic-bezier(.16,1,.3,1)}
+@keyframes rowIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .idea-row:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,92,58,.1);border-color:var(--BD2)}
 .idea-row.rank1{border-color:var(--GD);background:linear-gradient(135deg,rgba(184,160,96,.06),var(--W))}
 .idea-row.rank2{border-color:rgba(74,92,58,.3)}
 .idea-row.rank3{border-color:rgba(74,92,58,.2)}
+.idea-row.new-idea{border-color:var(--OL);animation:newRowIn .6s cubic-bezier(.16,1,.3,1)}
+@keyframes newRowIn{from{opacity:0;transform:translateY(-20px) scale(.98);background:rgba(74,92,58,.08)}to{opacity:1;transform:none}}
 .rank-badge{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;flex-shrink:0}
 .rank1 .rank-badge{background:rgba(184,160,96,.15);color:var(--GD);border:1px solid rgba(184,160,96,.3)}
 .rank2 .rank-badge{background:rgba(74,92,58,.1);color:var(--OL);border:1px solid var(--BD2)}
@@ -57,16 +155,19 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .vote-section{display:flex;flex-direction:column;align-items:center;gap:6px}
 .vote-bar-wrap{width:100%;height:6px;background:var(--W3);border-radius:3px;overflow:hidden}
 .vote-bar{height:100%;background:linear-gradient(90deg,var(--OL),var(--OLl));border-radius:3px;transition:width .6s cubic-bezier(.16,1,.3,1)}
-.vote-count{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--OL);line-height:1}
+.vote-count{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--OL);line-height:1;transition:all .3s}
 .vote-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INKl)}
-.vote-btn{background:var(--OL);color:var(--W);border:none;padding:10px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.vote-btn{background:var(--OL);color:var(--W);border:none;padding:10px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
 .vote-btn:hover{background:var(--OLd)}
 .vote-btn.voted{background:var(--W3);color:var(--INKl);cursor:default}
+@keyframes voteFlash{0%{transform:scale(1)}40%{transform:scale(1.3);color:#3B6B2E}100%{transform:scale(1)}}
+.vote-flash{animation:voteFlash .4s ease-out}
+.loading-state{text-align:center;padding:60px;color:var(--INKl);font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic}
 
 /* IDEA MODAL */
-#ideaModal{position:fixed;inset:0;z-index:9000;background:rgba(24,22,15,.6);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px}
+#ideaModal{position:fixed;inset:0;z-index:9000;background:rgba(24,22,15,.65);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px}
 #ideaModal.open{display:flex}
-.im-box{background:var(--W);border-radius:24px;width:100%;max-width:760px;max-height:85vh;overflow-y:auto;padding:52px;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
+.im-box{background:var(--W);border-radius:24px;width:100%;max-width:760px;max-height:88vh;overflow-y:auto;padding:52px;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
 @keyframes mpop{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
 .im-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;color:var(--INK);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .im-close:hover{background:var(--INK);color:var(--W)}
@@ -82,29 +183,88 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .im-vote-info h4{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--INK);margin-bottom:4px}
 .im-vote-info p{font-size:12px;color:var(--INKl);font-weight:300}
 
-/* SUBMIT */
-#submit-idea{background:var(--W);padding:120px 5%}
-.si-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start}
-.si-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;font-style:italic;color:var(--INK);line-height:.9;margin-bottom:20px}
-.si-left h2 em{color:var(--OL)}
-.si-left p{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300}
-.sform{background:var(--W2);border-radius:20px;padding:48px;border:1px solid var(--BD)}
-.fr{margin-bottom:22px}
+/* SUBMIT MODAL */
+#submitModal{position:fixed;inset:0;z-index:9500;background:rgba(24,22,15,.7);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:20px}
+#submitModal.open{display:flex}
+.sm-box{background:var(--W);border-radius:28px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
+.sm-header{background:var(--OLd);padding:40px 48px 32px;border-radius:28px 28px 0 0;position:relative}
+.sm-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-style:italic;font-weight:300;color:var(--W);margin-bottom:8px}
+.sm-header h2 em{color:var(--GDl)}
+.sm-header p{font-size:12px;color:rgba(250,250,248,.5);font-weight:300}
+.sm-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer;color:var(--W);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sm-close:hover{background:rgba(255,255,255,.1)}
+.sm-body{padding:40px 48px}
+.fr{margin-bottom:20px}
 .fr label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:8px}
-.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--INK);background:var(--W);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--OL)}
-.fr textarea{resize:vertical;min-height:100px}
-.sbtn{width:100%;background:var(--INK);color:var(--W);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:4px}
-.sbtn:hover{background:var(--OL)}
+.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:13px 16px;font-size:13px;color:var(--INK);background:var(--W2);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--OL);background:var(--W)}
+.fr textarea{resize:vertical;min-height:90px}
+.fr-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tag-input-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border:1px solid var(--BD2);border-radius:12px;background:var(--W2);min-height:46px;cursor:text;transition:border-color .2s}
+.tag-input-wrap:focus-within{border-color:var(--OL);background:var(--W)}
+.tag-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--OL);color:var(--W);border-radius:100px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700}
+.tag-pill button{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:12px;padding:0;line-height:1}
+.tag-pill button:hover{color:var(--W)}
+.tag-text-input{border:none;background:none;outline:none;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--INK);min-width:80px;flex:1}
+.submit-idea-btn{width:100%;background:var(--OLd);color:var(--W);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-idea-btn:hover{background:var(--OL)}
+.submit-idea-btn:disabled{background:var(--W3);color:var(--INKl);cursor:not-allowed}
+.submit-idea-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;display:none}
+.submit-idea-btn.loading .spinner{display:block}
+.submit-idea-btn.loading .btn-text{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-@media(max-width:1024px){.idea-row{grid-template-columns:40px 1fr 100px}.si-inner{grid-template-columns:1fr}}
-@media(max-width:768px){.idea-row{grid-template-columns:40px 1fr;}.vote-section{display:none}}
+/* SUCCESS STATE */
+.success-state{text-align:center;padding:48px;display:none}
+.success-state.show{display:block}
+.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(74,92,58,.1);border:2px solid var(--OL);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px}
+.success-state h3{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:10px}
+.success-state p{font-size:13px;color:var(--INKm);line-height:1.8;font-weight:300}
+
+/* SUBMIT SECTION (bottom of page) */
+#submit-section{background:var(--W);padding:100px 5%}
+.ss-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.ss-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;font-style:italic;line-height:.9;margin-bottom:20px}
+.ss-left h2 em{color:var(--OL)}
+.ss-left p{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:32px}
+.prize-list{display:flex;flex-direction:column}
+.prize-row{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--BD);align-items:flex-start}
+.prize-row:last-child{border-bottom:1px solid var(--BD)}
+.prize-amt{color:var(--OL);font-weight:700;flex-shrink:0;font-size:15px;min-width:36px}
+.prize-rank{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:3px}
+.prize-name{font-size:12px;color:var(--INKm);font-weight:300}
+.ss-cta-box{background:var(--OLd);border-radius:24px;padding:52px;text-align:center}
+.ss-cta-box h3{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;font-weight:300;color:var(--W);margin-bottom:12px}
+.ss-cta-box h3 em{color:var(--GDl)}
+.ss-cta-box p{font-size:13px;color:rgba(250,250,248,.5);font-weight:300;margin-bottom:32px;line-height:1.8}
+.ss-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;text-align:left}
+.ss-step{display:flex;gap:14px;align-items:flex-start}
+.ss-step-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;color:var(--GDl);min-width:20px;line-height:1.2}
+.ss-step-txt{font-size:12px;color:rgba(250,250,248,.6);font-weight:300;line-height:1.7}
+.big-submit-btn{width:100%;background:var(--GDl);color:var(--OLd);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.big-submit-btn:hover{background:var(--GD);transform:translateY(-2px)}
+
+@media(max-width:1024px){
+  .idea-row{grid-template-columns:40px 1fr 100px}
+  .ss-inner{grid-template-columns:1fr}
+  .fr-row{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .idea-row{grid-template-columns:40px 1fr}
+  .vote-section{display:none}
+  .sm-body,.sm-header{padding:28px}
+}
 </style>
 </head>
 <body>
+
 <nav class="nav">
   <a href="index.html" class="nav-logo">VAITHRA</a>
-  <a href="index.html" class="nav-back">← Back to Home</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="live-dot" id="liveDot" style="opacity:0;transition:opacity .5s"><span>Live</span></div>
+    <button class="nav-submit-btn" onclick="openSubmitModal()">+ Submit Idea</button>
+    <a href="index.html" class="nav-back" style="margin-left:4px">← Home</a>
+  </div>
 </nav>
 
 <section id="hero">
@@ -120,32 +280,52 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
         <div class="tu"><span class="tu-num" id="tM">00</span><span class="tu-lbl">Mins</span></div>
       </div>
     </div>
-    <h1 class="hero-title">Micro-<em>Grant</em> Rounds</h1>
-    <p class="hero-desc">List your idea, vote for others. Every month the top 3 ranked ideas receive community funding — no pitch decks, no gatekeepers.</p>
+    <h1 class="hero-title">Micro-<em>Grant</em><br>Rounds</h1>
+    <p class="hero-desc">Submit your idea, vote for others. Every month the top 3 ranked ideas receive community funding — no pitch decks, no gatekeepers.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="openSubmitModal()">Submit Your Idea →</button>
+      <button class="btn-ghost" onclick="document.getElementById('board').scrollIntoView({behavior:'smooth'})">See Leaderboard</button>
+    </div>
   </div>
 </section>
+
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><span class="stat-num" id="statIdeas">0</span><span class="stat-lbl">Ideas this round</span></div>
+    <div class="stat-item"><span class="stat-num" id="statVotes">0</span><span class="stat-lbl">Total votes cast</span></div>
+    <div class="stat-item"><span class="stat-num">₹10K</span><span class="stat-lbl">Total prize pool</span></div>
+    <div class="stat-item"><span class="stat-num">10</span><span class="stat-lbl">Days remaining</span></div>
+  </div>
+</div>
 
 <section id="board">
   <div class="board-inner">
     <div class="board-header">
       <div>
         <span class="ey" style="margin-bottom:10px">April 2026 Round</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-weight:300;font-style:italic;color:var(--INK)">Current Leaderboard</h2>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-weight:300;font-style:italic;color:var(--INK)">Live Leaderboard</h2>
       </div>
-      <div class="filter-tabs">
-        <button class="ftab active" onclick="filter('all',this)">All</button>
-        <button class="ftab" onclick="filter('tech',this)">Tech</button>
-        <button class="ftab" onclick="filter('social',this)">Social Impact</button>
-        <button class="ftab" onclick="filter('product',this)">Product</button>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+        <div class="live-dot" id="liveDot2" style="opacity:0;transition:opacity .5s"><span>Syncing live</span></div>
+        <div class="filter-tabs">
+          <button class="ftab active" onclick="filterIdeas('all',this)">All</button>
+          <button class="ftab" onclick="filterIdeas('tech',this)">Tech</button>
+          <button class="ftab" onclick="filterIdeas('social',this)">Social Impact</button>
+          <button class="ftab" onclick="filterIdeas('product',this)">Product</button>
+          <button class="ftab" onclick="filterIdeas('service',this)">Service</button>
+        </div>
       </div>
     </div>
-    <div class="idea-list" id="ideaList"></div>
+    <div class="idea-list" id="ideaList">
+      <div class="loading-state">Connecting to live feed…</div>
+    </div>
   </div>
 </section>
 
+<!-- IDEA DETAIL MODAL -->
 <div id="ideaModal">
   <div class="im-box">
-    <button class="im-close" onclick="closeIdea()">✕</button>
+    <button class="im-close" onclick="closeIdeaModal()">✕</button>
     <div class="im-rank" id="imRank"></div>
     <div class="im-name" id="imName"></div>
     <div class="im-founder" id="imFounder"></div>
@@ -155,35 +335,85 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
       <div class="im-vote-num" id="imVotes"></div>
       <div class="im-vote-info">
         <h4>Community Votes</h4>
-        <p id="imVoteInfo">Top 3 at end of April get funded.</p>
+        <p>Top 3 at end of April get funded.</p>
       </div>
       <button class="vote-btn" id="imVoteBtn" onclick="voteFromModal()">Vote →</button>
     </div>
   </div>
 </div>
 
-<section id="submit-idea">
-  <div class="si-inner">
-    <div class="si-left">
-      <span class="ey" style="margin-bottom:16px">Submit Your Idea</span>
-      <h2>List Your <em>Startup</em> for This Round</h2>
-      <p>Submit your startup idea for the current grant round. The community votes. Top 3 at the end of the month get funded. No gatekeepers, no panels — just peer validation.</p>
-      <div style="margin-top:40px;display:flex;flex-direction:column;gap:0">
-        <div style="display:flex;gap:16px;padding:20px 0;border-top:1px solid var(--BD);align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0;margin-top:1px">₹5K</span><div><div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:3px">Rank 1</div><p style="font-size:12px;color:var(--INKm);font-weight:300">Seed Spark Grant</p></div></div>
-        <div style="display:flex;gap:16px;padding:20px 0;border-top:1px solid var(--BD);align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0;margin-top:1px">₹3K</span><div><div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:3px">Rank 2</div><p style="font-size:12px;color:var(--INKm);font-weight:300">Growth Boost Grant</p></div></div>
-        <div style="display:flex;gap:16px;padding:20px 0;border-top:1px solid var(--BD);border-bottom:1px solid var(--BD);align-items:flex-start"><span style="color:var(--OL);font-weight:700;flex-shrink:0;margin-top:1px">₹2K</span><div><div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:3px">Rank 3</div><p style="font-size:12px;color:var(--INKm);font-weight:300">Community Choice Grant</p></div></div>
+<!-- SUBMIT IDEA MODAL -->
+<div id="submitModal">
+  <div class="sm-box">
+    <div class="sm-header">
+      <button class="sm-close" onclick="closeSubmitModal()">✕</button>
+      <h2>Submit Your <em>Idea</em></h2>
+      <p>Goes live instantly · Community votes · Top 3 get funded</p>
+    </div>
+    <div class="sm-body" id="smForm">
+      <div class="fr-row">
+        <div class="fr"><label>Idea / Startup Name *</label><input type="text" id="f-name" placeholder="e.g. AgriConnect" maxlength="60"></div>
+        <div class="fr"><label>Category *</label>
+          <select id="f-cat">
+            <option value="tech">Tech</option>
+            <option value="social">Social Impact</option>
+            <option value="product">Product</option>
+            <option value="service">Service</option>
+            <option value="community">Community</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr-row">
+        <div class="fr"><label>Your Name *</label><input type="text" id="f-founder" placeholder="Full name"></div>
+        <div class="fr"><label>City *</label><input type="text" id="f-city" placeholder="Hyderabad, Vijayawada…"></div>
+      </div>
+      <div class="fr"><label>Describe Your Idea *</label>
+        <textarea id="f-desc" placeholder="What problem are you solving? Who is it for? What have you built so far?" rows="4"></textarea>
+      </div>
+      <div class="fr">
+        <label>Tags (press Enter or comma to add, max 3)</label>
+        <div class="tag-input-wrap" id="tagWrap" onclick="document.getElementById('tagText').focus()">
+          <input type="text" id="tagText" class="tag-text-input" placeholder="e.g. SaaS, HealthTech…" maxlength="20">
+        </div>
+      </div>
+      <div class="fr"><label>WhatsApp (for updates)</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX"></div>
+      <button class="submit-idea-btn" id="submitBtn" onclick="handleIdeaSubmit()">
+        <div class="spinner"></div>
+        <span class="btn-text">Submit — Go Live Instantly →</span>
+      </button>
+      <p style="font-size:11px;color:var(--INKl);text-align:center;margin-top:12px;font-weight:300">Your idea appears on the leaderboard immediately for everyone to vote on.</p>
+    </div>
+    <div class="success-state" id="smSuccess">
+      <div class="success-icon">✓</div>
+      <h3>You're on the leaderboard!</h3>
+      <p>Your idea is now live and visible to everyone.<br>Share the page to get more votes!</p>
+      <button onclick="closeSubmitModal()" style="margin-top:24px;background:var(--OL);color:var(--W);border:none;padding:12px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer">See My Idea →</button>
+    </div>
+  </div>
+</div>
+
+<section id="submit-section">
+  <div class="ss-inner">
+    <div class="ss-left">
+      <span class="ey" style="margin-bottom:16px">How It Works</span>
+      <h2>Your Idea.<br><em>Funded.</em></h2>
+      <p>Anyone can submit a startup idea. The community votes every month. Top 3 ideas at the end of the round receive real money — no panels, no gatekeepers.</p>
+      <div class="prize-list">
+        <div class="prize-row"><span class="prize-amt">₹5K</span><div><div class="prize-rank">Rank 1</div><div class="prize-name">Seed Spark Grant</div></div></div>
+        <div class="prize-row"><span class="prize-amt">₹3K</span><div><div class="prize-rank">Rank 2</div><div class="prize-name">Growth Boost Grant</div></div></div>
+        <div class="prize-row"><span class="prize-amt">₹2K</span><div><div class="prize-rank">Rank 3</div><div class="prize-name">Community Choice Grant</div></div></div>
       </div>
     </div>
-    <div class="sform">
-      <form onsubmit="submitIdea(event)">
-        <div class="fr"><label>Startup / Idea Name *</label><input type="text" id="si-name" placeholder="e.g. AgriConnect" required></div>
-        <div class="fr"><label>Your Name *</label><input type="text" id="si-founder" placeholder="Your full name" required></div>
-        <div class="fr"><label>WhatsApp *</label><input type="tel" id="si-phone" placeholder="+91 XXXXX XXXXX" required></div>
-        <div class="fr"><label>Category</label><select id="si-cat"><option>Tech</option><option>Social Impact</option><option>Product</option><option>Service</option><option>Community</option></select></div>
-        <div class="fr"><label>Describe your idea (problem + solution + traction) *</label><textarea id="si-desc" placeholder="What problem are you solving, for whom, and what have you built so far?" required></textarea></div>
-        <div class="fr"><label>City</label><input type="text" id="si-city" placeholder="Your city"></div>
-        <button type="submit" class="sbtn">Submit to This Round →</button>
-      </form>
+    <div class="ss-cta-box">
+      <h3>Ready to <em>list</em> your idea?</h3>
+      <p>Takes 2 minutes. Goes live the second you submit.</p>
+      <div class="ss-steps">
+        <div class="ss-step"><div class="ss-step-num">1</div><div class="ss-step-txt">Fill in your idea name, description and category</div></div>
+        <div class="ss-step"><div class="ss-step-num">2</div><div class="ss-step-txt">Hit submit — your idea appears instantly on the leaderboard</div></div>
+        <div class="ss-step"><div class="ss-step-num">3</div><div class="ss-step-txt">Share with your network, collect votes, climb the ranks</div></div>
+        <div class="ss-step"><div class="ss-step-num">4</div><div class="ss-step-txt">Top 3 at end of month receive the grant — no interviews needed</div></div>
+      </div>
+      <button class="big-submit-btn" onclick="openSubmitModal()">Submit Your Idea Now →</button>
     </div>
   </div>
 </section>
@@ -192,115 +422,239 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
   <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--INKl);text-decoration:none">← VAITHRA HOME</a>
 </footer>
 
-<script>
-var IDEAS = [
-  {id:1,name:'Glowvai',founder:'Rahimath · Hyderabad',desc:'Beauty-tech SaaS for salon management. Appointment booking, treatment catalog, and staff management for small beauty salons across Tier 2 cities. Currently in beta with 3 salons.',votes:47,category:'tech',tags:['Beauty Tech','SaaS','Tier-2 Cities']},
-  {id:2,name:'AgriConnect',founder:'Priya Sharma · Vijayawada',desc:'Direct farm-to-restaurant marketplace eliminating the middleman for small-scale farmers in AP. 12 farmers and 4 restaurants connected in pilot phase.',votes:38,category:'social',tags:['AgriTech','Social Impact','Marketplace']},
-  {id:3,name:'SkillBridge',founder:'Ravi Kumar · Warangal',desc:'Peer-to-peer skill exchange platform for Tier 2 city youth. Exchange a skill you have for a skill you want — no money involved.',votes:31,category:'product',tags:['EdTech','Community','P2P']},
-  {id:4,name:'MediRoute',founder:'Ananya Reddy · Tirupati',desc:'Last-mile medicine delivery for rural areas in AP using a network of local pharmacies and auto-rickshaw drivers.',votes:24,category:'social',tags:['HealthTech','Rural','Logistics']},
-  {id:5,name:'BuildBrick',founder:'Sai Kiran · Hyderabad',desc:'No-code tool for small business owners to build simple booking and order management systems without technical knowledge.',votes:19,category:'tech',tags:['No-Code','SMB','Productivity']},
-  {id:6,name:'VoiceLocal',founder:'Tanveer Ahmed · Guntur',desc:'Telugu and regional language content platform for local creators. Monetization tools built specifically for vernacular content.',votes:14,category:'product',tags:['Creator Economy','Regional Language','Media']}
-];
+<script type="module">
+// ── STATE ─────────────────────────────────
+let IDEAS = [];
+let currentFilter = 'all';
+let currentIdeaId = null;
+let tags = [];
 
-var voted = {};
-var currentFilter = 'all';
-var currentIdea = null;
+// ── STATS ─────────────────────────────────
+function updateStats() {
+  document.getElementById('statIdeas').textContent = IDEAS.length;
+  const totalVotes = IDEAS.reduce((s, i) => s + (i.votes || 0), 0);
+  document.getElementById('statVotes').textContent = totalVotes;
+}
 
-function filter(cat, btn){
+// ── FILTER ────────────────────────────────
+window.filterIdeas = function(cat, btn) {
   currentFilter = cat;
-  document.querySelectorAll('.ftab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   buildList();
-}
+};
 
-function buildList(){
-  var list = document.getElementById('ideaList');
-  var filtered = currentFilter==='all' ? IDEAS : IDEAS.filter(function(i){return i.category===currentFilter;});
-  var maxVotes = filtered.length ? filtered[0].votes : 1;
-  var html = '';
-  for(var i=0;i<filtered.length;i++){
-    var idea = filtered[i];
-    var rank = i+1;
-    var rankClass = rank===1?'rank1':rank===2?'rank2':rank===3?'rank3':'rank-other';
-    var pct = Math.round((idea.votes/maxVotes)*100);
-    var isVoted = !!voted[idea.id];
-    html += '<div class="idea-row '+rankClass+'" onclick="openIdea('+IDEAS.indexOf(idea)+')">' +
-      '<div class="rank-badge">'+rank+'</div>' +
-      '<div class="idea-info"><h3>'+idea.name+'</h3><div class="idea-founder">'+idea.founder+'</div><span class="idea-category">'+idea.tags[0]+'</span></div>' +
-      '<div class="vote-section"><span class="vote-count">'+idea.votes+'</span><span class="vote-lbl">Votes</span><div class="vote-bar-wrap"><div class="vote-bar" style="width:'+pct+'%"></div></div></div>' +
-      '<button class="vote-btn'+(isVoted?' voted':'')+'" onclick="event.stopPropagation();voteIdea('+IDEAS.indexOf(idea)+')">'+(isVoted?'Voted ✓':'Vote →')+'</button>' +
-      '</div>';
+// ── BUILD LIST ────────────────────────────
+function buildList() {
+  const list = document.getElementById('ideaList');
+  const filtered = currentFilter === 'all' ? IDEAS : IDEAS.filter(i => i.category === currentFilter);
+  if (!filtered.length) {
+    list.innerHTML = `<div class="loading-state">No ideas in this category yet — <a href="#" onclick="openSubmitModal();return false;" style="color:var(--OL)">be the first!</a></div>`;
+    return;
   }
-  list.innerHTML = html;
+  const maxVotes = Math.max(filtered[0].votes || 1, 1);
+  list.innerHTML = filtered.map((idea, i) => {
+    const rank = i + 1;
+    const rankClass = rank===1?'rank1':rank===2?'rank2':rank===3?'rank3':'rank-other';
+    const pct = Math.round(((idea.votes || 0) / maxVotes) * 100);
+    const isVoted = window.hasVoted && window.hasVoted(idea.id);
+    return `<div class="idea-row ${rankClass}" onclick="openIdeaModal('${idea.id}')">
+      <div class="rank-badge">${rank}</div>
+      <div class="idea-info">
+        <h3>${escHtml(idea.name)}</h3>
+        <div class="idea-founder">${escHtml(idea.founder)}</div>
+        <span class="idea-category">${escHtml(idea.tags && idea.tags[0] ? idea.tags[0] : idea.category)}</span>
+      </div>
+      <div class="vote-section">
+        <span class="vote-count" id="vc-${idea.id}">${idea.votes || 0}</span>
+        <span class="vote-lbl">Votes</span>
+        <div class="vote-bar-wrap"><div class="vote-bar" style="width:${pct}%"></div></div>
+      </div>
+      <button class="vote-btn${isVoted?' voted':''}" id="vb-${idea.id}"
+        onclick="event.stopPropagation();doVote('${idea.id}')">${isVoted?'Voted ✓':'Vote →'}</button>
+    </div>`;
+  }).join('');
 }
 
-function voteIdea(i){
-  if(voted[IDEAS[i].id]) return;
-  voted[IDEAS[i].id] = true;
-  IDEAS[i].votes++;
-  IDEAS.sort(function(a,b){return b.votes-a.votes;});
-  buildList();
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function openIdea(i){
-  var idea = IDEAS[i];
-  currentIdea = i;
-  document.getElementById('imRank').textContent = '#'+(IDEAS.indexOf(idea)+1);
+// ── VOTE ──────────────────────────────────
+window.doVote = async function(ideaId) {
+  if (window.hasVoted && window.hasVoted(ideaId)) return;
+  if (window.castVote) await window.castVote(ideaId);
+};
+
+window.updateVoteUI = function(ideaId) {
+  const btn = document.getElementById('vb-' + ideaId);
+  if (btn) { btn.className = 'vote-btn voted'; btn.textContent = 'Voted ✓'; }
+  const vc = document.getElementById('vc-' + ideaId);
+  if (vc) { vc.classList.remove('vote-flash'); void vc.offsetWidth; vc.classList.add('vote-flash'); }
+  if (currentIdeaId === ideaId) {
+    const idea = IDEAS.find(i => i.id === ideaId);
+    const el = document.getElementById('imVotes');
+    if (el && idea) el.textContent = idea.votes || 0;
+    const mb = document.getElementById('imVoteBtn');
+    if (mb) { mb.className = 'vote-btn voted'; mb.textContent = 'Voted ✓'; }
+  }
+};
+
+// ── IDEA MODAL ────────────────────────────
+window.openIdeaModal = function(ideaId) {
+  const idea = IDEAS.find(i => i.id === ideaId);
+  if (!idea) return;
+  currentIdeaId = ideaId;
+  const rank = IDEAS.indexOf(idea) + 1;
+  document.getElementById('imRank').textContent = '#' + rank;
   document.getElementById('imName').textContent = idea.name;
   document.getElementById('imFounder').textContent = idea.founder;
   document.getElementById('imDesc').textContent = idea.desc;
-  document.getElementById('imVotes').textContent = idea.votes;
-  var tagsHtml = idea.tags.map(function(t){return '<span class="im-tag">'+t+'</span>';}).join('');
-  document.getElementById('imTags').innerHTML = tagsHtml;
-  var btn = document.getElementById('imVoteBtn');
-  if(voted[idea.id]){btn.className='vote-btn voted';btn.textContent='Voted ✓';}
-  else{btn.className='vote-btn';btn.textContent='Vote →';}
+  document.getElementById('imVotes').textContent = idea.votes || 0;
+  document.getElementById('imTags').innerHTML = (idea.tags||[]).map(t => `<span class="im-tag">${escHtml(t)}</span>`).join('');
+  const isVoted = window.hasVoted && window.hasVoted(ideaId);
+  const btn = document.getElementById('imVoteBtn');
+  btn.className = 'vote-btn' + (isVoted ? ' voted' : '');
+  btn.textContent = isVoted ? 'Voted ✓' : 'Vote →';
   document.getElementById('ideaModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
+  document.body.style.overflow = 'hidden';
+};
 
-function voteFromModal(){
-  if(currentIdea===null) return;
-  voteIdea(currentIdea);
-  var idea = IDEAS[currentIdea];
-  var btn = document.getElementById('imVoteBtn');
-  btn.className='vote-btn voted';btn.textContent='Voted ✓';
-  document.getElementById('imVotes').textContent = idea.votes;
-}
+window.voteFromModal = async function() {
+  if (!currentIdeaId) return;
+  await doVote(currentIdeaId);
+};
 
-function closeIdea(){
+window.closeIdeaModal = function() {
   document.getElementById('ideaModal').classList.remove('open');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
+  currentIdeaId = null;
+};
+
+// ── SUBMIT MODAL ──────────────────────────
+window.openSubmitModal = function() {
+  document.getElementById('smForm').style.display = 'block';
+  document.getElementById('smSuccess').classList.remove('show');
+  document.getElementById('submitModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeSubmitModal = function() {
+  document.getElementById('submitModal').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+// ── TAG INPUT ─────────────────────────────
+const tagText = document.getElementById('tagText');
+tagText.addEventListener('keydown', function(e) {
+  if ((e.key === 'Enter' || e.key === ',') && this.value.trim()) {
+    e.preventDefault();
+    addTag(this.value.replace(',','').trim());
+    this.value = '';
+  }
+  if (e.key === 'Backspace' && !this.value && tags.length) {
+    removeTag(tags.length - 1);
+  }
+});
+
+function addTag(val) {
+  if (!val || tags.length >= 3 || tags.includes(val)) return;
+  tags.push(val);
+  renderTags();
 }
 
-function submitIdea(e){
-  e.preventDefault();
-  var name=document.getElementById('si-name').value;
-  var founder=document.getElementById('si-founder').value;
-  var phone=document.getElementById('si-phone').value;
-  var desc=document.getElementById('si-desc').value;
-  var msg='Grant+Round+Submission%0AIdea%3A+'+encodeURIComponent(name)+'%0AFounder%3A+'+encodeURIComponent(founder)+'%0A%0A'+encodeURIComponent(desc.substring(0,200));
-  window.open('https://wa.me/918977855998?text='+msg,'_blank');
-  alert('Submission sent! We\'ll review and add your idea to the next round within 24 hours.');
+function removeTag(i) {
+  tags.splice(i, 1);
+  renderTags();
 }
 
-// Countdown to end of month
-function updateTimer(){
-  var now=new Date();
-  var end=new Date(now.getFullYear(),now.getMonth()+1,0,23,59,59);
-  var diff=end-now;
-  var d=Math.floor(diff/86400000);
-  var h=Math.floor((diff%86400000)/3600000);
-  var m=Math.floor((diff%3600000)/60000);
-  document.getElementById('tD').textContent=String(d).padStart(2,'0');
-  document.getElementById('tH').textContent=String(h).padStart(2,'0');
-  document.getElementById('tM').textContent=String(m).padStart(2,'0');
+window.removeTag = removeTag;
+
+function renderTags() {
+  const wrap = document.getElementById('tagWrap');
+  const input = document.getElementById('tagText');
+  wrap.innerHTML = '';
+  tags.forEach((t, i) => {
+    const pill = document.createElement('span');
+    pill.className = 'tag-pill';
+    pill.innerHTML = `${escHtml(t)}<button onclick="removeTag(${i})">×</button>`;
+    wrap.appendChild(pill);
+  });
+  wrap.appendChild(input);
+  if (tags.length >= 3) input.style.display = 'none';
+  else input.style.display = '';
 }
-setInterval(updateTimer,60000);
+
+// ── HANDLE SUBMIT ─────────────────────────
+window.handleIdeaSubmit = async function() {
+  const name = document.getElementById('f-name').value.trim();
+  const founder = document.getElementById('f-founder').value.trim();
+  const city = document.getElementById('f-city').value.trim() || 'India';
+  const desc = document.getElementById('f-desc').value.trim();
+  const cat = document.getElementById('f-cat').value;
+
+  if (!name) { document.getElementById('f-name').focus(); return; }
+  if (!founder) { document.getElementById('f-founder').focus(); return; }
+  if (!desc || desc.length < 20) { document.getElementById('f-desc').focus(); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const ideaTags = tags.length ? tags : [cat.charAt(0).toUpperCase() + cat.slice(1)];
+
+  const result = await window.submitNewIdea({ name, founder, city, desc, category: cat, tags: ideaTags });
+
+  btn.disabled = false;
+  btn.classList.remove('loading');
+
+  if (result && result.success) {
+    // Reset form
+    ['f-name','f-founder','f-city','f-desc','f-phone'].forEach(id => document.getElementById(id).value = '');
+    tags = [];
+    renderTags();
+    document.getElementById('smForm').style.display = 'none';
+    document.getElementById('smSuccess').classList.add('show');
+    setTimeout(() => document.getElementById('board').scrollIntoView({behavior:'smooth'}), 1800);
+  } else {
+    alert('Something went wrong. Please try again.');
+  }
+};
+
+// ── COUNTDOWN ─────────────────────────────
+function updateTimer() {
+  const now = new Date();
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+  const diff = end - now;
+  document.getElementById('tD').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
+  document.getElementById('tH').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+  document.getElementById('tM').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+}
+setInterval(updateTimer, 60000);
 updateTimer();
-buildList();
-document.getElementById('ideaModal').onclick=function(e){if(e.target===this)closeIdea();};
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeIdea();});
+
+// ── CLOSE ON BACKDROP ─────────────────────
+document.getElementById('ideaModal').onclick = e => { if (e.target === document.getElementById('ideaModal')) closeIdeaModal(); };
+document.getElementById('submitModal').onclick = e => { if (e.target === document.getElementById('submitModal')) closeSubmitModal(); };
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeIdeaModal(); closeSubmitModal(); }
+});
+
+// ── START FIREBASE ────────────────────────
+function init() {
+  if (typeof window.startRealtime === 'function') {
+    window.startRealtime((ideas) => {
+      IDEAS = ideas;
+      document.getElementById('liveDot').style.opacity = '1';
+      document.getElementById('liveDot2').style.opacity = '1';
+      buildList();
+      updateStats();
+    });
+  } else {
+    setTimeout(init, 200);
+  }
+}
+init();
 </script>
 </body>
 </html>
