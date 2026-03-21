@@ -2,659 +2,889 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Micro-Grant Rounds — Vaithra</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, doc, addDoc, onSnapshot, runTransaction, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
-    authDomain: "vaithra-grants.firebaseapp.com",
-    projectId: "vaithra-grants",
-    storageBucket: "vaithra-grants.firebasestorage.app",
-    messagingSenderId: "655290922548",
-    appId: "1:655290922548:web:991b339e2475aa9f443c61",
-    measurementId: "G-PGMC34PLKR"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Submit a new idea — instantly appears for ALL users
-  window.submitNewIdea = async function(ideaData) {
-    try {
-      const ref = await addDoc(collection(db, 'ideas'), {
-        name: ideaData.name,
-        founder: ideaData.founder + ' · ' + ideaData.city,
-        desc: ideaData.desc,
-        votes: 0,
-        category: ideaData.category,
-        tags: ideaData.tags,
-        createdAt: Date.now()
-      });
-      return { success: true, id: ref.id };
-    } catch(e) {
-      console.error('Submit error:', e);
-      return { success: false, error: e.message };
-    }
-  };
-
-  // Vote — atomic, one per user per idea
-  window.castVote = async function(ideaId) {
-    if (localStorage.getItem('voted_' + ideaId)) return;
-    try {
-      const ideaRef = doc(db, 'ideas', ideaId);
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(ideaRef);
-        if (!snap.exists()) return;
-        tx.update(ideaRef, { votes: snap.data().votes + 1 });
-      });
-      localStorage.setItem('voted_' + ideaId, '1');
-      window.updateVoteUI && window.updateVoteUI(ideaId);
-    } catch(e) { console.error('Vote error:', e); }
-  };
-
-  window.hasVoted = (id) => !!localStorage.getItem('voted_' + id);
-
-  // Real-time listener — fires for votes AND new ideas
-  window.startRealtime = function(onUpdate) {
-    return onSnapshot(collection(db, 'ideas'), (snapshot) => {
-      const ideas = [];
-      snapshot.forEach(d => ideas.push({ ...d.data(), id: d.id }));
-      ideas.sort((a, b) => b.votes - a.votes);
-      onUpdate(ideas);
-    });
-  };
-</script>
-
+<title>Build in Public Wall — Vaithra</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════
+   TERRACOTTA BRICK PALETTE — one family
+   From deep burnt clay → warm cream mortar
+═══════════════════════════════════════ */
 :root{
-  --W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;
-  --OL:#4A5C3A;--OLl:#6B7F58;--OLd:#2E3A24;
-  --INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;
-  --GD:#B8A060;--GDl:#D4BB80;
-  --BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22);
-  --GREEN:#2D6A2D;
+  /* Page */
+  --bg:  #F5EFE6;
+  --bg2: #EDE5D8;
+  --bg3: #E2D8C8;
+  --ink: #1C1410;
+  --ink2:#382C24;
+  --ink3:#60503C;
+  --ink4:#9C8C78;
+  --line:#D4C8B4;
+
+  /* Brick colour family — all terracotta tones */
+  --b1: #8B3A2A;  /* deep burnt */
+  --b2: #A04830;  /* classic brick */
+  --b3: #B85C38;  /* warm brick */
+  --b4: #C86840;  /* medium */
+  --b5: #7A3028;  /* dark clay */
+  --b6: #6A2820;  /* deepest */
+  --b7: #944030;  /* medium dark */
+  --b8: #D07848;  /* lighter warm */
+
+  /* Mortar */
+  --mortar: #C8BCA8;
+  --mortar2:#B8AC98;
+
+  /* Accent */
+  --gold:  #C8920A;
+  --goldl: #E8B030;
+  --sage:  #3A5228;
+  --sagel: #5C7840;
+
+  /* Shadows */
+  --s1: 0 2px 8px rgba(28,20,16,.12);
+  --s2: 0 4px 20px rgba(28,20,16,.15);
+  --s3: 0 8px 40px rgba(28,20,16,.18);
+  --s4: 0 20px 80px rgba(28,20,16,.22);
 }
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
-.ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OL);display:block}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--b3);border-radius:2px}
 
-/* NAV */
-.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.92);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
-.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);text-decoration:none}
-.nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none}
-.nav-back:hover{color:var(--OL)}
-.nav-submit-btn{background:var(--OL);color:var(--W);border:none;padding:9px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.nav-submit-btn:hover{background:var(--OLd)}
+/* paper grain */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:1}
 
-/* LIVE DOT */
-.live-dot{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:rgba(74,92,58,.08);border:1px solid rgba(74,92,58,.18);border-radius:100px}
-.live-dot::before{content:'';width:7px;height:7px;border-radius:50%;background:#4A7C44;animation:pulse 1.6s ease-in-out infinite;flex-shrink:0}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.live-dot span{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--OLl)}
-
-/* HERO */
-#hero{min-height:80vh;background:var(--OLd);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 5% 80px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:480px;font-weight:600;font-style:italic;color:rgba(255,255,255,.025);bottom:-60px;right:-30px;pointer-events:none;line-height:1}
-.hero-in{max-width:1280px;margin:0 auto;width:100%;position:relative;z-index:1}
-.round-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(212,187,128,.12);border:1px solid rgba(212,187,128,.25);border-radius:100px;margin-bottom:24px}
-.round-badge span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--GDl)}
-.hero-timer{display:inline-flex;align-items:center;gap:16px;padding:12px 24px;background:rgba(107,127,88,.1);border:1px solid rgba(107,127,88,.2);border-radius:100px;margin-bottom:32px;width:fit-content}
-.timer-units{display:flex;gap:16px;align-items:center}
-.tu{text-align:center}
-.tu-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--GDl);line-height:1;display:block}
-.tu-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.3);display:block}
-.tu-sep{font-family:'Cormorant Garamond',serif;font-size:28px;color:rgba(107,127,88,.3)}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,10vw,120px);font-weight:300;line-height:.85;letter-spacing:-.04em;color:var(--W);margin-bottom:28px}
-.hero-title em{font-style:italic;color:var(--GDl)}
-.hero-desc{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.48);max-width:540px;line-height:1.9;font-weight:300;margin-bottom:32px}
-.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
-.btn-primary{background:var(--GDl);color:var(--OLd);border:none;padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.btn-primary:hover{background:var(--GD);transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:rgba(250,250,248,.7);border:1px solid rgba(250,250,248,.2);padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--W)}
-
-/* STATS BAR */
-.stats-bar{background:var(--OL);padding:16px 5%}
-.stats-inner{max-width:1280px;margin:0 auto;display:flex;gap:40px;align-items:center;flex-wrap:wrap}
-.stat-item{display:flex;align-items:baseline;gap:8px}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--GDl)}
-.stat-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.5)}
-
-/* BOARD */
-#board{background:var(--W2);padding:100px 5%}
-.board-inner{max-width:1280px;margin:0 auto}
-.board-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:48px;flex-wrap:wrap;gap:20px}
-.filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.ftab{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:8px 18px;border-radius:100px;border:1px solid var(--BD2);background:transparent;cursor:pointer;color:var(--INKm);transition:all .2s}
-.ftab.active,.ftab:hover{background:var(--INK);color:var(--W);border-color:var(--INK)}
-.idea-list{display:flex;flex-direction:column;gap:12px}
-
-/* IDEA ROW */
-.idea-row{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:52px 1fr 140px 120px;gap:20px;align-items:center;cursor:pointer;transition:all .3s;animation:rowIn .4s cubic-bezier(.16,1,.3,1)}
-@keyframes rowIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.idea-row:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,92,58,.1);border-color:var(--BD2)}
-.idea-row.rank1{border-color:var(--GD);background:linear-gradient(135deg,rgba(184,160,96,.06),var(--W))}
-.idea-row.rank2{border-color:rgba(74,92,58,.3)}
-.idea-row.rank3{border-color:rgba(74,92,58,.2)}
-.idea-row.new-idea{border-color:var(--OL);animation:newRowIn .6s cubic-bezier(.16,1,.3,1)}
-@keyframes newRowIn{from{opacity:0;transform:translateY(-20px) scale(.98);background:rgba(74,92,58,.08)}to{opacity:1;transform:none}}
-.rank-badge{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;flex-shrink:0}
-.rank1 .rank-badge{background:rgba(184,160,96,.15);color:var(--GD);border:1px solid rgba(184,160,96,.3)}
-.rank2 .rank-badge{background:rgba(74,92,58,.1);color:var(--OL);border:1px solid var(--BD2)}
-.rank3 .rank-badge{background:rgba(74,92,58,.07);color:var(--OLl);border:1px solid var(--BD)}
-.rank-other .rank-badge{background:var(--W2);color:var(--INKl);border:1px solid var(--BD)}
-.idea-info h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:4px}
-.idea-founder{font-size:11px;color:var(--INKl);font-weight:300}
-.idea-category{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:3px 10px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl);display:inline-block;margin-top:6px}
-.vote-section{display:flex;flex-direction:column;align-items:center;gap:6px}
-.vote-bar-wrap{width:100%;height:6px;background:var(--W3);border-radius:3px;overflow:hidden}
-.vote-bar{height:100%;background:linear-gradient(90deg,var(--OL),var(--OLl));border-radius:3px;transition:width .6s cubic-bezier(.16,1,.3,1)}
-.vote-count{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--OL);line-height:1;transition:all .3s}
-.vote-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INKl)}
-.vote-btn{background:var(--OL);color:var(--W);border:none;padding:10px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
-.vote-btn:hover{background:var(--OLd)}
-.vote-btn.voted{background:var(--W3);color:var(--INKl);cursor:default}
-@keyframes voteFlash{0%{transform:scale(1)}40%{transform:scale(1.3);color:#3B6B2E}100%{transform:scale(1)}}
-.vote-flash{animation:voteFlash .4s ease-out}
-.loading-state{text-align:center;padding:60px;color:var(--INKl);font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic}
-
-/* IDEA MODAL */
-#ideaModal{position:fixed;inset:0;z-index:9000;background:rgba(24,22,15,.65);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px}
-#ideaModal.open{display:flex}
-.im-box{background:var(--W);border-radius:24px;width:100%;max-width:760px;max-height:88vh;overflow-y:auto;padding:52px;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
-@keyframes mpop{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
-.im-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;color:var(--INK);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.im-close:hover{background:var(--INK);color:var(--W)}
-.im-rank{font-family:'Cormorant Garamond',serif;font-size:72px;font-style:italic;font-weight:600;color:var(--OL);opacity:.15;line-height:1;margin-bottom:4px}
-.im-name{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-style:italic;font-weight:600;color:var(--INK);margin-bottom:8px}
-.im-founder{font-size:12px;color:var(--INKl);font-weight:300;margin-bottom:28px}
-.im-desc{font-size:14px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:32px;padding:24px;background:var(--W2);border-radius:14px}
-.im-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
-.im-tag{font-size:9px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl)}
-.im-vote-area{display:flex;align-items:center;gap:20px;padding:24px;background:var(--W2);border-radius:14px}
-.im-vote-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-style:italic;font-weight:600;color:var(--OL);line-height:1}
-.im-vote-info{flex:1}
-.im-vote-info h4{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--INK);margin-bottom:4px}
-.im-vote-info p{font-size:12px;color:var(--INKl);font-weight:300}
-
-/* SUBMIT MODAL */
-#submitModal{position:fixed;inset:0;z-index:9500;background:rgba(24,22,15,.7);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:20px}
-#submitModal.open{display:flex}
-.sm-box{background:var(--W);border-radius:28px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
-.sm-header{background:var(--OLd);padding:40px 48px 32px;border-radius:28px 28px 0 0;position:relative}
-.sm-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-style:italic;font-weight:300;color:var(--W);margin-bottom:8px}
-.sm-header h2 em{color:var(--GDl)}
-.sm-header p{font-size:12px;color:rgba(250,250,248,.5);font-weight:300}
-.sm-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer;color:var(--W);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.sm-close:hover{background:rgba(255,255,255,.1)}
-.sm-body{padding:40px 48px}
-.fr{margin-bottom:20px}
-.fr label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:8px}
-.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:13px 16px;font-size:13px;color:var(--INK);background:var(--W2);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
-.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--OL);background:var(--W)}
-.fr textarea{resize:vertical;min-height:90px}
-.fr-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.tag-input-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;border:1px solid var(--BD2);border-radius:12px;background:var(--W2);min-height:46px;cursor:text;transition:border-color .2s}
-.tag-input-wrap:focus-within{border-color:var(--OL);background:var(--W)}
-.tag-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--OL);color:var(--W);border-radius:100px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700}
-.tag-pill button{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:12px;padding:0;line-height:1}
-.tag-pill button:hover{color:var(--W)}
-.tag-text-input{border:none;background:none;outline:none;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--INK);min-width:80px;flex:1}
-.submit-idea-btn{width:100%;background:var(--OLd);color:var(--W);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
-.submit-idea-btn:hover{background:var(--OL)}
-.submit-idea-btn:disabled{background:var(--W3);color:var(--INKl);cursor:not-allowed}
-.submit-idea-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;display:none}
-.submit-idea-btn.loading .spinner{display:block}
-.submit-idea-btn.loading .btn-text{display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* SUCCESS STATE */
-.success-state{text-align:center;padding:48px;display:none}
-.success-state.show{display:block}
-.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(74,92,58,.1);border:2px solid var(--OL);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px}
-.success-state h3{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:10px}
-.success-state p{font-size:13px;color:var(--INKm);line-height:1.8;font-weight:300}
-
-/* SUBMIT SECTION (bottom of page) */
-#submit-section{background:var(--W);padding:100px 5%}
-.ss-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.ss-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;font-style:italic;line-height:.9;margin-bottom:20px}
-.ss-left h2 em{color:var(--OL)}
-.ss-left p{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:32px}
-.prize-list{display:flex;flex-direction:column}
-.prize-row{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--BD);align-items:flex-start}
-.prize-row:last-child{border-bottom:1px solid var(--BD)}
-.prize-amt{color:var(--OL);font-weight:700;flex-shrink:0;font-size:15px;min-width:36px}
-.prize-rank{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:3px}
-.prize-name{font-size:12px;color:var(--INKm);font-weight:300}
-.ss-cta-box{background:var(--OLd);border-radius:24px;padding:52px;text-align:center}
-.ss-cta-box h3{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;font-weight:300;color:var(--W);margin-bottom:12px}
-.ss-cta-box h3 em{color:var(--GDl)}
-.ss-cta-box p{font-size:13px;color:rgba(250,250,248,.5);font-weight:300;margin-bottom:32px;line-height:1.8}
-.ss-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;text-align:left}
-.ss-step{display:flex;gap:14px;align-items:flex-start}
-.ss-step-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;color:var(--GDl);min-width:20px;line-height:1.2}
-.ss-step-txt{font-size:12px;color:rgba(250,250,248,.6);font-weight:300;line-height:1.7}
-.big-submit-btn{width:100%;background:var(--GDl);color:var(--OLd);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s}
-.big-submit-btn:hover{background:var(--GD);transform:translateY(-2px)}
-
-@media(max-width:1024px){
-  .idea-row{grid-template-columns:40px 1fr 100px}
-  .ss-inner{grid-template-columns:1fr}
-  .fr-row{grid-template-columns:1fr}
+/* ─── NAV ───────────────────────────── */
+.nav{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  width:92%;max-width:1260px;
+  padding:11px 24px;
+  background:rgba(245,239,230,.94);
+  backdrop-filter:blur(28px);
+  border-radius:100px;
+  border:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:8000;
+  box-shadow:var(--s1);
 }
-@media(max-width:768px){
-  .idea-row{grid-template-columns:40px 1fr}
-  .vote-section{display:none}
-  .sm-body,.sm-header{padding:28px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.28em;color:var(--ink);text-decoration:none;text-transform:uppercase}
+.nav-r{display:flex;align-items:center;gap:12px}
+.nav-back{font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink4);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--ink)}
+.nav-post{background:var(--b2);color:#F5EFE6;border:none;padding:9px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(160,72,48,.25)}
+.nav-post:hover{background:var(--b1);transform:translateY(-1px)}
+.livepip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:rgba(58,82,40,.08);border:1px solid rgba(58,82,40,.16);border-radius:100px}
+.livepip::before{content:'';width:5px;height:5px;border-radius:50%;background:#5A9030;animation:lp 1.8s ease-in-out infinite}
+@keyframes lp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(90,144,48,.4)}50%{opacity:.3;box-shadow:0 0 0 4px rgba(90,144,48,0)}}
+.livepip span{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sagel)}
+
+/* ─── HERO ──────────────────────────── */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:flex-end;
+  padding:0 7% 80px;
+  position:relative;overflow:hidden;
+  background:var(--bg);
 }
+/* Ruled lines */
+.h-ruled{position:absolute;inset:0;background-image:linear-gradient(transparent calc(100% - 1px),rgba(28,20,16,.04) 100%);background-size:100% 56px;pointer-events:none}
+.h-ruled::after{content:'';position:absolute;top:0;bottom:0;right:30%;width:1px;background:linear-gradient(180deg,transparent,rgba(28,20,16,.07) 30%,rgba(28,20,16,.09) 70%,transparent)}
+/* Big ghost */
+.h-ghost{position:absolute;font-family:'Playfair Display',serif;font-size:clamp(220px,32vw,420px);font-style:italic;font-weight:600;color:transparent;-webkit-text-stroke:1px rgba(28,20,16,.04);bottom:-60px;right:-3%;line-height:1;letter-spacing:-.04em;pointer-events:none;user-select:none}
+.h-wash{position:absolute;top:0;right:0;width:50%;height:100%;background:radial-gradient(ellipse at 78% 28%,rgba(200,146,10,.07) 0%,transparent 58%);pointer-events:none}
+.h-wash2{position:absolute;bottom:0;left:0;width:38%;height:55%;background:radial-gradient(ellipse at 20% 80%,rgba(139,58,42,.06) 0%,transparent 55%);pointer-events:none}
+
+.h-in{max-width:1260px;margin:0 auto;width:100%;position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:56px;align-items:end}
+.h-eye{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.42em;text-transform:uppercase;color:var(--b3);display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.h-eye::before{content:'';width:24px;height:1px;background:var(--b3)}
+.h-h1{font-family:'Playfair Display',serif;font-size:clamp(62px,9.5vw,120px);font-weight:400;line-height:.8;letter-spacing:-.04em;color:var(--ink)}
+.h-h1 em{font-style:italic;display:block;background:linear-gradient(120deg,var(--gold) 0%,var(--goldl) 55%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-desc{font-size:13.5px;color:var(--ink3);line-height:1.88;font-weight:300;max-width:400px;margin-top:24px}
+/* Psychological FOMO line */
+.h-fomo{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--b2);margin-top:14px;display:flex;align-items:center;gap:8px}
+.h-fomo::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--b3);animation:lp 1.4s ease-in-out infinite}
+.h-btns{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.btn-p{background:var(--ink);color:var(--bg);border:none;padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .24s;box-shadow:0 3px 16px rgba(28,20,16,.18)}
+.btn-p:hover{background:var(--b1);transform:translateY(-2px)}
+.btn-g{background:transparent;color:var(--ink3);border:1.5px solid var(--line);padding:14px 24px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .22s}
+.btn-g:hover{border-color:var(--ink3);color:var(--ink)}
+
+.h-right{display:flex;flex-direction:column;align-items:flex-end;gap:16px}
+.hstat-n{font-family:'Playfair Display',serif;font-size:88px;font-style:italic;font-weight:400;color:var(--b2);line-height:1;text-align:right;opacity:.18;transition:opacity .6s}
+.hstat-n.live{opacity:1}
+.hstat-l{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink4);display:block;text-align:right;margin-top:2px}
+
+/* ─── WALL SECTION ──────────────────── */
+#ws{padding:0 7% 120px;background:var(--bg2);position:relative;z-index:1}
+#ws::before{content:'';position:absolute;inset:0;background-image:linear-gradient(transparent calc(100% - 1px),rgba(28,20,16,.022) 100%);background-size:100% 44px;pointer-events:none}
+
+.ww{max-width:1260px;margin:0 auto;position:relative;z-index:1}
+.wall-top{display:flex;align-items:flex-end;gap:24px;padding:24px 0 40px;border-top:1px solid var(--line);flex-wrap:wrap}
+.wt-l{}
+.wt-eye{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.35em;text-transform:uppercase;color:var(--b3);display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.wt-eye::before{content:'';width:16px;height:1px;background:var(--b3)}
+.wt-h{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);font-style:italic;font-weight:400;color:var(--ink)}
+.wt-r{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.wt-note{font-size:11px;color:var(--ink4);font-weight:300;text-align:right;max-width:260px;line-height:1.6}
+.wt-note strong{color:var(--b3);font-weight:400}
+.pbar{width:120px;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--b2),var(--b4));border-radius:2px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.ptxt{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+
+/* ═══════════════════════════════════════
+   TREEMAP WALL
+   - Absolute positioned cells
+   - Terracotta realistic brick colors
+   - Mortar gaps between
+═══════════════════════════════════════ */
+.wall-outer{
+  position:relative;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:
+    /* Top light — sunlit wall */
+    0 0 0 1px rgba(255,255,255,.4) inset,
+    /* Deep shadow — 3D wall */
+    0 24px 80px rgba(28,20,16,.16),
+    0 6px 20px rgba(28,20,16,.1),
+    /* Right side depth */
+    6px 6px 24px rgba(28,20,16,.08);
+}
+/* Mortar background */
+.wall-mortar-bg{
+  background:
+    /* Mortar texture */
+    linear-gradient(180deg,#C4B89E 0%,#B8AA94 50%,#C0B49A 100%);
+  padding:6px;
+  border-radius:8px;
+  position:relative;
+}
+/* Ambient top light */
+.wall-mortar-bg::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5) 50%,transparent);border-radius:8px 8px 0 0}
+
+/* Treemap container */
+.treemap{
+  width:100%;
+  position:relative;
+  border-radius:4px;
+  overflow:hidden;
+  background:transparent;
+  /* will have height set by JS */
+}
+
+/* Each cell wrapper — mortar gap */
+.tc{
+  position:absolute;
+  padding:4px;
+  transition:opacity .3s;
+}
+
+/* The actual brick face */
+.tb{
+  width:100%;height:100%;
+  border-radius:3px;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  display:flex;flex-direction:column;
+  /* 3D brick face effect */
+  box-shadow:
+    /* Top-left highlight */
+    inset 2px 2px 0 rgba(255,255,255,.18),
+    /* Bottom-right shadow */
+    inset -2px -2px 0 rgba(0,0,0,.25),
+    /* Face depth */
+    0 2px 6px rgba(0,0,0,.3),
+    0 1px 2px rgba(0,0,0,.2);
+  transition:transform .22s cubic-bezier(.16,1,.3,1),box-shadow .22s,filter .2s;
+}
+.tb:hover{
+  transform:scale(1.025) translateY(-4px);
+  z-index:30;
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,.22),
+    inset -2px -2px 0 rgba(0,0,0,.28),
+    0 16px 48px rgba(0,0,0,.4),
+    0 6px 16px rgba(0,0,0,.25);
+  filter:brightness(1.06);
+}
+.tb:hover .tb-read{opacity:1;transform:translateY(0)}
+
+/* Brick face texture overlay */
+.tb::before{
+  content:'';position:absolute;inset:0;
+  /* Surface variation */
+  background:
+    radial-gradient(ellipse at 25% 30%,rgba(255,255,255,.1) 0%,transparent 45%),
+    radial-gradient(ellipse at 75% 70%,rgba(0,0,0,.08) 0%,transparent 40%),
+    /* Horizontal grain lines */
+    repeating-linear-gradient(0deg,transparent 0px,transparent 7px,rgba(0,0,0,.04) 7px,rgba(0,0,0,.04) 8px);
+  pointer-events:none;z-index:1;
+}
+/* Vertical grain */
+.tb::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,transparent 0px,transparent 18px,rgba(0,0,0,.025) 18px,rgba(0,0,0,.025) 19px);
+  pointer-events:none;z-index:1;
+}
+
+/* New brick animation */
+@keyframes brickIn{
+  0%{opacity:0;transform:scale(.88) translateY(-10px);filter:brightness(2) saturate(0)}
+  40%{filter:brightness(1.4) saturate(.6)}
+  100%{opacity:1;transform:scale(1) translateY(0);filter:brightness(1) saturate(1)}
+}
+.tc.new .tb{animation:brickIn .85s cubic-bezier(.16,1,.3,1) both}
+
+/* Brick content */
+.tb-in{position:relative;z-index:2;padding:11px 13px 9px;display:flex;flex-direction:column;height:100%;justify-content:space-between}
+.tb-top{display:flex;align-items:flex-start;gap:8px}
+.tb-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:10px;font-style:italic;font-weight:600;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.3);background:rgba(255,255,255,.18);color:rgba(255,255,255,.95)}
+.tb-meta{flex:1;min-width:0}
+.tb-name{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;font-weight:600;color:rgba(255,255,255,.95);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.tb-who{font-size:8px;color:rgba(255,255,255,.55);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.tb-time{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.07em;color:rgba(255,255,255,.4);flex-shrink:0}
+.tb-body{font-size:9.5px;color:rgba(255,255,255,.62);line-height:1.55;font-weight:300;flex:1;margin:6px 0 4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tb-foot{display:flex;align-items:center;justify-content:space-between}
+.tb-rs{display:flex;gap:7px}
+.tb-r{font-size:10px;color:rgba(255,255,255,.45);display:flex;align-items:center;gap:2px}
+.tb-r span{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700}
+.tb-read{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);opacity:0;transition:opacity .18s,transform .18s;transform:translateY(3px)}
+
+/* Bigger cells show more */
+.tb.lg .tb-name{font-size:18px}
+.tb.lg .tb-av{width:32px;height:32px;font-size:14px}
+.tb.lg .tb-body{-webkit-line-clamp:4;font-size:11px}
+.tb.xl .tb-name{font-size:24px}
+.tb.xl .tb-av{width:40px;height:40px;font-size:17px}
+.tb.xl .tb-body{-webkit-line-clamp:6;font-size:12.5px}
+
+/* Rank ghost */
+.tb-rank{position:absolute;bottom:6px;right:10px;font-family:'Playfair Display',serif;font-size:40px;font-style:italic;font-weight:600;color:rgba(255,255,255,.07);line-height:1;pointer-events:none;z-index:1}
+
+/* Empty slot */
+.tc.empty .tb{
+  background:linear-gradient(160deg,#D8CCBA 0%,#CCBEA8 100%)!important;
+  cursor:default;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.15),inset -2px -2px 0 rgba(0,0,0,.12),0 1px 3px rgba(0,0,0,.1)!important;
+}
+.tc.empty .tb::before,.tc.empty .tb::after{opacity:.4}
+.tc.empty:hover .tb{transform:none!important;filter:none!important}
+.tb-empty{display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:4px;opacity:.3;position:relative;z-index:2}
+.tb-empty-txt{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);text-align:center}
+
+/* Brick colour variants — all terracotta family */
+.bk0{background:linear-gradient(155deg,var(--b2) 0%,var(--b1) 100%)}
+.bk1{background:linear-gradient(155deg,var(--b3) 0%,var(--b2) 100%)}
+.bk2{background:linear-gradient(155deg,var(--b5) 0%,var(--b6) 100%)}
+.bk3{background:linear-gradient(155deg,var(--b7) 0%,var(--b5) 100%)}
+.bk4{background:linear-gradient(155deg,var(--b1) 0%,var(--b6) 100%)}
+.bk5{background:linear-gradient(155deg,var(--b4) 0%,var(--b3) 100%)}
+.bk6{background:linear-gradient(155deg,var(--b6) 0%,var(--b5) 100%)}
+.bk7{background:linear-gradient(155deg,var(--b8) 0%,var(--b4) 100%)}
+
+/* ─── MODAL ──────────────────────────── */
+#modal{position:fixed;inset:0;z-index:9000;background:rgba(28,20,16,.45);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:24px}
+#modal.open{display:flex}
+.mc{background:var(--bg);border-radius:16px;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;position:relative;box-shadow:var(--s4),0 0 0 1px rgba(28,20,16,.07);animation:mIn .32s cubic-bezier(.16,1,.3,1)}
+@keyframes mIn{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
+.mc-bar{height:3px;background:linear-gradient(90deg,var(--b2),var(--b4),var(--gold));border-radius:16px 16px 0 0}
+.mc-body{padding:36px 40px 40px}
+.mc-close{position:absolute;top:13px;right:13px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;color:var(--ink3);font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:2;box-shadow:var(--s1)}
+.mc-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.mc-head{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--bg3)}
+.mc-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;font-style:italic;font-weight:600;flex-shrink:0;box-shadow:var(--s1)}
+.mc-startup{font-family:'Playfair Display',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.1}
+.mc-sub{font-size:11px;color:var(--ink4);font-weight:300;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.mc-city{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4)}
+.mc-votes{text-align:right;flex-shrink:0}
+.mc-votes-n{font-family:'Playfair Display',serif;font-size:38px;font-style:italic;font-weight:400;color:var(--b2);line-height:1}
+.mc-votes-l{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+.mc-text{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:300;margin-bottom:18px;white-space:pre-wrap}
+.mc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px}
+.mc-tag{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:4px 10px;border-radius:100px;color:var(--ink3);background:var(--bg2);border:1px solid var(--line)}
+.mc-rs{display:flex;gap:7px;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--bg3);flex-wrap:wrap}
+.rpill{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid var(--line);border-radius:100px;background:var(--bg);cursor:pointer;transition:all .2s;font-size:14px;box-shadow:var(--s1)}
+.rpill:hover{border-color:var(--b2);background:rgba(160,72,48,.05)}
+.rpill.reacted{border-color:var(--b2);background:rgba(160,72,48,.08)}
+.rpill .rc{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--ink2)}
+
+/* Connect box */
+.cbox{background:var(--ink);border-radius:12px;padding:24px;position:relative;overflow:hidden}
+.cbox::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;background:radial-gradient(circle,rgba(200,146,10,.14) 0%,transparent 65%);pointer-events:none}
+.cbox::after{content:'';position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;background:radial-gradient(circle,rgba(160,72,48,.2) 0%,transparent 65%);pointer-events:none}
+.cbox-t{font-family:'Playfair Display',serif;font-size:19px;font-style:italic;font-weight:600;color:var(--bg);margin-bottom:5px;position:relative;z-index:1}
+.cbox-n{font-size:12px;color:rgba(245,239,230,.42);font-weight:300;line-height:1.8;margin-bottom:18px;position:relative;z-index:1}
+.cbox-n strong{color:rgba(245,239,230,.72);font-weight:400}
+
+/* Requester form inside connect box */
+.req-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;position:relative;z-index:1}
+.req-grid.full{grid-template-columns:1fr 1fr;margin-bottom:14px}
+.req-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,239,230,.35);display:block;margin-bottom:5px}
+.req-in{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(245,239,230,.12);border-radius:8px;padding:9px 12px;font-size:12px;color:rgba(245,239,230,.88);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.req-in::placeholder{color:rgba(245,239,230,.25)}
+.req-in:focus{border-color:rgba(200,146,10,.5);background:rgba(255,255,255,.1)}
+.req-in.err{border-color:rgba(200,60,30,.6)!important}
+
+/* Price row */
+.price-row{display:flex;align-items:center;gap:16px;margin-bottom:14px;position:relative;z-index:1}
+.price-n{font-family:'Playfair Display',serif;font-size:48px;font-style:italic;font-weight:400;color:var(--goldl);line-height:1;flex-shrink:0}
+.price-side{display:flex;flex-direction:column;gap:6px}
+.price-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,239,230,.35)}
+.upi-row{display:flex;gap:5px;flex-wrap:wrap}
+.uc{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:4px}
+.uc.gp{background:#4285F4;color:#fff}
+.uc.pp{background:#5F259F;color:#fff}
+.uc.pt{background:#00BAF2;color:#fff}
+.uc.bh{background:#1A3A8A;color:#fff}
+
+.pay-btn{width:100%;background:linear-gradient(135deg,#22C85A,#18A048);color:#fff;border:none;padding:14px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 20px rgba(34,200,90,.28);position:relative;z-index:1}
+.pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(34,200,90,.38)}
+.pay-btn svg{width:14px;height:14px;flex-shrink:0}
+.pay-sub{font-size:10px;color:rgba(245,239,230,.25);text-align:center;margin-top:9px;font-weight:300;line-height:1.65;position:relative;z-index:1}
+
+/* ─── POST FORM ──────────────────────── */
+#flay{position:fixed;inset:0;z-index:10000;background:rgba(28,20,16,.48);backdrop-filter:blur(24px);display:none;align-items:center;justify-content:center;padding:20px}
+#flay.open{display:flex}
+.fc{background:var(--bg);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:var(--s4);animation:mIn .3s cubic-bezier(.16,1,.3,1);position:relative}
+.fc-bar{height:3px;background:linear-gradient(90deg,var(--b2),var(--b4));border-radius:16px 16px 0 0}
+.fc-close{position:absolute;top:13px;right:13px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;color:var(--ink3);font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--s1)}
+.fc-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.fc-head{padding:30px 32px 0}
+.fc-head h2{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:4px}
+.fc-head h2 em{color:var(--b2)}
+.fc-head p{font-size:12px;color:var(--ink3);font-weight:300;line-height:1.8;margin-bottom:20px}
+.fc-body{padding:0 32px 32px}
+.fr{margin-bottom:13px}
+.fr label{font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:5px}
+.fr input,.fr textarea{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--ink);background:var(--bg);font-family:'DM Sans',sans-serif;outline:none;transition:all .2s}
+.fr input:focus,.fr textarea:focus{border-color:var(--b2);background:#fff;box-shadow:0 0 0 3px rgba(160,72,48,.08)}
+.fr input::placeholder,.fr textarea::placeholder{color:var(--line)}
+.fr textarea{resize:vertical;min-height:88px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f-btn{width:100%;background:var(--ink);color:var(--bg);border:none;padding:13px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;cursor:pointer;transition:all .25s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 10px rgba(28,20,16,.14)}
+.f-btn:hover{background:var(--b1)}
+.f-btn:disabled{opacity:.38;cursor:not-allowed}
+.f-btn .ld{width:12px;height:12px;border:2px solid rgba(255,255,255,.22);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;display:none}
+.f-btn.loading .ld{display:block}
+.f-btn.loading .lt{display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.f-note{font-size:10px;color:var(--ink4);text-align:center;margin-top:7px;font-weight:300}
+.f-suc{display:none;padding:48px 32px;text-align:center}
+.f-suc.show{display:block}
+.f-suc-i{width:52px;height:52px;border-radius:50%;border:2px solid var(--b2);background:rgba(160,72,48,.07);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px}
+.f-suc h3{font-family:'Playfair Display',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:6px}
+.f-suc p{font-size:12px;color:var(--ink3);line-height:1.8;font-weight:300}
+.f-suc-btn{margin-top:18px;background:var(--ink);color:var(--bg);border:none;padding:10px 22px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;cursor:pointer}
+
+footer{background:var(--bg);padding:42px 7%;text-align:center;border-top:1px solid var(--line)}
+
+@media(max-width:960px){.h-in{grid-template-columns:1fr}.h-right{align-items:flex-start;flex-direction:row;gap:24px}.h-ghost{display:none}}
+@media(max-width:600px){.mc-body{padding:22px 18px 26px}.fc-head,.fc-body{padding-left:20px;padding-right:20px}.fr2,.req-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">VAITHRA</a>
-  <div style="display:flex;align-items:center;gap:12px">
-    <div class="live-dot" id="liveDot" style="opacity:0;transition:opacity .5s"><span>Live</span></div>
-    <button class="nav-submit-btn" onclick="openSubmitModal()">+ Submit Idea</button>
-    <a href="index.html" class="nav-back" style="margin-left:4px">← Home</a>
+  <a href="index.html" class="nav-logo">Vaithra</a>
+  <div class="nav-r">
+    <div class="livepip" id="lp1" style="opacity:0;transition:opacity .5s"><span>Live</span></div>
+    <button class="nav-post" onclick="openForm()">+ Claim a Brick</button>
+    <a href="index.html" class="nav-back">← Home</a>
   </div>
 </nav>
 
-<section id="hero">
-  <div class="hero-bg">₹</div>
-  <div class="hero-in">
-    <div class="round-badge"><span>Round 1 · April 2026</span></div>
-    <div class="hero-timer">
-      <div class="timer-units">
-        <div class="tu"><span class="tu-num" id="tD">00</span><span class="tu-lbl">Days</span></div>
-        <span class="tu-sep">:</span>
-        <div class="tu"><span class="tu-num" id="tH">00</span><span class="tu-lbl">Hours</span></div>
-        <span class="tu-sep">:</span>
-        <div class="tu"><span class="tu-num" id="tM">00</span><span class="tu-lbl">Mins</span></div>
+<div id="hero">
+  <div class="h-ruled"></div>
+  <div class="h-ghost">Wall</div>
+  <div class="h-wash"></div>
+  <div class="h-wash2"></div>
+  <div class="h-in">
+    <div>
+      <div class="h-eye">Community · Vaithra</div>
+      <h1 class="h-h1">Build in<em>Public</em></h1>
+      <p class="h-desc">Every brick is a founder's real story. The more reactions you get, <strong>the bigger your brick grows.</strong> Post your progress. Get seen by investors.</p>
+      <div class="h-fomo" id="hFomo">Only <span id="hSlots">25</span> bricks left on this wall</div>
+      <div class="h-btns">
+        <button class="btn-p" onclick="openForm()">Claim Your Brick →</button>
+        <button class="btn-g" onclick="document.getElementById('ws').scrollIntoView({behavior:'smooth'})">See the Wall</button>
       </div>
     </div>
-    <h1 class="hero-title">Micro-<em>Grant</em><br>Rounds</h1>
-    <p class="hero-desc">Submit your idea, vote for others. Every month the top 3 ranked ideas receive community funding — no pitch decks, no gatekeepers.</p>
-    <div class="hero-cta">
-      <button class="btn-primary" onclick="openSubmitModal()">Submit Your Idea →</button>
-      <button class="btn-ghost" onclick="document.getElementById('board').scrollIntoView({behavior:'smooth'})">See Leaderboard</button>
-    </div>
-  </div>
-</section>
-
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div class="stat-item"><span class="stat-num" id="statIdeas">0</span><span class="stat-lbl">Ideas this round</span></div>
-    <div class="stat-item"><span class="stat-num" id="statVotes">0</span><span class="stat-lbl">Total votes cast</span></div>
-    <div class="stat-item"><span class="stat-num">₹10K</span><span class="stat-lbl">Total prize pool</span></div>
-    <div class="stat-item"><span class="stat-num">10</span><span class="stat-lbl">Days remaining</span></div>
-  </div>
-</div>
-
-<section id="board">
-  <div class="board-inner">
-    <div class="board-header">
+    <div class="h-right">
+      <div class="livepip" style="opacity:1"><span>Live</span></div>
       <div>
-        <span class="ey" style="margin-bottom:10px">April 2026 Round</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-weight:300;font-style:italic;color:var(--INK)">Live Leaderboard</h2>
+        <div class="hstat-n" id="hN">—</div>
+        <span class="hstat-l">Founders on wall</span>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
-        <div class="live-dot" id="liveDot2" style="opacity:0;transition:opacity .5s"><span>Syncing live</span></div>
-        <div class="filter-tabs">
-          <button class="ftab active" onclick="filterIdeas('all',this)">All</button>
-          <button class="ftab" onclick="filterIdeas('tech',this)">Tech</button>
-          <button class="ftab" onclick="filterIdeas('social',this)">Social Impact</button>
-          <button class="ftab" onclick="filterIdeas('product',this)">Product</button>
-          <button class="ftab" onclick="filterIdeas('service',this)">Service</button>
-        </div>
-      </div>
-    </div>
-    <div class="idea-list" id="ideaList">
-      <div class="loading-state">Connecting to live feed…</div>
-    </div>
-  </div>
-</section>
-
-<!-- IDEA DETAIL MODAL -->
-<div id="ideaModal">
-  <div class="im-box">
-    <button class="im-close" onclick="closeIdeaModal()">✕</button>
-    <div class="im-rank" id="imRank"></div>
-    <div class="im-name" id="imName"></div>
-    <div class="im-founder" id="imFounder"></div>
-    <p class="im-desc" id="imDesc"></p>
-    <div class="im-tags" id="imTags"></div>
-    <div class="im-vote-area">
-      <div class="im-vote-num" id="imVotes"></div>
-      <div class="im-vote-info">
-        <h4>Community Votes</h4>
-        <p>Top 3 at end of April get funded.</p>
-      </div>
-      <button class="vote-btn" id="imVoteBtn" onclick="voteFromModal()">Vote →</button>
     </div>
   </div>
 </div>
 
-<!-- SUBMIT IDEA MODAL -->
-<div id="submitModal">
-  <div class="sm-box">
-    <div class="sm-header">
-      <button class="sm-close" onclick="closeSubmitModal()">✕</button>
-      <h2>Submit Your <em>Idea</em></h2>
-      <p>Goes live instantly · Community votes · Top 3 get funded</p>
-    </div>
-    <div class="sm-body" id="smForm">
-      <div class="fr-row">
-        <div class="fr"><label>Idea / Startup Name *</label><input type="text" id="f-name" placeholder="e.g. AgriConnect" maxlength="60"></div>
-        <div class="fr"><label>Category *</label>
-          <select id="f-cat">
-            <option value="tech">Tech</option>
-            <option value="social">Social Impact</option>
-            <option value="product">Product</option>
-            <option value="service">Service</option>
-            <option value="community">Community</option>
-          </select>
+<section id="ws">
+  <div class="ww">
+    <div class="wall-top">
+      <div class="wt-l">
+        <div class="wt-eye">The Wall</div>
+        <div class="wt-h">Bigger = more votes</div>
+      </div>
+      <div class="wt-r">
+        <div class="wt-note">Top founders get the <strong>biggest blocks</strong>. Share your update to climb.</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
+          <div class="ptxt" id="pt">—</div>
         </div>
-      </div>
-      <div class="fr-row">
-        <div class="fr"><label>Your Name *</label><input type="text" id="f-founder" placeholder="Full name"></div>
-        <div class="fr"><label>City *</label><input type="text" id="f-city" placeholder="Hyderabad, Vijayawada…"></div>
-      </div>
-      <div class="fr"><label>Describe Your Idea *</label>
-        <textarea id="f-desc" placeholder="What problem are you solving? Who is it for? What have you built so far?" rows="4"></textarea>
-      </div>
-      <div class="fr">
-        <label>Tags (press Enter or comma to add, max 3)</label>
-        <div class="tag-input-wrap" id="tagWrap" onclick="document.getElementById('tagText').focus()">
-          <input type="text" id="tagText" class="tag-text-input" placeholder="e.g. SaaS, HealthTech…" maxlength="20">
-        </div>
-      </div>
-      <div class="fr"><label>WhatsApp (for updates)</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX"></div>
-      <button class="submit-idea-btn" id="submitBtn" onclick="handleIdeaSubmit()">
-        <div class="spinner"></div>
-        <span class="btn-text">Submit — Go Live Instantly →</span>
-      </button>
-      <p style="font-size:11px;color:var(--INKl);text-align:center;margin-top:12px;font-weight:300">Your idea appears on the leaderboard immediately for everyone to vote on.</p>
-    </div>
-    <div class="success-state" id="smSuccess">
-      <div class="success-icon">✓</div>
-      <h3>You're on the leaderboard!</h3>
-      <p>Your idea is now live and visible to everyone.<br>Share the page to get more votes!</p>
-      <button onclick="closeSubmitModal()" style="margin-top:24px;background:var(--OL);color:var(--W);border:none;padding:12px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer">See My Idea →</button>
-    </div>
-  </div>
-</div>
-
-<section id="submit-section">
-  <div class="ss-inner">
-    <div class="ss-left">
-      <span class="ey" style="margin-bottom:16px">How It Works</span>
-      <h2>Your Idea.<br><em>Funded.</em></h2>
-      <p>Anyone can submit a startup idea. The community votes every month. Top 3 ideas at the end of the round receive real money — no panels, no gatekeepers.</p>
-      <div class="prize-list">
-        <div class="prize-row"><span class="prize-amt">₹5K</span><div><div class="prize-rank">Rank 1</div><div class="prize-name">Seed Spark Grant</div></div></div>
-        <div class="prize-row"><span class="prize-amt">₹3K</span><div><div class="prize-rank">Rank 2</div><div class="prize-name">Growth Boost Grant</div></div></div>
-        <div class="prize-row"><span class="prize-amt">₹2K</span><div><div class="prize-rank">Rank 3</div><div class="prize-name">Community Choice Grant</div></div></div>
+        <div class="livepip" id="lp2" style="opacity:0;transition:opacity .5s"><span>Syncing live</span></div>
       </div>
     </div>
-    <div class="ss-cta-box">
-      <h3>Ready to <em>list</em> your idea?</h3>
-      <p>Takes 2 minutes. Goes live the second you submit.</p>
-      <div class="ss-steps">
-        <div class="ss-step"><div class="ss-step-num">1</div><div class="ss-step-txt">Fill in your idea name, description and category</div></div>
-        <div class="ss-step"><div class="ss-step-num">2</div><div class="ss-step-txt">Hit submit — your idea appears instantly on the leaderboard</div></div>
-        <div class="ss-step"><div class="ss-step-num">3</div><div class="ss-step-txt">Share with your network, collect votes, climb the ranks</div></div>
-        <div class="ss-step"><div class="ss-step-num">4</div><div class="ss-step-txt">Top 3 at end of month receive the grant — no interviews needed</div></div>
+    <div class="wall-outer">
+      <div class="wall-mortar-bg">
+        <div class="treemap" id="treemap"></div>
       </div>
-      <button class="big-submit-btn" onclick="openSubmitModal()">Submit Your Idea Now →</button>
     </div>
   </div>
 </section>
 
-<footer style="background:var(--W3);padding:48px 5%;text-align:center;border-top:1px solid var(--BD)">
-  <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--INKl);text-decoration:none">← VAITHRA HOME</a>
+<!-- EXPANDED MODAL -->
+<div id="modal">
+  <div class="mc">
+    <div class="mc-bar"></div>
+    <div class="mc-body">
+      <button class="mc-close" onclick="closeModal()">✕</button>
+      <div class="mc-head">
+        <div class="mc-av" id="mav"></div>
+        <div style="flex:1;min-width:0">
+          <div class="mc-startup" id="mst"></div>
+          <div class="mc-sub"><span id="mf"></span><span class="mc-city" id="mci"></span><span style="color:var(--ink4);font-size:10px;font-weight:300" id="mt"></span></div>
+        </div>
+        <div class="mc-votes"><div class="mc-votes-n" id="mvn"></div><div class="mc-votes-l">votes</div></div>
+      </div>
+      <div class="mc-text" id="mb"></div>
+      <div class="mc-tags" id="mtgs"></div>
+      <div class="mc-rs" id="mrs"></div>
+
+      <div class="cbox">
+        <div class="cbox-t" id="cbt"></div>
+        <div class="cbox-n" id="cbn"></div>
+
+        <!-- Requester details — collected before sending -->
+        <div class="req-grid">
+          <div><label class="req-lbl">Your Name *</label><input id="rn" class="req-in" placeholder="Full name"></div>
+          <div><label class="req-lbl">City *</label><input id="rc_" class="req-in" placeholder="Hyderabad…"></div>
+        </div>
+        <div class="req-grid full">
+          <div><label class="req-lbl">Email *</label><input id="re" type="email" class="req-in" placeholder="you@email.com"></div>
+          <div><label class="req-lbl">Your Role *</label><input id="rr" class="req-in" placeholder="Founder / Investor…"></div>
+        </div>
+
+        <div class="price-row">
+          <span class="price-n">₹99</span>
+          <div class="price-side">
+            <span class="price-lbl">Pay via UPI — direct</span>
+            <div class="upi-row">
+              <span class="uc gp">GPay</span><span class="uc pp">PhonePe</span><span class="uc pt">Paytm</span><span class="uc bh">BHIM</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="pay-btn" onclick="handlePay()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Connect Now — ₹99
+        </button>
+        <p class="pay-sub">We're early stage — ₹99 keeps Vaithra running & the community serious.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST FORM -->
+<div id="flay">
+  <div class="fc">
+    <div class="fc-bar"></div>
+    <button class="fc-close" onclick="closeForm()">✕</button>
+    <div id="fwrap">
+      <div class="fc-head">
+        <h2>Claim Your <em>Brick</em></h2>
+        <p>Your update goes live on the wall instantly. The more reactions you earn, the bigger your brick grows. Investors are watching.</p>
+      </div>
+      <div class="fc-body">
+        <div class="fr2">
+          <div class="fr"><label>Your Name *</label><input id="fn" placeholder="Full name"></div>
+          <div class="fr"><label>Startup *</label><input id="fs" placeholder="Your startup"></div>
+        </div>
+        <div class="fr2">
+          <div class="fr"><label>City *</label><input id="fci" placeholder="Hyderabad…"></div>
+          <div class="fr"><label>WhatsApp *</label><input id="fp" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+        </div>
+        <div class="fr"><label>Your Update *</label>
+          <textarea id="fb_" placeholder="What happened? What shipped, broke, or surprised you? Real and raw." rows="5"></textarea>
+        </div>
+        <div class="fr"><label>Tags <span style="opacity:.38;text-transform:none;letter-spacing:0;font-weight:300">(comma separated)</span></label>
+          <input id="ft" placeholder="Revenue, Launch, Pivot…">
+        </div>
+        <button class="f-btn" id="fsb" onclick="doSubmit()">
+          <div class="ld"></div><span class="lt">Add My Brick to the Wall →</span>
+        </button>
+        <p class="f-note">Goes live for everyone instantly — Firebase synced.</p>
+      </div>
+    </div>
+    <div class="f-suc" id="fsuc">
+      <div class="f-suc-i">✓</div>
+      <h3>Your brick is live!</h3>
+      <p>Share your update to collect reactions and grow your brick bigger than everyone else's.</p>
+      <button class="f-suc-btn" onclick="closeForm()">See My Brick →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--ink4);text-decoration:none">← Vaithra Home</a>
 </footer>
 
+<!-- Firebase SDK -->
 <script type="module">
-// ── STATE ─────────────────────────────────
-let IDEAS = [];
-let currentFilter = 'all';
-let currentIdeaId = null;
-let tags = [];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore,collection,doc,addDoc,updateDoc,onSnapshot,increment,getDocs,serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ── STATS ─────────────────────────────────
-function updateStats() {
-  document.getElementById('statIdeas').textContent = IDEAS.length;
-  const totalVotes = IDEAS.reduce((s, i) => s + (i.votes || 0), 0);
-  document.getElementById('statVotes').textContent = totalVotes;
-}
-
-// ── FILTER ────────────────────────────────
-window.filterIdeas = function(cat, btn) {
-  currentFilter = cat;
-  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  buildList();
+const cfg={
+  apiKey:"AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
+  authDomain:"vaithra-grants.firebaseapp.com",
+  projectId:"vaithra-grants",
+  storageBucket:"vaithra-grants.firebasestorage.app",
+  messagingSenderId:"655290922548",
+  appId:"1:655290922548:web:991b339e2475aa9f443c61"
 };
 
-// ── BUILD LIST ────────────────────────────
-function buildList() {
-  const list = document.getElementById('ideaList');
-  const filtered = currentFilter === 'all' ? IDEAS : IDEAS.filter(i => i.category === currentFilter);
-  if (!filtered.length) {
-    list.innerHTML = `<div class="loading-state">No ideas in this category yet — <a href="#" onclick="openSubmitModal();return false;" style="color:var(--OL)">be the first!</a></div>`;
+const app  = initializeApp(cfg);
+const db   = getFirestore(app);
+const COL  = 'bip_wall'; // separate collection from grants
+
+// ── SEED DATA — 2 prefilled examples ──────────
+const SEED=[
+  {
+    startup:'AgriConnect',
+    founder:'Priya Sharma',
+    city:'Vijayawada',
+    body:'Signed our first paying farmer this week. \u20B90 last month. \u20B9500 this month.\n\nThe jump from zero to any number changes everything — you stop asking "will anyone pay?" and start asking "how do I get 100 more?"\n\nAP farmers deserve a real marketplace. Building it one relationship at a time.',
+    tags:['First Revenue','AgriTech'],
+    reactions:{fire:18,clap:24,heart:12},
+    ts:Date.now()-86400000
+  },
+  {
+    startup:'Glowvai',
+    founder:'Rahimath',
+    city:'Hyderabad',
+    body:'Shipped v0.2 today. Treatment catalog, staff scheduling, appointment reminders — all built after 3 months sitting in actual salons just listening.\n\nZero paying users still. But the product finally feels honest rather than assumed.\n\nCold outreach starts tomorrow. 10 salons, no script. Terrified but ready.',
+    tags:['Product Launch','Beauty Tech'],
+    reactions:{fire:9,clap:16,heart:5},
+    ts:Date.now()-172800000
+  },
+];
+async function seed(){
+  try{
+    const s=await getDocs(collection(db,COL));
+    if(s.empty){ for(const p of SEED) await addDoc(collection(db,COL),p); }
+  }catch(e){ console.warn('seed:',e); }
+}
+
+// Expose to window
+window.fbSave=async d=>{
+  try{
+    await addDoc(collection(db,COL),{...d,ts:Date.now(),reactions:{fire:0,clap:0,heart:0}});
+    return true;
+  }catch(e){ console.error('save:',e); return false; }
+};
+
+window.fbReact=async(id,emoji)=>{
+  const k='bip_r_'+id+'_'+emoji;
+  if(localStorage.getItem(k))return;
+  try{
+    await updateDoc(doc(db,COL,id),{['reactions.'+emoji]:increment(1)});
+    localStorage.setItem(k,'1');
+  }catch(e){ console.error('react:',e); }
+};
+window.fbHas=(id,emoji)=>!!localStorage.getItem('bip_r_'+id+'_'+emoji);
+
+// ── REAL-TIME LISTENER — fixed for multi-device ──────
+// Uses onSnapshot with includeMetadataChanges for instant cross-device sync
+window.fbListen=(cb)=>{
+  seed();
+  // Listen to ALL changes including from other devices
+  return onSnapshot(
+    collection(db,COL),
+    { includeMetadataChanges: false }, // only committed data
+    snap=>{
+      const posts=[];
+      snap.forEach(d=>posts.push({...d.data(),id:d.id}));
+      // Sort by total reactions (treemap size) then by time
+      posts.sort((a,b)=>{
+        const va=(a.reactions?.fire||0)+(a.reactions?.clap||0)+(a.reactions?.heart||0);
+        const vb=(b.reactions?.fire||0)+(b.reactions?.clap||0)+(b.reactions?.heart||0);
+        return vb-va || (b.ts||0)-(a.ts||0);
+      });
+      cb(posts);
+    },
+    err=>console.error('listen:',err)
+  );
+};
+</script>
+
+<!-- App logic -->
+<script type="module">
+const YOUR_UPI  = '8977855998@ybl'; // ← Replace with your UPI ID
+const YOUR_NAME = 'Vaithra';
+const TOTAL_SLOTS = 30;
+
+let POSTS=[], curId=null;
+
+// ── HELPERS ────────────────────────────────────
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function ago(ts){const d=Date.now()-ts,m=Math.floor(d/60000);if(m<1)return'Now';if(m<60)return m+'m';const h=Math.floor(m/60);if(h<24)return h+'h';return Math.floor(h/24)+'d'}
+const ini=n=>(n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+const votes=p=>(p.reactions?.fire||0)+(p.reactions?.clap||0)+(p.reactions?.heart||0);
+const BKS=['bk0','bk1','bk2','bk3','bk4','bk5','bk6','bk7'];
+function bk(n){let h=0;for(let i=0;i<(n||'').length;i++)h=(h*31+n.charCodeAt(i))&0xffff;return BKS[h%BKS.length]}
+const AVC=[{b:'rgba(255,255,255,.22)',f:'rgba(255,255,255,.95)'},{b:'rgba(255,255,255,.18)',f:'rgba(255,255,255,.9)'}];
+function avc(){return AVC[0]}
+
+// ── SQUARIFIED TREEMAP ────────────────────────
+function computeTreemap(items,x,y,w,h){
+  if(!items.length)return[];
+  const rects=[];
+  function layout(its,lx,ly,lw,lh){
+    if(!its.length)return;
+    if(its.length===1){rects.push({id:its[0].id,x:lx,y:ly,w:lw,h:lh});return}
+    const tot=its.reduce((s,i)=>s+i.v,0);
+    let sum=0,si=0;
+    for(let i=0;i<its.length;i++){sum+=its[i].v;if(sum>=tot/2){si=i;break}}
+    if(si===0)si=Math.floor(its.length/2);
+    const g1=its.slice(0,si+1),g2=its.slice(si+1);
+    const r=g1.reduce((s,i)=>s+i.v,0)/tot;
+    if(lw>=lh){
+      const w1=Math.round(lw*r);
+      strip(g1,lx,ly,w1,lh);
+      if(g2.length)layout(g2,lx+w1,ly,lw-w1,lh);
+    }else{
+      const h1=Math.round(lh*r);
+      strip(g1,lx,ly,lw,h1);
+      if(g2.length)layout(g2,lx,ly+h1,lw,lh-h1);
+    }
+  }
+  function strip(its,lx,ly,lw,lh){
+    if(its.length===1){rects.push({id:its[0].id,x:lx,y:ly,w:lw,h:lh});return}
+    const tot=its.reduce((s,i)=>s+i.v,0);
+    if(lw>=lh){let cx=lx;its.forEach(it=>{const iw=Math.round((it.v/tot)*lw);rects.push({id:it.id,x:cx,y:ly,w:iw,h:lh});cx+=iw})}
+    else{let cy=ly;its.forEach(it=>{const ih=Math.round((it.v/tot)*lh);rects.push({id:it.id,x:lx,y:cy,w:lw,h:ih});cy+=ih})}
+  }
+  layout(items,x,y,w,h);
+  return rects;
+}
+
+// ── RENDER ────────────────────────────────────
+function render(newIds=[]){
+  const el=document.getElementById('treemap');
+  const W=el.offsetWidth||1100;
+  const f=POSTS.length;
+
+  // Stats
+  document.getElementById('hN').textContent=f;
+  document.getElementById('hN').classList.add('live');
+  document.getElementById('pf').style.width=Math.min(100,Math.round(f/TOTAL_SLOTS*100))+'%';
+  document.getElementById('pt').textContent=f+' / '+TOTAL_SLOTS;
+  const slots=Math.max(0,TOTAL_SLOTS-f);
+  document.getElementById('hSlots').textContent=slots;
+
+  if(!f){
+    el.style.height='220px';
+    el.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;height:220px;font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,.3)">The wall awaits its first brick…</div>`;
     return;
   }
-  const maxVotes = Math.max(filtered[0].votes || 1, 1);
-  list.innerHTML = filtered.map((idea, i) => {
-    const rank = i + 1;
-    const rankClass = rank===1?'rank1':rank===2?'rank2':rank===3?'rank3':'rank-other';
-    const pct = Math.round(((idea.votes || 0) / maxVotes) * 100);
-    const isVoted = window.hasVoted && window.hasVoted(idea.id);
-    return `<div class="idea-row ${rankClass}" onclick="openIdeaModal('${idea.id}')">
-      <div class="rank-badge">${rank}</div>
-      <div class="idea-info">
-        <h3>${escHtml(idea.name)}</h3>
-        <div class="idea-founder">${escHtml(idea.founder)}</div>
-        <span class="idea-category">${escHtml(idea.tags && idea.tags[0] ? idea.tags[0] : idea.category)}</span>
+
+  // Assign values — votes + base so everyone gets visible space
+  const items=POSTS.map(p=>({id:p.id,v:Math.max(5,votes(p)+5)}));
+  const H=Math.max(440,Math.round(W*0.62));
+  el.style.height=H+'px';
+
+  const rects=computeTreemap(items,0,0,W,H);
+
+  let html='';
+  rects.forEach(r=>{
+    const p=POSTS.find(x=>x.id===r.id); if(!p)return;
+    const bkc=bk(p.founder);
+    const isNew=newIds.includes(p.id);
+    const delay=isNew?(newIds.indexOf(p.id)*.1)+'s':'0s';
+    const vt=votes(p);
+    const isLg=r.w>240&&r.h>160;
+    const isXl=r.w>380&&r.h>240;
+    const rank=POSTS.indexOf(p)+1;
+
+    html+=`<div class="tc${isNew?' new':''}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;${isNew?'animation-delay:'+delay:''}">
+      <div class="tb ${bkc}${isXl?' xl':isLg?' lg':''}" onclick="openModal('${p.id}')">
+        <div class="tb-rank">${rank}</div>
+        <div class="tb-in">
+          <div class="tb-top">
+            <div class="tb-av">${ini(p.founder)}</div>
+            <div class="tb-meta">
+              <div class="tb-name">${esc(p.startup)}</div>
+              <div class="tb-who">${esc(p.founder)}${p.city?' · '+esc(p.city):''}</div>
+            </div>
+            <div class="tb-time">${ago(p.ts||p.createdAt||Date.now())}</div>
+          </div>
+          ${r.h>110?`<div class="tb-body">${esc(p.body)}</div>`:''}
+          <div class="tb-foot">
+            <div class="tb-rs">
+              <span class="tb-r">🔥<span>${p.reactions?.fire||0}</span></span>
+              <span class="tb-r">👏<span>${p.reactions?.clap||0}</span></span>
+              <span class="tb-r">❤️<span>${p.reactions?.heart||0}</span></span>
+            </div>
+            <span class="tb-read">Read →</span>
+          </div>
+        </div>
       </div>
-      <div class="vote-section">
-        <span class="vote-count" id="vc-${idea.id}">${idea.votes || 0}</span>
-        <span class="vote-lbl">Votes</span>
-        <div class="vote-bar-wrap"><div class="vote-bar" style="width:${pct}%"></div></div>
-      </div>
-      <button class="vote-btn${isVoted?' voted':''}" id="vb-${idea.id}"
-        onclick="event.stopPropagation();doVote('${idea.id}')">${isVoted?'Voted ✓':'Vote →'}</button>
     </div>`;
-  }).join('');
-}
-
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── VOTE ──────────────────────────────────
-window.doVote = async function(ideaId) {
-  if (window.hasVoted && window.hasVoted(ideaId)) return;
-  if (window.castVote) await window.castVote(ideaId);
-};
-
-window.updateVoteUI = function(ideaId) {
-  const btn = document.getElementById('vb-' + ideaId);
-  if (btn) { btn.className = 'vote-btn voted'; btn.textContent = 'Voted ✓'; }
-  const vc = document.getElementById('vc-' + ideaId);
-  if (vc) { vc.classList.remove('vote-flash'); void vc.offsetWidth; vc.classList.add('vote-flash'); }
-  if (currentIdeaId === ideaId) {
-    const idea = IDEAS.find(i => i.id === ideaId);
-    const el = document.getElementById('imVotes');
-    if (el && idea) el.textContent = idea.votes || 0;
-    const mb = document.getElementById('imVoteBtn');
-    if (mb) { mb.className = 'vote-btn voted'; mb.textContent = 'Voted ✓'; }
-  }
-};
-
-// ── IDEA MODAL ────────────────────────────
-window.openIdeaModal = function(ideaId) {
-  const idea = IDEAS.find(i => i.id === ideaId);
-  if (!idea) return;
-  currentIdeaId = ideaId;
-  const rank = IDEAS.indexOf(idea) + 1;
-  document.getElementById('imRank').textContent = '#' + rank;
-  document.getElementById('imName').textContent = idea.name;
-  document.getElementById('imFounder').textContent = idea.founder;
-  document.getElementById('imDesc').textContent = idea.desc;
-  document.getElementById('imVotes').textContent = idea.votes || 0;
-  document.getElementById('imTags').innerHTML = (idea.tags||[]).map(t => `<span class="im-tag">${escHtml(t)}</span>`).join('');
-  const isVoted = window.hasVoted && window.hasVoted(ideaId);
-  const btn = document.getElementById('imVoteBtn');
-  btn.className = 'vote-btn' + (isVoted ? ' voted' : '');
-  btn.textContent = isVoted ? 'Voted ✓' : 'Vote →';
-  document.getElementById('ideaModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
-
-window.voteFromModal = async function() {
-  if (!currentIdeaId) return;
-  await doVote(currentIdeaId);
-};
-
-window.closeIdeaModal = function() {
-  document.getElementById('ideaModal').classList.remove('open');
-  document.body.style.overflow = '';
-  currentIdeaId = null;
-};
-
-// ── SUBMIT MODAL ──────────────────────────
-window.openSubmitModal = function() {
-  document.getElementById('smForm').style.display = 'block';
-  document.getElementById('smSuccess').classList.remove('show');
-  document.getElementById('submitModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeSubmitModal = function() {
-  document.getElementById('submitModal').classList.remove('open');
-  document.body.style.overflow = '';
-};
-
-// ── TAG INPUT ─────────────────────────────
-const tagText = document.getElementById('tagText');
-tagText.addEventListener('keydown', function(e) {
-  if ((e.key === 'Enter' || e.key === ',') && this.value.trim()) {
-    e.preventDefault();
-    addTag(this.value.replace(',','').trim());
-    this.value = '';
-  }
-  if (e.key === 'Backspace' && !this.value && tags.length) {
-    removeTag(tags.length - 1);
-  }
-});
-
-function addTag(val) {
-  if (!val || tags.length >= 3 || tags.includes(val)) return;
-  tags.push(val);
-  renderTags();
-}
-
-function removeTag(i) {
-  tags.splice(i, 1);
-  renderTags();
-}
-
-window.removeTag = removeTag;
-
-function renderTags() {
-  const wrap = document.getElementById('tagWrap');
-  const input = document.getElementById('tagText');
-  wrap.innerHTML = '';
-  tags.forEach((t, i) => {
-    const pill = document.createElement('span');
-    pill.className = 'tag-pill';
-    pill.innerHTML = `${escHtml(t)}<button onclick="removeTag(${i})">×</button>`;
-    wrap.appendChild(pill);
   });
-  wrap.appendChild(input);
-  if (tags.length >= 3) input.style.display = 'none';
-  else input.style.display = '';
+
+  el.innerHTML=html;
 }
 
-// ── HANDLE SUBMIT ─────────────────────────
-window.handleIdeaSubmit = async function() {
-  const name = document.getElementById('f-name').value.trim();
-  const founder = document.getElementById('f-founder').value.trim();
-  const city = document.getElementById('f-city').value.trim() || 'India';
-  const desc = document.getElementById('f-desc').value.trim();
-  const cat = document.getElementById('f-cat').value;
+// ── MODAL ─────────────────────────────────────
+window.openModal=function(id){
+  const p=POSTS.find(x=>x.id===id); if(!p)return;
+  curId=id;
+  const ma=document.getElementById('mav');
+  ma.textContent=ini(p.founder);
+  // Give avatar brick color
+  const bkc=bk(p.founder);
+  const colors={'bk0':'#8B3A2A','bk1':'#B85C38','bk2':'#7A3028','bk3':'#944030','bk4':'#6A2820','bk5':'#C86840','bk6':'#6A2820','bk7':'#D07848'};
+  ma.style.background=colors[bkc]||'#A04830';
+  ma.style.color='rgba(245,239,230,.95)';
 
-  if (!name) { document.getElementById('f-name').focus(); return; }
-  if (!founder) { document.getElementById('f-founder').focus(); return; }
-  if (!desc || desc.length < 20) { document.getElementById('f-desc').focus(); return; }
+  document.getElementById('mst').textContent=p.startup;
+  document.getElementById('mf').textContent=p.founder;
+  document.getElementById('mci').textContent=p.city||'';
+  document.getElementById('mt').textContent=ago(p.ts||p.createdAt||Date.now())+ ' ago';
+  document.getElementById('mb').textContent=p.body;
+  document.getElementById('mvn').textContent=votes(p);
+  document.getElementById('mtgs').innerHTML=(p.tags||[]).map(t=>`<span class="mc-tag">${esc(t)}</span>`).join('');
 
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.classList.add('loading');
+  buildReacts(p);
 
-  const ideaTags = tags.length ? tags : [cat.charAt(0).toUpperCase() + cat.slice(1)];
+  document.getElementById('cbt').textContent='Connect with '+p.founder;
+  document.getElementById('cbn').innerHTML=`<strong>${esc(p.startup)}</strong> is building in ${esc(p.city||'India')}. Fill your details — we'll introduce you within 2 hours of payment.`;
 
-  const result = await window.submitNewIdea({ name, founder, city, desc, category: cat, tags: ideaTags });
+  // Reset requester inputs
+  ['rn','rc_','re','rr'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.classList.remove('err')}});
 
-  btn.disabled = false;
-  btn.classList.remove('loading');
-
-  if (result && result.success) {
-    // Reset form
-    ['f-name','f-founder','f-city','f-desc','f-phone'].forEach(id => document.getElementById(id).value = '');
-    tags = [];
-    renderTags();
-    document.getElementById('smForm').style.display = 'none';
-    document.getElementById('smSuccess').classList.add('show');
-    setTimeout(() => document.getElementById('board').scrollIntoView({behavior:'smooth'}), 1800);
-  } else {
-    alert('Something went wrong. Please try again.');
-  }
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
 };
 
-// ── COUNTDOWN ─────────────────────────────
-function updateTimer() {
-  const now = new Date();
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-  const diff = end - now;
-  document.getElementById('tD').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
-  document.getElementById('tH').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
-  document.getElementById('tM').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+function buildReacts(p){
+  document.getElementById('mrs').innerHTML=
+    [{k:'fire',e:'🔥'},{k:'clap',e:'👏'},{k:'heart',e:'❤️'}].map(({k,e})=>{
+      const c=p.reactions?.[k]||0,r=window.fbHas&&window.fbHas(p.id,k);
+      return`<button class="rpill${r?' reacted':''}" onclick="doReact('${p.id}','${k}',this)">${e}<span class="rc" id="rc-${p.id}-${k}">${c}</span></button>`;
+    }).join('');
 }
-setInterval(updateTimer, 60000);
-updateTimer();
 
-// ── CLOSE ON BACKDROP ─────────────────────
-document.getElementById('ideaModal').onclick = e => { if (e.target === document.getElementById('ideaModal')) closeIdeaModal(); };
-document.getElementById('submitModal').onclick = e => { if (e.target === document.getElementById('submitModal')) closeSubmitModal(); };
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeIdeaModal(); closeSubmitModal(); }
-});
+window.doReact=async function(id,e,btn){
+  if(window.fbHas&&window.fbHas(id,e))return;
+  btn.classList.add('reacted');
+  const el=document.getElementById('rc-'+id+'-'+e);
+  if(el)el.textContent=parseInt(el.textContent)+1;
+  if(window.fbReact)await window.fbReact(id,e);
+};
+window.closeModal=function(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';curId=null};
 
-// ── START FIREBASE ────────────────────────
-function init() {
-  if (typeof window.startRealtime === 'function') {
-    window.startRealtime((ideas) => {
-      IDEAS = ideas;
-      document.getElementById('liveDot').style.opacity = '1';
-      document.getElementById('liveDot2').style.opacity = '1';
-      buildList();
-      updateStats();
+// ── PAYMENT — SHORT MESSAGE ─────────────────
+window.handlePay=function(){
+  const p=POSTS.find(x=>x.id===curId); if(!p)return;
+  const name =(document.getElementById('rn')?.value||'').trim();
+  const city =(document.getElementById('rc_')?.value||'').trim();
+  const email=(document.getElementById('re')?.value||'').trim();
+  const role =(document.getElementById('rr')?.value||'').trim();
+
+  // Validate
+  let ok=true;
+  if(!name){document.getElementById('rn').classList.add('err');ok=false}
+  if(!email){document.getElementById('re').classList.add('err');ok=false}
+  if(!ok)return;
+
+  const upiLink=`upi://pay?pa=${YOUR_UPI}&pn=${encodeURIComponent(YOUR_NAME)}&am=99&cu=INR&tn=${encodeURIComponent('Vaithra-'+p.startup)}`;
+
+  // Short, clean message
+  const msg=`*Connection Request — ₹99*
+
+Connect with: *${p.founder}* (${p.startup}${p.city?', '+p.city:''})
+
+Name: ${name}
+City: ${city||'—'}
+Email: ${email}
+Role: ${role||'—'}
+
+Pay ₹99 👇
+${upiLink}
+
+Sending screenshot after payment ✓`;
+
+  window.open('https://wa.me/918977855998?text='+encodeURIComponent(msg),'_blank');
+};
+
+// ── FORM ──────────────────────────────────────
+window.openForm=()=>{document.getElementById('fwrap').style.display='block';document.getElementById('fsuc').classList.remove('show');document.getElementById('flay').classList.add('open');document.body.style.overflow='hidden'};
+window.closeForm=()=>{document.getElementById('flay').classList.remove('open');document.body.style.overflow=''};
+
+window.doSubmit=async function(){
+  const name=document.getElementById('fn').value.trim();
+  const startup=document.getElementById('fs').value.trim();
+  const city=document.getElementById('fci').value.trim();
+  const phone=document.getElementById('fp').value.trim();
+  const body=document.getElementById('fb_').value.trim();
+  const tags=document.getElementById('ft').value.split(',').map(t=>t.trim()).filter(Boolean);
+  if(!name||!startup||body.length<15){(!name?document.getElementById('fn'):!startup?document.getElementById('fs'):document.getElementById('fb_')).focus();return}
+  const btn=document.getElementById('fsb');btn.disabled=true;btn.classList.add('loading');
+  const ok=await window.fbSave({founder:name,name,startup,city,phone,body,tags:tags.length?tags:['Update']});
+  btn.disabled=false;btn.classList.remove('loading');
+  if(ok){['fn','fs','fci','fp','fb_','ft'].forEach(id=>document.getElementById(id).value='');document.getElementById('fwrap').style.display='none';document.getElementById('fsuc').classList.add('show')}
+  else alert('Something went wrong. Try again.');
+};
+
+// ── RESIZE HANDLER ────────────────────────────
+let rzt;
+window.addEventListener('resize',()=>{clearTimeout(rzt);rzt=setTimeout(()=>render([]),100)});
+
+// ── CLOSE HANDLERS ────────────────────────────
+document.getElementById('modal').onclick=e=>{if(e.target===document.getElementById('modal'))closeModal()};
+document.getElementById('flay').onclick=e=>{if(e.target===document.getElementById('flay'))closeForm()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeForm()}});
+
+// ── INIT — wait for Firebase, no local defaults needed ──
+// Firebase listener fires immediately with cached data on mobile too
+function init(){
+  if(typeof window.fbListen==='function'){
+    window.fbListen(posts=>{
+      const newIds=posts.filter(p=>!POSTS.find(x=>x.id===p.id)).map(p=>p.id);
+      POSTS=posts;
+      document.getElementById('lp1').style.opacity='1';
+      document.getElementById('lp2').style.opacity='1';
+      render(newIds);
+      if(curId){const p=POSTS.find(x=>x.id===curId);if(p)buildReacts(p)}
     });
-  } else {
-    setTimeout(init, 200);
+  }else{
+    setTimeout(init,200);
   }
 }
-init();
+
+// Show 2 default examples instantly before Firebase loads
+const _DEFAULTS = [
+  {id:'_d1',startup:'AgriConnect',founder:'Priya Sharma',city:'Vijayawada',body:'Signed our first paying farmer this week. ₹0 last month. ₹500 this month.\n\nThe jump from zero to any number changes everything — you stop asking "will anyone pay?" and start asking "how do I get 100 more?"\n\nAP farmers deserve a real marketplace. Building it one relationship at a time.',tags:['First Revenue','AgriTech'],reactions:{fire:18,clap:24,heart:12},ts:Date.now()-86400000},
+  {id:'_d2',startup:'Glowvai',founder:'Rahimath',city:'Hyderabad',body:'Shipped v0.2 today. Treatment catalog, staff scheduling, appointment reminders — all built after 3 months sitting in actual salons just listening.\n\nZero paying users still. But the product finally feels honest rather than assumed.\n\nCold outreach starts tomorrow. 10 salons, no script. Terrified but ready.',tags:['Product Launch','Beauty Tech'],reactions:{fire:9,clap:16,heart:5},ts:Date.now()-172800000},
+];
+POSTS = [..._DEFAULTS];
+render([]);
+
+requestAnimationFrame(()=>requestAnimationFrame(init));
 </script>
 </body>
 </html>
