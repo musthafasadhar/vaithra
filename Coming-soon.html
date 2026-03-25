@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | Boutique Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importing a High-End Serif and a Modern Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #000000;
+        }
+        body {
+            /* Premium Mesh Gradient in White/Soft Grey/Lavender */
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(243, 232, 255, 0.5) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, rgba(219, 234, 254, 0.5) 0, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 241, 242, 0.5) 0, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(240, 253, 244, 0.5) 0, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
+
+        .serif-title {
+            font-family: 'DM Serif Display', serif;
+            letter-spacing: -0.02em;
+            color: #000;
+        }
+
+        /* Aesthetic Button Style */
+        .btn-premium {
+            background: #000;
+            color: #fff;
+            padding: 1.25rem 2rem;
+            border-radius: 99px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 1px solid transparent;
+        }
+
+        .btn-premium:hover {
+            background: #fff;
+            color: #000;
+            border-color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Subtle input focus */
+        .premium-input {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .premium-input:focus {
+            border-color: #000;
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 40px;
+        }
+    </style>
+</head>
+<body class="p-6">
+
+    <div class="glass-card max-w-2xl w-full p-12 md:p-20 text-center shadow-[0_32px_64px_-15px_rgba(0,0,0,0.1)]">
+        
+        <!-- Sexy Heading -->
+        <h1 class="serif-title text-6xl md:text-8xl mb-6">
+            Coming <span class="italic font-light">Soon</span>
+        </h1>
+        
+        <p class="text-gray-500 text-lg mb-12">
+            Until then, you can 
+            <a href="about.html" class="text-black font-semibold underline underline-offset-8 decoration-1 hover:decoration-2 transition-all">
+                know more about us
+            </a>
+        </p>
+
+        <!-- Notification Content -->
+        <div class="mb-8">
+            <p class="text-sm text-gray-400 uppercase tracking-[0.2em] mb-4">Stay in the loop</p>
+            <p class="text-gray-600 mb-8 italic">
+                "Please give your phone number; when it is launched, we will send you a notification."
+            </p>
+        </div>
+
+        <!-- Phone Section -->
+        <div id="phone-flow" class="space-y-4 max-w-sm mx-auto">
+            <input type="tel" id="phone" placeholder="Phone Number" 
+                class="premium-input w-full px-8 py-5 rounded-full text-lg text-center">
+            
+            <button onclick="sendOTP()" class="btn-premium w-full text-lg tracking-wide">
+                Notify Me
+            </button>
+        </div>
+
+        <!-- OTP Section (Hidden) -->
+        <div id="otp-flow" class="hidden space-y-4 max-w-sm mx-auto">
+            <input type="text" id="otp" placeholder="Enter OTP" 
+                class="premium-input w-full px-8 py-5 rounded-full text-2xl tracking-[0.4em] text-center font-bold">
+            
+            <button onclick="verifyOTP()" class="btn-premium w-full text-lg">
+                Verify Access
+            </button>
+        </div>
+
+        <!-- Sponsor Line -->
+        <div class="mt-20 opacity-50 hover:opacity-100 transition-opacity">
+            <div class="h-[1px] w-20 bg-gray-300 mx-auto mb-8"></div>
+            <a href="https://wa.me/918977855998" target="_blank" 
+               class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-black transition-colors">
+                Sponsor Us — Get in Touch
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        function sendOTP() {
+            const phone = document.getElementById('phone').value;
+            if(phone.length < 10) return alert("Enter a valid number");
+            
+            document.getElementById('phone-flow').classList.add('hidden');
+            document.getElementById('otp-flow').classList.remove('hidden');
+        }
+
+        function verifyOTP() {
+            const code = document.getElementById('otp').value;
+            if(code === "123456") {
+                alert("Success! We'll text you soon.");
+            } else {
+                alert("Try 123456");
+            }
+        }
+    </script>
+</body>
+</html>
