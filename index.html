@@ -1,155 +1,936 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon | Boutique Experience</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Importing a High-End Serif and a Modern Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --accent: #000000;
-        }
-        body {
-            /* Premium Mesh Gradient in White/Soft Grey/Lavender */
-            background-color: #ffffff;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(243, 232, 255, 0.5) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, rgba(219, 234, 254, 0.5) 0, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(255, 241, 242, 0.5) 0, transparent 50%),
-                radial-gradient(at 0% 100%, rgba(240, 253, 244, 0.5) 0, transparent 50%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #1a1a1a;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-        }
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Build in Public Wall — Vaithra</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=DM+Sans:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-        .serif-title {
-            font-family: 'DM Serif Display', serif;
-            letter-spacing: -0.02em;
-            color: #000;
-        }
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore,collection,doc,addDoc,updateDoc,onSnapshot,increment,getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  const cfg={apiKey:"AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",authDomain:"vaithra-grants.firebaseapp.com",projectId:"vaithra-grants",storageBucket:"vaithra-grants.firebasestorage.app",messagingSenderId:"655290922548",appId:"1:655290922548:web:991b339e2475aa9f443c61"};
+  const app=initializeApp(cfg),db=getFirestore(app);
+  const SEED=[
+    {startup:'AgriConnect',founder:'Priya Sharma',city:'Vijayawada',body:'Signed our first paying farmer this week. ₹0 in revenue last month. ₹500 this month. The jump from zero to any number changes everything. You stop asking "will anyone pay?" and start asking "how do I get 100 more?"',tags:['First Revenue','AgriTech'],reactions:{fire:18,clap:24,heart:12},createdAt:Date.now()-86400000},
+    {startup:'SkillBridge',founder:'Ravi Kumar',city:'Warangal',body:'Failed our first pilot. 40 signups. 2 exchanges happened. Platform works — behavior doesn\'t. Nobody wants to go first. Cold-start is real. Rethinking incentives from scratch.',tags:['Failure','Pivot'],reactions:{fire:12,clap:19,heart:7},createdAt:Date.now()-172800000},
+    {startup:'Glowvai',founder:'Rahimath',city:'Hyderabad',body:'Shipped v0.2 today after 3 months in actual salons listening. Zero paying users. But finally feels honest. Cold outreach starts tomorrow. Terrified but ready.',tags:['Launch','Week 8'],reactions:{fire:9,clap:16,heart:5},createdAt:Date.now()-259200000},
+    {startup:'MediRoute',founder:'Ananya Reddy',city:'Tirupati',body:'3 pharmacies signed MoUs. No tech built — just WhatsApp and a Google Sheet. Proving behaviour exists before writing code. Pre-product traction is underrated.',tags:['Pre-product','HealthTech'],reactions:{fire:14,clap:21,heart:9},createdAt:Date.now()-345600000},
+    {startup:'BuildBrick',founder:'Sai Kiran',city:'Hyderabad',body:'Stuck on pricing 3 weeks. Free = tire-kickers. Paid = zero conversions. Tried ₹199, ₹499, ₹999. Nothing sticks. Product works. Cannot crack Tier 2 India SMB pricing.',tags:['Pricing','Stuck'],reactions:{fire:6,clap:11,heart:8},createdAt:Date.now()-432000000},
+  ];
+  async function seed(){try{const s=await getDocs(collection(db,'wall_posts'));if(s.empty)for(const p of SEED)await addDoc(collection(db,'wall_posts'),p)}catch(e){}}
+  window.fbSave=async d=>{try{await addDoc(collection(db,'wall_posts'),{...d,createdAt:Date.now(),reactions:{fire:0,clap:0,heart:0}});return true}catch(e){return false}};
+  window.fbReact=async(id,e)=>{const k='r_'+id+'_'+e;if(localStorage.getItem(k))return;try{await updateDoc(doc(db,'wall_posts',id),{['reactions.'+e]:increment(1)});localStorage.setItem(k,'1')}catch(e){}};
+  window.fbHas=(id,e)=>!!localStorage.getItem('r_'+id+'_'+e);
+  window.fbListen=cb=>{seed();return onSnapshot(collection(db,'wall_posts'),snap=>{const p=[];snap.forEach(d=>p.push({...d.data(),id:d.id}));p.sort((a,b)=>b.createdAt-a.createdAt);cb(p)})};
+</script>
 
-        /* Aesthetic Button Style */
-        .btn-premium {
-            background: #000;
-            color: #fff;
-            padding: 1.25rem 2rem;
-            border-radius: 99px;
-            font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border: 1px solid transparent;
-        }
+<style>
+/* ═══════════════════════════════════════════
+   PREMIUM WHITE DESIGN SYSTEM
+═══════════════════════════════════════════ */
+:root {
+  --w:#FFFFFF;
+  --w1:#FAFAF8;
+  --w2:#F4F2EC;
+  --w3:#EAE7DE;
+  --w4:#DDD9CE;
+  --ink:#0F0E0B;
+  --ink2:#2A2820;
+  --ink3:#4A4840;
+  --ink4:#8A8880;
+  --sage:#2E4A20;
+  --sage2:#3D6030;
+  --sage3:#5A8048;
+  --sagel:#8AB878;
+  --gold:#A07808;
+  --goldl:#C8A820;
+  --goldf:#F0CC40;
+  --red:#B83020;
 
-        .btn-premium:hover {
-            background: #fff;
-            color: #000;
-            border-color: #000;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
+  /* 3D shadow system */
+  --s1:0 1px 2px rgba(15,14,11,.06);
+  --s2:0 2px 8px rgba(15,14,11,.08),0 1px 2px rgba(15,14,11,.04);
+  --s3:0 4px 20px rgba(15,14,11,.1),0 2px 6px rgba(15,14,11,.06);
+  --s4:0 8px 40px rgba(15,14,11,.12),0 4px 12px rgba(15,14,11,.07);
+  --s5:0 20px 80px rgba(15,14,11,.15),0 8px 24px rgba(15,14,11,.08);
 
-        /* Subtle input focus */
-        .premium-input {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
+  /* Brick 3D depth */
+  --brick-face:#FFFFFF;
+  --brick-top:linear-gradient(180deg,#FFFFFF 0%,#F8F6F0 100%);
+  --brick-side:linear-gradient(90deg,#E8E4D8 0%,#F0EDE4 100%);
+  --mortar:#C8C4B8;
+}
 
-        .premium-input:focus {
-            border-color: #000;
-            background: #fff;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(0,0,0,0.03);
-        }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--w1);color:var(--ink);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--w4);border-radius:2px}
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 40px;
-        }
-    </style>
+/* ═══════════════════════════════════════════
+   SUBTLE PAPER TEXTURE
+═══════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity:1;
+}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+.nav{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  width:92%;max-width:1280px;
+  padding:11px 24px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(28px);
+  border-radius:100px;
+  border:1px solid var(--w3);
+  display:flex;justify-content:space-between;align-items:center;
+  z-index:8000;
+  box-shadow:var(--s3);
+}
+.nav-logo{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.28em;color:var(--ink);text-decoration:none;text-transform:uppercase}
+.nav-r{display:flex;align-items:center;gap:14px}
+.nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--ink)}
+.nav-post{
+  background:var(--ink);color:var(--w);border:none;
+  padding:9px 20px;border-radius:100px;
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;transition:all .22s;
+  box-shadow:0 2px 8px rgba(15,14,11,.18);
+}
+.nav-post:hover{background:var(--sage);transform:translateY(-1px);box-shadow:0 4px 16px rgba(15,14,11,.22)}
+.lpip{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;background:rgba(46,74,32,.06);border:1px solid rgba(46,74,32,.15);border-radius:100px}
+.ldot{width:5px;height:5px;border-radius:50%;background:#3A9020;animation:pp 1.8s ease-in-out infinite}
+@keyframes pp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(58,144,32,.4)}50%{opacity:.3;box-shadow:0 0 0 5px rgba(58,144,32,0)}}
+.lpip span{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sage2)}
+
+/* ═══════════════════════════════════════════
+   HERO — PREMIUM WHITE
+═══════════════════════════════════════════ */
+#hero{
+  padding:140px 6% 70px;
+  position:relative;overflow:hidden;
+  background:var(--w);
+}
+/* Subtle ruled lines — like premium paper */
+.hero-lines{
+  position:absolute;inset:0;
+  background-image:linear-gradient(transparent calc(100% - 1px),rgba(15,14,11,.04) 100%);
+  background-size:100% 52px;
+  pointer-events:none;
+}
+/* Elegant vertical rule */
+.hero-lines::before{
+  content:'';position:absolute;
+  top:10%;bottom:10%;
+  right:28%;
+  width:1px;
+  background:linear-gradient(180deg,transparent,rgba(15,14,11,.06) 30%,rgba(15,14,11,.08) 70%,transparent);
+}
+/* Gold accent corner */
+.hero-corner{
+  position:absolute;top:0;right:0;
+  width:320px;height:320px;
+  background:radial-gradient(ellipse at 80% 20%,rgba(160,120,8,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-corner2{
+  position:absolute;bottom:0;left:0;
+  width:240px;height:240px;
+  background:radial-gradient(ellipse at 20% 80%,rgba(46,74,32,.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+.hero-in{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;gap:60px;align-items:end;
+  position:relative;z-index:1;
+}
+.hero-kicker{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--sage2);display:flex;align-items:center;gap:12px;margin-bottom:18px;
+}
+.hero-kicker::before{content:'';width:24px;height:1px;background:var(--sage2)}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(60px,10vw,128px);
+  font-weight:400;line-height:.8;letter-spacing:-.04em;
+  color:var(--ink);
+}
+.hero-h1 em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--gold),var(--goldl),var(--goldf),var(--goldl));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;
+}
+.hero-desc{font-size:14px;color:var(--ink3);line-height:1.9;font-weight:300;max-width:440px;margin-top:24px}
+
+.hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:16px}
+.hstat{text-align:right}
+.hstat-n{
+  font-family:'Playfair Display',serif;font-size:72px;font-style:italic;font-weight:400;
+  color:var(--ink);line-height:1;
+  background:linear-gradient(135deg,var(--ink) 0%,var(--ink3) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hstat-l{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ink4);display:block;margin-top:3px}
+
+/* ═══════════════════════════════════════════
+   WALL SECTION
+═══════════════════════════════════════════ */
+#ws{
+  padding:0 6% 120px;
+  background:var(--w1);
+  position:relative;z-index:1;
+}
+.ww{max-width:1280px;margin:0 auto}
+
+.wall-header{
+  display:flex;align-items:center;gap:20px;
+  padding:22px 0 40px;
+  border-top:1px solid var(--w3);
+}
+.wh-label{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:var(--ink3);white-space:nowrap}
+.wh-line{flex:1;height:1px;background:var(--w3)}
+.wh-right{display:flex;align-items:center;gap:14px}
+.w-pbar{width:120px;height:3px;background:var(--w3);border-radius:2px;overflow:hidden}
+.w-pfill{height:100%;background:linear-gradient(90deg,var(--sage),var(--sagel));transition:width 1.2s cubic-bezier(.16,1,.3,1);border-radius:2px}
+.w-ptxt{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink4);white-space:nowrap}
+
+/* ═══════════════════════════════════════════
+   THE 3D BRICK WALL — MAIN EVENT
+═══════════════════════════════════════════ */
+.wall-stage{
+  /* Perspective for 3D depth */
+  perspective:1200px;
+  perspective-origin:50% 40%;
+}
+
+.wall-3d{
+  /* Slight tilt for dramatic 3D look */
+  transform:rotateX(4deg) rotateY(0deg);
+  transform-style:preserve-3d;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+  will-change:transform;
+}
+.wall-stage:hover .wall-3d{
+  transform:rotateX(2deg) rotateY(0deg);
+}
+
+.bwall{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:6px;
+  background:var(--mortar);
+  padding:6px;
+  border-radius:4px;
+  box-shadow:
+    /* Top light edge */
+    inset 0 2px 0 rgba(255,255,255,.8),
+    /* Bottom depth */
+    inset 0 -2px 0 rgba(15,14,11,.08),
+    /* Overall shadow */
+    0 20px 60px rgba(15,14,11,.12),
+    0 4px 16px rgba(15,14,11,.08),
+    /* Right depth shadow */
+    8px 8px 32px rgba(15,14,11,.06);
+}
+
+/* ── SINGLE BRICK ── */
+.brick{
+  position:relative;
+  border-radius:2px;
+  overflow:hidden;
+  cursor:default;
+  /* 3D depth on each brick */
+  transform:translateZ(0);
+  transition:transform .2s cubic-bezier(.16,1,.3,1),box-shadow .2s;
+  min-height:104px;
+}
+
+/* EMPTY BRICK — textured stone */
+.brick.empty{
+  background:
+    linear-gradient(160deg,#F8F6F0 0%,#EDEAE0 40%,#E8E4D8 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.9),
+    inset 0 -1px 0 rgba(15,14,11,.06),
+    inset -1px 0 0 rgba(15,14,11,.04),
+    0 1px 3px rgba(15,14,11,.04);
+}
+/* Stone texture on empty */
+.brick.empty::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 20% 30%,rgba(255,255,255,.5) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 70%,rgba(15,14,11,.02) 0%,transparent 40%);
+}
+/* Subtle mortar divider */
+.brick.empty::after{
+  content:'';position:absolute;
+  bottom:0;left:8%;right:8%;height:1px;
+  background:rgba(15,14,11,.05);
+}
+
+/* FILLED BRICK — premium white card */
+.brick.filled{
+  cursor:pointer;
+  background:var(--w);
+  box-shadow:
+    /* Top highlight */
+    inset 0 2px 0 rgba(255,255,255,1),
+    /* Subtle border */
+    0 0 0 1px rgba(15,14,11,.06),
+    /* 3D lift */
+    0 2px 8px rgba(15,14,11,.08),
+    0 4px 16px rgba(15,14,11,.05);
+  transform:translateZ(2px);
+}
+
+/* HOVER — brick pops out in 3D */
+.brick.filled:hover{
+  transform:translateZ(16px) translateY(-4px) scale(1.02);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,1),
+    0 0 0 1px rgba(15,14,11,.1),
+    0 12px 40px rgba(15,14,11,.16),
+    0 4px 12px rgba(15,14,11,.1),
+    0 24px 60px rgba(15,14,11,.08);
+  z-index:10;
+}
+.brick.filled:hover .b-read{opacity:1;transform:translateY(0)}
+.brick.filled:hover .b-shine{opacity:1}
+
+/* 3D side effect on hover */
+.brick.filled::before{
+  content:'';position:absolute;
+  left:-4px;top:2px;bottom:-2px;width:4px;
+  background:linear-gradient(90deg,rgba(15,14,11,.08),rgba(15,14,11,.04));
+  transform:skewY(-1deg);
+  opacity:0;transition:opacity .2s;
+  border-radius:0 0 0 2px;
+}
+.brick.filled:hover::before{opacity:1}
+
+/* Bottom 3D shadow face */
+.brick.filled::after{
+  content:'';position:absolute;
+  bottom:-3px;left:2px;right:-2px;height:3px;
+  background:linear-gradient(180deg,rgba(15,14,11,.08),rgba(15,14,11,.04));
+  transform:skewX(-1deg);
+  opacity:0;transition:opacity .2s;
+}
+.brick.filled:hover::after{opacity:1}
+
+/* NEW brick animation — slides in from above */
+@keyframes brickDrop{
+  0%{opacity:0;transform:translateZ(40px) translateY(-12px) scale(.94);box-shadow:none}
+  50%{transform:translateZ(24px) translateY(-4px) scale(.98)}
+  70%{transform:translateZ(20px) translateY(0) scale(1.01)}
+  100%{opacity:1;transform:translateZ(2px) translateY(0) scale(1)}
+}
+.brick.new{animation:brickDrop .8s cubic-bezier(.16,1,.3,1) both}
+
+/* Shine overlay */
+.b-shine{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 50%);
+  opacity:.4;transition:opacity .2s;pointer-events:none;border-radius:2px;
+}
+
+/* Brick content */
+.b-in{position:absolute;inset:0;padding:11px 13px 9px;display:flex;flex-direction:column;justify-content:space-between}
+
+.b-top{display:flex;align-items:center;gap:8px}
+.b-av{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:10px;font-style:italic;font-weight:700;
+  flex-shrink:0;
+  box-shadow:0 1px 4px rgba(15,14,11,.15);
+}
+.b-meta{flex:1;min-width:0}
+.b-startup{
+  font-family:'Playfair Display',serif;
+  font-size:12.5px;font-style:italic;font-weight:700;
+  color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;
+}
+.b-who{font-size:8px;color:var(--ink4);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.b-time{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.07em;color:var(--ink4);opacity:.6;flex-shrink:0}
+
+.b-body{
+  font-size:9.5px;color:var(--ink3);line-height:1.55;font-weight:300;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  flex:1;margin:6px 0 4px;
+}
+
+.b-foot{display:flex;align-items:center;justify-content:space-between}
+.b-rs{display:flex;gap:8px}
+.b-r{font-size:10px;color:var(--ink4);display:flex;align-items:center;gap:2px}
+.b-r .n{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;color:var(--ink4)}
+.b-read{
+  font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sage);opacity:0;
+  transition:opacity .2s,transform .2s;transform:translateY(3px);
+}
+
+/* Brick colour accents — left stripe */
+.bc0 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#4A8030,#2E5020)}
+.bc1 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#A07808,#705006)}
+.bc2 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#205878,#143848)}
+.bc3 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#783020,#481C10)}
+.bc4 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#503878,#302050)}
+.bc5 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#285840,#183828)}
+.bc6 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#784828,#502810)}
+.bc7 .b-in::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#283858,#182040)}
+
+/* ═══════════════════════════════════════════
+   EXPANDED MODAL
+═══════════════════════════════════════════ */
+#modal{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(15,14,11,.4);
+  backdrop-filter:blur(24px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+#modal.open{display:flex}
+
+.mc{
+  background:var(--w);
+  border-radius:16px;
+  width:100%;max-width:680px;max-height:88vh;overflow-y:auto;
+  position:relative;
+  box-shadow:var(--s5),0 0 0 1px rgba(15,14,11,.06);
+  animation:mIn .32s cubic-bezier(.16,1,.3,1);
+}
+@keyframes mIn{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
+
+/* Coloured top bar */
+.mc-bar{height:3px;background:linear-gradient(90deg,var(--sage),var(--sagel),var(--goldl));border-radius:16px 16px 0 0}
+
+.mc-body{padding:36px 40px 40px}
+.mc-close{
+  position:absolute;top:14px;right:14px;
+  width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--w3);background:none;cursor:pointer;
+  color:var(--ink3);font-size:12px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;z-index:2;
+}
+.mc-close:hover{background:var(--ink);color:var(--w);border-color:var(--ink)}
+
+.mc-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid var(--w2)}
+.mc-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:19px;font-style:italic;font-weight:700;flex-shrink:0;box-shadow:var(--s2)}
+.mc-startup{font-family:'Playfair Display',serif;font-size:24px;font-style:italic;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.1}
+.mc-sub{font-size:11px;color:var(--ink4);font-weight:300;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.mc-city{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink4)}
+
+.mc-text{font-size:14.5px;color:var(--ink2);line-height:1.92;font-weight:300;margin-bottom:20px;white-space:pre-wrap}
+.mc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:22px}
+.mc-tag{font-family:'Syne',sans-serif;font-size:7.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:4px 10px;border-radius:100px;color:var(--ink3);background:var(--w2);border:1px solid var(--w3)}
+
+/* Reactions */
+.mc-reacts{display:flex;gap:8px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--w2);flex-wrap:wrap}
+.rpill{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid var(--w3);border-radius:100px;background:var(--w1);cursor:pointer;transition:all .2s;font-size:14px}
+.rpill:hover{border-color:var(--sage);background:rgba(46,74,32,.04)}
+.rpill.reacted{border-color:var(--sage);background:rgba(46,74,32,.06)}
+.rpill .rc{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--ink2)}
+
+/* ═══════════════════════════════════════════
+   UPI CONNECT BOX — THE MONEY PART
+═══════════════════════════════════════════ */
+.cbox{
+  background:var(--ink);
+  border-radius:12px;padding:24px;
+  position:relative;overflow:hidden;
+}
+/* Subtle gold shimmer */
+.cbox::before{
+  content:'';position:absolute;
+  top:-40px;right:-40px;width:160px;height:160px;
+  background:radial-gradient(circle,rgba(192,168,32,.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+.cbox-title{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:700;color:var(--w);margin-bottom:6px;position:relative;z-index:1}
+.cbox-note{font-size:12px;color:rgba(255,255,255,.5);font-weight:300;line-height:1.82;margin-bottom:18px;position:relative;z-index:1}
+.cbox-note strong{color:rgba(255,255,255,.75);font-weight:400}
+
+/* Price + UPI logos row */
+.price-row{display:flex;align-items:center;gap:16px;margin-bottom:18px;position:relative;z-index:1}
+.price-amt{font-family:'Playfair Display',serif;font-size:48px;font-style:italic;font-weight:400;color:var(--goldf);line-height:1}
+.price-right{display:flex;flex-direction:column;gap:4px}
+.price-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+/* UPI logos */
+.upi-logos{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.upi-badge{
+  padding:3px 8px;border-radius:4px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;
+  display:inline-flex;align-items:center;gap:4px;
+}
+.upi-badge.gpay{background:#4285F4;color:#fff}
+.upi-badge.phonepe{background:#5F259F;color:#fff}
+.upi-badge.paytm{background:#00BAF2;color:#fff}
+.upi-badge.bhim{background:#0F3B9E;color:#fff}
+
+/* STEP flow */
+.pay-steps{
+  display:flex;gap:0;margin-bottom:18px;position:relative;z-index:1;
+  background:rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;
+}
+.pay-step{flex:1;text-align:center;position:relative}
+.pay-step:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.25);font-size:11px}
+.ps-num{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;font-weight:700;color:var(--goldf);display:block;margin-bottom:2px}
+.ps-txt{font-size:9px;color:rgba(255,255,255,.45);font-weight:300;line-height:1.4}
+
+/* PAY BUTTON */
+.pay-btn{
+  width:100%;
+  background:linear-gradient(135deg,#25D366,#1DA851);
+  color:#fff;border:none;
+  padding:15px 20px;border-radius:100px;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  cursor:pointer;transition:all .22s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 4px 20px rgba(37,211,102,.3);
+  position:relative;z-index:1;
+}
+.pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4)}
+.pay-btn svg{width:16px;height:16px;flex-shrink:0}
+.pay-note{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:10px;font-weight:300;line-height:1.65;position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════
+   POST FORM
+═══════════════════════════════════════════ */
+#flay{position:fixed;inset:0;z-index:10000;background:rgba(15,14,11,.45);backdrop-filter:blur(28px);display:none;align-items:center;justify-content:center;padding:20px}
+#flay.open{display:flex}
+.fc{
+  background:var(--w);border-radius:16px;
+  width:100%;max-width:520px;max-height:90vh;overflow-y:auto;
+  box-shadow:var(--s5);
+  animation:mIn .3s cubic-bezier(.16,1,.3,1);position:relative;
+}
+.fc-bar{height:3px;background:linear-gradient(90deg,var(--sage),var(--sagel));border-radius:16px 16px 0 0}
+.fclose{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--w3);background:none;cursor:pointer;color:var(--ink3);font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.fclose:hover{background:var(--ink);color:var(--w);border-color:var(--ink)}
+.fhead{padding:32px 32px 0}
+.fhead h2{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:4px}
+.fhead h2 em{color:var(--gold)}
+.fhead p{font-size:12px;color:var(--ink3);font-weight:300;line-height:1.8;margin-bottom:20px}
+.fbody{padding:0 32px 32px}
+.fr{margin-bottom:14px}
+.fr label{font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:6px}
+.fr input,.fr textarea{
+  width:100%;border:1.5px solid var(--w3);border-radius:10px;
+  padding:11px 14px;font-size:13px;color:var(--ink);
+  background:var(--w1);font-family:'DM Sans',sans-serif;outline:none;transition:all .2s;
+}
+.fr input:focus,.fr textarea:focus{border-color:var(--sage);background:var(--w);box-shadow:0 0 0 3px rgba(46,74,32,.06)}
+.fr input::placeholder,.fr textarea::placeholder{color:var(--ink4)}
+.fr textarea{resize:vertical;min-height:88px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fsbtn{
+  width:100%;background:var(--ink);color:var(--w);border:none;
+  padding:13px;border-radius:100px;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;
+  cursor:pointer;transition:all .25s;margin-top:4px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 2px 8px rgba(15,14,11,.14);
+}
+.fsbtn:hover{background:var(--sage);box-shadow:0 4px 16px rgba(46,74,32,.2)}
+.fsbtn:disabled{opacity:.38;cursor:not-allowed}
+.fsbtn .ld{width:12px;height:12px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;display:none}
+.fsbtn.loading .ld{display:block}
+.fsbtn.loading .lt{display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.fnote{font-size:10px;color:var(--ink4);text-align:center;margin-top:7px;font-weight:300}
+.fsuc{display:none;padding:48px 32px;text-align:center}
+.fsuc.show{display:block}
+.fsuc-i{width:52px;height:52px;border-radius:50%;border:2px solid var(--sage);background:rgba(46,74,32,.06);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;color:var(--sage)}
+.fsuc h3{font-family:'Playfair Display',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:7px}
+.fsuc p{font-size:12px;color:var(--ink3);line-height:1.82;font-weight:300}
+.fsuc-btn{margin-top:20px;background:var(--ink);color:var(--w);border:none;padding:10px 24px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+
+footer{background:var(--w);padding:44px 6%;text-align:center;border-top:1px solid var(--w3)}
+
+@media(max-width:900px){
+  .bwall{grid-template-columns:repeat(4,1fr)}
+  .brick{min-height:88px}
+  .wall-3d{transform:rotateX(2deg)}
+}
+@media(max-width:600px){
+  .bwall{grid-template-columns:repeat(3,1fr)}
+  .brick{min-height:76px}
+  .wall-3d{transform:none}
+  .hero-in,.fr2{grid-template-columns:1fr}
+  .mc-body{padding:22px 20px 26px}
+  .fhead,.fbody{padding-left:20px;padding-right:20px}
+  .pay-steps{display:none}
+}
+</style>
 </head>
-<body class="p-6">
+<body>
 
-    <div class="glass-card max-w-2xl w-full p-12 md:p-20 text-center shadow-[0_32px_64px_-15px_rgba(0,0,0,0.1)]">
-        
-        <!-- Sexy Heading -->
-        <h1 class="serif-title text-6xl md:text-8xl mb-6">
-            Coming <span class="italic font-light">Soon</span>
-        </h1>
-        
-        <p class="text-gray-500 text-lg mb-12">
-            Until then, you can 
-            <a href="about.html" class="text-black font-semibold underline underline-offset-8 decoration-1 hover:decoration-2 transition-all">
-                know more about us
-            </a>
-        </p>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Vaithra</a>
+  <div class="nav-r">
+    <div class="lpip" id="lpip" style="opacity:0;transition:opacity .5s"><span>Live</span></div>
+    <button class="nav-post" onclick="openForm()">+ Fill a Brick</button>
+    <a href="index.html" class="nav-back">← Home</a>
+  </div>
+</nav>
 
-        <!-- Notification Content -->
-        <div class="mb-8">
-            <p class="text-sm text-gray-400 uppercase tracking-[0.2em] mb-4">Stay in the loop</p>
-            <p class="text-gray-600 mb-8 italic">
-                "Please give your phone number; when it is launched, we will send you a notification."
-            </p>
-        </div>
+<div id="hero">
+  <div class="hero-lines"></div>
+  <div class="hero-corner"></div>
+  <div class="hero-corner2"></div>
+  <div class="hero-in">
+    <div>
+      <div class="hero-kicker">Community Wall</div>
+      <h1 class="hero-h1">Build in<em>Public</em></h1>
+      <p class="hero-desc">Every brick is a founder's real story — before the product, before the users, before the funding. Post your progress. Get seen. Get connected.</p>
+    </div>
+    <div class="hero-right">
+      <div class="lpip" style="opacity:1"><span>Live updates</span></div>
+      <div class="hstat">
+        <div class="hstat-n" id="hstatN">—</div>
+        <span class="hstat-l">Bricks filled</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <!-- Phone Section -->
-        <div id="phone-flow" class="space-y-4 max-w-sm mx-auto">
-            <input type="tel" id="phone" placeholder="Phone Number" 
-                class="premium-input w-full px-8 py-5 rounded-full text-lg text-center">
-            
-            <button onclick="sendOTP()" class="btn-premium w-full text-lg tracking-wide">
-                Notify Me
-            </button>
-        </div>
-
-        <!-- OTP Section (Hidden) -->
-        <div id="otp-flow" class="hidden space-y-4 max-w-sm mx-auto">
-            <input type="text" id="otp" placeholder="Enter OTP" 
-                class="premium-input w-full px-8 py-5 rounded-full text-2xl tracking-[0.4em] text-center font-bold">
-            
-            <button onclick="verifyOTP()" class="btn-premium w-full text-lg">
-                Verify Access
-            </button>
-        </div>
-
-        <!-- Sponsor Line -->
-        <div class="mt-20 opacity-50 hover:opacity-100 transition-opacity">
-            <div class="h-[1px] w-20 bg-gray-300 mx-auto mb-8"></div>
-            <a href="https://wa.me/918977855998" target="_blank" 
-               class="text-xs font-semibold uppercase tracking-widest text-gray-500 hover:text-black transition-colors">
-                Sponsor Us — Get in Touch
-            </a>
-        </div>
-
+<section id="ws">
+  <div class="ww">
+    <div class="wall-header">
+      <div class="wh-label">The Wall</div>
+      <div class="wh-line"></div>
+      <div class="wh-right">
+        <div class="w-pbar"><div class="w-pfill" id="wpfill" style="width:0%"></div></div>
+        <div class="w-ptxt" id="wptxt">Loading…</div>
+        <div class="lpip" id="lpip2" style="opacity:0;transition:opacity .5s"><span>Syncing</span></div>
+      </div>
     </div>
 
-    <script>
-        function sendOTP() {
-            const phone = document.getElementById('phone').value;
-            if(phone.length < 10) return alert("Enter a valid number");
-            
-            document.getElementById('phone-flow').classList.add('hidden');
-            document.getElementById('otp-flow').classList.remove('hidden');
-        }
+    <div class="wall-stage">
+      <div class="wall-3d">
+        <div class="bwall" id="bwall">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function verifyOTP() {
-            const code = document.getElementById('otp').value;
-            if(code === "123456") {
-                alert("Success! We'll text you soon.");
-            } else {
-                alert("Try 123456");
-            }
-        }
-    </script>
+<!-- EXPANDED POST MODAL -->
+<div id="modal">
+  <div class="mc">
+    <div class="mc-bar"></div>
+    <div class="mc-body">
+      <button class="mc-close" onclick="closeModal()">✕</button>
+      <div class="mc-head">
+        <div class="mc-av" id="mav"></div>
+        <div style="flex:1;min-width:0">
+          <div class="mc-startup" id="mst"></div>
+          <div class="mc-sub">
+            <span id="mf"></span>
+            <span class="mc-city" id="mci"></span>
+            <span style="color:var(--ink4);font-size:10px;font-weight:300" id="mt"></span>
+          </div>
+        </div>
+      </div>
+      <div class="mc-text" id="mb"></div>
+      <div class="mc-tags" id="mtgs"></div>
+      <div class="mc-reacts" id="mrs"></div>
+
+      <!-- UPI CONNECT BOX -->
+      <div class="cbox">
+        <div class="cbox-title" id="cbt"></div>
+        <div class="cbox-note" id="cbn"></div>
+
+        <div class="price-row">
+          <span class="price-amt">₹99</span>
+          <div class="price-right">
+            <span class="price-lbl">Direct connection</span>
+            <div class="upi-logos">
+              <span class="upi-badge gpay">GPay</span>
+              <span class="upi-badge phonepe">PhonePe</span>
+              <span class="upi-badge paytm">Paytm</span>
+              <span class="upi-badge bhim">BHIM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Automated flow steps -->
+        <div class="pay-steps">
+          <div class="pay-step">
+            <span class="ps-num">1</span>
+            <span class="ps-txt">Click button<br>below</span>
+          </div>
+          <div class="pay-step">
+            <span class="ps-num">2</span>
+            <span class="ps-txt">Pay ₹99<br>via any UPI</span>
+          </div>
+          <div class="pay-step">
+            <span class="ps-num">3</span>
+            <span class="ps-txt">Send payment<br>screenshot</span>
+          </div>
+          <div class="pay-step">
+            <span class="ps-num">4</span>
+            <span class="ps-txt">Get connected<br>within 2 hrs</span>
+          </div>
+        </div>
+
+        <button class="pay-btn" onclick="handlePay()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Open WhatsApp — Pay ₹99 via UPI
+        </button>
+        <p class="pay-note" id="paynote"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POST FORM -->
+<div id="flay">
+  <div class="fc">
+    <div class="fc-bar"></div>
+    <button class="fclose" onclick="closeForm()">✕</button>
+    <div id="fwrap">
+      <div class="fhead">
+        <h2>Fill a <em>Brick</em></h2>
+        <p>Your update goes on the wall permanently. Investors and founders are watching. Raw and honest beats polished every time.</p>
+      </div>
+      <div class="fbody">
+        <div class="fr2">
+          <div class="fr"><label>Your Name *</label><input id="fn" placeholder="Full name"></div>
+          <div class="fr"><label>Startup *</label><input id="fs" placeholder="Your startup"></div>
+        </div>
+        <div class="fr2">
+          <div class="fr"><label>City *</label><input id="fci" placeholder="Hyderabad…"></div>
+          <div class="fr"><label>WhatsApp *</label><input id="fp" type="tel" placeholder="+91 XXXXX XXXXX"></div>
+        </div>
+        <div class="fr"><label>Your Update *</label>
+          <textarea id="fb_" placeholder="What happened? What shipped, broke, or surprised you? Real and raw." rows="5"></textarea>
+        </div>
+        <div class="fr"><label>Tags <span style="opacity:.38;text-transform:none;letter-spacing:0;font-weight:300">(comma separated)</span></label>
+          <input id="ft" placeholder="Revenue, Launch, Pivot…">
+        </div>
+        <button class="fsbtn" id="fsb" onclick="doSubmit()">
+          <div class="ld"></div><span class="lt">Add My Brick to the Wall →</span>
+        </button>
+        <p class="fnote">Your brick appears live for everyone the moment you post.</p>
+      </div>
+    </div>
+    <div class="fsuc" id="fsuc">
+      <div class="fsuc-i">✓</div>
+      <h3>Your brick is on the wall!</h3>
+      <p>Investors and founders can now see your update and connect with you through Vaithra.</p>
+      <button class="fsuc-btn" onclick="closeForm()">See the Wall →</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--ink4);text-decoration:none">← Vaithra Home</a>
+</footer>
+
+<script type="module">
+const TOTAL=36;
+let POSTS=[],curId=null;
+
+/* ── YOUR UPI ID — CHANGE THIS ──────────────────────
+   Replace with your actual UPI ID (e.g. sardhar@okaxis)
+   This opens the UPI app directly on the user's phone  */
+const YOUR_UPI_ID = '8977855998@ybl'; // ← Replace with your UPI ID
+const YOUR_NAME   = 'Vaithra';
+
+/* ── DEFAULT POSTS (shown instantly) ─────────────── */
+const DEFS=[
+  {id:'_1',startup:'AgriConnect',founder:'Priya Sharma',city:'Vijayawada',body:'Signed our first paying farmer this week. ₹0 in revenue last month. ₹500 this month. The jump from zero to any number changes everything. You stop asking "will anyone pay?" and start asking "how do I get 100 more?"',tags:['First Revenue','AgriTech'],reactions:{fire:18,clap:24,heart:12},createdAt:Date.now()-86400000},
+  {id:'_2',startup:'SkillBridge',founder:'Ravi Kumar',city:'Warangal',body:'Failed our first pilot. 40 signups. 2 exchanges happened. Platform works — behavior doesn\'t. Nobody wants to go first. Cold-start is real. Rethinking incentives from scratch.',tags:['Failure','Pivot'],reactions:{fire:12,clap:19,heart:7},createdAt:Date.now()-172800000},
+  {id:'_3',startup:'Glowvai',founder:'Rahimath',city:'Hyderabad',body:'Shipped v0.2 after 3 months in actual salons listening. Zero paying users. Product finally feels honest. Cold outreach starts tomorrow. Terrified but ready.',tags:['Launch','Week 8'],reactions:{fire:9,clap:16,heart:5},createdAt:Date.now()-259200000},
+  {id:'_4',startup:'MediRoute',founder:'Ananya Reddy',city:'Tirupati',body:'3 pharmacies signed MoUs. No tech — just WhatsApp and a Google Sheet. Proving behaviour exists before writing code. Pre-product traction is underrated.',tags:['Pre-product','HealthTech'],reactions:{fire:14,clap:21,heart:9},createdAt:Date.now()-345600000},
+  {id:'_5',startup:'BuildBrick',founder:'Sai Kiran',city:'Hyderabad',body:'Stuck on pricing 3 weeks. Free = tire-kickers. Paid = zero conversions. Tried ₹199, ₹499, ₹999. Nothing. Product works. Cannot crack Tier 2 India SMB pricing.',tags:['Pricing','Stuck'],reactions:{fire:6,clap:11,heart:8},createdAt:Date.now()-432000000},
+];
+
+/* ── UTILS ────────────────────────────────────────── */
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function ago(ts){const d=Date.now()-ts,m=Math.floor(d/60000);if(m<1)return'Just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago'}
+const ini=n=>(n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
+const AVC=[
+  {b:'#2E5020',f:'#F5F1E8'},{b:'#A07808',f:'#0F0E0B'},{b:'#1A4858',f:'#E8F0F8'},
+  {b:'#782820',f:'#F8EDE8'},{b:'#483068',f:'#EEE8F5'},{b:'#204838',f:'#E8F5EE'},
+  {b:'#603820',f:'#F5EDE8'},{b:'#203050',f:'#E8EEF5'}
+];
+const BCS=['bc0','bc1','bc2','bc3','bc4','bc5','bc6','bc7'];
+function avc(n){let h=0;for(let i=0;i<(n||'').length;i++)h=(h*31+n.charCodeAt(i))&0xffff;return AVC[h%AVC.length]}
+function bcs(n){let h=7;for(let i=0;i<(n||'').length;i++)h=(h*31+n.charCodeAt(i))&0xffff;return BCS[h%BCS.length]}
+
+/* ── RENDER WALL ──────────────────────────────────── */
+function render(newIds=[]){
+  const g=document.getElementById('bwall');
+  const f=POSTS.length;
+  document.getElementById('hstatN').textContent=f;
+  document.getElementById('wpfill').style.width=Math.min(100,Math.round(f/TOTAL*100))+'%';
+  document.getElementById('wptxt').textContent=f+' / '+TOTAL+' bricks filled';
+
+  let h='';
+  for(let i=0;i<TOTAL;i++){
+    const p=POSTS[i];
+    if(!p){h+=`<div class="brick empty"></div>`;continue}
+    const av=avc(p.founder),bc=bcs(p.founder),isN=newIds.includes(p.id);
+    const delay=isN?(newIds.indexOf(p.id)*.13)+'s':'0s';
+    h+=`<div class="brick filled ${bc}${isN?' new':''}" onclick="openModal('${p.id}')" style="${isN?'animation-delay:'+delay:''}">
+      <div class="b-shine"></div>
+      <div class="b-in">
+        <div class="b-top">
+          <div class="b-av" style="background:${av.b};color:${av.f}">${ini(p.founder)}</div>
+          <div class="b-meta">
+            <div class="b-startup">${esc(p.startup)}</div>
+            <div class="b-who">${esc(p.founder)}${p.city?' · '+esc(p.city):''}</div>
+          </div>
+          <div class="b-time">${ago(p.createdAt)}</div>
+        </div>
+        <div class="b-body">${esc(p.body)}</div>
+        <div class="b-foot">
+          <div class="b-rs">
+            <span class="b-r">🔥<span class="n">${p.reactions?.fire||0}</span></span>
+            <span class="b-r">👏<span class="n">${p.reactions?.clap||0}</span></span>
+            <span class="b-r">❤️<span class="n">${p.reactions?.heart||0}</span></span>
+          </div>
+          <span class="b-read">Read →</span>
+        </div>
+      </div>
+    </div>`;
+  }
+  g.innerHTML=h;
+}
+
+/* ── MODAL ────────────────────────────────────────── */
+window.openModal=function(id){
+  const p=POSTS.find(x=>x.id===id);if(!p)return;
+  curId=id;
+  const av=avc(p.founder);
+  const ma=document.getElementById('mav');ma.textContent=ini(p.founder);ma.style.background=av.b;ma.style.color=av.f;
+  document.getElementById('mst').textContent=p.startup;
+  document.getElementById('mf').textContent=p.founder;
+  document.getElementById('mci').textContent=p.city||'';
+  document.getElementById('mt').textContent=ago(p.createdAt);
+  document.getElementById('mb').textContent=p.body;
+  document.getElementById('mtgs').innerHTML=(p.tags||[]).map(t=>`<span class="mc-tag">${esc(t)}</span>`).join('');
+  buildReacts(p);
+  document.getElementById('cbt').textContent='Connect with '+p.founder;
+  document.getElementById('cbn').innerHTML=`${esc(p.founder)} is building <strong>${esc(p.startup)}</strong>${p.city?' in '+esc(p.city):''}. We are in early stage and trying to keep this organisation running — that's why we charge a small ₹99 for this introduction. It keeps the community serious and helps Vaithra stay alive.`;
+  // Automated WhatsApp message with UPI payment request
+  document.getElementById('paynote').textContent=
+    `Opens WhatsApp with payment details pre-filled → Pay ₹99 via any UPI app → Send screenshot → Get connected within 2 hours.`;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+};
+
+function buildReacts(p){
+  document.getElementById('mrs').innerHTML=
+    [{k:'fire',e:'🔥'},{k:'clap',e:'👏'},{k:'heart',e:'❤️'}].map(({k,e})=>{
+      const c=p.reactions?.[k]||0,r=window.fbHas&&window.fbHas(p.id,k);
+      return`<button class="rpill${r?' reacted':''}" onclick="doReact('${p.id}','${k}',this)">${e}<span class="rc" id="rc-${p.id}-${k}">${c}</span></button>`;
+    }).join('');
+}
+
+window.doReact=async function(id,e,btn){
+  if(window.fbHas&&window.fbHas(id,e))return;
+  btn.classList.add('reacted');
+  const el=document.getElementById(`rc-${id}-${e}`);
+  if(el)el.textContent=parseInt(el.textContent)+1;
+  if(window.fbReact)await window.fbReact(id,e);
+};
+
+window.closeModal=function(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';curId=null};
+
+/* ── UPI PAYMENT — FULLY AUTOMATED ───────────────────
+   This sends a pre-filled WhatsApp message to YOU
+   containing:
+   1. UPI payment link (opens GPay/PhonePe/Paytm directly)
+   2. Who wants to connect with whom
+   3. Their name and role (they fill it in WhatsApp)
+   After they pay and send screenshot, you connect them.
+   ────────────────────────────────────────────────── */
+window.handlePay=function(){
+  const p=POSTS.find(x=>x.id===curId);if(!p)return;
+
+  // UPI deep link — opens any UPI app directly
+  const upiLink=`upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=99&cu=INR&tn=${encodeURIComponent('Vaithra Connect - '+p.startup)}`;
+
+  // Pre-filled WhatsApp message with full automation
+  const waMsg=
+`Hi Vaithra! I want to connect with ${p.founder} (${p.startup}${p.city?', '+p.city:''}).
+
+💳 *Paying ₹99 via UPI now*
+UPI ID: ${YOUR_UPI_ID}
+Amount: ₹99
+
+Please open this link to pay instantly:
+${upiLink}
+
+📋 *My details:*
+Name: 
+My startup / role: 
+Why I want to connect: 
+
+I will send the payment screenshot right after paying. Please connect me within 2 hours. Thank you!`;
+
+  // Open WhatsApp with the full automated message
+  window.open('https://wa.me/918977855998?text='+encodeURIComponent(waMsg),'_blank');
+};
+
+/* ── FORM ─────────────────────────────────────────── */
+window.openForm=()=>{document.getElementById('fwrap').style.display='block';document.getElementById('fsuc').classList.remove('show');document.getElementById('flay').classList.add('open');document.body.style.overflow='hidden'};
+window.closeForm=()=>{document.getElementById('flay').classList.remove('open');document.body.style.overflow=''};
+
+window.doSubmit=async function(){
+  const name=document.getElementById('fn').value.trim();
+  const startup=document.getElementById('fs').value.trim();
+  const city=document.getElementById('fci').value.trim();
+  const phone=document.getElementById('fp').value.trim();
+  const body=document.getElementById('fb_').value.trim();
+  const tags=document.getElementById('ft').value.split(',').map(t=>t.trim()).filter(Boolean);
+  if(!name||!startup||body.length<15){
+    (!name?document.getElementById('fn'):!startup?document.getElementById('fs'):document.getElementById('fb_')).focus();return;
+  }
+  const btn=document.getElementById('fsb');btn.disabled=true;btn.classList.add('loading');
+  const ok=await window.fbSave({founder:name,name,startup,city,phone,body,tags:tags.length?tags:['Update']});
+  btn.disabled=false;btn.classList.remove('loading');
+  if(ok){
+    ['fn','fs','fci','fp','fb_','ft'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('fwrap').style.display='none';
+    document.getElementById('fsuc').classList.add('show');
+  }else alert('Something went wrong. Try again.');
+};
+
+/* ── INIT ─────────────────────────────────────────── */
+document.getElementById('modal').onclick=e=>{if(e.target===document.getElementById('modal'))closeModal()};
+document.getElementById('flay').onclick=e=>{if(e.target===document.getElementById('flay'))closeForm()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeForm()}});
+
+// Show defaults immediately — no Firebase wait
+POSTS=[...DEFS];
+render([]);
+
+function init(){
+  if(typeof window.fbListen==='function'){
+    window.fbListen(posts=>{
+      const newIds=posts.filter(p=>!POSTS.find(x=>x.id===p.id)).map(p=>p.id);
+      if(posts.length>0)POSTS=posts;
+      document.getElementById('lpip').style.opacity='1';
+      document.getElementById('lpip2').style.opacity='1';
+      render(newIds);
+      if(curId){const p=POSTS.find(x=>x.id===curId);if(p)buildReacts(p)}
+    });
+  }else setTimeout(init,200);
+}
+init();
+</script>
 </body>
 </html>
