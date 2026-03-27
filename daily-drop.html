@@ -12,20 +12,19 @@
 
   // ⚠️ REPLACE WITH YOUR FIREBASE CONFIG
   const firebaseConfig = {
-const firebaseConfig = {
   apiKey: "AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
   authDomain: "vaithra-grants.firebaseapp.com",
   projectId: "vaithra-grants",
   storageBucket: "vaithra-grants.firebasestorage.app",
   messagingSenderId: "655290922548",
   appId: "1:655290922548:web:991b339e2475aa9f443c61"
-};
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window._db = db;
-  window._fbModules = { collection, query, orderBy, limit, getDocs, doc, getDoc };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Make them global so loadDrops() can see them
+window.db = db;
 
   async function loadDrops() {
     try {
