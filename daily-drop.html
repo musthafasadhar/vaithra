@@ -7,24 +7,22 @@
 
 <!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, query, orderBy, limit, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+  import { getFirestore, collection, query, orderBy, limit, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-  // ⚠️ REPLACE WITH YOUR FIREBASE CONFIG
   const firebaseConfig = {
-  apiKey: "AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
-  authDomain: "vaithra-grants.firebaseapp.com",
-  projectId: "vaithra-grants",
-  storageBucket: "vaithra-grants.firebasestorage.app",
-  messagingSenderId: "655290922548",
-  appId: "1:655290922548:web:991b339e2475aa9f443c61"
+    apiKey: "AIzaSyDSTb9r6spEjCifTzUhD7Gq9rFDpgSsZtc",
+    authDomain: "glowvai.firebaseapp.com",
+    projectId: "glowvai",
+    storageBucket: "glowvai.firebasestorage.app",
+    messagingSenderId: "28954530836",
+    appId: "1:28954530836:web:08e080fb330dd466af8301"
   };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Make them global so loadDrops() can see them
-window.db = db;
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window._db = db;
+  window._fbModules = { collection, query, orderBy, limit, getDocs, doc, getDoc };
 
   async function loadDrops() {
     try {
