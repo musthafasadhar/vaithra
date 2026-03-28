@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vaithra Admin — Daily Drop</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy, limit, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDSTb9r6spEjCifTzUhD7Gq9rFDpgSsZtc",
+    authDomain: "glowvai.firebaseapp.com",
+    projectId: "glowvai",
+    storageBucket: "glowvai.firebasestorage.app",
+    messagingSenderId: "28954530836",
+    appId: "1:28954530836:web:08e080fb330dd466af8301"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  // Expose to window so non-module scripts can call them
+  window._auth = auth;
+  window._db   = db;
+  window._fbFns = { collection, addDoc, serverTimestamp, getDocs, query, orderBy, limit, deleteDoc, doc, signInWithEmailAndPassword, signOut };
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminShell').style.display  = 'block';
+      document.getElementById('userEmail').textContent = user.email;
+      loadRecentDrops();
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('adminShell').style.display  = 'none';
+    }
+  });
+</script>
+
+<style>
+:root{--W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;--OL:#4A5C3A;--OLl:#6B7F58;--INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;--GD:#B8A060;--BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22);--ERR:#c0503a}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--W2);color:var(--INK);min-height:100vh}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL)}
+
+/* ── LOGIN ── */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--INK)}
+.login-box{width:100%;max-width:400px;padding:56px 48px;background:rgba(250,250,248,.04);border:1px solid rgba(107,127,88,.15);border-radius:20px;text-align:center}
+.login-logo{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.3em;color:rgba(250,250,248,.5);margin-bottom:40px;display:block}
+.login-box h2{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;color:#FAFAF8;margin-bottom:6px;font-weight:300}
+.login-box .sub{font-size:12px;color:rgba(250,250,248,.3);margin-bottom:32px}
+.login-field{margin-bottom:14px;text-align:left}
+.login-field label{display:block;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.35);margin-bottom:7px}
+.login-input{width:100%;padding:13px 18px;background:rgba(250,250,248,.05);border:1px solid rgba(107,127,88,.2);border-radius:12px;color:#FAFAF8;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .3s}
+.login-input:focus{border-color:rgba(107,127,88,.45)}
+.login-btn{width:100%;margin-top:8px;padding:14px;background:var(--OL);color:#FAFAF8;border:none;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .3s}
+.login-btn:hover{background:var(--OLl)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed}
+.login-err{font-size:11px;color:#c87060;margin-top:10px;min-height:16px;text-align:center}
+.login-note{font-size:10px;color:rgba(250,250,248,.2);margin-top:20px;line-height:1.6}
+
+/* ── ADMIN SHELL ── */
+#adminShell{display:none}
+.admin-nav{background:var(--INK);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.admin-nav-left{display:flex;align-items:center;gap:16px}
+.admin-nav-logo{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:.25em;color:#FAFAF8;text-decoration:none}
+.admin-badge{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:4px 12px;background:rgba(74,92,58,.3);color:var(--OLl);border:1px solid rgba(74,92,58,.3);border-radius:100px}
+.admin-nav-right{display:flex;align-items:center;gap:16px}
+#userEmail{font-size:11px;color:rgba(250,250,248,.3)}
+.admin-logout{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.3);cursor:pointer;border:none;background:none;transition:color .2s}
+.admin-logout:hover{color:#FAFAF8}
+
+.admin-body{max-width:900px;margin:0 auto;padding:48px 24px 100px}
+
+/* section cards */
+.admin-section{background:var(--W);border:1px solid var(--BD);border-radius:20px;padding:36px;margin-bottom:24px}
+.section-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--OL);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--BD)}
+
+/* form */
+label{display:block;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INKm);margin-bottom:8px}
+input[type=text],input[type=url],textarea,select{width:100%;padding:13px 16px;background:var(--W2);border:1px solid var(--BD);border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--INK);outline:none;transition:border-color .2s;resize:vertical}
+input[type=text]:focus,input[type=url]:focus,textarea:focus,select:focus{border-color:var(--OLl)}
+textarea{min-height:160px;line-height:1.7}
+.field{margin-bottom:20px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+
+/* resources */
+.res-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.res-item{background:var(--W2);border:1px solid var(--BD);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.res-item-info{flex:1;font-size:13px}
+.res-item-type{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--OL);background:rgba(74,92,58,.08);padding:2px 8px;border-radius:100px;margin-left:8px}
+.res-remove{border:none;background:none;color:var(--INKl);cursor:pointer;font-size:16px;padding:0 4px;transition:color .2s}
+.res-remove:hover{color:var(--ERR)}
+.add-res-row{display:grid;grid-template-columns:auto 1fr 1fr auto;gap:10px;align-items:end}
+.add-res-row select,.add-res-row input{padding:10px 12px}
+.add-btn{padding:10px 18px;background:rgba(74,92,58,.1);border:1px solid var(--BD2);border-radius:10px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--OL);cursor:pointer;white-space:nowrap;transition:all .2s}
+.add-btn:hover{background:rgba(74,92,58,.2)}
+
+/* tags */
+.tags-input-wrap{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--W2);border:1px solid var(--BD);border-radius:12px;cursor:text;min-height:48px;align-items:center}
+.tag-pill{display:flex;align-items:center;gap:5px;background:var(--W3);border:1px solid var(--BD);border-radius:100px;padding:4px 10px;font-size:12px}
+.tag-pill button{border:none;background:none;color:var(--INKl);cursor:pointer;font-size:13px;line-height:1;padding:0}
+.tag-pill button:hover{color:var(--ERR)}
+#tagInput{border:none;background:transparent;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;min-width:80px;color:var(--INK)}
+
+/* action */
+.action-bar{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
+.btn-primary{padding:15px 36px;background:var(--INK);color:#FAFAF8;border:none;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:var(--OL)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-secondary{padding:15px 24px;background:transparent;color:var(--INK);border:1px solid var(--BD2);border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.btn-secondary:hover{background:var(--W2)}
+
+/* publish status */
+#publishStatus{margin-top:16px;padding:16px 20px;border-radius:12px;font-size:13px;display:none}
+#publishStatus.success{background:rgba(74,92,58,.1);border:1px solid var(--BD2);color:var(--OL)}
+#publishStatus.error{background:rgba(192,80,58,.08);border:1px solid rgba(192,80,58,.2);color:var(--ERR)}
+
+/* preview */
+#previewBox{background:var(--INK);border-radius:16px;padding:32px;margin-top:16px;display:none}
+#previewBox.show{display:block}
+.preview-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:#FAFAF8;margin-bottom:10px}
+.preview-cat{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:3px 12px;background:rgba(74,92,58,.2);color:var(--OLl);border:1px solid rgba(74,92,58,.3);border-radius:100px;display:inline-block;margin-bottom:16px}
+.preview-body{font-size:14px;color:rgba(250,250,248,.5);line-height:1.8}
+
+/* recent drops table */
+.drops-table{width:100%;border-collapse:collapse;margin-top:8px}
+.drops-table th{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl);padding:10px 12px;text-align:left;border-bottom:1px solid var(--BD)}
+.drops-table td{padding:14px 12px;font-size:13px;border-bottom:1px solid var(--BD);vertical-align:middle}
+.drops-table tr:last-child td{border-bottom:none}
+.drop-del-btn{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(192,80,58,.2);border-radius:100px;background:none;color:var(--ERR);cursor:pointer;transition:all .2s}
+.drop-del-btn:hover{background:rgba(192,80,58,.08)}
+.no-drops{font-size:13px;color:var(--INKl);font-weight:300;padding:20px 0}
+
+/* Google Sheets guide */
+.guide-step{padding:16px 20px;background:var(--W2);border-radius:12px;border:1px solid var(--BD);margin-bottom:10px}
+.guide-step-title{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--OL);margin-bottom:6px}
+.guide-step p{font-size:12px;color:var(--INKm);line-height:1.7}
+code{background:var(--W3);padding:1px 6px;border-radius:4px;font-size:11px}
+
+/* toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--INK);color:#FAFAF8;font-family:'Syne',sans-serif;font-size:9px;letter-spacing:.18em;text-transform:uppercase;padding:12px 22px;border-radius:100px;opacity:0;transition:all .35s;z-index:9999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:640px){.field-row{grid-template-columns:1fr}.add-res-row{grid-template-columns:1fr 1fr}.action-bar{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <span class="login-logo">VAITHRA</span>
+    <h2>Admin Panel</h2>
+    <p class="sub">Sign in with your Firebase admin account</p>
+    <div class="login-field">
+      <label>Email</label>
+      <input class="login-input" type="email" id="loginEmail" placeholder="admin@vaithra.in" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input class="login-input" type="password" id="loginPw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <p class="login-err" id="loginErr"></p>
+    <p class="login-note">Use the email + password you set up in Firebase Authentication → Users.</p>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN SHELL ══════════ -->
+<div id="adminShell">
+  <nav class="admin-nav">
+    <div class="admin-nav-left">
+      <a href="daily-drop.html" class="admin-nav-logo">VAITHRA</a>
+      <span class="admin-badge">Admin Panel</span>
+    </div>
+    <div class="admin-nav-right">
+      <span id="userEmail"></span>
+      <button class="admin-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- ── COMPOSE ── -->
+    <div class="admin-section">
+      <div class="section-title">Compose &amp; Publish Today's Drop</div>
+
+      <div class="field-row">
+        <div>
+          <label>Drop Title</label>
+          <input type="text" id="dropTitle" placeholder="The insight founders need today…">
+        </div>
+        <div>
+          <label>Category</label>
+          <select id="dropCat">
+            <option>Execution</option><option>Pricing Strategy</option><option>Product</option>
+            <option>Growth</option><option>Team Building</option><option>Fundraising</option>
+            <option>Mindset</option><option>Sales</option><option>Marketing</option><option>Operations</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Preview / Teaser (1–2 sentences shown on the card)</label>
+        <textarea id="dropPreview" rows="3" placeholder="Hook the reader. One sharp, honest idea."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Full Drop Body (HTML supported)</label>
+        <textarea id="dropBody" rows="12" placeholder="Write the full drop here.&#10;&#10;&lt;p&gt;Your paragraph here.&lt;/p&gt;&#10;&lt;h3&gt;Section Heading&lt;/h3&gt;&#10;&lt;blockquote&gt;Key quote or insight.&lt;/blockquote&gt;"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Tags (press Enter or comma to add)</label>
+        <div class="tags-input-wrap" id="tagsWrap" onclick="document.getElementById('tagInput').focus()">
+          <input id="tagInput" placeholder="Add a tag…" onkeydown="handleTagKey(event)">
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RESOURCES ── -->
+    <div class="admin-section">
+      <div class="section-title">Attach Resources</div>
+      <div class="res-list" id="resList">
+        <p class="no-drops">No resources added yet.</p>
+      </div>
+      <div style="background:var(--W2);border:1px solid var(--BD);border-radius:14px;padding:20px">
+        <label style="margin-bottom:12px">Add a Resource</label>
+        <div class="add-res-row">
+          <div>
+            <label>Type</label>
+            <select id="newResType">
+              <option value="pdf">📄 PDF</option>
+              <option value="link">🔗 Article</option>
+              <option value="yt">▶ YouTube</option>
+              <option value="notion">◻ Notion</option>
+              <option value="template">📋 Template</option>
+              <option value="tool">🛠 Tool</option>
+            </select>
+          </div>
+          <div>
+            <label>Resource Name</label>
+            <input type="text" id="newResName" placeholder="e.g. Pricing worksheet">
+          </div>
+          <div>
+            <label>URL</label>
+            <input type="url" id="newResUrl" placeholder="https://…">
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button class="add-btn" onclick="addResource()">+ Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PUBLISH ── -->
+    <div class="admin-section">
+      <div class="section-title">Publish</div>
+      <p style="font-size:13px;color:var(--INKm);font-weight:300;margin-bottom:20px">When you're ready, click <strong style="color:var(--INK)">Publish Drop</strong>. It goes live on your site instantly — no file editing needed.</p>
+      <div class="action-bar">
+        <button class="btn-primary" id="publishBtn" onclick="publishDrop()">
+          <span>Publish Drop</span>
+        </button>
+        <button class="btn-secondary" onclick="togglePreview()">Preview Card</button>
+        <button class="btn-secondary" onclick="clearForm()">Clear Form</button>
+      </div>
+      <div id="publishStatus"></div>
+      <div id="previewBox">
+        <div class="preview-cat" id="pvCat"></div>
+        <div class="preview-title" id="pvTitle"></div>
+        <div class="preview-body" id="pvBody"></div>
+      </div>
+    </div>
+
+    <!-- ── RECENT DROPS ── -->
+    <div class="admin-section">
+      <div class="section-title">Recent Drops</div>
+      <div id="recentDrops"><p class="no-drops">Loading…</p></div>
+    </div>
+
+    <!-- ── GOOGLE SHEETS GUIDE ── -->
+    <div class="admin-section">
+      <div class="section-title">Google Sheets Email Setup</div>
+      <p style="font-size:13px;color:var(--INKm);font-weight:300;margin-bottom:20px">One-time setup to save subscriber emails automatically to a Google Sheet with timestamp.</p>
+
+      <div class="guide-step">
+        <div class="guide-step-title">Step 1 — Create a Google Form</div>
+        <p>Go to <strong>forms.google.com</strong> → Blank form → Add one question: <em>Email Address</em> (Short answer, required).</p>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-title">Step 2 — Get Form Action URL</div>
+        <p>In the form → 3-dot menu → <em>Get pre-filled link</em> → type any email → Get link. In the URL bar, change <code>/viewform</code> to <code>/formResponse</code>. That's your FORM_ACTION.</p>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-title">Step 3 — Get the Entry ID</div>
+        <p>In that same pre-filled URL, find <code>entry.XXXXXXXXXX</code> — that number is your ENTRY_ID. Open <code>daily-drop.html</code>, find the two lines near the bottom and paste both values in.</p>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-title">Step 4 — Connect to Google Sheets</div>
+        <p>In your Google Form → Responses tab → click the green Sheets icon → Create spreadsheet. Every subscriber email now auto-saves with a timestamp. Done ✓</p>
+      </div>
+      <div class="guide-step">
+        <div class="guide-step-title">Step 5 — Set Firestore Security Rules</div>
+        <p>In Firebase Console → Firestore → Rules tab → paste this and click Publish:</p>
+        <pre style="background:var(--W3);border-radius:8px;padding:14px;font-size:11px;margin-top:10px;overflow-x:auto;line-height:1.7">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /drops/{dropId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var tags = [];
+var resources = [];
+
+/* ── AUTH ── */
+function doLogin() {
+  var email = document.getElementById('loginEmail').value.trim();
+  var pw    = document.getElementById('loginPw').value;
+  var btn   = document.getElementById('loginBtn');
+  var err   = document.getElementById('loginErr');
+  if (!email || !pw) { err.textContent = 'Enter email and password.'; return; }
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  var { signInWithEmailAndPassword } = window._fbFns;
+  signInWithEmailAndPassword(window._auth, email, pw)
+    .catch(function(e) {
+      err.textContent = 'Wrong email or password. Try again.';
+      btn.disabled = false; btn.textContent = 'Sign In';
+    });
+}
+function doLogout() {
+  var { signOut } = window._fbFns;
+  signOut(window._auth);
+}
+
+/* ── TAGS ── */
+function handleTagKey(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    var val = e.target.value.trim().replace(/,$/, '');
+    if (val && !tags.includes(val)) { tags.push(val); renderTags(); }
+    e.target.value = '';
+  }
+}
+function removeTag(i) { tags.splice(i, 1); renderTags(); }
+function renderTags() {
+  var wrap = document.getElementById('tagsWrap');
+  var pills = tags.map(function(t, i) {
+    return '<span class="tag-pill">' + t + '<button onclick="removeTag(' + i + ')">×</button></span>';
+  }).join('');
+  wrap.innerHTML = pills + '<input id="tagInput" placeholder="' + (tags.length ? '' : 'Add a tag…') + '" onkeydown="handleTagKey(event)">';
+}
+
+/* ── RESOURCES ── */
+var RES_ICONS = { pdf:'📄', link:'🔗', yt:'▶', notion:'◻', template:'📋', tool:'🛠' };
+function addResource() {
+  var type = document.getElementById('newResType').value;
+  var name = document.getElementById('newResName').value.trim();
+  var url  = document.getElementById('newResUrl').value.trim();
+  if (!name) { showToast('Enter a resource name'); return; }
+  resources.push({ type: type, name: name, url: url || '#' });
+  document.getElementById('newResName').value = '';
+  document.getElementById('newResUrl').value  = '';
+  renderResources();
+}
+function removeResource(i) { resources.splice(i, 1); renderResources(); }
+function renderResources() {
+  var list = document.getElementById('resList');
+  if (!resources.length) {
+    list.innerHTML = '<p class="no-drops">No resources added yet.</p>';
+    return;
+  }
+  list.innerHTML = resources.map(function(r, i) {
+    return '<div class="res-item">' +
+      '<span style="font-size:18px">' + (RES_ICONS[r.type] || '🔗') + '</span>' +
+      '<div class="res-item-info"><strong>' + r.name + '</strong>' +
+      '<span class="res-item-type">' + r.type + '</span>' +
+      (r.url && r.url !== '#' ? '<br><span style="font-size:11px;color:var(--INKl)">' + r.url + '</span>' : '') +
+      '</div>' +
+      '<button class="res-remove" onclick="removeResource(' + i + ')">✕</button>' +
+      '</div>';
+  }).join('');
+}
+
+/* ── PUBLISH TO FIRESTORE ── */
+async function publishDrop() {
+  var title   = document.getElementById('dropTitle').value.trim();
+  var cat     = document.getElementById('dropCat').value;
+  var preview = document.getElementById('dropPreview').value.trim();
+  var body    = document.getElementById('dropBody').value.trim();
+  var status  = document.getElementById('publishStatus');
+  var btn     = document.getElementById('publishBtn');
+
+  if (!title || !preview || !body) {
+    showStatus('Please fill in Title, Preview and Body before publishing.', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span>Publishing…</span>';
+
+  try {
+    var { collection, addDoc, serverTimestamp } = window._fbFns;
+    var db = window._db;
+
+    await addDoc(collection(db, 'drops'), {
+      title:       title,
+      category:    cat,
+      preview:     preview,
+      body:        body,
+      tags:        tags,
+      resources:   resources,
+      publishedAt: serverTimestamp()
+    });
+
+    showStatus('✓ Drop published successfully! It\'s live on your site now.', 'success');
+    showToast('Drop published!');
+    clearForm();
+    loadRecentDrops();
+  } catch (e) {
+    showStatus('Error publishing: ' + e.message + '. Make sure Firestore is enabled and rules are set.', 'error');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span>Publish Drop</span>';
+}
+
+function showStatus(msg, type) {
+  var s = document.getElementById('publishStatus');
+  s.textContent = msg;
+  s.className   = type;
+  s.style.display = 'block';
+  setTimeout(function() { s.style.display = 'none'; }, 6000);
+}
+
+/* ── LOAD RECENT DROPS ── */
+async function loadRecentDrops() {
+  var wrap = document.getElementById('recentDrops');
+  try {
+    var { collection, getDocs, query, orderBy, limit, deleteDoc, doc } = window._fbFns;
+    var db = window._db;
+    var q  = query(collection(db, 'drops'), orderBy('publishedAt', 'desc'), limit(10));
+    var snap = await getDocs(q);
+    if (snap.empty) { wrap.innerHTML = '<p class="no-drops">No drops published yet.</p>'; return; }
+
+    var rows = '';
+    snap.forEach(function(d) {
+      var data = d.data();
+      var date = data.publishedAt && data.publishedAt.toDate
+        ? data.publishedAt.toDate().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+        : '—';
+      rows += '<tr>' +
+        '<td style="font-weight:500;max-width:320px">' + data.title + '</td>' +
+        '<td style="color:var(--OL)">' + (data.category || '—') + '</td>' +
+        '<td style="color:var(--INKl)">' + date + '</td>' +
+        '<td><button class="drop-del-btn" onclick="deleteDrop(\'' + d.id + '\')">Delete</button></td>' +
+        '</tr>';
+    });
+
+    wrap.innerHTML = '<table class="drops-table">' +
+      '<thead><tr><th>Title</th><th>Category</th><th>Date</th><th></th></tr></thead>' +
+      '<tbody>' + rows + '</tbody>' +
+      '</table>';
+  } catch (e) {
+    wrap.innerHTML = '<p class="no-drops" style="color:var(--ERR)">Could not load drops — check Firestore setup.</p>';
+  }
+}
+
+async function deleteDrop(id) {
+  if (!confirm('Delete this drop? This cannot be undone.')) return;
+  try {
+    var { deleteDoc, doc } = window._fbFns;
+    await deleteDoc(doc(window._db, 'drops', id));
+    showToast('Drop deleted');
+    loadRecentDrops();
+  } catch (e) {
+    showToast('Error deleting drop');
+  }
+}
+
+/* ── PREVIEW ── */
+function togglePreview() {
+  var box = document.getElementById('previewBox');
+  if (box.classList.contains('show')) { box.classList.remove('show'); return; }
+  document.getElementById('pvTitle').textContent = document.getElementById('dropTitle').value || 'Drop Title';
+  document.getElementById('pvCat').textContent   = document.getElementById('dropCat').value;
+  document.getElementById('pvBody').textContent  = document.getElementById('dropPreview').value || 'Preview…';
+  box.classList.add('show');
+}
+
+/* ── CLEAR ── */
+function clearForm() {
+  ['dropTitle', 'dropPreview', 'dropBody'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  tags = []; resources = [];
+  renderTags(); renderResources();
+  document.getElementById('previewBox').classList.remove('show');
+}
+
+/* ── TOAST ── */
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2800);
+}
+</script>
+</body>
+</html>
