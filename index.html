@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vaithra | The Founder Community</title>
+<title>Vaithra — A Serious Ecosystem for Serious Founders</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --W:#FAFAF8;--W2:#F3F0E8;--W3:#E8E5DC;
@@ -21,6 +21,8 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
+
+/* UTILITY */
 .ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--OL);display:block}
 .bp{background:var(--INK);color:var(--W);border:none;padding:14px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
 .bp:hover{background:var(--OL);transform:translateY(-2px);box-shadow:0 10px 28px rgba(74,92,58,.28)}
@@ -34,13 +36,83 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .rl.on{opacity:1;transform:none}
 .rr{opacity:0;transform:translateX(34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
 .rr.on{opacity:1;transform:none}
-.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}
+.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}.d5{transition-delay:.5s!important}
+
+/* ══════════════ INTRO ══════════════ */
+#intro{position:fixed;inset:0;z-index:9999;background:var(--OLd);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.i-orbs{position:absolute;inset:0;pointer-events:none}
+.i-orb{position:absolute;border-radius:50%;filter:blur(110px);animation:ioA 12s ease-in-out infinite alternate}
+.i-orb:nth-child(1){width:70vw;height:70vw;background:radial-gradient(circle,rgba(74,92,58,.55),transparent 68%);top:-20%;left:-15%}
+.i-orb:nth-child(2){width:50vw;height:50vw;background:radial-gradient(circle,rgba(184,160,96,.22),transparent 70%);bottom:-15%;right:-10%;animation-duration:16s;animation-delay:-5s}
+.i-orb:nth-child(3){width:32vw;height:32vw;background:radial-gradient(circle,rgba(46,58,36,.7),transparent 70%);top:35%;right:8%;animation-duration:9s;animation-delay:-2s}
+@keyframes ioA{from{transform:scale(1) translate(0,0)}to{transform:scale(1.15) translate(3%,2%)}}
+.i-grain{position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.i-scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .55s,transform .55s}
+.i-scene.hidden{opacity:0;pointer-events:none;transform:scale(.96)}
+.i-scene.away{display:none}
+
+/* Splash */
+.splash-c{position:relative;z-index:2;text-align:center}
+.splash-logo{font-family:'Syne',sans-serif;font-size:clamp(48px,12vw,130px);font-weight:800;letter-spacing:.14em;color:transparent;background:linear-gradient(135deg,var(--W) 25%,rgba(212,187,128,.9) 55%,var(--W) 80%);background-size:200%;-webkit-background-clip:text;background-clip:text;opacity:0;animation:slIn 1.2s cubic-bezier(.16,1,.3,1) .3s forwards,slShimmer 4s ease 1.6s infinite}
+@keyframes slIn{from{opacity:0;letter-spacing:.32em;transform:translateY(30px)}to{opacity:1;letter-spacing:.14em;transform:none}}
+@keyframes slShimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+.splash-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(13px,2vw,20px);font-style:italic;font-weight:300;color:rgba(250,250,248,.38);margin-top:14px;letter-spacing:.06em;opacity:0;animation:slFU .8s ease 1s forwards}
+@keyframes slFU{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.splash-prog{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);width:min(200px,80vw);text-align:center;opacity:0;animation:slFU .5s ease 1.5s forwards;z-index:2}
+.splash-track{width:100%;height:1px;background:rgba(250,250,248,.1);border-radius:1px;overflow:hidden;margin-bottom:9px}
+.splash-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--OLl),var(--GD));transition:width .1s linear}
+.splash-lbl{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(250,250,248,.22)}
+
+/* Onboard card */
+.ob-wrap{position:relative;z-index:2;width:90%;max-width:460px}
+.ob-card{background:rgba(250,250,248,.05);border:1px solid rgba(250,250,248,.1);border-radius:26px;padding:40px 32px;backdrop-filter:blur(24px);position:relative;overflow:hidden}
+.ob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,187,128,.45),transparent)}
+.ob-steps{display:flex;gap:7px;margin-bottom:32px}
+.ob-dot{height:3px;border-radius:2px;background:rgba(250,250,248,.14);transition:all .4s}
+.ob-dot.cur{width:42px;background:var(--GD)}
+.ob-dot.nxt{width:28px}
+.ob-dot.dn{background:var(--OLl);width:28px}
+.ob-ttl{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--W);line-height:1.05;margin-bottom:6px}
+.ob-sub{font-size:12px;color:rgba(250,250,248,.36);margin-bottom:26px;font-weight:300;line-height:1.6}
+.ob-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(250,250,248,.28);display:block;margin-bottom:8px}
+.ob-inp{width:100%;background:rgba(250,250,248,.06);border:1px solid rgba(250,250,248,.12);border-radius:12px;padding:14px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--W);outline:none;transition:border-color .3s,background .3s;margin-bottom:5px}
+.ob-inp:focus{border-color:rgba(212,187,128,.45);background:rgba(250,250,248,.09)}
+.ob-inp::placeholder{color:rgba(250,250,248,.2)}
+.ob-err{font-size:11px;color:#e07060;display:none;margin-bottom:7px}
+.ob-check{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:11px}
+.ob-check input{display:none}
+.ob-box{width:20px;height:20px;min-width:20px;border:1.5px solid rgba(250,250,248,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all .3s;margin-top:1px}
+.ob-check input:checked~.ob-box{background:var(--OLl);border-color:var(--OLl)}
+.ob-check input:checked~.ob-box::after{content:'✓';font-size:11px;color:#fff;font-weight:700}
+.ob-clbl{font-size:12px;color:rgba(250,250,248,.42);line-height:1.55}
+.ob-clbl a{color:rgba(212,187,128,.75);text-decoration:underline}
+.ob-btn{width:100%;background:linear-gradient(135deg,var(--OLl),var(--OL));color:var(--W);border:none;padding:15px;border-radius:13px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:10px}
+.ob-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 36px rgba(74,92,58,.38)}
+.ob-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* Welcome */
+.wlc-inner{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;padding:20px}
+.wlc-ring{width:88px;height:88px;border-radius:50%;border:1.5px solid rgba(74,92,58,.4);display:flex;align-items:center;justify-content:center;position:relative;animation:wR 2.5s ease-in-out infinite}
+.wlc-ring::before,.wlc-ring::after{content:'';position:absolute;border-radius:50%;border:1px solid rgba(74,92,58,.2)}
+.wlc-ring::before{inset:-10px;animation:wR 2.5s ease-in-out .4s infinite}
+.wlc-ring::after{inset:-22px;border-color:rgba(74,92,58,.08);animation:wR 2.5s ease-in-out .8s infinite}
+@keyframes wR{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.wlc-icon{font-size:34px}
+.wlc-ttl{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,50px);font-weight:800;color:var(--W);line-height:1}
+.wlc-nm{color:var(--GDl)}
+.wlc-s{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,2vw,22px);font-style:italic;color:rgba(250,250,248,.4)}
+.wlc-btn{background:linear-gradient(135deg,var(--OLl),var(--OL));color:var(--W);border:none;padding:15px 42px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .35s;box-shadow:0 12px 36px rgba(74,92,58,.3)}
+.wlc-btn:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(74,92,58,.4)}
+
+/* ══════════════ MAIN SITE ══════════════ */
+#site{opacity:0;transition:opacity .9s ease}
+#site.visible{opacity:1}
 
 /* NAV */
-.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
-.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK)}
+.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.9);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06);transition:background .4s}
+.nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);flex-shrink:0}
 .nav-links{display:flex;gap:22px;list-style:none;align-items:center}
-.nav-links a{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none;transition:color .2s}
+.nav-links a{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none;font-family:'Syne',sans-serif;transition:color .2s}
 .nav-links a:hover{color:var(--OL)}
 .nav-r{display:flex;gap:10px;align-items:center}
 .plat-btn{display:flex;align-items:center;gap:8px;background:var(--OL);color:var(--W);border:none;padding:9px 18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:all .3s}
@@ -48,7 +120,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .pdots{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:12px}
 .pd{width:4px;height:4px;background:rgba(255,255,255,.65);border-radius:50%}
 
-/* APPLY OVERLAY */
+/* Mobile nav toggle */
+.mob-menu-btn{display:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.mob-bar{width:18px;height:1.5px;background:var(--INK);transition:all .3s;border-radius:2px}
+.mob-menu-btn.open .mob-bar:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.mob-menu-btn.open .mob-bar:nth-child(2){opacity:0}
+.mob-menu-btn.open .mob-bar:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile nav drawer */
+.mob-drawer{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(250,250,248,.97);backdrop-filter:blur(22px);z-index:7999;flex-direction:column;align-items:center;justify-content:center;gap:28px;transform:translateY(-100%);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.mob-drawer.open{transform:none}
+.mob-drawer a{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--INK);text-decoration:none;transition:color .2s}
+.mob-drawer a:hover{color:var(--OL)}
+.mob-drawer .mob-cta{margin-top:16px}
+
+/* Apply overlay */
 #applyOv{position:fixed;inset:0;background:var(--W2);z-index:10000;transform:translateY(100%);transition:transform .7s cubic-bezier(.4,0,.2,1);overflow:hidden}
 #applyOv.open{transform:translateY(0)}
 .ov-hd{padding:18px 36px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--BD);background:var(--W2);position:sticky;top:0;z-index:5}
@@ -56,7 +142,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .fw{max-width:860px;margin:36px auto;padding:0 20px 80px}
 .fb{background:#fff;border-radius:28px;overflow:hidden;border:1px solid var(--BD);box-shadow:var(--SM)}
 
-/* FEATURE HUB */
+/* Feature Hub */
 #fHub{position:fixed;inset:0;z-index:9500;pointer-events:none;display:flex;align-items:center;justify-content:center}
 #fHub.open{pointer-events:all}
 .fh-bd{position:absolute;inset:0;background:rgba(24,22,15,.55);backdrop-filter:blur(18px);opacity:0;transition:opacity .4s;pointer-events:none}
@@ -67,318 +153,380 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .fh-head h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--INK)}
 .fh-head p{font-size:11px;color:var(--INKm);margin-top:2px;font-weight:300}
 .fh-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--BD);overflow-y:auto;flex:1}
-.ft{background:var(--W);padding:32px 28px;cursor:pointer;transition:all .35s;position:relative;display:flex;flex-direction:column;gap:12px}
-.ft:hover{background:var(--W2)}
-.ft::after{content:'→';position:absolute;bottom:22px;right:22px;font-size:14px;color:var(--OL);opacity:0;transform:translateX(-6px);transition:all .3s}
-.ft:hover::after{opacity:1;transform:none}
-.ft-cv{width:60px;height:60px;display:block;border-radius:14px}
+.ft-card{background:var(--W);padding:30px 26px;cursor:pointer;transition:all .32s;position:relative;display:flex;flex-direction:column;gap:11px}
+.ft-card:hover{background:var(--W2)}
+.ft-card::after{content:'→';position:absolute;bottom:20px;right:20px;font-size:14px;color:var(--OL);opacity:0;transform:translateX(-6px);transition:all .3s}
+.ft-card:hover::after{opacity:1;transform:none}
+.ft-cv{width:56px;height:56px;border-radius:12px;display:block}
 .ft-badge{display:inline-flex;align-items:center;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:3px 9px;border-radius:100px;width:fit-content}
 .bc{background:rgba(74,92,58,.1);color:var(--OL);border:1px solid var(--BD2)}
 .bn{background:rgba(184,160,96,.1);color:var(--GD);border:1px solid rgba(184,160,96,.25)}
 .bpr{background:rgba(24,22,15,.06);color:var(--INK);border:1px solid rgba(24,22,15,.12)}
-.ft h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--INK);line-height:1.1}
-.ft p{font-size:11px;color:var(--INKm);line-height:1.65;font-weight:300;flex:1}
+.ft-card h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--INK);line-height:1.1}
+.ft-card p{font-size:11px;color:var(--INKm);line-height:1.6;font-weight:300;flex:1}
 
-/* FEATURE DETAIL */
+/* Feature Detail */
 #fDet{position:fixed;inset:0;z-index:10200;display:flex;align-items:center;justify-content:center;padding:18px;pointer-events:none;opacity:0;transition:opacity .3s}
 #fDet.open{pointer-events:all;opacity:1}
-.fd-bd{position:absolute;inset:0;background:rgba(24,22,15,.68);backdrop-filter:blur(22px)}
-.fd-box{position:relative;z-index:2;background:var(--W);border-radius:26px;width:100%;max-width:960px;max-height:86vh;overflow:hidden;display:flex;box-shadow:0 40px 120px rgba(24,22,15,.22);transform:translateY(18px) scale(.97);transition:transform .38s cubic-bezier(.16,1,.3,1)}
+.fd-bd{position:absolute;inset:0;background:rgba(24,22,15,.7);backdrop-filter:blur(22px)}
+.fd-box{position:relative;z-index:2;background:var(--W);border-radius:26px;width:100%;max-width:960px;max-height:88vh;overflow:hidden;display:flex;box-shadow:0 40px 120px rgba(24,22,15,.22);transform:translateY(18px) scale(.97);transition:transform .38s cubic-bezier(.16,1,.3,1)}
 #fDet.open .fd-box{transform:none}
-.fd-vis{width:40%;background:var(--OLd);position:relative;overflow:hidden;min-height:460px}
+.fd-vis{width:40%;background:var(--OLd);position:relative;overflow:hidden;min-height:360px}
 .fd-vis canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
 .fd-vis-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(46,58,36,.75),rgba(74,92,58,.3))}
 .fd-vis-lbl{position:absolute;bottom:28px;left:28px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(250,250,248,.35)}
-.fd-cnt{flex:1;padding:48px 44px;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;position:relative}
+.fd-cnt{flex:1;padding:40px 36px;overflow-y:auto;display:flex;flex-direction:column;justify-content:center;position:relative}
 .fd-ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--OL);margin-bottom:12px}
-.fd-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,52px);font-weight:300;font-style:italic;color:var(--INK);line-height:.9;margin-bottom:18px}
+.fd-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;font-style:italic;color:var(--INK);line-height:.9;margin-bottom:18px}
 .fd-desc{font-size:13px;color:var(--INKm);line-height:1.85;font-weight:300;margin-bottom:28px}
 .fd-items{display:flex;flex-direction:column}
-.fd-item{display:flex;gap:12px;padding:14px 0;border-top:1px solid var(--BD);align-items:flex-start}
+.fd-item{display:flex;gap:12px;padding:13px 0;border-top:1px solid var(--BD);align-items:flex-start}
 .fd-item:last-child{border-bottom:1px solid var(--BD)}
 .fd-dot{width:5px;height:5px;background:var(--OL);border-radius:50%;margin-top:5px;flex-shrink:0}
 .fd-item h5{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:3px}
 .fd-item p{font-size:11px;color:var(--INKm);line-height:1.6;font-weight:300}
-.fd-acts{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+.fd-acts{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
 
-/* HERO */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;background:var(--W);padding:120px 5% 80px;text-align:center}
-#hcv{position:absolute;inset:0;width:100%;height:100%;opacity:.32;pointer-events:none}
-.hgr{position:absolute;inset:0;opacity:.5;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E")}
-.hero-in{position:relative;z-index:2;max-width:1060px}
-.hero-pill{display:inline-flex;align-items:center;gap:10px;padding:7px 18px;border:1px solid var(--BD2);border-radius:100px;margin-bottom:40px;background:rgba(74,92,58,.06)}
-.hdot{width:6px;height:6px;background:var(--OL);border-radius:50%;animation:bk 2s ease-in-out infinite}
+/* ══════════════ HERO — FIXED ══════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--OLd);padding:130px 5% 100px;text-align:center}
+#hcv{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
+.h-grain{position:absolute;inset:0;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.h-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(110px)}
+.h-orb-1{width:65vw;height:65vw;background:radial-gradient(circle,rgba(74,92,58,.5),transparent 68%);top:-18%;left:-12%;animation:ho1 14s ease-in-out infinite alternate}
+.h-orb-2{width:45vw;height:45vw;background:radial-gradient(circle,rgba(184,160,96,.2),transparent 70%);bottom:-12%;right:-8%;animation:ho2 18s ease-in-out 2s infinite alternate}
+.h-orb-3{width:30vw;height:30vw;background:radial-gradient(circle,rgba(46,58,36,.7),transparent 70%);top:40%;right:12%;animation:ho3 11s ease-in-out 1s infinite alternate}
+@keyframes ho1{from{transform:translate(0,0)}to{transform:translate(4%,3%)}}
+@keyframes ho2{from{transform:translate(0,0)}to{transform:translate(-4%,-3%)}}
+@keyframes ho3{from{transform:translate(0,0)}to{transform:translate(-3%,4%)}}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(250,250,248,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(250,250,248,.028) 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse at 50% 50%,black 0%,transparent 72%);pointer-events:none}
+.hero-in{position:relative;z-index:2;max-width:1060px;margin:0 auto}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;padding:7px 18px;border:1px solid rgba(250,250,248,.14);border-radius:100px;margin-bottom:38px;background:rgba(250,250,248,.06)}
+.hdot{width:6px;height:6px;background:var(--GDl);border-radius:50%;animation:bk 2.2s ease-in-out infinite;flex-shrink:0}
 @keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
-.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(54px,10vw,126px);font-weight:300;line-height:.88;letter-spacing:-.03em;color:var(--INK)}
-.hero-title em{font-style:italic;color:var(--OL)}
-.hero-title span{display:block;font-style:italic;font-weight:600}
-.hero-sub{font-size:clamp(13px,1.4vw,16px);color:var(--INKm);max-width:520px;margin:28px auto 46px;line-height:1.85;font-weight:300}
-.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:68px}
-.hscroll{display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.28}
-.hsb{width:1px;height:42px;background:var(--INK);animation:sb 2s ease-in-out infinite}
+.hero-pill span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(250,250,248,.5)}
+
+/* NEW HERO TITLE — clean static lines, no scramble */
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,9vw,120px);font-weight:300;line-height:.88;letter-spacing:-.02em;color:var(--W);margin-bottom:24px}
+.hero-title .ht-line{display:block;overflow:hidden}
+.hero-title .ht-inner{display:block;transform:translateY(110%);animation:lineUp .9s cubic-bezier(.16,1,.3,1) forwards}
+.hero-title .ht-inner.l2{animation-delay:.12s}
+.hero-title .ht-inner.l3{animation-delay:.24s}
+@keyframes lineUp{to{transform:translateY(0)}}
+.hero-title em{font-style:italic;color:var(--GDl)}
+.hero-title .hb{font-style:italic;font-weight:600;color:rgba(250,250,248,.92)}
+
+/* TICKER — replaces the scramble, smooth word swap */
+.hero-ticker-wrap{display:inline-block;position:relative;overflow:hidden;height:1.05em;vertical-align:bottom;min-width:240px}
+.hero-ticker{display:flex;flex-direction:column;animation:none}
+.ticker-word{font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;display:block}
+.ticker-slide{animation:tickerSlide .55s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes tickerSlide{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+.ticker-enter{position:absolute;top:100%;left:0;width:100%;animation:tickerEnter .55s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes tickerEnter{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+
+.hero-sub{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.52);max-width:540px;margin:0 auto 14px;line-height:1.9;font-weight:300}
+
+/* STRONG CTA LINE */
+.hero-cta-line{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,1.8vw,20px);font-style:italic;font-weight:300;color:var(--GDl);margin-bottom:40px;opacity:.85}
+
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+.hero-cta .bp{background:var(--W);color:var(--INK)}
+.hero-cta .bp:hover{background:var(--GDl)}
+.hero-cta .bs{border-color:rgba(250,250,248,.18);color:rgba(250,250,248,.68)}
+.hero-cta .bs:hover{background:rgba(250,250,248,.09);color:var(--W)}
+.hero-stats{display:flex;align-items:stretch;justify-content:center;border:1px solid rgba(250,250,248,.1);border-radius:16px;overflow:hidden;background:rgba(250,250,248,.04);backdrop-filter:blur(12px)}
+.hstat{flex:1;padding:22px 20px;text-align:center;border-right:1px solid rgba(250,250,248,.08)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,38px);font-style:italic;font-weight:600;color:var(--GDl);line-height:1}
+.hstat-l{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(250,250,248,.28);margin-top:4px}
+.hscroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.2}
+.hsb{width:1px;height:42px;background:var(--W);animation:sb 2.2s ease-in-out infinite}
 @keyframes sb{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-.hscroll span{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.24em;text-transform:uppercase}
+.hscroll span{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--W)}
 
-/* ABOUT */
-#about{background:var(--W2);padding:120px 5% 40px}
-.ab-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.abl{position:relative}
-.abq{font-family:'Cormorant Garamond',serif;font-size:clamp(80px,14vw,180px);color:var(--OL);opacity:.07;line-height:1;font-style:italic;font-weight:600;position:absolute;top:-40px;left:-16px;pointer-events:none;user-select:none}
-.ab-lead{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.6vw,32px);font-weight:300;font-style:italic;line-height:1.5;color:var(--INK);margin-bottom:22px;position:relative;z-index:1}
-.ab-body{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;position:relative;z-index:1}
-.abr{display:flex;flex-direction:column;gap:18px}
-.acard{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:20px 28px;transition:all .4s cubic-bezier(.16,1,.3,1)}
-.acard:hover{transform:translateY(-4px);box-shadow:var(--SM);border-color:var(--BD2)}
-.acn{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;color:var(--OL);opacity:.3;line-height:1;margin-bottom:4px}
-.acard h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px;color:var(--INK)}
-.acard p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300}
+/* ══════════════ WHO ══════════════ */
+#who{background:var(--W2);padding:120px 5%}
+.si{max-width:1280px;margin:0 auto}
+.sec-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4.5vw,56px);font-weight:300;font-style:italic;line-height:1.05;color:var(--INK)}
+.who-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--BD2);border:1px solid var(--BD2);border-radius:20px;overflow:hidden;margin-top:52px}
+.wcard{background:var(--W2);padding:38px 28px;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.wcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--OL),transparent);transform:scaleX(0);transition:transform .4s;transform-origin:left}
+.wcard:hover::before{transform:scaleX(1)}
+.wcard:hover{background:var(--W);transform:translateY(-3px)}
+.wcard-n{font-family:'Cormorant Garamond',serif;font-size:52px;font-style:italic;color:var(--OL);opacity:.1;line-height:1;margin-bottom:12px;transition:opacity .4s}
+.wcard:hover .wcard-n{opacity:.28}
+.wcard h3{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--INK);line-height:1.5}
 
-/* POB */
-#pob{background:var(--W3);padding:60px 5%;overflow:hidden}
-.pob-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.pob-cv{height:440px;border-radius:22px;overflow:hidden;background:var(--OLd);position:relative;box-shadow:var(--SL)}
-#pcv{width:100%!important;height:100%!important}
-.pob-steps{margin-top:40px;display:flex;flex-direction:column}
-.pob-s{display:flex;gap:18px;padding:22px 0;border-bottom:1px solid var(--BD);align-items:flex-start;transition:padding .3s}
-.pob-s:hover{padding-left:8px}
-.pob-n{font-family:'Cormorant Garamond',serif;font-size:40px;font-style:italic;color:var(--OL);opacity:.24;line-height:1;min-width:40px;transition:opacity .3s}
-.pob-s:hover .pob-n{opacity:.65}
-.pob-t h4{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
-.pob-t p{font-size:12px;color:var(--INKm);line-height:1.7;font-weight:300}
+/* ══════════════ PROBLEM ══════════════ */
+#problem{background:var(--W3);padding:120px 5%;overflow:hidden}
+.prob-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.prob-txt p{font-size:13px;color:var(--INKm);font-weight:300;line-height:1.9;max-width:380px;margin-top:10px}
+.prob-stack{display:flex;flex-direction:column}
+.prob-item{display:flex;align-items:flex-start;gap:20px;padding:24px 0;border-bottom:1px solid var(--BD);transition:all .35s;position:relative;overflow:hidden}
+.prob-item:first-child{border-top:1px solid var(--BD)}
+.prob-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--OL);transform:scaleY(0);transition:transform .35s;transform-origin:bottom}
+.prob-item:hover::before{transform:scaleY(1)}
+.prob-item:hover{padding-left:14px}
+.pi-ico{width:42px;height:42px;border-radius:10px;background:var(--W2);border:1px solid var(--BD);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .35s}
+.prob-item:hover .pi-ico{background:var(--OL);border-color:var(--OL)}
+.pi-ico svg{width:18px;height:18px;transition:transform .3s}
+.prob-item:hover .pi-ico svg{transform:scale(1.1)}
+.prob-item h4{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--INK);margin-bottom:4px;letter-spacing:.02em}
+.prob-item p{font-size:11px;color:var(--INKm);font-weight:300;line-height:1.6}
 
-/* BADGE */
-#vbadge{background:var(--W);padding:120px 5%}
-.vb-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:center}
-.badge-show{display:flex;justify-content:center}
-.badge-orb{position:relative;width:290px;height:290px;display:flex;align-items:center;justify-content:center}
-.badge-ring{position:absolute;border-radius:50%;border:1px solid var(--BD2);animation:spin 22s linear infinite}
-.badge-ring:nth-child(1){width:290px;height:290px;animation-duration:28s}
-.badge-ring:nth-child(2){width:228px;height:228px;animation-duration:18s;animation-direction:reverse;border-style:dashed}
-.badge-ring:nth-child(3){width:168px;height:168px;animation-duration:11s}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-.badge-core{position:relative;z-index:2;width:120px;height:120px;background:var(--INK);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 0 1px var(--OL),0 0 44px rgba(74,92,58,.18);transition:transform .4s}
-.badge-core:hover{transform:scale(1.06)}
-.badge-icon{font-size:24px;margin-bottom:4px}
-.badge-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--OLl);text-align:center}
-.vchecks{display:flex;flex-direction:column;gap:0;max-width:400px;margin:36px 0}
-.vc{display:flex;gap:12px;align-items:flex-start;padding:16px 0;border-top:1px solid var(--BD)}
-.vc:last-child{border-bottom:1px solid var(--BD)}
-.vc-tick{color:var(--OL);font-size:15px;margin-top:2px;flex-shrink:0}
-.vc h5{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;margin-bottom:3px}
-.vc p{font-size:11px;color:var(--INKm);font-weight:300}
+/* ══════════════ DEFINITION ══════════════ */
+#definition{padding:120px 5%;background:var(--W)}
+.def-in{max-width:840px;margin:0 auto;text-align:center}
+.def-line{width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--OL),transparent);margin:28px auto 36px}
+.def-para{font-family:'Cormorant Garamond',serif;font-size:clamp(17px,2vw,26px);font-weight:300;font-style:italic;color:var(--INKm);line-height:1.85}
+.def-para strong{color:var(--INK);font-weight:600;font-style:normal}
 
-/* GRANTS */
-#grants{background:var(--OLd);padding:140px 5%;position:relative;overflow:hidden}
-.gr-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:260px;font-weight:600;font-style:italic;color:rgba(255,255,255,.025);top:-30px;right:-20px;pointer-events:none;line-height:1;user-select:none}
-.gr-in{max-width:1280px;margin:0 auto}
-.gr-top{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-bottom:64px;align-items:end}
-.gr-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,84px);font-weight:300;color:var(--W);line-height:.88;letter-spacing:-.03em}
-.gr-title em{font-style:italic;color:var(--GDl)}
-.gr-desc{font-size:13px;color:rgba(250,250,248,.48);line-height:1.9;font-weight:300}
-.gr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.gc{background:rgba(250,250,248,.05);border:1px solid rgba(250,250,248,.1);border-radius:20px;padding:36px 28px;transition:all .45s cubic-bezier(.16,1,.3,1)}
-.gc:hover{background:rgba(250,250,248,.08);border-color:rgba(184,160,96,.28);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.gc-amt{font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;font-weight:600;color:var(--GDl);margin-bottom:6px;line-height:1}
-.gc-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(250,250,248,.33);margin-bottom:18px}
-.gc h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--W);margin-bottom:8px}
-.gc p{font-size:11px;color:rgba(250,250,248,.44);line-height:1.8;font-weight:300}
+/* ══════════════ PLATFORMS ══════════════ */
+#platform{padding:120px 5%;background:var(--W2)}
+.plat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:52px}
+.plat-tile{background:var(--W);border:1px solid var(--BD2);border-radius:20px;padding:28px 22px 24px;cursor:pointer;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;transition:all .42s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d}
+.plat-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--OL),var(--OLl));transform:scaleX(0);transition:transform .42s;transform-origin:left;border-radius:2px 2px 0 0}
+.plat-tile:hover::before{transform:scaleX(1)}
+.plat-tile:hover{transform:translateY(-9px) rotateX(3deg);box-shadow:0 28px 56px rgba(24,22,15,.13);border-color:var(--OLl)}
+.pt-icon{width:50px;height:50px;border-radius:13px;background:var(--W2);border:1px solid var(--BD);display:flex;align-items:center;justify-content:center;transition:all .38s;flex-shrink:0;position:relative}
+.pt-icon::before{content:'';position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.6),transparent);pointer-events:none}
+.plat-tile:hover .pt-icon{background:var(--OL);border-color:var(--OL);transform:rotateY(18deg) rotateX(-12deg);box-shadow:6px 6px 14px rgba(46,58,36,.28)}
+.pt-icon svg{width:22px;height:22px;transition:transform .3s}
+.plat-tile:hover .pt-icon svg{transform:scale(1.1)}
+.pt-badge{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;padding:3px 9px;border-radius:100px;width:fit-content;display:inline-flex}
+.pt-ttl{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--INK);flex:1;line-height:1.2}
+.pt-desc{font-size:11px;color:var(--INKm);font-weight:300;line-height:1.6}
+.pt-cta{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--OL);display:inline-flex;align-items:center;gap:6px;transition:gap .28s}
+.plat-tile:hover .pt-cta{gap:10px}
 
-/* BUILD IN PUBLIC */
-#bip{background:var(--W2);padding:140px 5%}
-.bip-in{max-width:1280px;margin:0 auto}
-.bip-hd{display:grid;grid-template-columns:1fr auto;align-items:end;margin-bottom:52px}
-.bip-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.bpost{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:24px;transition:all .4s;position:relative;overflow:hidden}
-.bpost::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--OL),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s}
-.bpost:hover::before{transform:scaleX(1)}
-.bpost:hover{transform:translateY(-4px);box-shadow:var(--SM);border-color:var(--BD2)}
-.bpost.feat{grid-column:span 2;background:var(--INK);border-color:transparent}
-.bpav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;font-weight:600;flex-shrink:0}
-.bphd{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.bpnm{font-size:11px;font-weight:700;color:var(--INK)}
-.bpost.feat .bpnm{color:var(--W)}
-.bpmt{font-size:9px;color:var(--INKl);font-weight:300}
-.bpost.feat .bpmt{color:rgba(250,250,248,.33)}
-.bptxt{font-size:11px;color:var(--INKm);line-height:1.7;font-weight:300;margin-bottom:12px}
-.bpost.feat .bptxt{color:rgba(250,250,248,.58);font-size:12px}
-.bptags{display:flex;flex-wrap:wrap;gap:5px}
-.bptag{font-size:8px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl)}
-.bpost.feat .bptag{border-color:rgba(74,92,58,.4);color:var(--OLl)}
+/* ══════════════ WHY ══════════════ */
+#why{padding:120px 5%;background:var(--OLd);position:relative;overflow:hidden}
+.why-grain{position:absolute;inset:0;opacity:.04;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.why-orn{position:absolute;font-family:'Cormorant Garamond',serif;font-size:320px;font-weight:600;font-style:italic;color:rgba(250,250,248,.025);top:-60px;right:-30px;pointer-events:none;line-height:1}
+.why-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1}
+.why-lft .ey{color:rgba(212,187,128,.6);margin-bottom:14px}
+.why-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5.5vw,68px);font-weight:300;line-height:.9;color:var(--W);margin-bottom:14px}
+.why-ttl em{font-style:italic;color:var(--GDl)}
+.why-lead{font-size:13px;color:rgba(250,250,248,.42);font-weight:300;line-height:1.85;max-width:380px;margin-bottom:32px}
+.why-quote{background:rgba(250,250,248,.05);border:1px solid rgba(250,250,248,.1);border-radius:18px;padding:26px 30px;border-left:3px solid var(--GDl)}
+.why-quote p{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:300;color:rgba(250,250,248,.75);line-height:1.55}
+.why-list{display:flex;flex-direction:column}
+.why-item{display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid rgba(250,250,248,.07);transition:all .3s}
+.why-item:first-child{border-top:1px solid rgba(250,250,248,.07)}
+.why-item:hover{padding-left:10px}
+.wx{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:rgba(180,60,40,.7);min-width:16px;flex-shrink:0}
+.why-item span{font-size:13px;color:rgba(250,250,248,.42);font-weight:300;transition:color .3s}
+.why-item:hover span{color:rgba(250,250,248,.72)}
 
-/* DAILY DROP */
-#dkd{background:var(--W);padding:120px 5%}
-.dkd-in{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start}
-.dkd-stack{position:relative;height:360px}
-.dcard{position:absolute;width:100%;background:#fff;border-radius:20px;padding:32px;border:1px solid var(--BD);box-shadow:var(--SS);transition:all .5s}
-.dcard:nth-child(1){top:0;z-index:3}
-.dcard:nth-child(2){top:13px;left:13px;z-index:2;opacity:.55;transform:scale(.97)}
-.dcard:nth-child(3){top:26px;left:26px;z-index:1;opacity:.28;transform:scale(.94)}
-.dcard:nth-child(1):hover{transform:translateY(-7px) rotate(-.5deg)}
-.dkd-dt{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--OL);margin-bottom:16px}
-.dkd-ttl{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--INK);margin-bottom:10px;line-height:1.2}
-.dkd-prev{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300}
-.dkd-rm{margin-top:20px;display:inline-flex;align-items:center;gap:7px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);text-decoration:none;border-bottom:1px solid rgba(74,92,58,.28);padding-bottom:3px;transition:all .3s}
-.dkd-rm:hover{color:var(--OL);border-color:var(--OL)}
-.dkd-sub{background:var(--W2);border-radius:20px;padding:36px;border:1px solid var(--BD);margin-top:32px}
-.dkd-sub h4{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--INK);margin-bottom:7px}
-.dkd-sub p{font-size:12px;color:var(--INKm);line-height:1.7;margin-bottom:18px}
-.sub-grp{display:flex;border:1px solid var(--BD2);border-radius:100px;overflow:hidden;background:var(--W)}
-.sub-inp{flex:1;border:none;background:transparent;padding:12px 18px;font-size:12px;color:var(--INK);outline:none;font-family:'DM Sans',sans-serif}
-.sub-inp::placeholder{color:var(--INKl)}
-.sub-btn{background:var(--INK);color:var(--W);border:none;padding:12px 20px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:background .3s}
-.sub-btn:hover{background:var(--OL)}
+/* ══════════════ HOW ══════════════ */
+#how{padding:120px 5%;background:var(--W)}
+.how-in{max-width:780px;margin:0 auto}
+.how-steps{margin-top:52px}
+.how-step{display:flex;gap:34px;padding:34px 0;border-bottom:1px solid var(--BD);align-items:flex-start;transition:all .32s}
+.how-step:first-child{border-top:1px solid var(--BD)}
+.how-step:hover{padding-left:12px}
+.hn{font-family:'Cormorant Garamond',serif;font-size:68px;font-style:italic;font-weight:600;color:var(--OL);opacity:.18;line-height:1;min-width:56px;transition:opacity .32s}
+.how-step:hover .hn{opacity:.55}
+.ht h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--INK);margin-bottom:5px;letter-spacing:-.01em;padding-top:11px}
+.ht p{font-size:12px;color:var(--INKm);font-weight:300;line-height:1.8}
 
-/* NODES */
-#reps{background:var(--W3);padding:120px 0;overflow:hidden}
-.reps-hd{padding:0 5%;max-width:1280px;margin:0 auto 52px;display:grid;grid-template-columns:1fr auto;align-items:end}
-.reps-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,104px);font-weight:300;line-height:.85;letter-spacing:-.03em;color:var(--INK)}
-.reps-ttl em{font-style:italic;color:var(--OL)}
-.car-track{display:flex;width:max-content;animation:csc 40s linear infinite;padding:12px 0}
-.car-track:hover{animation-play-state:paused}
-@keyframes csc{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.ncard{width:270px;margin:0 9px;cursor:pointer;flex-shrink:0}
-.nci{background:#fff;border-radius:24px;overflow:hidden;border:1px solid var(--BD);transition:all .5s;box-shadow:var(--SS)}
-.ncard:hover .nci{transform:translateY(-8px) rotate(-.5deg);box-shadow:var(--SL);border-color:var(--BD2)}
-.ncimg{width:100%;height:190px;overflow:hidden;background:var(--W3)}
-.ncimg img{width:100%;height:100%;object-fit:cover;filter:grayscale(55%);transition:all .8s}
-.ncard:hover .ncimg img{filter:grayscale(0%);transform:scale(1.08)}
-.ncinfo{padding:20px 24px 26px}
-.ncinfo h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:3px}
-.nc-st{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--OL)}
-.nmod{position:fixed;inset:0;z-index:8000;background:rgba(24,22,15,.5);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px}
-.nmod.open{display:flex}
-.nmb{background:#fff;border-radius:26px;overflow:hidden;width:100%;max-width:800px;display:flex;max-height:78vh;box-shadow:var(--SL);animation:npop .38s cubic-bezier(.16,1,.3,1)}
-@keyframes npop{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
-.nmi{width:44%;overflow:hidden}
-.nmi img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%)}
-.nmc{flex:1;padding:48px 40px;display:flex;flex-direction:column;justify-content:center;position:relative}
-.nmc h2{font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:5px}
-.nm-stat{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--OL);margin-bottom:24px}
-.nmc p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300;margin-bottom:28px}
-.nm-btn{display:inline-flex;align-items:center;gap:7px;background:none;border:none;border-bottom:1px solid var(--BD2);padding-bottom:4px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK);cursor:pointer;transition:all .3s}
-.nm-btn:hover{color:var(--OL);border-color:var(--OL)}
-
-/* STATS */
-#stats{background:var(--W2);padding:120px 5%}
-.stats-wr{max-width:1280px;margin:0 auto}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--BD);border:1px solid var(--BD);border-radius:20px;overflow:hidden;margin-bottom:64px}
-.sbox{background:var(--W2);padding:56px 32px;text-align:center;transition:all .45s}
-.sbox:hover{background:var(--W);transform:translateY(-4px);box-shadow:var(--SM);position:relative;z-index:1}
-.snum{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,64px);font-style:italic;font-weight:600;color:var(--OL);margin-bottom:6px;line-height:1}
-.slbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--INKl)}
-
-/* BLOGS */
-#blogs{background:var(--INK);padding:140px 5%}
-.blogs-wr{max-width:1280px;margin:0 auto}
-.blogs-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,90px);font-weight:300;font-style:italic;color:var(--W);line-height:.88;letter-spacing:-.03em;margin-bottom:64px}
-.blogs-ttl em{color:var(--OLl)}
-.blogs-grid{display:grid;grid-template-columns:1.5fr 1fr;grid-template-rows:auto auto;gap:18px}
-.bcard{background:rgba(250,250,248,.04);border:1px solid rgba(250,250,248,.07);border-radius:20px;padding:36px;text-decoration:none;color:var(--W);display:flex;flex-direction:column;transition:all .4s;position:relative;overflow:hidden}
-.bcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--OL),transparent);opacity:0;transition:opacity .4s}
-.bcard:hover::before{opacity:1}
-.bcard:hover{background:rgba(250,250,248,.06);transform:translateY(-3px);border-color:rgba(74,92,58,.3)}
-.bcard.feat{grid-row:span 2;padding:52px}
-.bcat{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--OLl);margin-bottom:16px}
-.bcard h3{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.2vw,28px);font-style:italic;font-weight:600;line-height:1.2;color:var(--W);margin-bottom:12px;flex:1}
-.bcard.feat h3{font-size:clamp(24px,3vw,42px)}
-.bexc{font-size:11px;color:rgba(250,250,248,.4);line-height:1.8;font-weight:300;margin-bottom:22px}
-.bft{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(250,250,248,.07);padding-top:16px;margin-top:auto}
-.brl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.33);transition:color .3s}
-.bcard:hover .brl{color:var(--OLl)}
-
-/* SPONSOR */
-#sponsor{background:var(--W3);padding:140px 5%}
-.sp-wr{max-width:1280px;margin:0 auto}
-.sp-hd{text-align:center;margin-bottom:64px}
-.sp-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,8vw,90px);font-weight:300;font-style:italic;color:var(--INK);line-height:.88;margin-bottom:16px}
-.sp-ttl em{color:var(--OL)}
-.mq-wr{overflow:hidden;border-top:1px solid var(--BD);border-bottom:1px solid var(--BD);padding:40px 0;margin-bottom:64px}
-.mq-tr{display:flex;width:max-content;animation:mqsc 42s linear infinite}
-.mq-tr:hover{animation-play-state:paused}
-@keyframes mqsc{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.mq-it{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;padding:0 52px;opacity:.26;transition:opacity .3s;white-space:nowrap;color:var(--INK)}
-.mq-it:hover{opacity:1;color:var(--OL)}
-.sp-cta{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
-.sp-txt h3{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.6vw,48px);font-style:italic;font-weight:300;color:var(--INK);line-height:1.1;margin-bottom:18px}
-.sp-txt p{font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300}
-.sp-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center;padding:22px 0;border-top:1px solid var(--BD);border-bottom:1px solid var(--BD);margin-top:28px}
-.smn{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--OL)}
-.wa-card{background:var(--INK);border-radius:26px;padding:44px 36px;text-align:center}
-.wa-card h4{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--W);margin-bottom:5px}
-.wa-card p{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.28);margin-bottom:24px}
-.wa-btn{display:block;background:var(--OL);color:var(--W);text-decoration:none;padding:15px 26px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;transition:all .3s;margin-bottom:14px}
-.wa-btn:hover{background:var(--OLd);transform:translateY(-2px)}
-.wa-meta{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.16)}
+/* ══════════════ FINAL CTA ══════════════ */
+#finalcta{padding:140px 5%;background:var(--OLd);text-align:center;position:relative;overflow:hidden}
+.fc-grain{position:absolute;inset:0;opacity:.04;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.fc-orn{position:absolute;font-family:'Cormorant Garamond',serif;font-size:300px;font-weight:600;font-style:italic;color:rgba(250,250,248,.025);top:-50px;right:-20px;pointer-events:none;line-height:1}
+.fc-in{max-width:680px;margin:0 auto;position:relative;z-index:1}
+.fc-ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(212,187,128,.5);display:block;margin-bottom:20px}
+.fc-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,7vw,88px);font-weight:300;font-style:italic;color:var(--W);line-height:.88;margin-bottom:18px;letter-spacing:-.02em}
+.fc-ttl em{color:var(--GDl);font-weight:600}
+.fc-sub{font-size:14px;color:rgba(250,250,248,.38);font-weight:300;margin-bottom:48px;line-height:1.7}
+.fc-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.fc-btns .bp{background:var(--W);color:var(--INK)}
+.fc-btns .bp:hover{background:var(--GDl)}
+.fc-btns .bs{border-color:rgba(250,250,248,.18);color:rgba(250,250,248,.65)}
+.fc-btns .bs:hover{background:rgba(250,250,248,.07);color:var(--W)}
 
 /* FOOTER */
-footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
+footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 .ft-wr{max-width:1280px;margin:0 auto}
-.ft-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:52px;margin-bottom:64px}
-.ft-brand h3{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;letter-spacing:.18em;color:var(--INK);margin-bottom:16px}
-.ft-brand p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300;max-width:252px;margin-bottom:24px}
-.ft-socials{display:flex;gap:12px}
-.ft-socials a{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK);text-decoration:none;border-bottom:1px solid rgba(74,92,58,.28);padding-bottom:3px;transition:all .2s}
-.ft-socials a:hover{color:var(--OL);border-color:var(--OL)}
-.ft-col h4{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--INKl);margin-bottom:18px}
+.ft-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:52px;margin-bottom:60px}
+.ft-brand h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;letter-spacing:.18em;color:var(--INK);margin-bottom:14px}
+.ft-brand p{font-size:12px;color:var(--INKm);line-height:1.8;font-weight:300;max-width:240px;margin-bottom:22px}
+.ft-soc{display:flex;gap:12px;flex-wrap:wrap}
+.ft-soc a{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKm);text-decoration:none;border-bottom:1px solid var(--BD2);padding-bottom:3px;transition:all .2s}
+.ft-soc a:hover{color:var(--OL);border-color:var(--OL)}
+.ft-col h4{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--INKl);margin-bottom:16px}
 .ft-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
 .ft-col ul li a{font-size:12px;color:var(--INKm);text-decoration:none;font-weight:300;transition:color .2s}
 .ft-col ul li a:hover{color:var(--INK)}
-.ft-bot{border-top:1px solid var(--BD);padding-top:26px;display:flex;justify-content:space-between;align-items:center}
+.ft-bot{border-top:1px solid var(--BD);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .ft-bot span{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INKl)}
 
-/* COMMUNITY MODAL */
-.cmm{position:fixed;inset:0;z-index:10000;background:rgba(243,240,232,.97);display:none;overflow-y:auto;padding:32px 18px}
-.cmm.open{display:block}
-.cmm-in{max-width:760px;margin:0 auto;position:relative}
-.cmm-hd{text-align:center;margin-bottom:40px;padding-top:52px}
-.cmm-hd h2{font-family:'Cormorant Garamond',serif;font-size:48px;font-style:italic;font-weight:600;color:var(--INK)}
-.cmm-form{background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--BD);box-shadow:var(--SM)}
-
-/* RESPONSIVE */
+/* ══════════════ MOBILE RESPONSIVE ══════════════ */
 @media(max-width:1024px){
-  .ab-in,.pob-in,.vb-in,.gr-top,.dkd-in,.sp-cta{grid-template-columns:1fr}
-  .fh-grid,.gr-grid{grid-template-columns:repeat(2,1fr)}
-  .bip-wall{grid-template-columns:repeat(2,1fr)}
-  .bpost.feat{grid-column:span 2}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .blogs-grid{grid-template-columns:1fr}
-  .bcard.feat{grid-row:auto}
+  .plat-grid{grid-template-columns:repeat(3,1fr)}
+  .prob-in,.why-in{grid-template-columns:1fr;gap:50px}
   .ft-top{grid-template-columns:1fr 1fr}
+  .fh-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
+  /* Nav */
   .nav-links{display:none}
-  .fh-grid,.gr-grid,.bip-wall{grid-template-columns:1fr}
-  .bpost.feat{grid-column:span 1}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .fr-role,.fr-arr{display:none}
-  .fmod-l{display:none}
-  .ft-top{grid-template-columns:1fr}
-  .pob-cv{height:260px}
-  .ft-bot{flex-direction:column;gap:8px;text-align:center}
-  .fd-box{flex-direction:column}
-  .fd-vis{width:100%;min-height:200px}
+  .nav-r .plat-btn{display:none}
+  .nav-r .bp{display:none}
+  .mob-menu-btn{display:flex}
+  .mob-drawer{display:flex}
+  
+  /* Hero */
+  #hero{padding:110px 5% 80px}
+  .hero-title{font-size:clamp(40px,11vw,72px)}
+  .hero-ticker-wrap{min-width:180px}
+  .hero-stats{flex-direction:column}
+  .hstat{border-right:none;border-bottom:1px solid rgba(250,250,248,.08)}
+  .hstat:last-child{border-bottom:none}
+  
+  /* Sections */
+  .who-grid{grid-template-columns:repeat(2,1fr)}
+  .plat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .ft-top{grid-template-columns:1fr;gap:36px}
+  .ft-bot{flex-direction:column;text-align:center}
+  
+  /* Feature detail */
+  .fd-box{flex-direction:column;max-height:92vh;overflow-y:auto}
+  .fd-vis{width:100%;min-height:180px}
+  .fd-cnt{padding:28px 24px}
+  
+  /* Sections padding */
+  #who,#problem,#definition,#platform,#why,#how,#finalcta{padding:80px 5%}
+  .prob-in{grid-template-columns:1fr;gap:48px}
+  .why-in{grid-template-columns:1fr;gap:48px}
+  .fh-grid{grid-template-columns:repeat(2,1fr)}
+  
+  /* Apply overlay */
+  .ov-hd{padding:14px 20px}
+  .fw{margin:24px auto;padding:0 14px 60px}
+}
+@media(max-width:480px){
+  .who-grid,.plat-grid{grid-template-columns:1fr}
+  .fh-grid{grid-template-columns:1fr}
+  .hero-cta{gap:10px}
+  .hero-cta .bp,.hero-cta .bs{padding:13px 24px;font-size:9px}
+  .ob-card{padding:30px 22px}
+  .hero-title{font-size:clamp(36px,12vw,60px)}
+  .hero-ticker-wrap{min-width:160px}
+  .how-step{gap:20px}
+  .hn{font-size:48px;min-width:40px}
 }
 </style>
 </head>
 <body>
 
+<!-- ══ INTRO ══ -->
+<div id="intro">
+  <div class="i-orbs">
+    <div class="i-orb"></div><div class="i-orb"></div><div class="i-orb"></div>
+  </div>
+  <div class="i-grain"></div>
+
+  <!-- Splash -->
+  <div class="i-scene" id="scSplash">
+    <div class="splash-c">
+      <div class="splash-logo">VAITHRA</div>
+      <div class="splash-sub">A Serious community for Serious Founders</div>
+    </div>
+    <div class="splash-prog">
+      <div class="splash-track"><div class="splash-bar" id="sBar"></div></div>
+      <div class="splash-lbl" id="sLbl">Initializing</div>
+    </div>
+  </div>
+
+  <!-- Onboard -->
+  <div class="i-scene hidden" id="scOnboard">
+    <div class="ob-wrap">
+      <div class="ob-card">
+        <div class="ob-steps">
+          <div class="ob-dot cur" id="od0"></div>
+          <div class="ob-dot nxt" id="od1"></div>
+          <div class="ob-dot nxt" id="od2"></div>
+        </div>
+        <div id="ob0">
+          <div class="ob-ttl">What's your name?</div>
+          <div class="ob-sub">Tell us who's joining the ecosystem.</div>
+          <label class="ob-lbl">Full Name</label>
+          <input class="ob-inp" id="oName" type="text" placeholder="e.g. Sardhar" autocomplete="name"/>
+          <div class="ob-err" id="eN">Please enter your full name.</div>
+          <button class="ob-btn" onclick="obStep(0)">Continue →</button>
+        </div>
+        <div id="ob1" style="display:none">
+          <div class="ob-ttl">Your phone number</div>
+          <div class="ob-sub">For ecosystem updates and city coordination.</div>
+          <label class="ob-lbl">Mobile Number (India)</label>
+          <input class="ob-inp" id="oPhone" type="tel" placeholder="+91 98765 43210" autocomplete="tel"/>
+          <div class="ob-err" id="eP">Enter a valid 10-digit number.</div>
+          <button class="ob-btn" onclick="obStep(1)">Continue →</button>
+        </div>
+        <div id="ob2" style="display:none">
+          <div class="ob-ttl">One last step</div>
+          <div class="ob-sub">Accept the policies to enter Vaithra.</div>
+          <label class="ob-check">
+            <input type="checkbox" id="cT"/>
+            <div class="ob-box"></div>
+            <div class="ob-clbl">I agree to Vaithra's <a href="https://vaithra.in/terms-conditions.html" target="_blank">Terms &amp; Conditions</a></div>
+          </label>
+          <label class="ob-check">
+            <input type="checkbox" id="cP"/>
+            <div class="ob-box"></div>
+            <div class="ob-clbl">I accept the <a href="https://vaithra.in/privacy-policy.html" target="_blank">Privacy Policy</a></div>
+          </label>
+          <div class="ob-err" id="eC">Please accept both policies to continue.</div>
+          <button class="ob-btn" id="obFinalBtn" onclick="obSubmit()">Enter Vaithra →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome -->
+  <div class="i-scene hidden" id="scWelcome">
+    <div class="wlc-inner">
+      <div class="wlc-ring"><div class="wlc-icon">✓</div></div>
+      <div class="wlc-ttl">Welcome,<br><span class="wlc-nm" id="wName"></span></div>
+      <div class="wlc-s">You're now part of a serious builder network.</div>
+      <button class="wlc-btn" onclick="enterSite()">Enter the Ecosystem →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN SITE ══ -->
+<div id="site">
+
 <!-- NAV -->
-<nav class="nav">
+<nav class="nav" id="mainNav">
   <div class="nav-logo">VAITHRA</div>
-<ul class="nav-links">
+  <ul class="nav-links">
     <li><a href="about.html">About</a></li>
-    <li><a href="#reps">Nodes</a></li>
-    <li><a href="#blogs">Insights</a></li>
-    <li><a href="#sponsor">Sponsor</a></li>
-</ul>
+    <li><a href="#platform">Platforms</a></li>
+    <li><a href="#why">Why</a></li>
+    <li><a href="#how">How It Works</a></li>
+  </ul>
   <div class="nav-r">
     <button class="plat-btn" id="platBtn" onclick="toggleHub()">
       <div class="pdots"><div class="pd"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div></div>
       Platform
     </button>
-    <button class="bp" onclick="openApply()">Join &rarr;</button>
+    <button class="bp" onclick="openApply()">Apply as Founder &rarr;</button>
+    <button class="mob-menu-btn" id="mobMenuBtn" onclick="toggleMobMenu()" aria-label="Menu">
+      <div class="mob-bar"></div><div class="mob-bar"></div><div class="mob-bar"></div>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mob-drawer" id="mobDrawer">
+  <a href="about.html" onclick="closeMobMenu()">About</a>
+  <a href="#platform" onclick="closeMobMenu()">Platforms</a>
+  <a href="#why" onclick="closeMobMenu()">Why</a>
+  <a href="#how" onclick="closeMobMenu()">How It Works</a>
+  <button class="bp mob-cta" onclick="closeMobMenu();openApply()">Join as Founder →</button>
+</div>
 
 <!-- APPLY OVERLAY -->
 <div id="applyOv">
@@ -388,12 +536,12 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
   </div>
   <div class="ov-body">
     <div class="fw">
-      <div style="text-align:center;margin-bottom:32px">
-        <span class="ey" style="margin-bottom:12px">Onboarding Protocol</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:44px;font-style:italic;color:var(--INK)">Join the Network</h2>
+      <div style="text-align:center;margin-bottom:32px;padding-top:16px">
+        <span class="ey" style="margin-bottom:12px;display:block">Founder Application</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,44px);font-style:italic;color:var(--INK)">Apply as Founder</h2>
       </div>
       <div class="fb">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0">Loading</iframe>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0" style="display:block">Loading&hellip;</iframe>
       </div>
     </div>
   </div>
@@ -404,7 +552,7 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
   <div class="fh-bd" onclick="closeHub()"></div>
   <div class="fh-panel">
     <div class="fh-head">
-      <div><h2>Platform Features</h2><p>Click any feature to explore details and functionality</p></div>
+      <div><h2>Platform Features</h2><p>Click any feature to open its dedicated page</p></div>
       <button class="xb" onclick="closeHub()">&#10005;</button>
     </div>
     <div class="fh-grid" id="fGrid"></div>
@@ -427,231 +575,244 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
       <p class="fd-desc" id="fddesc"></p>
       <div class="fd-items" id="fditems"></div>
       <div class="fd-acts">
-       <button class="bp" onclick="goToFeature()">Explore More &rarr;</button>
-<button class="bs" onclick="closeDet()">Back</button>
+        <button class="bp" onclick="goToFeature()">Open Platform Page &rarr;</button>
+        <button class="bs" onclick="closeDet()">Back</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- HERO -->
+<!-- ① HERO -->
 <section id="hero">
   <canvas id="hcv"></canvas>
-  <div class="hgr"></div>
+  <div class="h-grain"></div>
+  <div class="h-orb h-orb-1"></div>
+  <div class="h-orb h-orb-2"></div>
+  <div class="h-orb h-orb-3"></div>
+  <div class="h-grid"></div>
   <div class="hero-in">
     <div class="hero-pill rv">
       <div class="hdot"></div>
-      <span class="ey" style="color:var(--OL)">Early Stage Founders Network &middot; India</span>
+      <span>Early-Stage Founders Organization&middot; India</span>
     </div>
-    <h1 class="hero-title rv d1">Where Serious<br><span>Builders <em>Converge</em></span></h1>
-    <p class="hero-sub rv d2">Vaithra is a semi-centralized founder network built across India &mdash; for early-stage builders who create without connections, capital, or visibility.</p>
+
+    <!-- CLEAN HERO TITLE — staggered line reveal, no scramble -->
+    <h1 class="hero-title">
+      <span class="ht-line"><span class="ht-inner l1">Where Serious</span></span>
+      <span class="ht-line"><span class="ht-inner l2 hb">Builders
+        <span class="hero-ticker-wrap">
+          <span class="ticker-word" id="tickerCur">Build Without Noise</span>
+        </span>
+      </span></span>
+    </h1>
+
+    <p class="hero-sub rv d2">Vaithra is a semi-centralized founder network built across India — for early-stage builders who create without connections, capital, or visibility.</p>
+
+    <!-- STRONG CTA LINE -->
+    <p class="hero-cta-line rv d2">Built By Founders.<em style="color:var(--GDl)">for founders.</em></p>
+
     <div class="hero-cta rv d3">
-      <button class="bp" onclick="openApply()">Join the Network &rarr;</button>
-     <a href="about.html" class="bs">Discover More</a>
+      <button class="bp" onclick="openApply()">Apply as Founder &rarr;</button>
+      <button class="bs" onclick="document.getElementById('platform').scrollIntoView({behavior:'smooth'})">Explore Platforms</button>
     </div>
-    <div class="hscroll rv d4"><div class="hsb"></div><span>Scroll</span></div>
+    <div class="hero-stats rv d4">
+      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="8">0</span></div><div class="hstat-l">Platforms</div></div>
+      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="02">0</span></div><div class="hstat-l">Cities</div></div>
+      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="15">0</span>+</div><div class="hstat-l">Founders</div></div>
+      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="00">0</span></div><div class="hstat-l">Grant Tiers</div></div>
+    </div>
   </div>
+  <div class="hscroll"><div class="hsb"></div><span>Scroll</span></div>
 </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="ab-in">
-    <div class="abl rl">
-      <div class="abq">"</div>
-      <span class="ey" style="margin-bottom:16px">The Foundation</span>
-      <p class="ab-lead">India's next great founders aren't just in Bengaluru or Mumbai. They're everywhere but &mdash; isolated, talented, invisible.</p>
-      <p class="ab-body">Vaithra is a founder discovery and validation network operating city-by-city across India. We identify serious builders outside traditional startup hubs, organize local meetups, and create structured pathways for collaboration and visibility.</p>
-      <p class="ab-body" style="margin-top:12px">Built by founders for founders. Governed by a clear protocol. Powered by a community that values execution over noise.</p>
-    </div>
-    <p class="ab-body" style="margin-top:12px">Built by founders for founders. Governed by a clear protocol. Powered by a community that values execution over noise.</p>
-<div style="margin-top: 32px;">
-    <a href="about.html" class="bp">
-        Read more &rarr;
-    </a>
-</div>
-    <div class="abr">
-      <div class="acard rv d1"><div class="acn">01</div><h4>Distributed Infrastructure</h4><p>20&ndash;40 meetups per state with 1&ndash;3 major events. Local representatives organize ground-level connections in cities ignored by mainstream ecosystems.</p></div>
-      <div class="acard rv d2"><div class="acn">02</div><h4>Duo Model Protocol</h4><p>Vaithra operates two parallel tracks: open community participation and selective verified membership with elevated access.</p></div>
-      <div class="acard rv d3"><div class="acn">03</div><h4>Open Organization</h4><p>Anyone can join, participate, and run events under Vaithra's name. City Representatives receive free idea promotion as a benefit.</p></div>
+<!-- ② WHO -->
+<section id="who">
+  <div class="si">
+    <span class="ey rv" style="margin-bottom:14px">Who It's For</span>
+    <h2 class="sec-ttl rv d1">Built for Founders Who Actually Build</h2>
+    <div class="who-grid">
+      <div class="wcard rv d1"><div class="wcard-n">01</div><h3>Early-stage startup founders</h3></div>
+      <div class="wcard rv d2"><div class="wcard-n">02</div><h3>Student founders with execution mindset</h3></div>
+      <div class="wcard rv d3"><div class="wcard-n">03</div><h3>Bootstrapped builders</h3></div>
+      <div class="wcard rv d4"><div class="wcard-n">04</div><h3>First-time entrepreneurs</h3></div>
     </div>
   </div>
 </section>
 
-<!-- MICRO GRANTS -->
-<section id="grants">
-  <div class="gr-bg">&#8377;</div>
-  <div class="gr-in">
-    <div class="gr-top">
-      <div class="rl"><span class="ey" style="color:rgba(250,250,248,.45);margin-bottom:16px">New Feature</span><h2 class="gr-title">Micro-<br><em>Grant</em><br>Rounds</h2></div>
-      <div class="rr">
-        <p class="gr-desc">Community-backed micro-funding for vetted founders with real traction. No lengthy applications &mdash; just verified builds and community trust signals.</p>
-        <button class="bp" style="margin-top:28px;background:var(--GDl);color:var(--INK)" onclick="openApply()">Apply as Founder</button>
-      </div>
+<!-- ③ PROBLEM -->
+<section id="problem">
+  <div class="prob-in si">
+    <div class="prob-txt rl">
+      <span class="ey" style="margin-bottom:14px">The Real Problem</span>
+      <h2 class="sec-ttl">The Startup<br>Space Is Broken</h2>
+      <p>The current ecosystem is built for content, not for builders. Here's what's actually happening to serious founders.</p>
     </div>
-    <div class="gr-grid">
-      <div class="gc rv"><div class="gc-amt">&#8377;5K</div><div class="gc-lbl">Seed Spark</div><h3>First Build Grant</h3><p>For founders with a live product or validated prototype and a minimum PoB score of 10.</p></div>
-      <div class="gc rv d1"><div class="gc-amt">&#8377;25K</div><div class="gc-lbl">Growth Round</div><h3>Traction Grant</h3><p>For founders with early users, measurable retention, and a PoB score above 25.</p></div>
-      <div class="gc rv d2"><div class="gc-amt">&#8377;1L</div><div class="gc-lbl">Scale Grant</div><h3>Verified Builder Grant</h3><p>Reserved for Vaithra Verified founders with multiple PoB rounds and documented community impact.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- BUILD IN PUBLIC -->
-<section id="bip">
-  <div class="bip-in">
-    <div class="bip-hd">
-      <div><span class="ey rv" style="margin-bottom:12px">Live Community Wall</span><h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(38px,6vw,72px);font-weight:300;line-height:.9;color:var(--INK)" class="rv d1">Build in <em style="font-style:italic;color:var(--OL)">Public</em></h2></div>
-      <button class="bp rv d2" onclick="openApply()">Post Update &rarr;</button>
-    </div>
-    <div class="bip-wall">
-      <div class="bpost feat rv">
-        <div class="bphd"><div class="bpav" style="background:var(--OLl);color:#fff">S</div><div><div class="bpnm">Sardhar Musthafa</div><div class="bpmt">Vaithra &middot; Hyderabad &middot; 2h ago</div></div><span style="margin-left:auto;font-size:8px;font-family:'Syne',sans-serif;letter-spacing:.18em;color:var(--OLl);text-transform:uppercase">Verified &#10022;</span></div>
-        <p class="bptxt">Week 12 update: Crossed 50 active members. Didn't celebrate &mdash; just started planning week 13. City reps from Warangal and Guntur onboarded. First regional meetup confirmed for April. This is what building in public looks like &mdash; not highlight reels, just honest progress.</p>
-        <div class="bptags"><span class="bptag">Milestone</span><span class="bptag">Network Growth</span><span class="bptag">Week 12</span></div>
+    <div class="prob-stack">
+      <div class="prob-item rr d1">
+        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div><h4>Too much fake motivation</h4><p>Content designed to feel good, not help you build.</p></div>
       </div>
-      <div class="bpost rv d1">
-        <div class="bphd"><div class="bpav" style="background:var(--GDl);color:var(--INK)">R</div><div><div class="bpnm">Rahimath</div><div class="bpmt">Glowvai &middot; Hyderabad &middot; 5h ago</div></div></div>
-        <p class="bptxt">Glowvai v0.2 shipped. 3 new treatment catalog features based on real salon feedback. Zero users yet, but the product finally feels honest.</p>
-        <div class="bptags"><span class="bptag">Product</span><span class="bptag">Launch</span></div>
+      <div class="prob-item rr d2">
+        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div><h4>No real guidance</h4><p>Generic advice that works for no one in particular.</p></div>
       </div>
-      <div class="bpost rv d2">
-        <div class="bphd"><div class="bpav" style="background:var(--OL);color:#fff">G</div><div><div class="bpnm">Erugoni Gopi</div><div class="bpmt">Strategic &middot; Hyderabad &middot; 1d ago</div></div></div>
-        <p class="bptxt">Systems audit complete. 6 processes documented. 2 redundancies removed. The most important build is often internal infrastructure.</p>
-        <div class="bptags"><span class="bptag">Operations</span></div>
+      <div class="prob-item rr d3">
+        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <div><h4>No serious peer circle</h4><p>Communities built around activity, not execution.</p></div>
       </div>
-      <div class="bpost rv d3">
-        <div class="bphd"><div class="bpav" style="background:var(--INK);color:var(--W)">D</div><div><div class="bpnm">Dhoni H.H. Singh</div><div class="bpmt">Vishvarupa &middot; Hyderabad &middot; 2d ago</div></div></div>
-        <p class="bptxt">First brand shoot for a Vaithra member wrapped. Early-stage founders don't need polished &mdash; they need authentic.</p>
-        <div class="bptags"><span class="bptag">Media</span><span class="bptag">Learning</span></div>
+      <div class="prob-item rr d4">
+        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div><h4>Everything scattered</h4><p>Resources, tools, people — spread across noise.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DAILY DROP -->
-<section id="dkd">
-  <div class="dkd-in">
-    <div class="dkd-stack rl">
-      <div class="dcard">
-        <div class="dkd-dt">Today &middot; March 18, 2026</div>
-        <h3 class="dkd-ttl">Why most founder communities fail: The activity trap</h3>
-        <p class="dkd-prev">Communities mistake engagement metrics for value creation. Likes and check-ins are vanity. The only metric that matters is whether a member's trajectory changed...</p>
-        <a href="#blogs" class="dkd-rm">Read Full Drop &rarr;</a>
+<!-- ④ DEFINITION -->
+<section id="definition">
+  <div class="def-in si">
+    <span class="ey rv" style="display:block;text-align:center;margin-bottom:14px">Definition</span>
+    <h2 class="sec-ttl rv d1" style="text-align:center;margin-bottom:0">What Vaithra Is</h2>
+    <div class="def-line rv d2"></div>
+    <p class="def-para rv d3">Vaithra is a <strong>structured founder ecosystem</strong> — a set of platforms, systems, and peer networks designed for early-stage builders who are serious about execution. It is not a community. It is not a course. It is not a motivational group. It is <strong>infrastructure</strong> for founders who already know what they want to do — and need the right environment to do it without distraction, noise, or false validation.</p>
+  </div>
+</section>
+
+<!-- ⑤ PLATFORMS -->
+<section id="platform">
+  <div class="si">
+    <span class="ey rv" style="margin-bottom:12px">The Ecosystem</span>
+    <h2 class="sec-ttl rv d1">One Ecosystem. <em style="color:var(--OL)">Multiple Platforms.</em></h2>
+    <p style="font-size:12px;color:var(--INKm);font-weight:300;margin-top:6px" class="rv d2">Click any card to open the platform page.</p>
+    <div class="plat-grid">
+      <div class="plat-tile rv d1" onclick="location.href='idea-promotion.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+          <span class="pt-badge bc">Core</span>
+        </div>
+        <div class="pt-ttl">Idea Promotion</div>
+        <p class="pt-desc">Get your validated idea in front of vetted collaborators, early adopters, and co-founders across all city nodes.</p>
+        <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="dcard"></div>
-      <div class="dcard"></div>
+      <div class="plat-tile rv d2" onclick="location.href='city-reps.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <span class="pt-badge bc">Core</span>
+        </div>
+        <div class="pt-ttl">City Representatives</div>
+        <p class="pt-desc">Local nodes in every major city. Reps organize meetups, bridge builders with the ecosystem.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+      <div class="plat-tile rv d3" onclick="location.href='daily-drop.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <span class="pt-badge bc">Core</span>
+        </div>
+        <div class="pt-ttl">Daily Knowledge Drop</div>
+        <p class="pt-desc">One curated lesson, resource, or insight every day — for early-stage founders navigating the chaos.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+      <div class="plat-tile rv d4" onclick="location.href='index.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <span class="pt-badge bc">Core</span>
+        </div>
+        <div class="pt-ttl">Proof of Build (PoB)</div>
+        <p class="pt-desc">A structured accountability system where founders document and verify real build progress — not just plans.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+      <div class="plat-tile rv d1" onclick="location.href='micro-grants.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <span class="pt-badge bn">New</span>
+        </div>
+        <div class="pt-ttl">Micro-Grant Rounds</div>
+        <p class="pt-desc">Community-backed micro-funding. ₹5K to ₹1L — gated by PoB score, not connections or networks.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+      <div class="plat-tile rv d2" onclick="location.href='build-wall.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <span class="pt-badge bn">New</span>
+        </div>
+        <div class="pt-ttl">Build in Public Wall</div>
+        <p class="pt-desc">A live wall where verified founders share real updates, wins, failures, and milestones.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+      <div class="plat-tile rv d3" onclick="location.href='verify.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--INKm)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <span class="pt-badge bpr">Premium</span>
+        </div>
+        <div class="pt-ttl">Verification Badge</div>
+        <p class="pt-desc">A community-issued credential for founders who pass identity and build checks. Signals authenticity.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+      <div class="plat-tile rv d4" onclick="location.href='vaithra-open.html'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <span class="pt-badge bc">Core</span>
+        </div>
+        <div class="pt-ttl">Open Organization</div>
+        <p class="pt-desc">Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping — just commitment.</p>
+        <div class="pt-cta">View Platform →</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ WHY -->
+<section id="why">
+  <div class="why-grain"></div>
+  <div class="why-orn">V</div>
+  <div class="why-in si">
+    <div class="why-lft rl">
+      <span class="ey" style="margin-bottom:14px">Why It Exists</span>
+      <h2 class="why-ttl">Not Another<br><em>Startup Platform</em></h2>
+      <p class="why-lead">Every other platform is optimized for reach and retention. Vaithra is optimized for founder output.</p>
+      <div class="why-quote"><p>Serious founders deserve a serious place. Execution over everything.</p></div>
     </div>
     <div class="rr">
-      <span class="ey" style="margin-bottom:16px">Daily Signal</span>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.2vw,56px);font-weight:300;line-height:.9;color:var(--INK);margin-bottom:18px">Daily Knowledge <em style="font-style:italic;color:var(--OL)">Drop</em></h2>
-      <p style="font-size:13px;color:var(--INKm);line-height:1.9;font-weight:300;max-width:440px">One curated lesson, resource, or insight every day &mdash; specifically for early-stage founders navigating the chaos of building from scratch.</p>
-      <div class="dkd-sub">
-        <h4>Get It Daily</h4>
-        <p>Subscribe to receive the knowledge drop every morning before 7 PM.</p>
-        <div class="sub-grp">
-          <input type="email" class="sub-inp" placeholder="your@email.com">
-          <button class="sub-btn" onclick="handleSub(this)">Subscribe</button>
-        </div>
+      <div class="why-list">
+        <div class="why-item"><span class="wx">✕</span><span>Not courses designed to sell more courses</span></div>
+        <div class="why-item"><span class="wx">✕</span><span>Not influencers performing founder life</span></div>
+        <div class="why-item"><span class="wx">✕</span><span>Not Telegram groups full of noise</span></div>
+        <div class="why-item"><span class="wx">✕</span><span>Not fake communities with zero accountability</span></div>
+        <div class="why-item"><span class="wx">✕</span><span>Not another motivation reel ecosystem</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOUNDER MODAL -->
-<div id="founderModal" class="fmod">
-  <div class="fmod-l"><img id="fmod-img" src="" alt=""></div>
-  <div class="fmod-r">
-    <button class="xb" style="position:absolute;top:32px;right:32px" onclick="closeFounder()">&#10005;</button>
-    <div class="fmod-tag" id="fmod-tag"></div>
-    <h2 class="fmod-name" id="fmod-name"></h2>
-    <div class="fmod-role" id="fmod-role"></div>
-    <p class="fmod-bio" id="fmod-bio"></p>
-  </div>
-</div>
-
-<!-- NODES -->
-<section id="reps">
-  <div class="reps-hd">
-    <div class="rl"><span class="ey" style="margin-bottom:12px">Regional Node Infrastructure</span><h2 class="reps-ttl">Local <em>Hubs.</em></h2></div>
-    <p style="font-size:12px;color:var(--INKm);max-width:230px;font-weight:300;line-height:1.7;text-align:right" class="rr">Decentralized infrastructure bridging district builders with the global ecosystem.</p>
-  </div>
-  <div style="overflow:hidden"><div class="car-track" id="nodesTrack"></div></div>
-</section>
-
-<!-- NODE MODAL -->
-<div id="nodeModal" class="nmod">
-  <div class="nmb">
-    <div class="nmi"><img id="nmod-img" src="" alt=""></div>
-    <div class="nmc">
-      <button class="xb" style="position:absolute;top:18px;right:18px" onclick="closeNode()">&#10005;</button>
-      <span class="ey" style="margin-bottom:9px">Validation Node</span>
-      <h2 id="nmod-city"></h2>
-      <div class="nm-stat" id="nmod-stat"></div>
-      <p>Bridging the gap between isolated district builders and metro-centric startup ecosystems. This hub serves as a validation engine for Tier-2 and Tier-3 founders &mdash; organizing meetups, identifying serious builders, and connecting them to the broader Vaithra network.</p>
-      <button class="nm-btn" onclick="openApply();closeNode()">Request Node Access &rarr;</button>
-    </div>
-  </div>
-</div>
-
-<!-- STATS -->
-<section id="stats">
-  <div class="stats-wr">
-    <div style="text-align:center;margin-bottom:52px" class="rv">
-      <span class="ey" style="margin-bottom:12px">Protocol Expansion</span>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,5vw,60px);font-weight:300;font-style:italic;color:var(--INK)">Community Growth</h2>
-    </div>
-    <div class="stats-grid">
-      <div class="sbox rv"><div class="snum"><span class="cnt" data-t="7">0</span>+</div><div class="slbl">Community Members</div></div>
-      <div class="sbox rv d1"><div class="snum"><span class="cnt" data-t="4">0</span></div><div class="slbl">Cities Connected</div></div>
-      <div class="sbox rv d2"><div class="snum"><span class="cnt" data-t="3">0</span></div><div class="slbl">Projects Validated</div></div>
-      <div class="sbox rv d3"><div class="snum"><span class="cnt" data-t="4">0</span></div><div class="slbl">Core Contributors</div></div>
-    </div>
-    <div style="text-align:center;margin-top:56px" class="rv">
-      <button class="bp" onclick="openCommunity()">Become a Community Member</button>
-      <p style="margin-top:16px;font-family:'Syne',sans-serif;font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--INKl)">Receive updates via Mail &amp; WhatsApp</p>
+<!-- ⑦ HOW -->
+<section id="how">
+  <div class="how-in si">
+    <span class="ey rv" style="margin-bottom:12px">Simple Process</span>
+    <h2 class="sec-ttl rv d1">How Founders Use Vaithra</h2>
+    <div class="how-steps">
+      <div class="how-step rv d1"><div class="hn">1</div><div class="ht"><h3>Explore Platforms</h3><p>Find what's relevant to your stage — learning, community, tools, verification, or grants. No onboarding fluff.</p></div></div>
+      <div class="how-step rv d2"><div class="hn">2</div><div class="ht"><h3>Join or Apply</h3><p>Some platforms are open. Some require an application. Verification is earned, not given.</p></div></div>
+      <div class="how-step rv d3"><div class="hn">3</div><div class="ht"><h3>Build with the Ecosystem</h3><p>Use the infrastructure to execute. Connect with peers who are actually building. That's it.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- BLOGS -->
-<section id="blogs">
-  <div class="blogs-wr">
-    <h2 class="blogs-ttl rv">Founder <em>Insights</em></h2>
-    <div class="blogs-grid">
-      <a href="blog-startup-failure.html" class="bcard feat rl"><div class="bcat">Research &middot; Feature</div><h3>Why Startups Are Failing in India &mdash; And What Nobody Wants to Admit</h3><p class="bexc">India is producing thousands of startups every year, yet most collapse before finding traction. This piece explores structural, cultural, and psychological reasons behind the failure epidemic.</p><div class="bft"><span class="brl">Read Full Article &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">12 min</span></div></a>
-      <a href="blog-isolation.html" class="bcard rv d1"><div class="bcat">Culture</div><h3>Isolation Is The Enemy</h3><p class="bexc">Talented founders in smaller cities work in complete isolation without networks, mentors, or validation.</p><div class="bft"><span class="brl">Read &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">7 min</span></div></a>
-      <a href="blog-execution.html" class="bcard rv d2"><div class="bcat">Execution</div><h3>Execution Reality</h3><p class="bexc">Real founders succeed through relentless experimentation and honest feedback loops, not motivation.</p><div class="bft"><span class="brl">Read &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">5 min</span></div></a>
-      <a href="blog-network-problem.html" class="bcard rv d3"><div class="bcat">Network</div><h3>The Founder Network Problem</h3><p class="bexc">Outside major metro cities, thousands of founders lack access to connections and collaborative communities.</p><div class="bft"><span class="brl">Read &rarr;</span><span style="font-family:'Syne',sans-serif;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:rgba(250,250,248,.18)">6 min</span></div></a>
+<!-- ⑧ FINAL CTA -->
+<section id="finalcta">
+  <div class="fc-grain"></div>
+  <div class="fc-orn">V</div>
+  <div class="fc-in">
+    <span class="fc-ey rv">Ready?</span>
+    <h2 class="fc-ttl rv d1">Vaithra Is<br><em>Not for Everyone</em></h2>
+    <p class="fc-sub rv d2">It's for the founders who are already building — and need the right environment to build faster, smarter, and with people who mean it.</p>
+    <div class="fc-btns rv d3">
+      <button class="bp" onclick="openApply()">Apply as Founder →</button>
+      <button class="bs" onclick="document.getElementById('platform').scrollIntoView({behavior:'smooth'})">Explore Platforms</button>
     </div>
-  </div>
-</section>
-
-<!-- SPONSOR -->
-<section id="sponsor">
-  <div class="sp-wr">
-    <div class="sp-hd rv"><span class="ey" style="margin-bottom:16px">Infrastructure Support</span><h2 class="sp-ttl">Backed by <em>Builders</em></h2></div>
-    <div class="mq-wr rv">
-      <div class="mq-tr">
-        <span class="mq-it" style="color:#c0523a">Glowvai</span><span class="mq-it" style="color:#3a6b52">IndieLabs</span><span class="mq-it">BuildStack</span><span class="mq-it" style="color:var(--GD)">StartupForge</span><span class="mq-it" style="color:#6b4a8a">FounderCircle</span><span class="mq-it">VaivaanithPvt</span>
-        <span class="mq-it" style="color:#c0523a">Glowvai</span><span class="mq-it" style="color:#3a6b52">IndieLabs</span><span class="mq-it">BuildStack</span><span class="mq-it" style="color:var(--GD)">StartupForge</span><span class="mq-it" style="color:#6b4a8a">FounderCircle</span><span class="mq-it">VaivaanithPvt</span>
-      </div>
-    </div>
-    <div class="sp-cta">
-      <div class="sp-txt rl">
-        <h3>Scale the New Protocol.</h3>
-        <p>Support early-stage founders and gain priority access to validated builders across regional hubs. Professional clearance managed via Vaivaanith Pvt Ltd.</p>
-        <div class="sp-mini">
-          <div><div class="smn">10+</div><span class="ey">Cities</span></div>
-          <div><div class="smn">50+</div><span class="ey">Events/Yr</span></div>
-          <div><div class="smn">&infin;</div><span class="ey">Reach</span></div>
-        </div>
-      </div>
-      <div class="wa-card rr">
-        <h4>Direct Channel</h4>
-        <p>Final Authority Clearance</p>
-        <a href="https://wa.me/918977855998?text=Interested%20in%20becoming%20a%20Sponsor%20for%20Vaithra" class="wa-btn">Connect via WhatsApp</a>
-        <div class="wa-meta">8977855998 &middot; Sardhar Musthafa</div>
-      </div>
+    <div style="margin-top:60px;display:flex;justify-content:center;align-items:center;gap:14px;opacity:.15" class="rv d4">
+      <div style="height:1px;width:32px;background:var(--W)"></div>
+      <span style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--W)">Powered by Vaivaanith Pvt Ltd</span>
+      <div style="height:1px;width:32px;background:var(--W)"></div>
     </div>
   </div>
 </section>
@@ -662,615 +823,496 @@ footer{background:var(--W);padding:92px 5% 40px;border-top:1px solid var(--BD)}
     <div class="ft-top">
       <div class="ft-brand">
         <h3>VAITHRA</h3>
-        <p>Identifying and validating serious builders outside traditional startup hubs. Powered by Vaivaanith Pvt Ltd.</p>
-        <div class="ft-socials"><a href="https://instagram.com/wearevaithra" target="_blank">Instagram</a><a href="https://wa.me/918977855998" target="_blank">WhatsApp</a></div>
+        <p>A structured ecosystem for founders who build. Identifying serious builders across India.</p>
+        <div class="ft-soc">
+          <a href="https://instagram.com/wearevaithra" target="_blank">Instagram</a>
+          <a href="https://wa.me/918977855998" target="_blank">WhatsApp</a>
+        </div>
       </div>
-      <div class="ft-col"><h4>Explore</h4><ul><li><a href="#about">The Vision</a></li><li><a href="#founders">Core Team</a></li><li><a href="#reps">Regional Nodes</a></li><li><a href="#blogs">Founder Insights</a></li></ul></div>
-      <div class="ft-col"><h4>Platform</h4><ul><li><a href="#pob">Proof of Build</a></li><li><a href="#grants">Micro Grants</a></li><li><a href="#vbadge">Verification Badge</a></li><li><a href="#bip">Build in Public</a></li><li><a href="#dkd">Daily Drop</a></li></ul></div>
-      <div class="ft-col"><h4>Legal</h4><ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms-conditions.html">Terms &amp; Conditions</a></li><li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry">Official Clearance</a></li></ul><div style="margin-top:24px"><div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK)">VAIVAANITH PVT LTD</div><p style="font-size:10px;color:var(--INKm);margin-top:4px;line-height:1.5;font-weight:300">Holding entity for Vaithra and Glowvai.in</p></div></div>
+      <div class="ft-col"><h4>Platforms</h4><ul>
+        <li><a href="idea-promotion.html">Idea Promotion</a></li>
+        <li><a href="city-reps.html">City Reps</a></li>
+        <li><a href="daily-drop.html">Daily Drop</a></li>
+        <li><a href="micro-grants.html">Micro Grants</a></li>
+        <li><a href="build-wall.html">Build Wall</a></li>
+        <li><a href="verify.html">Verification</a></li>
+        <li><a href="vaithra-open.html">Open Org</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Community</h4><ul>
+        <li><a href="about.html">About Vaithra</a></li>
+        <li><a href="#who">Who It's For</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="https://wa.me/918977855998" target="_blank">Contact</a></li>
+      </ul></div>
+      <div class="ft-col"><h4>Legal</h4><ul>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="terms-conditions.html">Terms &amp; Conditions</a></li>
+        <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry" target="_blank">Official Clearance</a></li>
+      </ul>
+      <div style="margin-top:22px">
+        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK)">VAIVAANITH PVT LTD</div>
+        <p style="font-size:10px;color:var(--INKm);margin-top:5px;line-height:1.5;font-weight:300">Holding entity for Vaithra &amp; Glowvai.in</p>
+      </div></div>
     </div>
     <div class="ft-bot"><span>&copy; 2026 Vaithra. All rights reserved.</span><span>Authored by Sardhar Musthafa</span></div>
   </div>
 </footer>
 
-<!-- COMMUNITY MODAL -->
-<div id="communityModal" class="cmm">
-  <button class="xb" style="position:fixed;top:26px;right:26px;z-index:10001;background:white" onclick="closeCommunity()">&#10005;</button>
-  <div class="cmm-in">
-    <div class="cmm-hd"><span class="ey" style="margin-bottom:12px">Onboarding Protocol</span><h2>Join the Network</h2></div>
-    <div class="cmm-form"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading</iframe></div>
-  </div>
-</div>
+</div><!-- #site -->
 
 <script>
-/* =============================================
-   FEATURE DATA
-============================================= */
-var FEATURES = [
-  {id:'ip',badge:'core',bc:'bc',title:'Idea Promotion',sub:'Visibility Engine',desc:'Founders pay to promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and potential co-founders across all city nodes.',items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Representatives share promoted ideas in local communities.'}],shape:'pyramid',color:0x4A5C3A},
-  {id:'cr',badge:'core',bc:'bc',title:'City Representatives',sub:'Ground Network',desc:'Local nodes in every major city. Representatives organize ground meetups, bridge district builders with the ecosystem, and receive free idea promotion as a core benefit.',items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network at no cost.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct communication channel with Vaithra core.'}],shape:'network',color:0x6B7F58},
-  {id:'dk',badge:'core',bc:'bc',title:'Daily Knowledge Drop',sub:'Daily Signal',desc:'One curated lesson, resource, or topic every single day, for early-stage founders navigating product, growth, fundraising, and team building.',items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered to your inbox and WhatsApp before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full historical archive.'}],shape:'sphere',color:0x2E3A24},
-  {id:'mg',badge:'new',bc:'bn',title:'Micro-Grant Rounds',sub:'New Feature',desc:'Community-backed micro-funding for vetted founders who have proven traction. No lengthy applications, just verified builds and community trust signals.',items:[{t:'Three Tiers',p:'Rs 5K seed spark, Rs 25K traction grant, Rs 1L verified builder grant with clear eligibility.'},{t:'PoB-Gated',p:'You must have a minimum PoB score to apply. No shortcuts, no connections bias.'},{t:'Community Vote',p:'For larger grants, final allocation is determined by community vote.'}],shape:'coin',color:0xB8A060},
-  {id:'bw',badge:'new',bc:'bn',title:'Build in Public Wall',sub:'New Feature',desc:'A live public wall where verified founders share real updates, wins, failures, and milestones. Accountability meets community visibility.',items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post, ensuring quality over noise.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type for easy discovery.'},{t:'Weekly Highlights',p:'The best build updates are featured in the weekly community digest.'}],shape:'wall',color:0x6B7F58},
-  {id:'oo',badge:'core',bc:'bc',title:'Open Organization',sub:'Core Structure',desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just a commitment to the founder-first culture.',items:[{t:'Run Events',p:'Any member can organize a Vaithra-branded event in their city with full support.'},{t:'Contribution Vault',p:'Contribute guides, resources, and templates to the shared community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become official City Representatives.'}],shape:'torus',color:0x4A5C3A},
-  {id:'vb',badge:'premium',bc:'bpr',title:'Verification Badge',sub:'Premium Credential',desc:'A verifiable community-issued credential for founders who pass protocol checks, signaling authenticity, commitment, and network standing.',items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles in the verified tier.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by the community.'},{t:'Profile Visibility',p:'Verified badge displayed on your public profile and grant applications.'}],shape:'badge',color:0x4A5C3A},
-];
+/* ═══ GOOGLE SHEETS BACKEND ═══ */
+var SHEET = 'https://script.google.com/macros/s/AKfycbw262OdGPubRdKefldxhXwtbCCUKs4zO7iVH6AKD2aRZ7my30O1Gj1Aq_fSV8CrCGR7aw/exec';
 
-/* =============================================
-   ✅ CHANGE 1 — FEATURE PAGE REDIRECT MAP
-   (Added before fdR declaration)
-============================================= */
-var FEATURE_PAGES = {
-  'ip': 'idea-promotion.html',
-  'cr': 'city-reps.html',
-  'dk': 'daily-drop.html',
-  'pb': 'index.html',
-  'mg': 'micro-grants.html',
-  'vb': 'verify.html',
-  'fc': 'index.html',
-  'bw': 'build-wall.html',
-  'oo': 'vaithra-open.html'
-};
-var currentFeatureId = null;
-function goToFeature() {
-  if (currentFeatureId && FEATURE_PAGES[currentFeatureId]) {
-    window.location.href = FEATURE_PAGES[currentFeatureId];
-  }
-}
-
-/* =============================================
-   3D MINI RENDERER
-============================================= */
-function makeMini(canvas, shape, color) {
-  if (!canvas || typeof THREE === 'undefined') return;
-  var r = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
-  r.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  r.setSize(60, 60);
-  var sc = new THREE.Scene();
-  var cam = new THREE.PerspectiveCamera(52, 1, 0.1, 100);
-  cam.position.z = 3;
-  sc.add(new THREE.AmbientLight(0xffffff, 0.5));
-  var dl = new THREE.DirectionalLight(0xffffff, 1.2);
-  dl.position.set(2, 3, 4);
-  sc.add(dl);
-  var mat = new THREE.MeshStandardMaterial({color: color, roughness: 0.4, metalness: 0.15});
-  var mesh;
-  if (shape === 'sphere') {
-    mesh = new THREE.Mesh(new THREE.SphereGeometry(0.8, 18, 18), mat);
-  } else if (shape === 'pyramid') {
-    mesh = new THREE.Mesh(new THREE.ConeGeometry(0.7, 1.3, 4), mat);
-  } else if (shape === 'coin') {
-    mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.16, 30), mat);
-  } else if (shape === 'torus') {
-    mesh = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.22, 10, 44), mat);
-  } else if (shape === 'badge') {
-    var g = new THREE.Group();
-    g.add(new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.75, 0.16, 6), mat));
-    var sm = new THREE.Mesh(new THREE.SphereGeometry(0.2, 10, 10), new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.3}));
-    sm.position.y = 0.18;
-    g.add(sm);
-    mesh = g;
-  } else if (shape === 'blocks') {
-    var g = new THREE.Group();
-    var cols = [0x4A5C3A, 0x6B7F58, 0x2E3A24];
-    for (var i = 0; i < 3; i++) {
-      var bk = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.28, 0.65), new THREE.MeshStandardMaterial({color: cols[i], roughness: 0.5}));
-      bk.position.y = i * 0.32 - 0.32;
-      g.add(bk);
-    }
-    mesh = g;
-  } else if (shape === 'network') {
-    var g = new THREE.Group();
-    var nm = new THREE.MeshStandardMaterial({color: color});
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 10), nm));
-    for (var i = 0; i < 5; i++) {
-      var a = (i / 5) * Math.PI * 2;
-      var sp = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 8), nm);
-      sp.position.set(Math.cos(a) * 0.68, Math.sin(a) * 0.68, 0);
-      g.add(sp);
-    }
-    mesh = g;
-  } else if (shape === 'grid') {
-    var g = new THREE.Group();
-    var lm = new THREE.LineBasicMaterial({color: color, transparent: true, opacity: 0.75});
-    for (var i = -1; i <= 1; i++) {
-      g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-1, i*0.5, 0), new THREE.Vector3(1, i*0.5, 0)]), lm));
-      g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i*0.5, -1, 0), new THREE.Vector3(i*0.5, 1, 0)]), lm));
-    }
-    mesh = g;
-  } else if (shape === 'wall') {
-    var g = new THREE.Group();
-    var rows = [[-0.5, 0.28], [0, 0.28], [0.5, 0.28], [-0.25, -0.05], [0.25, -0.05], [-0.5, -0.38], [0, -0.38], [0.5, -0.38]];
-    for (var i = 0; i < rows.length; i++) {
-      var bk = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.24, 0.1), mat);
-      bk.position.set(rows[i][0], rows[i][1], 0);
-      g.add(bk);
-    }
-    mesh = g;
-  } else {
-    mesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 0.9), mat);
-  }
-  sc.add(mesh);
-  function anim() {
-    requestAnimationFrame(anim);
-    if (mesh) mesh.rotation.y += 0.013;
-    r.render(sc, cam);
-  }
-  anim();
-}
-
-/* =============================================
-   BUILD FEATURE GRID
-============================================= */
-function buildGrid() {
-  var grid = document.getElementById('fGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  // Current Date: March 21, 2026
-  // Reveal Date: April 29, 2026
-  var revealDate = new Date('2026-04-29');
-  var today = new Date();
-
-  for (var i = 0; i < FEATURES.length; i++) {
-    (function(f) {
-      var el = document.createElement('div');
-      
-      // LOGIC: Only lock if it has 'locked: true' AND we haven't reached April 29
-      var isFeatureLocked = (f.locked === true && today < revealDate);
-
-      if (isFeatureLocked) {
-        el.className = 'ft'; // Keep base class
-        el.style.opacity = '0.5';
-        el.style.pointerEvents = 'none'; // Unclickable
-        el.style.cursor = 'not-allowed';
-      } else {
-        el.className = 'ft';
-        el.onclick = function() { openDet(f); }; // Clickable for everyone else
-      }
-
-      el.innerHTML = '<canvas class="ft-cv" id="ftc-' + f.id + '" width="60" height="60"></canvas>' +
-        '<span class="ft-badge ' + f.bc + '">' + (isFeatureLocked ? 'Coming April 29' : f.badge) + '</span>' +
-        '<h3>' + f.title + '</h3>' +
-        '<p>' + f.desc.substring(0, 90) + '...</p>';
-      
-      grid.appendChild(el);
-      setTimeout(function() {
-        makeMini(document.getElementById('ftc-' + f.id), f.shape, f.color);
-      }, 50);
-    })(FEATURES[i]);
-  }
-}
-
-/* =============================================
-   HUB TOGGLE
-============================================= */
-var hubOpen = false;
-function toggleHub() {
-  if (hubOpen) { closeHub(); } else { openHub(); }
-}
-function openHub() {
-  hubOpen = true;
-  document.getElementById('fHub').classList.add('open');
-  document.getElementById('platBtn').classList.add('act');
-  document.body.style.overflow = 'hidden';
-  if (!document.querySelector('.ft')) buildGrid();
-}
-function closeHub() {
-  hubOpen = false;
-  document.getElementById('fHub').classList.remove('open');
-  document.getElementById('platBtn').classList.remove('act');
-  if (!document.getElementById('fDet').classList.contains('open')) {
-    document.body.style.overflow = '';
-  }
-}
-
-/* =============================================
-   FEATURE DETAIL
-============================================= */
-var fdR = null, fdRaf = null;
-
-/* ✅ CHANGE 2 — added: currentFeatureId = f.id as FIRST line inside openDet */
-function openDet(f) {
-  currentFeatureId = f.id;
-  closeHub();
-  document.getElementById('fdlbl').textContent = f.sub;
-  document.getElementById('fdey').textContent = f.sub;
-  document.getElementById('fdttl').textContent = f.title;
-  document.getElementById('fddesc').textContent = f.desc;
-  var html = '';
-  for (var i = 0; i < f.items.length; i++) {
-    html += '<div class="fd-item"><div class="fd-dot"></div><div><h5>' + f.items[i].t + '</h5><p>' + f.items[i].p + '</p></div></div>';
-  }
-  document.getElementById('fditems').innerHTML = html;
-  document.getElementById('fDet').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  if (fdRaf) cancelAnimationFrame(fdRaf);
-  if (fdR) { fdR.dispose(); fdR = null; }
-  setTimeout(function() {
-    var cv = document.getElementById('fdcv');
-    var w = cv.offsetWidth || 400;
-    var h = cv.offsetHeight || 460;
-    fdR = new THREE.WebGLRenderer({canvas: cv, alpha: true, antialias: true});
-    fdR.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    fdR.setSize(w, h);
-    var sc = new THREE.Scene();
-    var cam = new THREE.PerspectiveCamera(54, w/h, 0.1, 100);
-    cam.position.z = 4.8;
-    sc.add(new THREE.AmbientLight(0xfaf8ee, 0.38));
-    var dl = new THREE.DirectionalLight(0xfaf8ee, 1.5);
-    dl.position.set(3, 4, 5);
-    sc.add(dl);
-    var dl2 = new THREE.DirectionalLight(0x9aad80, 0.55);
-    dl2.position.set(-3, -2, -2);
-    sc.add(dl2);
-    var mat = new THREE.MeshStandardMaterial({color: f.color, roughness: 0.3, metalness: 0.22, transparent: true, opacity: 0.88});
-    var mesh;
-    if (f.shape === 'sphere') {
-      mesh = new THREE.Mesh(new THREE.SphereGeometry(1.35, 32, 32), mat);
-    } else if (f.shape === 'pyramid') {
-      mesh = new THREE.Mesh(new THREE.ConeGeometry(1.15, 2.1, 4), mat);
-    } else if (f.shape === 'coin') {
-      var gr = new THREE.Group();
-      gr.add(new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, 0.26, 36), mat));
-      mesh = gr;
-    } else if (f.shape === 'torus') {
-      mesh = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.36, 16, 80), mat);
-    } else if (f.shape === 'badge') {
-      var gr = new THREE.Group();
-      gr.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.26, 6), mat));
-      var sm = new THREE.Mesh(new THREE.SphereGeometry(0.36, 16, 16), new THREE.MeshStandardMaterial({color: 0xffffff, metalness: 0.4, roughness: 0.2}));
-      sm.position.y = 0.32;
-      gr.add(sm);
-      mesh = gr;
-    } else if (f.shape === 'blocks') {
-      var gr = new THREE.Group();
-      var cs = [0x4A5C3A, 0x6B7F58, 0x2E3A24, 0x8EA070, 0x4A5C3A];
-      for (var i = 0; i < 5; i++) {
-        var bk = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.42, 1.15), new THREE.MeshStandardMaterial({color: cs[i], roughness: 0.5, metalness: 0.1}));
-        bk.position.y = i * 0.52 - 1.1;
-        gr.add(bk);
-      }
-      mesh = gr;
-    } else if (f.shape === 'network') {
-      var gr = new THREE.Group();
-      var nm = new THREE.MeshStandardMaterial({color: f.color, roughness: 0.4});
-      var lm = new THREE.LineBasicMaterial({color: 0x8EA070, transparent: true, opacity: 0.45});
-      gr.add(new THREE.Mesh(new THREE.SphereGeometry(0.42, 14, 14), nm));
-      var ps = [];
-      for (var i = 0; i < 6; i++) {
-        var a = (i / 6) * Math.PI * 2;
-        var sp = new THREE.Mesh(new THREE.SphereGeometry(0.24, 12, 12), nm);
-        sp.position.set(Math.cos(a) * 1.4, Math.sin(a) * 1.4, 0);
-        gr.add(sp);
-        ps.push(sp.position.clone());
-      }
-      for (var i = 0; i < ps.length; i++) {
-        gr.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), ps[i]]), lm));
-      }
-      mesh = gr;
-    } else if (f.shape === 'grid') {
-      var gr = new THREE.Group();
-      var lm = new THREE.LineBasicMaterial({color: f.color, transparent: true, opacity: 0.65});
-      for (var i = -2; i <= 2; i++) {
-        gr.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-2, i*0.6, 0), new THREE.Vector3(2, i*0.6, 0)]), lm));
-        gr.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i*0.6, -2, 0), new THREE.Vector3(i*0.6, 2, 0)]), lm));
-      }
-      mesh = gr;
-    } else if (f.shape === 'wall') {
-      var gr = new THREE.Group();
-      var rows = [[-1, 0.58], [-0.2, 0.58], [0.6, 0.58], [-0.6, 0.1], [0.2, 0.1], [-1, -0.38], [-0.2, -0.38], [0.6, -0.38]];
-      for (var i = 0; i < rows.length; i++) {
-        var bk = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.36, 0.18), mat);
-        bk.position.set(rows[i][0], rows[i][1], 0);
-        gr.add(bk);
-      }
-      mesh = gr;
-    } else {
-      mesh = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.6, 1.6), mat);
-    }
-    sc.add(mesh);
-    var pGeo = new THREE.BufferGeometry();
-    var pPos = new Float32Array(60 * 3);
-    for (var i = 0; i < 60; i++) {
-      pPos[i*3] = (Math.random()-0.5)*9;
-      pPos[i*3+1] = (Math.random()-0.5)*9;
-      pPos[i*3+2] = (Math.random()-0.5)*4;
-    }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    sc.add(new THREE.Points(pGeo, new THREE.PointsMaterial({color: 0x8EA070, size: 0.05, transparent: true, opacity: 0.35})));
-    var mx = {x: 0, y: 0};
-    cv.onmousemove = function(e) {
-      var rc = cv.getBoundingClientRect();
-      mx.x = ((e.clientX - rc.left) / rc.width - 0.5) * 2;
-      mx.y = -((e.clientY - rc.top) / rc.height - 0.5) * 2;
-    };
-    function anim() {
-      fdRaf = requestAnimationFrame(anim);
-      if (mesh) {
-        mesh.rotation.y += 0.008;
-        mesh.rotation.x += (mx.y * 0.35 - mesh.rotation.x) * 0.05;
-      }
-      fdR.render(sc, cam);
-    }
-    anim();
-  }, 60);
-}
-function closeDet() {
-  document.getElementById('fDet').classList.remove('open');
-  if (!hubOpen) document.body.style.overflow = '';
-  if (fdRaf) cancelAnimationFrame(fdRaf);
-}
-
-/* =============================================
-   APPLY
-============================================= */
-function openApply() {
-  document.getElementById('applyOv').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeApply() {
-  document.getElementById('applyOv').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* =============================================
-   COMMUNITY
-============================================= */
-function openCommunity() {
-  document.getElementById('communityModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeCommunity() {
-  document.getElementById('communityModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* =============================================
-   NODES
-============================================= */
-var CITIES = [
-  {name:'Hyderabad', status:'Main Hub', file:'hyderabad.jpeg'},
-  {name:'Visakhapatnam', status:'Coastal Node', file:'vizag.jpeg'},
-  {name:'Vijayawada', status:'Core Node', file:'vijayawada.jpeg'},
-  {name:'Tirupati', status:'Tech Hub', file:'tirupati.jpeg'},
-  {name:'Warangal', status:'Expansion', file:'warangal.jpeg'},
-  {name:'Guntur', status:'Industrial', file:'guntur.jpeg'},
-  {name:'Bengaluru', status:'External', file:'bengaluru.jpeg'},
-  {name:'Chennai', status:'Partner', file:'chennai.jpeg'},
-  {name:'Mumbai', status:'Finance Hub', file:'mumbai.jpeg'},
-  {name:'Delhi', status:'Capital Node', file:'delhi.jpeg'}
-];
-function buildNodeCards() {
-  var html = '';
-  var all = CITIES.concat(CITIES);
-  for (var i = 0; i < all.length; i++) {
-    var c = all[i];
-    html += '<div class="ncard" onclick="openNode(\'' + c.name + '\',\'' + c.status + '\',\'assets/images/' + c.file + '\')">' +
-      '<div class="nci">' +
-      '<div class="ncimg"><img src="assets/images/' + c.file + '" alt="' + c.name + '" onerror="this.src=\'https://placehold.co/270x190/EAE7DC/6B6456?text=' + c.name + '\'"></div>' +
-      '<div class="ncinfo"><h3>' + c.name + '</h3><div class="nc-st">' + c.status + '</div></div>' +
-      '</div></div>';
-  }
-  document.getElementById('nodesTrack').innerHTML = html;
-}
-buildNodeCards();
-
-function openNode(city, status, img) {
-  document.getElementById('nmod-city').textContent = city;
-  document.getElementById('nmod-stat').textContent = status;
-  var el = document.getElementById('nmod-img');
-  el.src = img;
-  el.onerror = function() { this.src = 'https://placehold.co/400x600/2E3A24/B8A060?text=' + city; };
-  document.getElementById('nodeModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeNode() {
-  document.getElementById('nodeModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.getElementById('nodeModal').onclick = function(e) {
-  if (e.target === this) closeNode();
-};
-
-/* =============================================
-   SCROLL REVEAL
-============================================= */
-var ro = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('on'); });
-}, {threshold: 0.08, rootMargin: '0px 0px -36px 0px'});
-document.querySelectorAll('.rv,.rl,.rr').forEach(function(el) { ro.observe(el); });
-
-/* =============================================
-   COUNTERS
-============================================= */
-var co = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) {
-    if (e.isIntersecting) {
-      var c = e.target.querySelector('.cnt');
-      if (c && !c.dataset.s) {
-        c.dataset.s = 1;
-        var target = parseInt(c.dataset.t);
-        var start = performance.now();
-        var dur = 2200;
-        function tick(now) {
-          var p = Math.min((now - start) / dur, 1);
-          var eased = 1 - Math.pow(1 - p, 4);
-          c.textContent = Math.floor(eased * target);
-          if (p < 1) requestAnimationFrame(tick); else c.textContent = target;
-        }
-        requestAnimationFrame(tick);
-      }
-    }
-  });
-}, {threshold: 0.3});
-document.querySelectorAll('.sbox').forEach(function(el) { co.observe(el); });
-
-/* =============================================
-   SUBSCRIBE
-============================================= */
-function handleSub(btn) {
-  const inp = btn.parentElement.querySelector('.sub-inp');
-  const email = inp.value;
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbz3orlc0rs2SpbEjA2AiNzcnlmjrivrRH49QPYYDleU1KEszpWwO6aRsAuXGZHZyPDR/exec';
-  if (email && email.indexOf('@') > -1) {
-    btn.textContent = 'Joining...';
-    btn.disabled = true;
-    const params = new URLSearchParams();
-    params.append('email', email);
-    fetch(scriptURL, {
+async function saveToSheet(name, phone) {
+  var params = new URLSearchParams();
+  params.append('name', name);
+  params.append('phone', phone);
+  params.append('timestamp', new Date().toISOString());
+  params.append('source', 'vaithra_onboarding');
+  try {
+    await fetch(SHEET, {
       method: 'POST',
       mode: 'no-cors',
-      cache: 'no-cache',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: params.toString()
-    })
-    .then(() => {
-      inp.value = '';
-      btn.textContent = 'Welcome!';
-      btn.style.background = '#4A5C3A';
-      setTimeout(() => {
-        btn.textContent = 'Subscribe';
-        btn.disabled = false;
-        btn.style.background = '';
-      }, 4000);
-    })
-    .catch(error => {
-      console.error('Error!', error);
-      btn.textContent = 'Retry';
-      btn.disabled = false;
     });
-  } else {
-    alert("Please enter a valid email address.");
+  } catch(e) {
+    console.warn('Sheet save failed:', e);
   }
 }
 
-/* =============================================
-   HERO THREE.JS
-============================================= */
-(function() {
-  var canvas = document.getElementById('hcv');
-  if (!canvas || typeof THREE === 'undefined') return;
-  var renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(70, 1, 0.1, 100);
-  camera.position.z = 5;
-  function resize() {
-    var w = canvas.clientWidth, h = canvas.clientHeight;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
+/* ═══ INTRO SYSTEM ═══ */
+var obName='', obPhone='';
+document.body.style.overflow='hidden';
+
+function switchScene(from, to) {
+  var f=document.getElementById(from), t=document.getElementById(to);
+  f.classList.add('hidden');
+  setTimeout(function(){
+    f.classList.add('away');
+    t.classList.remove('away');
+    requestAnimationFrame(function(){ t.classList.remove('hidden'); });
+  }, 550);
+}
+
+var msgs=['Initializing','Loading ecosystem','Connecting nodes','Almost ready'];
+function runSplash(){
+  var bar=document.getElementById('sBar'), lbl=document.getElementById('sLbl');
+  var p=0;
+  var iv=setInterval(function(){
+    p += (100-p)*.038 + .25;
+    if(p>=100) p=100;
+    bar.style.width=p+'%';
+    lbl.textContent=msgs[Math.min(Math.floor(p/100*msgs.length), msgs.length-1)];
+    if(p>=100){ clearInterval(iv); setTimeout(function(){ switchScene('scSplash','scOnboard'); }, 700); }
+  }, 55);
+}
+
+function setDots(step){
+  ['od0','od1','od2'].forEach(function(id,i){
+    var d=document.getElementById(id);
+    d.className='ob-dot '+(i<step?'dn':i===step?'cur':'nxt');
+  });
+}
+
+function obStep(step){
+  if(step===0){
+    var v=document.getElementById('oName').value.trim();
+    if(!v||v.length<2){ document.getElementById('eN').style.display='block'; return; }
+    document.getElementById('eN').style.display='none';
+    obName=v;
+    document.getElementById('ob0').style.display='none';
+    document.getElementById('ob1').style.display='block';
+    setDots(1);
+  } else if(step===1){
+    var v=document.getElementById('oPhone').value.replace(/\D/g,'');
+    if(v.length<10){ document.getElementById('eP').style.display='block'; return; }
+    document.getElementById('eP').style.display='none';
+    obPhone=v;
+    document.getElementById('ob1').style.display='none';
+    document.getElementById('ob2').style.display='block';
+    setDots(2);
   }
-  resize();
-  window.addEventListener('resize', resize);
-  var geo = new THREE.BufferGeometry();
-  var n = 140;
-  var pos = new Float32Array(n * 3);
-  var vel = [];
-  for (var i = 0; i < n; i++) {
-    pos[i*3] = (Math.random()-0.5)*14;
-    pos[i*3+1] = (Math.random()-0.5)*14;
-    pos[i*3+2] = (Math.random()-0.5)*6;
-    vel.push({x:(Math.random()-0.5)*0.004, y:(Math.random()-0.5)*0.004+0.002});
+}
+
+async function obSubmit(){
+  var t=document.getElementById('cT').checked, p=document.getElementById('cP').checked;
+  if(!t||!p){ document.getElementById('eC').style.display='block'; return; }
+  document.getElementById('eC').style.display='none';
+  var btn=document.getElementById('obFinalBtn');
+  btn.textContent='Saving...'; btn.disabled=true;
+  await saveToSheet(obName, obPhone);
+  document.getElementById('wName').textContent=obName.split(' ')[0];
+  switchScene('scOnboard','scWelcome');
+}
+
+function enterSite(){
+  var intro=document.getElementById('intro');
+  intro.style.transition='opacity .85s ease, transform .85s ease';
+  intro.style.opacity='0'; intro.style.transform='scale(.97)';
+  setTimeout(function(){
+    intro.style.display='none';
+    document.getElementById('site').classList.add('visible');
+    document.body.style.overflow='';
+    initSite();
+  }, 850);
+}
+
+/* ═══ SITE INIT ═══ */
+function initSite(){
+  initReveal(); initNavScroll(); initTilt(); initCounters(); initTicker(); initHeroThree();
+}
+
+function initReveal(){
+  var ob=new IntersectionObserver(function(e){
+    e.forEach(function(x){ if(x.isIntersecting) x.target.classList.add('on'); });
+  },{threshold:.08, rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.rv,.rl,.rr').forEach(function(el){ ob.observe(el); });
+}
+
+function initNavScroll(){
+  var nav=document.getElementById('mainNav');
+  window.addEventListener('scroll',function(){
+    nav.style.background=window.scrollY>60?'rgba(250,250,248,.97)':'rgba(250,250,248,.9)';
+  });
+}
+
+function initTilt(){
+  document.querySelectorAll('.plat-tile').forEach(function(tile){
+    tile.addEventListener('mousemove',function(e){
+      var r=tile.getBoundingClientRect();
+      var x=((e.clientX-r.left)/r.width-.5)*14;
+      var y=((e.clientY-r.top)/r.height-.5)*-10;
+      tile.style.transform='translateY(-9px) rotateX('+y+'deg) rotateY('+x+'deg)';
+    });
+    tile.addEventListener('mouseleave',function(){ tile.style.transform=''; });
+  });
+}
+
+function initCounters(){
+  var ob=new IntersectionObserver(function(e){
+    e.forEach(function(x){
+      if(!x.isIntersecting) return;
+      x.target.querySelectorAll('.cnt').forEach(function(c){
+        if(c.dataset.s) return; c.dataset.s=1;
+        var t=parseInt(c.dataset.t), s=performance.now(), d=1800;
+        (function tick(n){
+          var p=Math.min((n-s)/d,1), ep=1-Math.pow(1-p,4);
+          c.textContent=Math.floor(ep*t);
+          if(p<1) requestAnimationFrame(tick); else c.textContent=t;
+        })(s);
+      });
+      ob.unobserve(x.target);
+    });
+  },{threshold:.4});
+  document.querySelectorAll('.hero-stats').forEach(function(el){ ob.observe(el); });
+}
+
+/* ═══ TICKER — SMOOTH WORD SWAP ═══ */
+function initTicker(){
+  var phrases=['Build Without Noise','Execute Daily','Ship Real Work','Prove It. Build It.','Choose Output'];
+  var idx=0;
+  var cur=document.getElementById('tickerCur');
+  setInterval(function(){
+    idx=(idx+1)%phrases.length;
+    var next=phrases[idx];
+    // Create new word above
+    var el=document.createElement('span');
+    el.className='ticker-word';
+    el.style.cssText='position:absolute;top:100%;left:0;width:100%;font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;';
+    el.textContent=next;
+    cur.parentNode.appendChild(el);
+    // Animate both
+    var wrap=cur.parentNode;
+    wrap.style.position='relative';
+    // Slide up current
+    cur.style.transition='transform .52s cubic-bezier(.16,1,.3,1),opacity .35s';
+    cur.style.transform='translateY(-110%)';
+    cur.style.opacity='0';
+    // Slide in new
+    el.style.transition='transform .52s cubic-bezier(.16,1,.3,1)';
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        el.style.top='0';
+        el.style.transform='translateY(-100%)';
+      });
+    });
+    setTimeout(function(){
+      if(cur.parentNode) cur.parentNode.removeChild(cur);
+      el.style.position='';
+      el.style.top='';
+      el.style.transform='';
+      el.id='tickerCur';
+      cur=el;
+    },540);
+  }, 2800);
+}
+
+/* ═══ MOBILE MENU ═══ */
+var mobOpen=false;
+function toggleMobMenu(){ mobOpen?closeMobMenu():openMobMenu(); }
+function openMobMenu(){
+  mobOpen=true;
+  document.getElementById('mobDrawer').classList.add('open');
+  document.getElementById('mobMenuBtn').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMobMenu(){
+  mobOpen=false;
+  document.getElementById('mobDrawer').classList.remove('open');
+  document.getElementById('mobMenuBtn').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ═══ HERO THREE.JS ═══ */
+function initHeroThree(){
+  var cv=document.getElementById('hcv');
+  if(!cv||typeof THREE==='undefined') return;
+  var R=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+  R.setPixelRatio(Math.min(devicePixelRatio,2));
+  var S=new THREE.Scene(), C=new THREE.PerspectiveCamera(70,1,.1,100);
+  C.position.z=5;
+  function resize(){
+    var w=cv.clientWidth, h=cv.clientHeight;
+    R.setSize(w,h,false); C.aspect=w/h; C.updateProjectionMatrix();
   }
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  var pts = new THREE.Points(geo, new THREE.PointsMaterial({color: 0x4A5C3A, size: 0.04, transparent: true, opacity: 0.5}));
-  scene.add(pts);
-  var lm = new THREE.LineBasicMaterial({color: 0x4A5C3A, opacity: 0.05, transparent: true});
-  for (var i = -7; i <= 7; i += 2) {
-    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-9,i,0),new THREE.Vector3(9,i,0)]), lm));
-    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i,-9,0),new THREE.Vector3(i,9,0)]), lm));
+  resize(); window.addEventListener('resize',resize);
+  var n=160, geo=new THREE.BufferGeometry(), pos=new Float32Array(n*3), vel=[];
+  for(var i=0;i<n;i++){
+    pos[i*3]=(Math.random()-.5)*16; pos[i*3+1]=(Math.random()-.5)*14; pos[i*3+2]=(Math.random()-.5)*5;
+    vel.push({x:(Math.random()-.5)*.003, y:(Math.random()-.5)*.003+.0015});
   }
-  function anim() {
-    requestAnimationFrame(anim);
-    var p = geo.attributes.position.array;
-    for (var i = 0; i < n; i++) {
-      p[i*3] += vel[i].x; p[i*3+1] += vel[i].y;
-      if (p[i*3+1] > 8) p[i*3+1] = -8;
-      if (p[i*3] > 8) p[i*3] = -8;
-      if (p[i*3] < -8) p[i*3] = 8;
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  S.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0x6B7F58,size:.055,transparent:true,opacity:.7})));
+  var lm=new THREE.LineBasicMaterial({color:0x4A5C3A,opacity:.06,transparent:true});
+  for(var i=-8;i<=8;i+=2.4){
+    S.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-10,i,0),new THREE.Vector3(10,i,0)]),lm));
+    S.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i,-10,0),new THREE.Vector3(i,10,0)]),lm));
+  }
+  S.add(new THREE.AmbientLight(0xfaf8ee,.5));
+  var dl=new THREE.DirectionalLight(0x9aad80,1.2); dl.position.set(3,4,5); S.add(dl);
+  var mat=new THREE.MeshStandardMaterial({color:0x4A5C3A,roughness:.45,metalness:.18,transparent:true,opacity:.2});
+  var cube=new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9),mat); cube.position.set(4,1.5,-1); S.add(cube);
+  var torus=new THREE.Mesh(new THREE.TorusGeometry(.7,.12,10,40),mat); torus.position.set(-4.5,-1.2,-1); S.add(torus);
+  var cone=new THREE.Mesh(new THREE.ConeGeometry(.55,1.1,4),mat); cone.position.set(3.5,-2,-1.5); S.add(cone);
+  var sphere=new THREE.Mesh(new THREE.SphereGeometry(.48,14,14),mat); sphere.position.set(-3.5,1.8,-1); S.add(sphere);
+  var t=0;
+  (function anim(){
+    requestAnimationFrame(anim); t+=.008;
+    var p=geo.attributes.position.array;
+    for(var i=0;i<n;i++){
+      p[i*3]+=vel[i].x; p[i*3+1]+=vel[i].y;
+      if(p[i*3+1]>8) p[i*3+1]=-8;
+      if(p[i*3]>9) p[i*3]=-9; if(p[i*3]<-9) p[i*3]=9;
     }
-    geo.attributes.position.needsUpdate = true;
-    pts.rotation.z += 0.0001;
-    renderer.render(scene, camera);
-  }
-  anim();
-})();
+    geo.attributes.position.needsUpdate=true;
+    cube.rotation.x+=.007; cube.rotation.y+=.01; cube.position.y=1.5+Math.sin(t*.7)*.22;
+    torus.rotation.x+=.008; torus.rotation.z+=.006; torus.position.y=-1.2+Math.cos(t*.8)*.18;
+    cone.rotation.y+=.009; cone.position.y=-2+Math.sin(t*.6+1)*.16;
+    sphere.position.y=1.8+Math.cos(t*.9)*.2;
+    R.render(S,C);
+  })();
+}
 
-/* =============================================
-   POB THREE.JS
-============================================= */
-(function() {
-  var canvas = document.getElementById('pcv');
-  if (!canvas || typeof THREE === 'undefined') return;
-  var renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(58, 1, 0.1, 100);
-  camera.position.set(0, 0, 6);
-  function resize() {
-    var w = canvas.clientWidth, h = canvas.clientHeight;
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  scene.add(new THREE.AmbientLight(0xfaf8ee, 0.4));
-  var dl = new THREE.DirectionalLight(0x9aad80, 1.8);
-  dl.position.set(4, 5, 6);
-  scene.add(dl);
-  var grp = new THREE.Group();
-  scene.add(grp);
-  var cols = [0x4A5C3A, 0x6B7F58, 0x2E3A24, 0x8EA070, 0x4A5C3A];
-  for (var i = 0; i < 5; i++) {
-    var m = new THREE.MeshStandardMaterial({color: cols[i], roughness: 0.45, metalness: 0.15});
-    var bk = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.38, 1.3), m);
-    bk.position.y = i * 0.5 - 1.1;
-    grp.add(bk);
-  }
-  var ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.025, 12, 100), new THREE.MeshBasicMaterial({color: 0x6B7F58, transparent: true, opacity: 0.18}));
-  ring.rotation.x = Math.PI / 3;
-  scene.add(ring);
-  var pGeo = new THREE.BufferGeometry();
-  var pPos = new Float32Array(80*3);
-  for (var i = 0; i < 80; i++) {
-    pPos[i*3] = (Math.random()-0.5)*10;
-    pPos[i*3+1] = (Math.random()-0.5)*10;
-    pPos[i*3+2] = (Math.random()-0.5)*4;
-  }
-  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({color: 0x6B7F58, size: 0.06, transparent: true, opacity: 0.3})));
-  var mouse = {x: 0, y: 0};
-  canvas.onmousemove = function(e) {
-    var rc = canvas.getBoundingClientRect();
-    mouse.x = ((e.clientX - rc.left) / rc.width - 0.5) * 2;
-    mouse.y = -((e.clientY - rc.top) / rc.height - 0.5) * 2;
-  };
-  function anim() {
-    requestAnimationFrame(anim);
-    grp.rotation.y += 0.007;
-    grp.rotation.x += (mouse.y * 0.35 - grp.rotation.x) * 0.05;
-    ring.rotation.z += 0.002;
-    renderer.render(scene, camera);
-  }
-  anim();
-})();
+/* ═══ FEATURE DATA ═══ */
+var FEATURES=[
+  {id:'ip',badge:'core',bc:'bc',title:'Idea Promotion',sub:'Visibility Engine',page:'idea-promotion.html',
+   desc:'Founders promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and co-founders across all city nodes.',
+   items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Reps amplify promoted ideas in local communities.'}],shape:'pyramid',color:0x4A5C3A},
+  {id:'cr',badge:'core',bc:'bc',title:'City Representatives',sub:'Ground Network',page:'city-reps.html',
+   desc:'Local nodes in every major city. Reps organize meetups, bridge district builders with the ecosystem, and receive free idea promotion.',
+   items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct channel with Vaithra core.'}],shape:'network',color:0x6B7F58},
+  {id:'dk',badge:'core',bc:'bc',title:'Daily Knowledge Drop',sub:'Daily Signal',page:'daily-drop.html',
+   desc:'One curated lesson, resource, or topic every single day — for early-stage founders navigating product, growth, fundraising, and team building.',
+   items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full archive.'}],shape:'sphere',color:0x2E3A24},
+  {id:'pb',badge:'core',bc:'bc',title:'Proof of Build (PoB)',sub:'Accountability Engine',page:'index.html',
+   desc:'A structured accountability system where founders document and verify real build progress — not just plans.',
+   items:[{t:'Weekly Check-ins',p:'Log what you shipped, what you learned, what blocked you.'},{t:'PoB Score',p:'Your consistency score — the only metric Vaithra cares about.'},{t:'Peer Verification',p:'Community members verify your build claims.'}],shape:'blocks',color:0x2E3A24},
+  {id:'mg',badge:'new',bc:'bn',title:'Micro-Grant Rounds',sub:'New Feature',page:'micro-grants.html',
+   desc:'Community-backed micro-funding for vetted founders with real traction. ₹5K to ₹1L — gated by PoB score.',
+   items:[{t:'Three Tiers',p:'₹5K seed, ₹25K traction, ₹1L verified builder grant.'},{t:'PoB-Gated',p:'Minimum PoB score required to apply. No shortcuts.'},{t:'Community Vote',p:'Larger grants are allocated by community vote.'}],shape:'coin',color:0xB8A060},
+  {id:'bw',badge:'new',bc:'bn',title:'Build in Public Wall',sub:'New Feature',page:'build-wall.html',
+   desc:'A live public wall where verified founders share real updates, wins, failures, and milestones.',
+   items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type.'},{t:'Weekly Highlights',p:'Best updates featured in the weekly digest.'}],shape:'wall',color:0x6B7F58},
+  {id:'vb',badge:'premium',bc:'bpr',title:'Verification Badge',sub:'Premium Credential',page:'verify.html',
+   desc:'A community-issued credential for founders who pass protocol checks — signaling authenticity and network standing.',
+   items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by community.'},{t:'Profile Visibility',p:'Badge displayed on profile and grant applications.'}],shape:'badge',color:0x4A5C3A},
+  {id:'oo',badge:'core',bc:'bc',title:'Open Organization',sub:'Core Structure',page:'vaithra-open.html',
+   desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just commitment to founder-first culture.',
+   items:[{t:'Run Events',p:'Any member can organize Vaithra-branded events in their city.'},{t:'Contribution Vault',p:'Add guides, resources, and templates to the community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become City Representatives.'}],shape:'torus',color:0x4A5C3A},
+];
 
-/* =============================================
-   KEYBOARD ESC
-============================================= */
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeApply();
-    closeFounder();
-    closeNode();
-    closeCommunity();
-    closeDet();
-    closeHub();
-  }
+var curFPage=null, hubOpen=false;
+
+function buildGrid(){
+  var g=document.getElementById('fGrid');
+  if(!g||g.children.length) return;
+  FEATURES.forEach(function(f){
+    var el=document.createElement('div');
+    el.className='ft-card';
+    el.innerHTML='<canvas class="ft-cv" id="ftc-'+f.id+'" width="56" height="56"></canvas><span class="ft-badge '+f.bc+'">'+f.badge+'</span><h3>'+f.title+'</h3><p>'+f.desc.substring(0,90)+'...</p>';
+    el.onclick=function(){ openDet(f); };
+    g.appendChild(el);
+    setTimeout(function(){ makeMini(document.getElementById('ftc-'+f.id),f.shape,f.color); },60);
+  });
+}
+
+function toggleHub(){ hubOpen?closeHub():openHub(); }
+function openHub(){
+  hubOpen=true; buildGrid();
+  document.getElementById('fHub').classList.add('open');
+  document.getElementById('platBtn').classList.add('act');
+  document.body.style.overflow='hidden';
+}
+function closeHub(){
+  hubOpen=false;
+  document.getElementById('fHub').classList.remove('open');
+  document.getElementById('platBtn').classList.remove('act');
+  if(!document.getElementById('fDet').classList.contains('open')) document.body.style.overflow='';
+}
+
+/* ═══ FEATURE DETAIL THREE.JS ═══ */
+var fdR=null, fdRaf=null;
+function openDet(f){
+  curFPage=f.page; closeHub();
+  document.getElementById('fdlbl').textContent=f.sub;
+  document.getElementById('fdey').textContent=f.sub;
+  document.getElementById('fdttl').textContent=f.title;
+  document.getElementById('fddesc').textContent=f.desc;
+  document.getElementById('fditems').innerHTML=f.items.map(function(it){
+    return '<div class="fd-item"><div class="fd-dot"></div><div><h5>'+it.t+'</h5><p>'+it.p+'</p></div></div>';
+  }).join('');
+  document.getElementById('fDet').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(fdRaf) cancelAnimationFrame(fdRaf);
+  if(fdR){ try{fdR.dispose();}catch(e){} fdR=null; }
+  setTimeout(function(){
+    var cv=document.getElementById('fdcv');
+    var w=cv.offsetWidth||380, h=cv.offsetHeight||460;
+    fdR=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+    fdR.setPixelRatio(Math.min(devicePixelRatio,2)); fdR.setSize(w,h);
+    var sc=new THREE.Scene(), cam=new THREE.PerspectiveCamera(54,w/h,.1,100); cam.position.z=4.8;
+    sc.add(new THREE.AmbientLight(0xfaf8ee,.38));
+    var dl=new THREE.DirectionalLight(0xfaf8ee,1.5); dl.position.set(3,4,5); sc.add(dl);
+    var dl2=new THREE.DirectionalLight(0x9aad80,.55); dl2.position.set(-3,-2,-2); sc.add(dl2);
+    var mat=new THREE.MeshStandardMaterial({color:f.color,roughness:.3,metalness:.22,transparent:true,opacity:.88});
+    var mesh=makeBigShape(f.shape,mat,f.color,sc);
+    var pGeo=new THREE.BufferGeometry(), pPos=new Float32Array(60*3);
+    for(var i=0;i<60;i++){pPos[i*3]=(Math.random()-.5)*9;pPos[i*3+1]=(Math.random()-.5)*9;pPos[i*3+2]=(Math.random()-.5)*4;}
+    pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+    sc.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0x8EA070,size:.055,transparent:true,opacity:.3})));
+    var mx={x:0,y:0};
+    cv.onmousemove=function(e){ var r=cv.getBoundingClientRect(); mx.x=((e.clientX-r.left)/r.width-.5)*2; mx.y=-((e.clientY-r.top)/r.height-.5)*2; };
+    (function anim(){
+      fdRaf=requestAnimationFrame(anim);
+      if(mesh){ mesh.rotation.y+=.008; mesh.rotation.x+=(mx.y*.35-mesh.rotation.x)*.05; }
+      fdR.render(sc,cam);
+    })();
+  },60);
+}
+
+function makeBigShape(shape,mat,color,sc){
+  var mesh;
+  if(shape==='sphere') mesh=new THREE.Mesh(new THREE.SphereGeometry(1.35,32,32),mat);
+  else if(shape==='pyramid') mesh=new THREE.Mesh(new THREE.ConeGeometry(1.15,2.1,4),mat);
+  else if(shape==='coin') mesh=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,.26,36),mat);
+  else if(shape==='torus') mesh=new THREE.Mesh(new THREE.TorusGeometry(1.1,.36,16,80),mat);
+  else if(shape==='badge'){
+    var g=new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3,1.3,.26,6),mat));
+    var sm=new THREE.Mesh(new THREE.SphereGeometry(.36,16,16),new THREE.MeshStandardMaterial({color:0xffffff,metalness:.4,roughness:.2}));
+    sm.position.y=.32; g.add(sm); mesh=g;
+  } else if(shape==='blocks'){
+    var g=new THREE.Group();
+    [0x4A5C3A,0x6B7F58,0x2E3A24,0x8EA070,0x4A5C3A].forEach(function(c,i){
+      var bk=new THREE.Mesh(new THREE.BoxGeometry(1.15,.42,1.15),new THREE.MeshStandardMaterial({color:c,roughness:.5,metalness:.1}));
+      bk.position.y=i*.52-1.1; g.add(bk);
+    }); mesh=g;
+  } else if(shape==='network'){
+    var g=new THREE.Group();
+    var nm=new THREE.MeshStandardMaterial({color:color,roughness:.4});
+    var lm=new THREE.LineBasicMaterial({color:0x8EA070,transparent:true,opacity:.45});
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(.42,14,14),nm));
+    var ps=[];
+    for(var i=0;i<6;i++){
+      var a=(i/6)*Math.PI*2;
+      var sp=new THREE.Mesh(new THREE.SphereGeometry(.24,12,12),nm);
+      sp.position.set(Math.cos(a)*1.4,Math.sin(a)*1.4,0); g.add(sp); ps.push(sp.position.clone());
+    }
+    ps.forEach(function(p){ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),p]),lm)); });
+    mesh=g;
+  } else if(shape==='wall'){
+    var g=new THREE.Group();
+    [[-1,.58],[-.2,.58],[.6,.58],[-.6,.1],[.2,.1],[-1,-.38],[-.2,-.38],[.6,-.38]].forEach(function(r){
+      var bk=new THREE.Mesh(new THREE.BoxGeometry(.7,.36,.18),mat);
+      bk.position.set(r[0],r[1],0); g.add(bk);
+    }); mesh=g;
+  } else mesh=new THREE.Mesh(new THREE.BoxGeometry(1.6,1.6,1.6),mat);
+  sc.add(mesh); return mesh;
+}
+
+function makeMini(canvas,shape,color){
+  if(!canvas||typeof THREE==='undefined') return;
+  var r=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+  r.setPixelRatio(Math.min(devicePixelRatio,2)); r.setSize(56,56);
+  var sc=new THREE.Scene(), cam=new THREE.PerspectiveCamera(52,1,.1,100); cam.position.z=3;
+  sc.add(new THREE.AmbientLight(0xffffff,.5));
+  var dl=new THREE.DirectionalLight(0xffffff,1.2); dl.position.set(2,3,4); sc.add(dl);
+  var mat=new THREE.MeshStandardMaterial({color:color,roughness:.4,metalness:.15});
+  var mesh;
+  if(shape==='sphere') mesh=new THREE.Mesh(new THREE.SphereGeometry(.8,16,16),mat);
+  else if(shape==='pyramid') mesh=new THREE.Mesh(new THREE.ConeGeometry(.7,1.3,4),mat);
+  else if(shape==='coin') mesh=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.16,28),mat);
+  else if(shape==='torus') mesh=new THREE.Mesh(new THREE.TorusGeometry(.6,.22,10,44),mat);
+  else if(shape==='badge'){
+    var g=new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(.75,.75,.16,6),mat));
+    var sm=new THREE.Mesh(new THREE.SphereGeometry(.2,10,10),new THREE.MeshStandardMaterial({color:0xffffff,metalness:.3}));
+    sm.position.y=.18; g.add(sm); mesh=g;
+  } else if(shape==='blocks'){
+    var g=new THREE.Group();
+    [0x4A5C3A,0x6B7F58,0x2E3A24].forEach(function(c,i){
+      var bk=new THREE.Mesh(new THREE.BoxGeometry(.65,.28,.65),new THREE.MeshStandardMaterial({color:c,roughness:.5}));
+      bk.position.y=i*.32-.32; g.add(bk);
+    }); mesh=g;
+  } else if(shape==='network'){
+    var g=new THREE.Group();
+    var nm=new THREE.MeshStandardMaterial({color:color});
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(.24,10,10),nm));
+    for(var i=0;i<5;i++){
+      var a=(i/5)*Math.PI*2;
+      var sp=new THREE.Mesh(new THREE.SphereGeometry(.14,8,8),nm);
+      sp.position.set(Math.cos(a)*.68,Math.sin(a)*.68,0); g.add(sp);
+    } mesh=g;
+  } else if(shape==='wall'){
+    var g=new THREE.Group();
+    [[-.5,.28],[.1,.28],[.6,.28],[-.2,-.05],[.45,-.05],[-.5,-.38],[.1,-.38],[.6,-.38]].forEach(function(row){
+      var bk=new THREE.Mesh(new THREE.BoxGeometry(.44,.22,.1),mat);
+      bk.position.set(row[0],row[1],0); g.add(bk);
+    }); mesh=g;
+  } else mesh=new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9),mat);
+  sc.add(mesh);
+  (function anim(){ requestAnimationFrame(anim); if(mesh) mesh.rotation.y+=.013; r.render(sc,cam); })();
+}
+
+function closeDet(){
+  document.getElementById('fDet').classList.remove('open');
+  if(!hubOpen) document.body.style.overflow='';
+  if(fdRaf) cancelAnimationFrame(fdRaf);
+}
+function goToFeature(){ if(curFPage) window.location.href=curFPage; }
+
+/* ═══ APPLY ═══ */
+function openApply(){ document.getElementById('applyOv').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeApply(){ document.getElementById('applyOv').classList.remove('open'); document.body.style.overflow=''; }
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){ closeApply(); closeDet(); closeHub(); closeMobMenu(); }
 });
+
+/* ═══ BOOT ═══ */
+runSplash();
 </script>
 </body>
 </html>
