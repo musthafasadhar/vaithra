@@ -3,14 +3,26 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Build in Public Wall — Vaithra</title>
-<link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Real founder stories, raw progress updates, and direct connections. The Vaithra Build in Public Wall."/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore,collection,doc,addDoc,updateDoc,onSnapshot,increment,getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  const cfg={apiKey:"AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",authDomain:"vaithra-grants.firebaseapp.com",projectId:"vaithra-grants",storageBucket:"vaithra-grants.firebasestorage.app",messagingSenderId:"655290922548",appId:"1:655290922548:web:991b339e2475aa9f443c61"};
-  const app=initializeApp(cfg),db=getFirestore(app);
-  const SEED=[
+
+  const cfg={
+    apiKey:"AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
+    authDomain:"vaithra-grants.firebaseapp.com",
+    projectId:"vaithra-grants",
+    storageBucket:"vaithra-grants.firebasestorage.app",
+    messagingSenderId:"655290922548",
+    appId:"1:655290922548:web:991b339e2475aa9f443c61"
+  };
+
+  const app = initializeApp(cfg);
+  const db = getFirestore(app);
+
+  const SEED = [
     {startup:'AgriConnect',founder:'Priya Sharma',city:'Vijayawada',body:'Signed our first paying farmer this week. ₹0 in revenue last month. ₹500 this month. The jump from zero to any number changes everything. You stop asking "will anyone pay?" and start asking "how do I get 100 more?"',tags:['First Revenue','AgriTech'],reactions:{fire:18,clap:24,heart:12},createdAt:Date.now()-86400000},
     {startup:'SkillBridge',founder:'Ravi Kumar',city:'Warangal',body:"Failed our first pilot. 40 signups. 2 exchanges happened. Platform works — behavior doesn't. Nobody wants to go first. Cold-start is real. Rethinking incentives from scratch.",tags:['Failure','Pivot'],reactions:{fire:12,clap:19,heart:7},createdAt:Date.now()-172800000},
     {startup:'Glowvai',founder:'Rahimath',city:'Hyderabad',body:'Shipped v0.2 today after 3 months in actual salons listening. Zero paying users. But finally feels honest. Cold outreach starts tomorrow. Terrified but ready.',tags:['Launch','Week 8'],reactions:{fire:9,clap:16,heart:5},createdAt:Date.now()-259200000},
@@ -19,23 +31,59 @@
     {startup:'FarmFresh',founder:'Deepa Nair',city:'Guntur',body:'Our delivery radius was 5km. Expanded to 15km this week after one customer drove 12km to pick up because our app was down. Lesson: demand exists, infrastructure is the problem.',tags:['Growth','Logistics'],reactions:{fire:11,clap:17,heart:6},createdAt:Date.now()-518400000},
     {startup:'EduPath',founder:'Vikram Rao',city:'Vizag',body:'Built for 6 months. Showed 10 teachers. 9 said they already use WhatsApp for this. One said she would pay. Talking to her tomorrow. The 1 matters more than the 9.',tags:['Validation','EdTech'],reactions:{fire:8,clap:14,heart:10},createdAt:Date.now()-604800000},
   ];
-  async function seed(){try{const s=await getDocs(collection(db,'wall_posts'));if(s.empty)for(const p of SEED)await addDoc(collection(db,'wall_posts'),p)}catch(e){console.log(e)}}
-  window.fbSave=async d=>{try{await addDoc(collection(db,'wall_posts'),{...d,createdAt:Date.now(),reactions:{fire:0,clap:0,heart:0}});return true}catch(e){console.log(e);return false}};
-  window.fbReact=async(id,e)=>{const k='r_'+id+'_'+e;if(localStorage.getItem(k))return;try{await updateDoc(doc(db,'wall_posts',id),{['reactions.'+e]:increment(1)});localStorage.setItem(k,'1')}catch(e){}};
-  window.fbHas=(id,e)=>!!localStorage.getItem('r_'+id+'_'+e);
-  window.fbListen=cb=>{seed();return onSnapshot(collection(db,'wall_posts'),snap=>{const p=[];snap.forEach(d=>p.push({...d.data(),id:d.id}));p.sort((a,b)=>b.createdAt-a.createdAt);cb(p)})};
+
+  async function seed(){
+    try{
+      const s = await getDocs(collection(db,'wall_posts'));
+      if(s.empty) for(const p of SEED) await addDoc(collection(db,'wall_posts'),p);
+    }catch(e){ console.log('seed error',e); }
+  }
+
+  window.fbSave = async d => {
+    try{
+      await addDoc(collection(db,'wall_posts'),{...d,createdAt:Date.now(),reactions:{fire:0,clap:0,heart:0}});
+      return true;
+    }catch(e){ console.log(e); return false; }
+  };
+
+  window.fbReact = async (id,e) => {
+    const k = 'r_'+id+'_'+e;
+    if(localStorage.getItem(k)) return;
+    try{
+      await updateDoc(doc(db,'wall_posts',id),{['reactions.'+e]:increment(1)});
+      localStorage.setItem(k,'1');
+    }catch(e){}
+  };
+
+  window.fbHas = (id,e) => !!localStorage.getItem('r_'+id+'_'+e);
+
+  window.fbListen = cb => {
+    seed();
+    return onSnapshot(collection(db,'wall_posts'), snap => {
+      const p = [];
+      snap.forEach(d => p.push({...d.data(),id:d.id}));
+      p.sort((a,b) => b.createdAt - a.createdAt);
+      cb(p);
+    });
+  };
 </script>
 
 <style>
-:root {
-  --bg: #000000;          /* Changed from #ffffff */
-  --bg2: #0a0a0a;         /* Changed from #f8f8f8 */
-  --bg3: #171717;         /* Changed from #f0f0f0 */
-  --border: #262626;      /* Changed from #e5e5e5 */
-  --ink: #ffffff;         /* Changed from #0a0a0a (Now pure white) */
-  --ink3: #d4d4d4;        /* Changed from #404040 (Light grey for body text) */
-  --ink4: #737373;        /* Muted grey */
-  /* ... leave the rest as is ... */
+:root{
+  --bg:#000000;
+  --bg2:#0a0a0a;
+  --bg3:#141414;
+  --bg4:#1a1a1a;
+  --border:#262626;
+  --border2:#333333;
+  --ink:#ffffff;
+  --ink2:#e5e5e5;
+  --ink3:#a3a3a3;
+  --ink4:#737373;
+  --ink5:#525252;
+  --green:#22c55e;
+  --greenl:rgba(34,197,94,.12);
+  --gold:#D4BB80;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -46,444 +94,609 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);overfl
 /* ── NAV ── */
 .nav{
   position:sticky;top:0;z-index:900;
- background: rgba(0, 0, 0, 0.8);
+  background:rgba(0,0,0,.85);
   backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
   padding:0 24px;
   display:flex;align-items:center;justify-content:space-between;
-  height:56px;
+  height:58px;
 }
 .nav-logo{
-  font-family:'Syne',serif;font-size:20px;font-style:italic;
-  color:#a3a3a3;text-decoration:none;letter-spacing:-.02em;
+  font-family:'Instrument Serif',serif;
+  font-size:18px;font-style:italic;
+  color:var(--ink3);text-decoration:none;letter-spacing:-.01em;
+  transition:color .2s;
 }
-.nav-center{display:flex;align-items:center;gap:6px}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
+.nav-logo:hover{color:var(--ink)}
+.nav-center{display:flex;align-items:center;gap:6px;opacity:0;transition:opacity .4s}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
-.live-txt{font-size:12px;color:var(--ink4);font-weight:500}
+.live-txt{font-size:12px;color:var(--ink4);font-weight:500;letter-spacing:.02em}
 .nav-btn{
-  background:var(--ink);color:#fff;border:none;
+  background:var(--ink);color:#000;border:none;
   padding:8px 16px;border-radius:8px;
-  font-family:'Geist',sans-serif;font-size:13px;font-weight:500;
+  font-family:'Geist',sans-serif;font-size:13px;font-weight:600;
   cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;
+  letter-spacing:-.01em;
 }
-.nav-btn:hover{background:#262626}
+.nav-btn:hover{background:#e5e5e5;transform:translateY(-1px)}
 .nav-btn svg{width:14px;height:14px}
+
+/* ── FEATURE INTRO ── */
+.feature-intro{
+  border-bottom:1px solid var(--border);
+  background:var(--bg2);
+  padding:18px 24px;
+  display:flex;align-items:center;gap:16px;
+  max-width:100%;
+}
+.fi-icon{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#1a2e1a,#2d4a2d);
+  border:1px solid #3a5c3a;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.fi-text h4{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px;letter-spacing:-.01em}
+.fi-text p{font-size:11px;color:var(--ink4);line-height:1.55;max-width:700px}
+.fi-badge{
+  margin-left:auto;flex-shrink:0;
+  background:var(--greenl);border:1px solid rgba(34,197,94,.25);
+  color:var(--green);
+  font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  padding:4px 10px;border-radius:100px;
+}
 
 /* ── HERO ── */
 .hero{
-  padding:64px 24px 48px;
+  padding:64px 24px 52px;
   max-width:900px;margin:0 auto;
   text-align:center;
 }
 .hero-badge{
   display:inline-flex;align-items:center;gap:6px;
   background:var(--bg2);border:1px solid var(--border);
-  border-radius:100px;padding:5px 12px;margin-bottom:20px;
+  border-radius:100px;padding:5px 14px;margin-bottom:22px;
   font-size:12px;font-weight:500;color:var(--ink4);
 }
-.hero-badge span{color:var(--green);font-weight:600}
+.hero-badge strong{color:var(--ink2);font-weight:600}
 .hero h1{
   font-family:'Instrument Serif',serif;
-  font-size:clamp(40px,7vw,72px);font-weight:400;font-style:italic;
-  color:var(--ink);line-height:1.05;letter-spacing:-.03em;margin-bottom:14px;
+  font-size:clamp(40px,7vw,76px);
+  font-weight:400;font-style:italic;
+  color:var(--ink);line-height:1.02;
+  letter-spacing:-.03em;margin-bottom:14px;
 }
-.hero h1 strong{font-style:normal;font-family:'Geist',sans-serif;font-weight:700;color:var(--ink)}
-.hero p{font-size:15px;color:var(--ink4);line-height:1.75;max-width:480px;margin:0 auto 28px;font-weight:400}
-.hero-stats{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap}
+.hero h1 strong{
+  font-style:normal;
+  font-family:'Geist',sans-serif;font-weight:700;
+}
+.hero p{
+  font-size:15px;color:var(--ink4);
+  line-height:1.8;max-width:520px;
+  margin:0 auto 32px;font-weight:400;
+}
+.hero-stats{
+  display:flex;align-items:center;justify-content:center;
+  gap:36px;flex-wrap:wrap;
+}
 .hstat{text-align:center}
-.hstat-n{font-family:'Instrument Serif',serif;font-size:36px;font-style:italic;color:var(--ink);line-height:1}
-.hstat-l{font-size:11px;color:var(--ink5);font-weight:500;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
-.hstat-div{width:1px;height:32px;background:var(--border)}
+.hstat-n{
+  font-family:'Instrument Serif',serif;
+  font-size:38px;font-style:italic;
+  color:var(--ink);line-height:1;
+}
+.hstat-l{
+  font-size:10px;color:var(--ink5);
+  font-weight:600;margin-top:3px;
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.hstat-div{width:1px;height:36px;background:var(--border)}
 
-/* ── WALL CONTAINER ── */
+/* ── WALL ── */
 .wall-wrap{
-  max-width:1400px;margin:0 auto;padding:0 20px 80px;
+  max-width:1440px;margin:0 auto;
+  padding:0 20px 0;
 }
 .wall-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 0 20px;border-top:1px solid var(--border);margin-bottom:4px;
+  padding:16px 0 20px;
+  border-top:1px solid var(--border);
 }
 .wh-left{display:flex;align-items:center;gap:10px}
-.wh-title{font-size:13px;font-weight:600;color:var(--ink3)}
+.wh-title{font-size:13px;font-weight:600;color:var(--ink3);letter-spacing:.01em}
 .wh-count{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:6px;padding:2px 8px;
   font-size:11px;font-weight:600;color:var(--ink4);
 }
-.wh-right{font-size:12px;color:var(--ink5)}
+.wh-right{font-size:11px;color:var(--ink5)}
 
-/* ── MASONRY GRID ── */
-.masonry{
-  columns:4;column-gap:12px;
-}
+/* ── MASONRY ── */
+.masonry{columns:4;column-gap:12px}
 @media(max-width:1100px){.masonry{columns:3}}
 @media(max-width:780px){.masonry{columns:2}}
-@media(max-width:500px){.masonry{columns:1}}
+@media(max-width:480px){.masonry{columns:1}}
 
 /* ── CARD ── */
-.card {
-  break-inside: avoid;
-  background: #0a0a0a;    /* Force black background */
-  border: 1px solid var(--border);
-  border-radius: 20px;    /* Smoother corners like the image */
-  padding: 20px;
-  /* ... keep the rest ... */
+.card{
+  break-inside:avoid;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:12px;
+  cursor:pointer;
+  transition:all .25s cubic-bezier(.16,1,.3,1);
+  position:relative;
+  overflow:hidden;
 }
-
-.card:hover {
-  border-color: #404040;  /* Brighter border on hover */
-  background: #121212;    /* Subtle lift */
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-  /* Add this to hide all reaction pills in cards and popups initially */
-.card .c-reacts, #mrs {
-  opacity: 0;
-  transform: translateY(5px); /* Adds a subtle lift effect when showing */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* Add this to show them when the user hovers over the card or popup text area */
-.card:hover .c-reacts, .mc:hover #mrs {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Accent top border - Made more subtle for dark mode */
 .card::before{
-  content:'';position:absolute;top:-1px;left:20px;right:20px;height:2px;
-  border-radius:0 0 2px 2px;opacity:0;
-  transition:opacity .2s;
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  opacity:0;transition:opacity .25s;
+  border-radius:16px 16px 0 0;
 }
-.card:hover::before{opacity:1}
 .acc-green::before{background:linear-gradient(90deg,#16a34a,#4ade80)}
 .acc-blue::before{background:linear-gradient(90deg,#2563eb,#60a5fa)}
 .acc-purple::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
 .acc-amber::before{background:linear-gradient(90deg,#d97706,#fbbf24)}
 .acc-red::before{background:linear-gradient(90deg,#dc2626,#f87171)}
 
-/* Card enter animation */
-@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card:hover{
+  border-color:var(--border2);
+  background:var(--bg3);
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(0,0,0,.6);
+}
+.card:hover::before{opacity:1}
+
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .card.new-card{animation:cardIn .4s cubic-bezier(.16,1,.3,1) both}
 
-/* ── CARD HEADER ── */
-.c-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+/* Card Header */
+.c-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
+
+/* FIX: Circle avatar */
 .c-av{
-  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  width:38px;height:38px;
+  border-radius:50%;           /* ← CIRCLE */
+  flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;font-family:'Geist',sans-serif;
+  font-size:13px;font-weight:700;
+  font-family:'Geist',sans-serif;
   letter-spacing:-.01em;
-  border: 1px solid rgba(255,255,255,0.1); /* Adds a tiny glow to initials */
+  border:1.5px solid rgba(255,255,255,.12);
 }
 .c-meta{flex:1;min-width:0}
 .c-startup{
-  font-size:15px;font-weight:600;color:#ffffff; /* Pure white text */
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;
+  font-size:14px;font-weight:600;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.3;letter-spacing:-.01em;
 }
-.c-founder {
-  font-size: 12px;
-  color: var(--ink4);
-  display: inline-flex;   /* Changed to flex */
-  align-items: center;    /* Keeps tick aligned with text */
-  gap: 4px;               /* Space for the tick */
+.c-founder{
+  font-size:11px;color:var(--ink4);
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:1px;
 }
-
-/* ADD THIS NEW BLOCK RIGHT AFTER .c-founder */
-.c-founder::after {
-  content: '✓'; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 14px;
-  height: 14px;
-  background: #3b82f6;    /* The Blue color */
-  color: white;
-  font-size: 9px;
-  border-radius: 50%;     /* Makes it a circle */
-  font-weight: 900;
+.c-verified{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:13px;height:13px;
+  background:#3b82f6;
+  color:#fff;
+  font-size:7px;
+  border-radius:50%;
+  font-weight:900;
+  flex-shrink:0;
 }
 .c-city{
   display:inline-flex;align-items:center;gap:3px;
-  font-size:10px;font-weight:500;color:#a3a3a3;
-  background:#1a1a1a;border:1px solid #333;
-  border-radius:100px;padding:1px 7px;margin-left:auto;flex-shrink:0;
-}
-
-/* ── CARD BODY ── */
-.c-body{
-  font-size:14px;color:#d4d4d4; /* Off-white for better reading on black */
-  line-height:1.65;font-weight:400;
-  margin-bottom:14px;
-  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
-}
-
-/* ── TAGS ── */
-.c-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.c-tag{
   font-size:10px;font-weight:500;color:var(--ink4);
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:6px;padding:2px 8px;
+  background:var(--bg4);border:1px solid var(--border);
+  border-radius:100px;padding:2px 8px;
+  margin-left:auto;flex-shrink:0;
+  white-space:nowrap;
 }
 
-/* ── FOOTER ── */
+/* Card Body */
+.c-body{
+  font-size:13px;color:var(--ink2);
+  line-height:1.65;font-weight:400;
+  margin-bottom:12px;
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* Tags */
+.c-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.c-tag{
+  font-size:10px;font-weight:500;color:var(--ink5);
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:5px;padding:2px 7px;
+}
+
+/* Footer */
 .c-foot{
   display:flex;align-items:center;justify-content:space-between;
-  padding-top:12px;border-top:1px solid var(--border);
+  padding-top:11px;border-top:1px solid var(--border);
 }
-.c-reacts {
-  display: flex;
-  gap: 12px;
-  opacity: 0;             /* ADD THIS: Hides them by default */
-  transition: opacity 0.3s ease; /* ADD THIS: Smooth fade in */
+.c-reacts{
+  display:flex;gap:10px;
+  opacity:0;transition:opacity .25s;
 }
+.card:hover .c-reacts{opacity:1}
+.c-react{font-size:12px;color:var(--ink4);display:flex;align-items:center;gap:3px}
+.c-time{font-size:10px;color:var(--ink5)}
 
-/* ADD THIS NEW BLOCK BELOW IT */
-.card:hover .c-reacts {
-  opacity: 1;             /* Shows them when you point at the card */
-}
 /* ── MODAL ── */
 #modal{
   position:fixed;inset:0;z-index:9000;
-  background:rgba(0,0,0,.3);
-  backdrop-filter:blur(8px);
-  display:none;align-items:center;justify-content:center;padding:20px;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(14px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
 }
 #modal.open{display:flex}
+
 .mc{
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:16px;
-  width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
+  background:var(--bg2) !important;
+  border:1px solid var(--border) !important;
+  border-radius:18px;
+  width:100%;max-width:580px;
+  max-height:90vh;overflow-y:auto;
   position:relative;
-  box-shadow:0 24px 80px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.06);
+  box-shadow:0 32px 80px rgba(0,0,0,.8);
   animation:mIn .25s cubic-bezier(.16,1,.3,1);
+  color:var(--ink) !important;
 }
-@keyframes mIn{from{opacity:0;transform:scale(.97) translateY(8px)}to{opacity:1;transform:none}}
+@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
 
 .mc-close{
-  position:absolute;top:14px;right:14px;
+  position:sticky;top:14px;float:right;margin:14px 14px 0 0;
   width:28px;height:28px;border-radius:8px;
-  border:1px solid var(--border);background:var(--bg);cursor:pointer;
-  color:var(--ink4);font-size:14px;display:flex;align-items:center;justify-content:center;
-  transition:all .15s;z-index:2;
+  border:1px solid var(--border);
+  background:var(--bg3);cursor:pointer;
+  color:var(--ink4);font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;z-index:10;
+  flex-shrink:0;
 }
-.mc-close:hover{background:var(--bg2);color:var(--ink)}
+.mc-close:hover{background:var(--bg4);color:var(--ink)}
 
-.mc-body{padding:28px}
-.mc-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
-.mc-av{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
-.mc-startup{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:3px;letter-spacing:-.02em}
-.mc-sub{font-size:12px;color:var(--ink4);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mc-body{padding:24px 28px 28px}
+
+.mc-head{
+  display:flex;align-items:flex-start;gap:13px;
+  margin-bottom:18px;padding-bottom:18px;
+  border-bottom:1px solid var(--border);
+}
+/* FIX: Circle avatar in modal */
+.mc-av{
+  width:46px;height:46px;border-radius:50%;      /* ← CIRCLE */
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;flex-shrink:0;
+  border:1.5px solid rgba(255,255,255,.12);
+}
+.mc-startup{
+  font-size:20px;font-weight:700;
+  color:var(--ink) !important;
+  margin-bottom:4px;letter-spacing:-.02em;
+}
+.mc-sub{
+  font-size:12px;color:var(--ink4);
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
 .mc-dot{color:var(--border2)}
-.mc-text{font-size:14px;color:var(--ink2);line-height:1.85;font-weight:400;margin-bottom:18px;white-space:pre-wrap}
-.mc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:20px}
-.mc-tag{font-size:10px;font-weight:500;color:var(--ink4);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:3px 9px}
-.mc-reacts{display:flex;gap:6px;margin-bottom:24px;flex-wrap:wrap}
-.rpill {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
-  cursor: pointer;
-  font-size: 13px;
-  /* NEW ANIMATION SETTINGS BELOW */
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+.mc-text{
+  font-size:14px;
+  color:var(--ink2) !important;
+  line-height:1.85;font-weight:400;
+  margin-bottom:18px;white-space:pre-wrap;
 }
 
-.rpill:active {
-  transform: scale(1.2); 
+.mc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.mc-tag{
+  font-size:10px;font-weight:500;color:var(--ink4);
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:5px;padding:3px 9px;
 }
 
-.rpill.reacted {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: var(--ink4) !important;
-  animation: reactionPop 0.4s ease-out;
+.mc-reacts{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+.rpill{
+  display:flex;align-items:center;gap:7px;
+  padding:8px 14px;border:1px solid var(--border);border-radius:8px;
+  background:var(--bg3);cursor:pointer;font-size:13px;
+  transition:all .2s cubic-bezier(.175,.885,.32,1.275);
+  color:var(--ink3);
 }
+.rpill:hover{border-color:var(--border2);background:var(--bg4);color:var(--ink)}
+.rpill:active{transform:scale(1.15)}
+.rpill.reacted{background:rgba(255,255,255,.06);border-color:var(--ink4);animation:reactionPop .4s ease-out}
+@keyframes reactionPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
 
-@keyframes reactionPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.4); }
-  100% { transform: scale(1); }
+/* ── CONTACT CARD (replaces cbox) ── */
+.contact-card{
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:22px;
+  position:relative;overflow:hidden;
 }
+.contact-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#16a34a,#4ade80);
+}
+.cc-title{
+  font-size:16px;font-weight:600;
+  color:var(--ink);margin-bottom:4px;
+  letter-spacing:-.01em;
+}
+.cc-sub{
+  font-size:12px;color:var(--ink4);
+  line-height:1.6;margin-bottom:18px;font-weight:400;
+}
+.cc-sub strong{color:var(--ink2);font-weight:500}
 
-.c-react:hover span {
-  display: inline-block;
-  animation: bounce 0.3s ease infinite alternate;
-}
-
-@keyframes bounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-3px); }
-}
-/* ── CONNECT BOX ── */
-.cbox{
-  background:var(--ink);border-radius:12px;padding:22px;position:relative;overflow:hidden;
-}
-.cbox-title{font-size:17px;font-weight:600;color:#fff;margin-bottom:4px;letter-spacing:-.02em}
-.cbox-note{font-size:12px;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:18px;font-weight:400}
-.cbox-note strong{color:rgba(255,255,255,.8);font-weight:500}
-.price-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.price-amt{font-family:'Instrument Serif',serif;font-size:44px;font-style:italic;color:#fff;line-height:1}
-.price-right{display:flex;flex-direction:column;gap:5px}
-.price-lbl{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;text-transform:uppercase;letter-spacing:.06em}
-.upi-logos{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.upi-badge{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.04em}
-.upi-badge.gpay{background:#4285F4;color:#fff}
-.upi-badge.phonepe{background:#5F259F;color:#fff}
-.upi-badge.paytm{background:#00BAF2;color:#fff}
-.upi-badge.bhim{background:#0F3B9E;color:#fff}
-
-.pay-steps{
-  display:flex;gap:0;margin-bottom:16px;
-  background:rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;
-}
-.pay-step{flex:1;text-align:center;position:relative}
-.pay-step:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.2);font-size:10px}
-.ps-num{font-family:'Instrument Serif',serif;font-size:18px;font-style:italic;color:#fff;display:block;margin-bottom:2px}
-.ps-txt{font-size:9px;color:rgba(255,255,255,.4);line-height:1.4}
-
-.pay-btn{
-  width:100%;background:#25D366;color:#fff;border:none;
-  padding:13px 20px;border-radius:9px;
-  font-size:13px;font-weight:600;letter-spacing:-.01em;
+/* UPI direct pay button */
+.upi-pay-btn{
+  width:100%;
+  background:linear-gradient(135deg,#4ade80,#16a34a);
+  color:#000;border:none;
+  padding:14px 20px;border-radius:10px;
+  font-family:'Geist',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:-.01em;
   cursor:pointer;transition:all .2s;
   display:flex;align-items:center;justify-content:center;gap:8px;
-  font-family:'Geist',sans-serif;
+  margin-bottom:10px;
 }
-.pay-btn:hover{background:#22c55e;transform:translateY(-1px)}
-.pay-btn svg{width:15px;height:15px;flex-shrink:0}
-.pay-note{font-size:10px;color:rgba(255,255,255,.3);text-align:center;margin-top:10px;font-weight:400;line-height:1.6}
+.upi-pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.3)}
+.upi-pay-btn:active{transform:translateY(0)}
+
+/* UPI app rows */
+.upi-apps{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-bottom:14px;
+}
+.upi-app-btn{
+  background:var(--bg4);border:1px solid var(--border);
+  border-radius:9px;padding:10px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;transition:all .15s;
+  font-size:11px;font-weight:500;color:var(--ink3);
+  text-decoration:none;
+}
+.upi-app-btn:hover{border-color:var(--border2);background:var(--bg3);color:var(--ink);transform:translateY(-2px)}
+.upi-app-btn span.app-icon{font-size:20px}
+
+/* Contact info revealed after pay */
+.contact-reveal{
+  display:none;
+  background:var(--greenl);
+  border:1px solid rgba(34,197,94,.2);
+  border-radius:10px;padding:16px;
+  margin-top:10px;
+}
+.contact-reveal.show{display:block}
+.cr-title{
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);margin-bottom:10px;
+}
+.cr-row{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-bottom:1px solid rgba(34,197,94,.1);
+}
+.cr-row:last-child{border-bottom:none}
+.cr-label{font-size:11px;color:var(--ink4);font-weight:500;min-width:70px}
+.cr-value{font-size:13px;color:var(--ink);font-weight:600}
+.cr-copy{
+  margin-left:auto;
+  background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.2);
+  color:var(--green);
+  font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:5px;cursor:pointer;
+  transition:all .15s;border-width:0;
+}
+.cr-copy:hover{background:rgba(34,197,94,.25)}
+
+.pay-note-txt{
+  font-size:10px;color:var(--ink5);
+  text-align:center;line-height:1.6;
+  margin-top:10px;
+}
 
 /* ── POST FORM ── */
-#flay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.4);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
+#flay{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(14px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
 #flay.open{display:flex}
+
 .fc{
-  background:var(--bg);border:1px solid var(--border);border-radius:16px;
-  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
-  box-shadow:0 24px 80px rgba(0,0,0,.15);
-  animation:mIn .25s cubic-bezier(.16,1,.3,1);position:relative;
+  background:var(--bg2) !important;
+  border:1px solid var(--border) !important;
+  border-radius:16px;
+  width:100%;max-width:500px;max-height:92vh;overflow-y:auto;
+  box-shadow:0 32px 80px rgba(0,0,0,.8);
+  animation:mIn .25s cubic-bezier(.16,1,.3,1);
+  position:relative;
 }
-.fclose{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;color:var(--ink4);font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.fclose:hover{background:var(--bg2);color:var(--ink)}
-.fhead{padding:28px 28px 0}
-.fhead h2{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:4px;letter-spacing:-.02em}
-.fhead p{font-size:12px;color:var(--ink4);line-height:1.75;margin-bottom:20px}
-.fbody{padding:0 28px 28px}
+
+.fclose{
+  position:sticky;top:14px;float:right;margin:14px 14px 0 0;
+  width:28px;height:28px;border-radius:8px;
+  border:1px solid var(--border);background:var(--bg3);
+  cursor:pointer;color:var(--ink4);font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;z-index:2;
+}
+.fclose:hover{background:var(--bg4);color:var(--ink)}
+
+.fhead{padding:24px 24px 0;clear:both}
+.fhead h2{
+  font-family:'Instrument Serif',serif;
+  font-size:26px;font-style:italic;font-weight:400;
+  color:var(--ink) !important;
+  margin-bottom:4px;letter-spacing:-.02em;
+}
+.fhead p{font-size:12px;color:var(--ink4) !important;line-height:1.7;margin-bottom:18px}
+
+.fbody{padding:0 24px 24px}
 .fr{margin-bottom:12px}
-.fr label{font-size:11px;font-weight:600;color:var(--ink3);display:block;margin-bottom:5px;letter-spacing:.01em}
-.fr input,.fr textarea{
-  width:100%;border:1px solid var(--border);border-radius:8px;
-  padding:10px 13px;font-size:13px;color:var(--ink);
-  background:var(--bg);font-family:'Geist',sans-serif;outline:none;transition:all .15s;
+.fr label{
+  font-size:11px;font-weight:600;
+  color:var(--ink3) !important;
+  display:block;margin-bottom:5px;letter-spacing:.01em;
 }
-.fr input:focus,.fr textarea:focus{border-color:var(--ink3);box-shadow:0 0 0 3px rgba(0,0,0,.05)}
+.fr input,.fr textarea{
+  width:100%;
+  border:1px solid var(--border);border-radius:8px;
+  padding:10px 13px;font-size:13px;
+  color:var(--ink) !important;
+  background:var(--bg3) !important;
+  font-family:'Geist',sans-serif;outline:none;transition:all .15s;
+}
+.fr input:focus,.fr textarea:focus{
+  border-color:var(--border2);
+  box-shadow:0 0 0 3px rgba(255,255,255,.04);
+}
 .fr input::placeholder,.fr textarea::placeholder{color:var(--ink5)}
 .fr textarea{resize:vertical;min-height:96px;line-height:1.6}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .char-count{font-size:10px;color:var(--ink5);text-align:right;margin-top:3px}
+
 .fsbtn{
-  width:100%;background:var(--ink);color:#fff;border:none;
-  padding:12px;border-radius:9px;
-  font-family:'Geist',sans-serif;font-size:13px;font-weight:600;letter-spacing:-.01em;
+  width:100%;background:var(--ink);color:#000;border:none;
+  padding:13px;border-radius:9px;
+  font-family:'Geist',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.01em;
   cursor:pointer;transition:all .2s;margin-top:4px;
   display:flex;align-items:center;justify-content:center;gap:8px;
 }
-.fsbtn:hover{background:#262626}
+.fsbtn:hover{background:#e5e5e5}
 .fsbtn:disabled{opacity:.4;cursor:not-allowed}
-.fsbtn .ld{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;display:none}
-.fsbtn.loading .ld{display:block}.fsbtn.loading .lt{display:none}
+.fsbtn .ld{width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:sp .6s linear infinite;display:none}
+.fsbtn.loading .ld{display:block}
+.fsbtn.loading .lt{display:none}
 @keyframes sp{to{transform:rotate(360deg)}}
+
 .fnote{font-size:11px;color:var(--ink5);text-align:center;margin-top:8px;line-height:1.6}
 
-.fsuc{display:none;padding:48px 28px;text-align:center}
+.fsuc{display:none;padding:52px 28px;text-align:center}
 .fsuc.show{display:block}
-.fsuc-icon{width:48px;height:48px;border-radius:12px;background:var(--greenl);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px}
-.fsuc h3{font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:6px}
+.fsuc-icon{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--greenl);border:1px solid rgba(34,197,94,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;font-size:22px;
+}
+.fsuc h3{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:8px}
 .fsuc p{font-size:13px;color:var(--ink4);line-height:1.7}
-.fsuc-btn{margin-top:20px;background:var(--ink);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-family:'Geist',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
-.fsuc-btn:hover{background:#262626}
+.fsuc-btn{margin-top:20px;background:var(--ink);color:#000;border:none;padding:11px 24px;border-radius:8px;font-family:'Geist',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.fsuc-btn:hover{background:#e5e5e5}
 
-/* ── EMPTY STATE ── */
-.empty-wall{
-  text-align:center;padding:80px 20px;
-  font-size:14px;color:var(--ink4);
-}
+/* ── EMPTY ── */
+.empty-wall{text-align:center;padding:80px 20px}
 .empty-wall h3{font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:8px}
+.empty-wall p{font-size:14px;color:var(--ink4)}
 
-footer{
-  background:var(--bg);border-top:1px solid var(--border);
-  padding:24px;text-align:center;
+/* ── EMOTIONAL QUOTE STRIP ── */
+.quote-strip{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:60px 24px;
+  text-align:center;
+  position:relative;overflow:hidden;
+  background:var(--bg2);
+  margin-top:0;
 }
-footer a{font-size:12px;color:var(--ink5);text-decoration:none;font-weight:500}
+.quote-strip::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(34,197,94,.04),transparent 70%);
+  pointer-events:none;
+}
+.qs-eyebrow{
+  font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--green);opacity:.7;margin-bottom:20px;display:block;
+}
+.qs-quote{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(22px,4vw,42px);
+  font-style:italic;font-weight:400;
+  color:var(--ink);
+  line-height:1.25;letter-spacing:-.02em;
+  max-width:760px;margin:0 auto 20px;
+  position:relative;z-index:1;
+}
+.qs-quote::before{
+  content:'"';
+  font-size:clamp(80px,12vw,140px);
+  color:rgba(255,255,255,.04);
+  position:absolute;top:-30px;left:-20px;
+  font-family:'Instrument Serif',serif;
+  font-style:italic;line-height:1;
+  pointer-events:none;
+  z-index:-1;
+}
+.qs-author{
+  font-size:12px;color:var(--ink5);
+  font-weight:500;letter-spacing:.04em;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+  padding:28px 24px;text-align:center;
+}
+footer a{font-size:12px;color:var(--ink5);text-decoration:none;font-weight:500;transition:color .2s}
 footer a:hover{color:var(--ink)}
 
 @media(max-width:600px){
   .hero{padding:40px 16px 32px}
-  .mc-body,.fhead,.fbody{padding-left:18px;padding-right:18px}
+  .mc-body,.fhead,.fbody{padding-left:16px;padding-right:16px}
   .fr2{grid-template-columns:1fr}
-  .pay-steps{display:none}
-}
-  /* Add this at the very bottom of your CSS */
-.mc {
-  background: #0a0a0a !important;
-  border: 1px solid #262626 !important;
-  color: white !important;
-}
-
-.mc-startup, .mc-text {
-  color: white !important;
-}
-
-/* Dark mode for the "Post Update" Form */
-.fc {
-  background: #0a0a0a !important;
-  border: 1px solid #262626 !important;
-}
-
-.fhead h2, .fhead p {
-  color: white !important;
-}
-
-.fr label {
-  color: #a3a3a3 !important;
-}
-
-.fr input, .fr textarea {
-  background: #121212 !important;
-  border: 1px solid #262626 !important;
-  color: white !important;
-}
-
-.fr input:focus, .fr textarea:focus {
-  border-color: #404040 !important;
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.05) !important;
+  .upi-apps{grid-template-columns:repeat(3,1fr)}
+  .feature-intro{flex-direction:column;align-items:flex-start;gap:10px}
+  .fi-badge{margin-left:0}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">Vaithra</a>
-  <div class="nav-center" id="liveind" style="opacity:0;transition:opacity .4s">
+  <div class="nav-center" id="liveind">
     <div class="live-dot"></div>
     <span class="live-txt">Live</span>
   </div>
   <button class="nav-btn" onclick="openForm()">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
     Post Update
   </button>
 </nav>
 
+<!-- FEATURE INTRO BANNER -->
+<div class="feature-intro">
+  <div class="fi-icon">🧱</div>
+  <div class="fi-text">
+    <h4>Build in Public Wall</h4>
+    <p>Post your startup progress — a win, a failure, a pivot, a lesson. Real founders browse this wall, react to your story, and can connect with you directly for ₹1. No middlemen. No filters. Just honest building.</p>
+  </div>
+  <span class="fi-badge">Real-time</span>
+</div>
+
+<!-- HERO -->
 <div class="hero">
   <div class="hero-badge">
-    <span id="badge-count">—</span> founders building in public
+    <strong id="badge-count">—</strong>&nbsp;founders building in public
   </div>
   <h1>Build in <strong>Public</strong><br><em>Wall</em></h1>
-  <p>Every card is a real founder's story — before the product, before the users, before the funding. Post your progress. Get seen. Get connected.</p>
+  <p>Every card is a real founder's story — before the product, before the users, before the funding. Post your progress. Get seen. Get connected directly.</p>
   <div class="hero-stats">
     <div class="hstat">
       <div class="hstat-n" id="hs-posts">—</div>
@@ -502,17 +715,23 @@ footer a:hover{color:var(--ink)}
   </div>
 </div>
 
+<!-- WALL -->
 <div class="wall-wrap">
   <div class="wall-header">
     <div class="wh-left">
       <span class="wh-title">The Wall</span>
       <span class="wh-count" id="wh-count">Loading…</span>
     </div>
-    <span class="wh-right" id="wh-right">Sorted by newest</span>
+    <span class="wh-right" id="wh-right">Sorted by newest · Real-time</span>
   </div>
-  <div class="masonry" id="masonry">
-    <!-- rendered by JS -->
-  </div>
+  <div class="masonry" id="masonry"></div>
+</div>
+
+<!-- EMOTIONAL QUOTE STRIP -->
+<div class="quote-strip">
+  <span class="qs-eyebrow">For Every Founder Grinding Alone</span>
+  <p class="qs-quote">The ones who build in the dark, ship without applause, and keep going anyway — they're the ones who change things.</p>
+  <span class="qs-author">— Vaithra, for the builders who mean it</span>
 </div>
 
 <!-- MODAL -->
@@ -537,33 +756,25 @@ footer a:hover{color:var(--ink)}
       <div class="mc-tags" id="mtgs"></div>
       <div class="mc-reacts" id="mrs"></div>
 
-      <div class="cbox">
-        <div class="cbox-title" id="cbt"></div>
-        <div class="cbox-note" id="cbn"></div>
-        <div class="price-row">
-          <span class="price-amt">₹1</span>
-          <div class="price-right">
-            <span class="price-lbl">Direct connection</span>
-            <div class="upi-logos">
-              <span class="upi-badge gpay">GPay</span>
-              <span class="upi-badge phonepe">PhonePe</span>
-              <span class="upi-badge paytm">Paytm</span>
-              <span class="upi-badge bhim">BHIM</span>
-            </div>
-          </div>
+      <!-- CONTACT CARD -->
+      <div class="contact-card">
+        <div class="cc-title" id="cct">Connect with this founder</div>
+        <div class="cc-sub" id="ccn">Pay ₹1 directly to unlock contact details instantly — no WhatsApp required.</div>
+
+        <!-- Direct UPI Pay -->
+        <div class="upi-apps" id="upi-apps-grid">
+          <!-- populated by JS -->
         </div>
-        <div class="pay-steps">
-          <div class="pay-step"><span class="ps-num">1</span><span class="ps-txt">Click button<br>below</span></div>
-          <div class="pay-step"><span class="ps-num">2</span><span class="ps-txt">Pay ₹1<br>via any UPI</span></div>
-          <div class="pay-step"><span class="ps-num">3</span><span class="ps-txt">Send payment<br>screenshot</span></div>
-          <div class="pay-step"><span class="ps-num">4</span><span class="ps-txt">Get connected<br>within 2 hrs</span></div>
+
+        <!-- Reveal contact -->
+        <div class="contact-reveal" id="contact-reveal">
+          <div class="cr-title">✓ Contact Unlocked</div>
+          <div id="cr-rows"><!-- populated by JS --></div>
         </div>
-        <button class="pay-btn" onclick="handlePay()">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Connect via WhatsApp — Pay ₹1
-        </button>
-        <p class="pay-note" id="paynote">Opens WhatsApp → Pay ₹1 via any UPI app → Send screenshot → Get connected within 2 hours.</p>
+
+        <p class="pay-note-txt">Pay ₹1 via any app above → contact details appear instantly on this screen.</p>
       </div>
+
     </div>
   </div>
 </div>
@@ -596,7 +807,8 @@ footer a:hover{color:var(--ink)}
           <input id="ft" placeholder="Revenue, Launch, Pivot, Week 4…" maxlength="100">
         </div>
         <button class="fsbtn" id="fsb" onclick="doSubmit()">
-          <div class="ld"></div><span class="lt">Post to the Wall →</span>
+          <div class="ld"></div>
+          <span class="lt">Post to the Wall →</span>
         </button>
         <p class="fnote">Your post appears live for everyone instantly — no approval needed.</p>
       </div>
@@ -604,7 +816,7 @@ footer a:hover{color:var(--ink)}
     <div class="fsuc" id="fsuc">
       <div class="fsuc-icon">✓</div>
       <h3>You're on the wall!</h3>
-      <p>Investors and founders can now see your update. Others can connect with you directly through Vaithra.</p>
+      <p>Other founders can now see your update and connect with you directly through Vaithra.</p>
       <button class="fsuc-btn" onclick="closeForm()">See the Wall →</button>
     </div>
   </div>
@@ -615,55 +827,85 @@ footer a:hover{color:var(--ink)}
 </footer>
 
 <script type="module">
-let POSTS=[];
-let curId=null;
-const YOUR_UPI_ID='8977855998@ybl';
-const YOUR_NAME='Vaithra';
-const YOUR_WA='918977855998';
+/* ════════════════════════════════════
+   CONFIG
+════════════════════════════════════ */
+const YOUR_UPI_ID  = '8977855998@ybl';
+const YOUR_UPI_NUM = '8977855998';
+const YOUR_NAME    = 'Vaithra';
 
-const ACCS=['acc-green','acc-blue','acc-purple','acc-amber','acc-red'];
+/* ════════════════════════════════════
+   STATE
+════════════════════════════════════ */
+let POSTS  = [];
+let curId  = null;
+let curPost = null;
+
+/* ════════════════════════════════════
+   HELPERS
+════════════════════════════════════ */
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+function ago(ts){
+  const d=Date.now()-ts, m=Math.floor(d/60000);
+  if(m<1)  return 'just now';
+  if(m<60) return m+'m ago';
+  const h=Math.floor(m/60);
+  if(h<24) return h+'h ago';
+  const dy=Math.floor(h/24);
+  if(dy<30)return dy+'d ago';
+  return Math.floor(dy/30)+'mo ago';
+}
+
+const ini = n => (n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+
 const AVC=[
-  {b:'#f0fdf4',f:'#15803d'},{b:'#eff6ff',f:'#1d4ed8'},{b:'#faf5ff',f:'#6d28d9'},
-  {b:'#fffbeb',f:'#b45309'},{b:'#fef2f2',f:'#b91c1c'},{b:'#ecfdf5',f:'#065f46'},
-  {b:'#f0f9ff',f:'#0369a1'},{b:'#fdf4ff',f:'#7e22ce'}
+  {b:'#1a2e1a',f:'#4ade80'},{b:'#1a1f35',f:'#60a5fa'},{b:'#25162e',f:'#c084fc'},
+  {b:'#2e1f0a',f:'#fbbf24'},{b:'#2e0f0f',f:'#f87171'},{b:'#0f2e1f',f:'#34d399'},
+  {b:'#0a1f2e',f:'#38bdf8'},{b:'#1e0a2e',f:'#a78bfa'}
 ];
+const ACCS=['acc-green','acc-blue','acc-purple','acc-amber','acc-red'];
 
-const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-function ago(ts){const d=Date.now()-ts,m=Math.floor(d/60000);if(m<1)return'just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';const dy=Math.floor(h/24);if(dy<30)return dy+'d ago';return Math.floor(dy/30)+'mo ago'}
-const ini=n=>(n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
 function av(n){let h=0;for(let i=0;i<(n||'').length;i++)h=(h*31+n.charCodeAt(i))&0xffff;return AVC[h%AVC.length]}
 function acc(n){let h=7;for(let i=0;i<(n||'').length;i++)h=(h*31+n.charCodeAt(i))&0xffff;return ACCS[h%ACCS.length]}
 
+/* ════════════════════════════════════
+   STATS
+════════════════════════════════════ */
 function updateStats(){
-  const total=POSTS.length;
-  const totalReacts=POSTS.reduce((s,p)=>s+(p.reactions?.fire||0)+(p.reactions?.clap||0)+(p.reactions?.heart||0),0);
-  const cities=new Set(POSTS.map(p=>p.city).filter(Boolean)).size;
-  document.getElementById('hs-posts').textContent=total;
-  document.getElementById('hs-reacts').textContent=totalReacts;
-  document.getElementById('hs-cities').textContent=cities;
-  document.getElementById('badge-count').textContent=total;
-  document.getElementById('wh-count').textContent=total+' update'+(total!==1?'s':'');
-  document.getElementById('wh-right').textContent='Sorted by newest · Real-time';
+  const total  = POSTS.length;
+  const reacts = POSTS.reduce((s,p)=>s+(p.reactions?.fire||0)+(p.reactions?.clap||0)+(p.reactions?.heart||0),0);
+  const cities = new Set(POSTS.map(p=>p.city).filter(Boolean)).size;
+  document.getElementById('hs-posts').textContent  = total;
+  document.getElementById('hs-reacts').textContent = reacts;
+  document.getElementById('hs-cities').textContent = cities;
+  document.getElementById('badge-count').textContent = total;
+  document.getElementById('wh-count').textContent = total+' update'+(total!==1?'s':'');
 }
 
+/* ════════════════════════════════════
+   RENDER WALL
+════════════════════════════════════ */
 function render(newIds=[]){
-  const g=document.getElementById('masonry');
   updateStats();
+  const g = document.getElementById('masonry');
 
   if(!POSTS.length){
     g.innerHTML=`<div class="empty-wall"><h3>No updates yet</h3><p>Be the first to share your startup journey.</p></div>`;
     return;
   }
 
-  g.innerHTML=POSTS.map(p=>{
-    const a=av(p.founder),ac=acc(p.founder),isN=newIds.includes(p.id);
-    const totalR=(p.reactions?.fire||0)+(p.reactions?.clap||0)+(p.reactions?.heart||0);
-    return`<div class="card ${ac}${isN?' new-card':''}" onclick="openModal('${p.id}')">
+  g.innerHTML = POSTS.map(p => {
+    const a=av(p.founder), ac=acc(p.founder), isN=newIds.includes(p.id);
+    return `<div class="card ${ac}${isN?' new-card':''}" onclick="openModal('${p.id}')">
       <div class="c-head">
         <div class="c-av" style="background:${a.b};color:${a.f}">${esc(ini(p.founder))}</div>
         <div class="c-meta">
           <div class="c-startup">${esc(p.startup)}</div>
-          <div class="c-founder">${esc(p.founder)}</div>
+          <div class="c-founder">
+            ${esc(p.founder)}
+            <span class="c-verified" title="Verified">✓</span>
+          </div>
         </div>
         ${p.city?`<div class="c-city">📍 ${esc(p.city)}</div>`:''}
       </div>
@@ -671,9 +913,9 @@ function render(newIds=[]){
       ${(p.tags||[]).length?`<div class="c-tags">${(p.tags||[]).map(t=>`<span class="c-tag">${esc(t)}</span>`).join('')}</div>`:''}
       <div class="c-foot">
         <div class="c-reacts">
-          <span class="c-react"><span>🔥</span>${p.reactions?.fire||0}</span>
-          <span class="c-react"><span>👏</span>${p.reactions?.clap||0}</span>
-          <span class="c-react"><span>❤️</span>${p.reactions?.heart||0}</span>
+          <span class="c-react">🔥 ${p.reactions?.fire||0}</span>
+          <span class="c-react">👏 ${p.reactions?.clap||0}</span>
+          <span class="c-react">❤️ ${p.reactions?.heart||0}</span>
         </div>
         <span class="c-time">${ago(p.createdAt)}</span>
       </div>
@@ -681,125 +923,238 @@ function render(newIds=[]){
   }).join('');
 }
 
-window.openModal=function(id){
-  const p=POSTS.find(x=>x.id===id);if(!p)return;
-  curId=id;
-  const a=av(p.founder);
-  const ma=document.getElementById('mav');ma.textContent=ini(p.founder);ma.style.background=a.b;ma.style.color=a.f;
-  document.getElementById('mst').textContent=p.startup;
-  document.getElementById('mf').textContent=p.founder;
-  document.getElementById('mci').textContent=p.city||'India';
-  document.getElementById('mt').textContent=ago(p.createdAt);
-  document.getElementById('mb').textContent=p.body;
-  document.getElementById('mtgs').innerHTML=(p.tags||[]).map(t=>`<span class="mc-tag">${esc(t)}</span>`).join('');
+/* ════════════════════════════════════
+   MODAL
+════════════════════════════════════ */
+window.openModal = function(id){
+  const p = POSTS.find(x=>x.id===id);
+  if(!p) return;
+  curId   = id;
+  curPost = p;
+
+  const a = av(p.founder);
+  const ma = document.getElementById('mav');
+  ma.textContent        = ini(p.founder);
+  ma.style.background   = a.b;
+  ma.style.color        = a.f;
+
+  document.getElementById('mst').textContent = p.startup;
+  document.getElementById('mf').textContent  = p.founder;
+  document.getElementById('mci').textContent = p.city||'India';
+  document.getElementById('mt').textContent  = ago(p.createdAt);
+  document.getElementById('mb').textContent  = p.body;
+  document.getElementById('mtgs').innerHTML  = (p.tags||[]).map(t=>`<span class="mc-tag">${esc(t)}</span>`).join('');
+
   buildReacts(p);
-  document.getElementById('cbt').textContent='Connect with '+p.founder;
-  document.getElementById('cbn').innerHTML=`${esc(p.founder)} is building <strong>${esc(p.startup)}</strong>${p.city?' in '+esc(p.city):''}. We charge ₹1 to keep this community serious and help Vaithra stay alive.`;
+  buildContactCard(p);
+
+  // Reset reveal
+  document.getElementById('contact-reveal').classList.remove('show');
+
   document.getElementById('modal').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 };
 
+/* ════════════════════════════════════
+   CONTACT CARD — Direct UPI + Reveal
+════════════════════════════════════ */
+function buildContactCard(p){
+  document.getElementById('cct').textContent = 'Connect with ' + p.founder;
+  document.getElementById('ccn').innerHTML   =
+    `<strong>${esc(p.founder)}</strong> is building <strong>${esc(p.startup)}</strong>${p.city?' in '+esc(p.city):''}. Pay ₹1 via UPI to unlock their contact details instantly — right here, no WhatsApp needed.`;
+
+  // Build UPI app deep links
+  const amount   = 1;
+  const note     = encodeURIComponent('Vaithra Connect - ' + p.startup);
+  const upiBase  = `upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`;
+
+  const apps = [
+    {name:'GPay',    icon:'🟡', url:`tez://upi/pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
+    {name:'PhonePe', icon:'🟣', url:`phonepe://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
+    {name:'Paytm',   icon:'🔵', url:`paytmmp://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
+    {name:'BHIM',    icon:'🟠', url:upiBase},
+    {name:'NaviPay', icon:'⚫', url:upiBase},
+    {name:'Any UPI', icon:'💳', url:upiBase},
+  ];
+
+  document.getElementById('upi-apps-grid').innerHTML = apps.map(app =>
+    `<a class="upi-app-btn" href="${app.url}" onclick="onPayClick(event,'${id}')">
+      <span class="app-icon">${app.icon}</span>
+      <span>${app.name}</span>
+    </a>`
+  ).join('');
+
+  // Reveal rows (shown after pay)
+  document.getElementById('cr-rows').innerHTML = `
+    <div class="cr-row">
+      <span class="cr-label">Founder</span>
+      <span class="cr-value">${esc(p.founder)}</span>
+    </div>
+    <div class="cr-row">
+      <span class="cr-label">Startup</span>
+      <span class="cr-value">${esc(p.startup)}</span>
+    </div>
+    ${p.phone?`
+    <div class="cr-row">
+      <span class="cr-label">WhatsApp</span>
+      <span class="cr-value">+${p.phone.replace(/\D/g,'').replace(/^91/,'91').replace(/^(\d{2})(\d{5})(\d{5})/,'+$1 $2 $3')}</span>
+      <button class="cr-copy" onclick="copyVal('+${p.phone.replace(/\D/g,'')}')">Copy</button>
+    </div>
+    <div class="cr-row">
+      <span class="cr-label">Chat</span>
+      <span class="cr-value" style="color:var(--green)">
+        <a href="https://wa.me/${p.phone.replace(/\D/g,'')}" target="_blank" style="color:var(--green);text-decoration:none">Open on WhatsApp →</a>
+      </span>
+    </div>
+    `:''}
+    ${p.city?`<div class="cr-row"><span class="cr-label">City</span><span class="cr-value">${esc(p.city)}</span></div>`:''}
+  `;
+}
+
+/* Called when user taps any UPI app — marks as paid and reveals contact */
+window.onPayClick = function(event, postId){
+  // Mark paid in localStorage so they don't pay again
+  const key = 'paid_'+curId;
+  localStorage.setItem(key, '1');
+  // Reveal after 1.5s (give time to complete payment)
+  setTimeout(revealContact, 1500);
+};
+
+function revealContact(){
+  document.getElementById('contact-reveal').classList.add('show');
+  document.getElementById('contact-reveal').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// Check on open if already paid
+function checkAlreadyPaid(){
+  if(localStorage.getItem('paid_'+curId)){
+    document.getElementById('contact-reveal').classList.add('show');
+  }
+}
+
+window.copyVal = function(val){
+  navigator.clipboard.writeText(val).then(()=>{
+    const btn = event.target;
+    btn.textContent = 'Copied!';
+    setTimeout(()=>btn.textContent='Copy', 2000);
+  });
+};
+
+/* ════════════════════════════════════
+   REACTIONS
+════════════════════════════════════ */
 function buildReacts(p){
-  document.getElementById('mrs').innerHTML=
+  document.getElementById('mrs').innerHTML =
     [{k:'fire',e:'🔥'},{k:'clap',e:'👏'},{k:'heart',e:'❤️'}].map(({k,e})=>{
-      const c=p.reactions?.[k]||0,r=window.fbHas&&window.fbHas(p.id,k);
-      return`<button class="rpill${r?' reacted':''}" onclick="doReact('${p.id}','${k}',this)">${e}<span class="rc" id="rc-${p.id}-${k}">${c}</span></button>`;
+      const c = p.reactions?.[k]||0;
+      const r = window.fbHas && window.fbHas(p.id,k);
+      return `<button class="rpill${r?' reacted':''}" onclick="doReact('${p.id}','${k}',this)">
+        ${e} <span id="rc-${p.id}-${k}">${c}</span>
+      </button>`;
     }).join('');
 }
 
-window.doReact=async function(id,e,btn){
-  if(window.fbHas&&window.fbHas(id,e))return;
+window.doReact = async function(id,e,btn){
+  if(window.fbHas && window.fbHas(id,e)) return;
   btn.classList.add('reacted');
-  const el=document.getElementById(`rc-${id}-${e}`);
-  if(el)el.textContent=parseInt(el.textContent)+1;
-  if(window.fbReact)await window.fbReact(id,e);
+  const el = document.getElementById(`rc-${id}-${e}`);
+  if(el) el.textContent = parseInt(el.textContent||'0')+1;
+  if(window.fbReact) await window.fbReact(id,e);
 };
 
-window.closeModal=function(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';curId=null};
-
-window.handlePay=function(){
-  const p=POSTS.find(x=>x.id===curId);if(!p)return;
-  const upiLink=`upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=1&cu=INR&tn=${encodeURIComponent('Vaithra Connect - '+p.startup)}`;
-  const waMsg=`Hi Vaithra! I want to connect with ${p.founder} (${p.startup}${p.city?', '+p.city:''}).
-
-💳 *Paying ₹1 via UPI now*
-UPI ID: ${YOUR_UPI_ID}
-Amount: ₹1
-
-Pay instantly: ${upiLink}
-
-📋 *My details:*
-Name: 
-My startup / role: 
-Why I want to connect: 
-
-Sending payment screenshot right after. Please connect me within 2 hours. Thank you!`;
-  window.open('https://wa.me/'+YOUR_WA+'?text='+encodeURIComponent(waMsg),'_blank');
+window.closeModal = function(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+  curId   = null;
+  curPost = null;
 };
 
-window.openForm=()=>{
-  document.getElementById('fwrap').style.display='block';
+/* ════════════════════════════════════
+   POST FORM
+════════════════════════════════════ */
+window.openForm = () => {
+  document.getElementById('fwrap').style.display = 'block';
   document.getElementById('fsuc').classList.remove('show');
   document.getElementById('flay').classList.add('open');
-  document.body.style.overflow='hidden';
-};
-window.closeForm=()=>{document.getElementById('flay').classList.remove('open');document.body.style.overflow=''};
-
-window.updateChar=()=>{
-  const val=document.getElementById('fb_').value;
-  document.getElementById('charcount').textContent=val.length;
+  document.body.style.overflow = 'hidden';
 };
 
-window.doSubmit=async function(){
-  const name=document.getElementById('fn').value.trim();
-  const startup=document.getElementById('fs').value.trim();
-  const city=document.getElementById('fci').value.trim();
-  const phone=document.getElementById('fp').value.trim();
-  const body=document.getElementById('fb_').value.trim();
-  const tags=document.getElementById('ft').value.split(',').map(t=>t.trim()).filter(Boolean);
+window.closeForm = () => {
+  document.getElementById('flay').classList.remove('open');
+  document.body.style.overflow = '';
+};
 
-  if(!name){document.getElementById('fn').focus();return}
-  if(!startup){document.getElementById('fs').focus();return}
-  if(!city){document.getElementById('fci').focus();return}
-  if(!phone){document.getElementById('fp').focus();return}
-  if(body.length<15){document.getElementById('fb_').focus();return}
+window.updateChar = () => {
+  document.getElementById('charcount').textContent =
+    document.getElementById('fb_').value.length;
+};
 
-  const btn=document.getElementById('fsb');
-  btn.disabled=true;btn.classList.add('loading');
+window.doSubmit = async function(){
+  const name    = document.getElementById('fn').value.trim();
+  const startup = document.getElementById('fs').value.trim();
+  const city    = document.getElementById('fci').value.trim();
+  const phone   = document.getElementById('fp').value.trim();
+  const body    = document.getElementById('fb_').value.trim();
+  const tags    = document.getElementById('ft').value.split(',').map(t=>t.trim()).filter(Boolean);
 
-  const ok=await window.fbSave({
-    founder:name,startup,city,phone,body,
-    tags:tags.length?tags:['Update']
+  if(!name)   { document.getElementById('fn').focus();  return; }
+  if(!startup){ document.getElementById('fs').focus();  return; }
+  if(!city)   { document.getElementById('fci').focus(); return; }
+  if(!phone)  { document.getElementById('fp').focus();  return; }
+  if(body.length<15){ document.getElementById('fb_').focus(); return; }
+
+  const btn = document.getElementById('fsb');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const ok = await window.fbSave({
+    founder: name, startup, city, phone, body,
+    tags: tags.length ? tags : ['Update']
   });
 
-  btn.disabled=false;btn.classList.remove('loading');
+  btn.disabled = false;
+  btn.classList.remove('loading');
 
   if(ok){
-    ['fn','fs','fci','fp','fb_','ft'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('charcount').textContent='0';
-    document.getElementById('fwrap').style.display='none';
+    ['fn','fs','fci','fp','fb_','ft'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('charcount').textContent = '0';
+    document.getElementById('fwrap').style.display = 'none';
     document.getElementById('fsuc').classList.add('show');
-  }else{
+  } else {
     alert('Something went wrong. Please check your connection and try again.');
   }
 };
 
-document.getElementById('modal').onclick=e=>{if(e.target===document.getElementById('modal'))closeModal()};
-document.getElementById('flay').onclick=e=>{if(e.target===document.getElementById('flay'))closeForm()};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeForm()}});
+/* ════════════════════════════════════
+   KEYBOARD + OVERLAY CLICK
+════════════════════════════════════ */
+document.getElementById('modal').onclick = e => {
+  if(e.target === document.getElementById('modal')) closeModal();
+};
+document.getElementById('flay').onclick = e => {
+  if(e.target === document.getElementById('flay')) closeForm();
+};
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape'){ closeModal(); closeForm(); }
+});
 
-// Real-time listener — updates ALL connected users instantly
+/* ════════════════════════════════════
+   FIREBASE REAL-TIME
+════════════════════════════════════ */
 function init(){
-  if(typeof window.fbListen==='function'){
-    window.fbListen(posts=>{
-      const newIds=posts.filter(p=>!POSTS.find(x=>x.id===p.id)).map(p=>p.id);
-      POSTS=posts;
-      document.getElementById('liveind').style.opacity='1';
+  if(typeof window.fbListen === 'function'){
+    window.fbListen(posts => {
+      const newIds = posts.filter(p=>!POSTS.find(x=>x.id===p.id)).map(p=>p.id);
+      POSTS = posts;
+      document.getElementById('liveind').style.opacity = '1';
       render(newIds);
-      if(curId){const p=POSTS.find(x=>x.id===curId);if(p)buildReacts(p)}
+      if(curId){
+        const p = POSTS.find(x=>x.id===curId);
+        if(p){ buildReacts(p); }
+      }
     });
-  }else{
-    setTimeout(init,200);
+  } else {
+    setTimeout(init, 200);
   }
 }
 init();
