@@ -3,7 +3,62 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vaithra — A Serious Ecosystem for Serious Founders</title>
+
+<!-- ═══ PRIMARY SEO META ═══ -->
+<title>Vaithra — A Serious Ecosystem for Serious Founders | India</title>
+<meta name="description" content="Vaithra is a structured founder ecosystem across India — built for early-stage builders who create without connections, capital, or visibility. Join platforms for idea promotion, micro-grants, peer accountability, and more."/>
+<meta name="keywords" content="startup ecosystem India, founder network India, early stage founders, startup community India, micro grants startup, founder accountability, build in public, startup tools India, Vaithra"/>
+<meta name="author" content="Sardhar Musthafa"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://vaithra.in/"/>
+
+<!-- ═══ OPEN GRAPH (Facebook, WhatsApp, LinkedIn) ═══ -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://vaithra.in/"/>
+<meta property="og:title" content="Vaithra — A Serious Ecosystem for Serious Founders"/>
+<meta property="og:description" content="Not a community. Not a course. Infrastructure for founders who already know what they want to build — and need the right environment to do it without distraction."/>
+<meta property="og:image" content="https://vaithra.in/og-image.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:site_name" content="Vaithra"/>
+<meta property="og:locale" content="en_IN"/>
+
+<!-- ═══ TWITTER CARD ═══ -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:url" content="https://vaithra.in/"/>
+<meta name="twitter:title" content="Vaithra — A Serious Ecosystem for Serious Founders"/>
+<meta name="twitter:description" content="Not a community. Not a course. Infrastructure for founders who actually build."/>
+<meta name="twitter:image" content="https://vaithra.in/og-image.jpg"/>
+
+<!-- ═══ STRUCTURED DATA (JSON-LD) ═══ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Vaithra",
+  "url": "https://vaithra.in",
+  "logo": "https://vaithra.in/logo.png",
+  "description": "A structured founder ecosystem for early-stage builders across India.",
+  "foundingDate": "2024",
+  "founder": {
+    "@type": "Person",
+    "name": "Sardhar Musthafa"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "India"
+  },
+  "sameAs": [
+    "https://instagram.com/wearevaithra"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "url": "https://wa.me/918977855998"
+  }
+}
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600;1,700&family=DM+Sans:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -20,6 +75,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
+/* FIX: default overflow to auto so scrolling always works */
+body.no-scroll{overflow:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
 
 /* UTILITY */
@@ -187,7 +244,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .fd-item p{font-size:11px;color:var(--INKm);line-height:1.6;font-weight:300}
 .fd-acts{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
 
-/* ══════════════ HERO — FIXED ══════════════ */
+/* ══════════════ HERO ══════════════ */
 #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--OLd);padding:130px 5% 100px;text-align:center}
 #hcv{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
 .h-grain{position:absolute;inset:0;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -204,8 +261,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .hdot{width:6px;height:6px;background:var(--GDl);border-radius:50%;animation:bk 2.2s ease-in-out infinite;flex-shrink:0}
 @keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
 .hero-pill span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(250,250,248,.5)}
-
-/* NEW HERO TITLE — clean static lines, no scramble */
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,9vw,120px);font-weight:300;line-height:.88;letter-spacing:-.02em;color:var(--W);margin-bottom:24px}
 .hero-title .ht-line{display:block;overflow:hidden}
 .hero-title .ht-inner{display:block;transform:translateY(110%);animation:lineUp .9s cubic-bezier(.16,1,.3,1) forwards}
@@ -214,21 +269,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 @keyframes lineUp{to{transform:translateY(0)}}
 .hero-title em{font-style:italic;color:var(--GDl)}
 .hero-title .hb{font-style:italic;font-weight:600;color:rgba(250,250,248,.92)}
-
-/* TICKER — replaces the scramble, smooth word swap */
 .hero-ticker-wrap{display:inline-block;position:relative;overflow:hidden;height:1.05em;vertical-align:bottom;min-width:240px}
 .hero-ticker{display:flex;flex-direction:column;animation:none}
 .ticker-word{font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;display:block}
-.ticker-slide{animation:tickerSlide .55s cubic-bezier(.16,1,.3,1) forwards}
-@keyframes tickerSlide{from{transform:translateY(0)}to{transform:translateY(-100%)}}
-.ticker-enter{position:absolute;top:100%;left:0;width:100%;animation:tickerEnter .55s cubic-bezier(.16,1,.3,1) forwards}
-@keyframes tickerEnter{from{transform:translateY(0)}to{transform:translateY(-100%)}}
-
 .hero-sub{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.52);max-width:540px;margin:0 auto 14px;line-height:1.9;font-weight:300}
-
-/* STRONG CTA LINE */
 .hero-cta-line{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,1.8vw,20px);font-style:italic;font-weight:300;color:var(--GDl);margin-bottom:40px;opacity:.85}
-
 .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
 .hero-cta .bp{background:var(--W);color:var(--INK)}
 .hero-cta .bp:hover{background:var(--GDl)}
@@ -369,39 +414,28 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
   .fh-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:768px){
-  /* Nav */
   .nav-links{display:none}
   .nav-r .plat-btn{display:none}
   .nav-r .bp{display:none}
   .mob-menu-btn{display:flex}
   .mob-drawer{display:flex}
-  
-  /* Hero */
   #hero{padding:110px 5% 80px}
   .hero-title{font-size:clamp(40px,11vw,72px)}
   .hero-ticker-wrap{min-width:180px}
   .hero-stats{flex-direction:column}
   .hstat{border-right:none;border-bottom:1px solid rgba(250,250,248,.08)}
   .hstat:last-child{border-bottom:none}
-  
-  /* Sections */
   .who-grid{grid-template-columns:repeat(2,1fr)}
   .plat-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .ft-top{grid-template-columns:1fr;gap:36px}
   .ft-bot{flex-direction:column;text-align:center}
-  
-  /* Feature detail */
   .fd-box{flex-direction:column;max-height:92vh;overflow-y:auto}
   .fd-vis{width:100%;min-height:180px}
   .fd-cnt{padding:28px 24px}
-  
-  /* Sections padding */
   #who,#problem,#definition,#platform,#why,#how,#finalcta{padding:80px 5%}
   .prob-in{grid-template-columns:1fr;gap:48px}
   .why-in{grid-template-columns:1fr;gap:48px}
   .fh-grid{grid-template-columns:repeat(2,1fr)}
-  
-  /* Apply overlay */
   .ov-hd{padding:14px 20px}
   .fw{margin:24px auto;padding:0 14px 60px}
 }
@@ -499,28 +533,28 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 <div id="site">
 
 <!-- NAV -->
-<nav class="nav" id="mainNav">
+<nav class="nav" id="mainNav" aria-label="Main navigation">
   <div class="nav-logo">VAITHRA</div>
-  <ul class="nav-links">
+  <ul class="nav-links" role="list">
     <li><a href="about.html">About</a></li>
     <li><a href="#platform">Platforms</a></li>
     <li><a href="#why">Why</a></li>
     <li><a href="#how">How It Works</a></li>
   </ul>
   <div class="nav-r">
-    <button class="plat-btn" id="platBtn" onclick="toggleHub()">
-      <div class="pdots"><div class="pd"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div></div>
+    <button class="plat-btn" id="platBtn" onclick="toggleHub()" aria-label="Open platform features">
+      <div class="pdots" aria-hidden="true"><div class="pd"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div></div>
       Platform
     </button>
     <button class="bp" onclick="openApply()">Apply as Founder &rarr;</button>
-    <button class="mob-menu-btn" id="mobMenuBtn" onclick="toggleMobMenu()" aria-label="Menu">
+    <button class="mob-menu-btn" id="mobMenuBtn" onclick="toggleMobMenu()" aria-label="Toggle menu" aria-expanded="false">
       <div class="mob-bar"></div><div class="mob-bar"></div><div class="mob-bar"></div>
     </button>
   </div>
 </nav>
 
 <!-- MOBILE DRAWER -->
-<div class="mob-drawer" id="mobDrawer">
+<div class="mob-drawer" id="mobDrawer" role="navigation" aria-label="Mobile navigation">
   <a href="about.html" onclick="closeMobMenu()">About</a>
   <a href="#platform" onclick="closeMobMenu()">Platforms</a>
   <a href="#why" onclick="closeMobMenu()">Why</a>
@@ -529,10 +563,10 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 </div>
 
 <!-- APPLY OVERLAY -->
-<div id="applyOv">
+<div id="applyOv" role="dialog" aria-label="Founder Application" aria-modal="true">
   <div class="ov-hd">
     <div class="nav-logo">VAITHRA</div>
-    <button class="xb" onclick="closeApply()">&#10005;</button>
+    <button class="xb" onclick="closeApply()" aria-label="Close application">&#10005;</button>
   </div>
   <div class="ov-body">
     <div class="fw">
@@ -541,26 +575,26 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,5vw,44px);font-style:italic;color:var(--INK)">Apply as Founder</h2>
       </div>
       <div class="fb">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0" style="display:block">Loading&hellip;</iframe>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScHN8YPdCAr3buimdH1LqNArtpwhSMJsgbimhh93Y2wFHpPGA/viewform?embedded=true" width="100%" height="820" frameborder="0" marginheight="0" marginwidth="0" title="Vaithra Founder Application Form" style="display:block">Loading&hellip;</iframe>
       </div>
     </div>
   </div>
 </div>
 
 <!-- FEATURE HUB -->
-<div id="fHub">
+<div id="fHub" role="dialog" aria-label="Platform Features" aria-modal="true">
   <div class="fh-bd" onclick="closeHub()"></div>
   <div class="fh-panel">
     <div class="fh-head">
       <div><h2>Platform Features</h2><p>Click any feature to open its dedicated page</p></div>
-      <button class="xb" onclick="closeHub()">&#10005;</button>
+      <button class="xb" onclick="closeHub()" aria-label="Close features">&#10005;</button>
     </div>
     <div class="fh-grid" id="fGrid"></div>
   </div>
 </div>
 
 <!-- FEATURE DETAIL -->
-<div id="fDet">
+<div id="fDet" role="dialog" aria-modal="true">
   <div class="fd-bd" onclick="closeDet()"></div>
   <div class="fd-box">
     <div class="fd-vis">
@@ -569,7 +603,7 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
       <div class="fd-vis-lbl" id="fdlbl"></div>
     </div>
     <div class="fd-cnt">
-      <button class="xb" style="position:absolute;top:18px;right:18px" onclick="closeDet()">&#10005;</button>
+      <button class="xb" style="position:absolute;top:18px;right:18px" onclick="closeDet()" aria-label="Close detail">&#10005;</button>
       <div class="fd-ey" id="fdey"></div>
       <h2 class="fd-ttl" id="fdttl"></h2>
       <p class="fd-desc" id="fddesc"></p>
@@ -583,64 +617,58 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 </div>
 
 <!-- ① HERO -->
-<section id="hero">
-  <canvas id="hcv"></canvas>
-  <div class="h-grain"></div>
-  <div class="h-orb h-orb-1"></div>
-  <div class="h-orb h-orb-2"></div>
-  <div class="h-orb h-orb-3"></div>
-  <div class="h-grid"></div>
+<section id="hero" aria-label="Hero">
+  <canvas id="hcv" aria-hidden="true"></canvas>
+  <div class="h-grain" aria-hidden="true"></div>
+  <div class="h-orb h-orb-1" aria-hidden="true"></div>
+  <div class="h-orb h-orb-2" aria-hidden="true"></div>
+  <div class="h-orb h-orb-3" aria-hidden="true"></div>
+  <div class="h-grid" aria-hidden="true"></div>
   <div class="hero-in">
     <div class="hero-pill rv">
-      <div class="hdot"></div>
-      <span>Early-Stage Founders Organization&middot; India</span>
+      <div class="hdot" aria-hidden="true"></div>
+      <span>Early-Stage Founders Organization &middot; India</span>
     </div>
-
-    <!-- CLEAN HERO TITLE — staggered line reveal, no scramble -->
     <h1 class="hero-title">
       <span class="ht-line"><span class="ht-inner l1">Where Serious</span></span>
       <span class="ht-line"><span class="ht-inner l2 hb">Builders
-        <span class="hero-ticker-wrap">
+        <span class="hero-ticker-wrap" aria-live="polite">
           <span class="ticker-word" id="tickerCur">Build Without Noise</span>
         </span>
       </span></span>
     </h1>
-
     <p class="hero-sub rv d2">Vaithra is a semi-centralized founder network built across India — for early-stage builders who create without connections, capital, or visibility.</p>
-
-    <!-- STRONG CTA LINE -->
-    <p class="hero-cta-line rv d2">Built By Founders.<em style="color:var(--GDl)">for founders.</em></p>
-
+    <p class="hero-cta-line rv d2">Built By Founders. <em style="color:var(--GDl)">For Founders.</em></p>
     <div class="hero-cta rv d3">
       <button class="bp" onclick="openApply()">Apply as Founder &rarr;</button>
       <button class="bs" onclick="document.getElementById('platform').scrollIntoView({behavior:'smooth'})">Explore Platforms</button>
     </div>
-    <div class="hero-stats rv d4">
+    <div class="hero-stats rv d4" aria-label="Ecosystem statistics">
       <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="8">0</span></div><div class="hstat-l">Platforms</div></div>
-      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="02">0</span></div><div class="hstat-l">Cities</div></div>
+      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="2">0</span></div><div class="hstat-l">Cities</div></div>
       <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="15">0</span>+</div><div class="hstat-l">Founders</div></div>
-      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="00">0</span></div><div class="hstat-l">Grant Tiers</div></div>
+      <div class="hstat"><div class="hstat-n"><span class="cnt" data-t="3">0</span></div><div class="hstat-l">Grant Tiers</div></div>
     </div>
   </div>
-  <div class="hscroll"><div class="hsb"></div><span>Scroll</span></div>
+  <div class="hscroll" aria-hidden="true"><div class="hsb"></div><span>Scroll</span></div>
 </section>
 
 <!-- ② WHO -->
-<section id="who">
+<section id="who" aria-label="Who is Vaithra for">
   <div class="si">
     <span class="ey rv" style="margin-bottom:14px">Who It's For</span>
     <h2 class="sec-ttl rv d1">Built for Founders Who Actually Build</h2>
     <div class="who-grid">
-      <div class="wcard rv d1"><div class="wcard-n">01</div><h3>Early-stage startup founders</h3></div>
-      <div class="wcard rv d2"><div class="wcard-n">02</div><h3>Student founders with execution mindset</h3></div>
-      <div class="wcard rv d3"><div class="wcard-n">03</div><h3>Bootstrapped builders</h3></div>
-      <div class="wcard rv d4"><div class="wcard-n">04</div><h3>First-time entrepreneurs</h3></div>
+      <div class="wcard rv d1"><div class="wcard-n" aria-hidden="true">01</div><h3>Early-stage startup founders</h3></div>
+      <div class="wcard rv d2"><div class="wcard-n" aria-hidden="true">02</div><h3>Student founders with execution mindset</h3></div>
+      <div class="wcard rv d3"><div class="wcard-n" aria-hidden="true">03</div><h3>Bootstrapped builders</h3></div>
+      <div class="wcard rv d4"><div class="wcard-n" aria-hidden="true">04</div><h3>First-time entrepreneurs</h3></div>
     </div>
   </div>
 </section>
 
 <!-- ③ PROBLEM -->
-<section id="problem">
+<section id="problem" aria-label="Problems in the startup space">
   <div class="prob-in si">
     <div class="prob-txt rl">
       <span class="ey" style="margin-bottom:14px">The Real Problem</span>
@@ -649,19 +677,19 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
     </div>
     <div class="prob-stack">
       <div class="prob-item rr d1">
-        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="pi-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
         <div><h4>Too much fake motivation</h4><p>Content designed to feel good, not help you build.</p></div>
       </div>
       <div class="prob-item rr d2">
-        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div class="pi-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
         <div><h4>No real guidance</h4><p>Generic advice that works for no one in particular.</p></div>
       </div>
       <div class="prob-item rr d3">
-        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+        <div class="pi-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
         <div><h4>No serious peer circle</h4><p>Communities built around activity, not execution.</p></div>
       </div>
       <div class="prob-item rr d4">
-        <div class="pi-ico"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="pi-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <div><h4>Everything scattered</h4><p>Resources, tools, people — spread across noise.</p></div>
       </div>
     </div>
@@ -669,7 +697,7 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 </section>
 
 <!-- ④ DEFINITION -->
-<section id="definition">
+<section id="definition" aria-label="What is Vaithra">
   <div class="def-in si">
     <span class="ey rv" style="display:block;text-align:center;margin-bottom:14px">Definition</span>
     <h2 class="sec-ttl rv d1" style="text-align:center;margin-bottom:0">What Vaithra Is</h2>
@@ -679,78 +707,78 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 </section>
 
 <!-- ⑤ PLATFORMS -->
-<section id="platform">
+<section id="platform" aria-label="Vaithra Platforms">
   <div class="si">
     <span class="ey rv" style="margin-bottom:12px">The Ecosystem</span>
     <h2 class="sec-ttl rv d1">One Ecosystem. <em style="color:var(--OL)">Multiple Platforms.</em></h2>
     <p style="font-size:12px;color:var(--INKm);font-weight:300;margin-top:6px" class="rv d2">Click any card to open the platform page.</p>
     <div class="plat-grid">
-      <div class="plat-tile rv d1" onclick="location.href='idea-promotion.html'">
+      <div class="plat-tile rv d1" onclick="location.href='idea-promotion.html'" role="button" tabindex="0" aria-label="Idea Promotion platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
           <span class="pt-badge bc">Core</span>
         </div>
         <div class="pt-ttl">Idea Promotion</div>
         <p class="pt-desc">Get your validated idea in front of vetted collaborators, early adopters, and co-founders across all city nodes.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d2" onclick="location.href='city-reps.html'">
+      <div class="plat-tile rv d2" onclick="location.href='city-reps.html'" role="button" tabindex="0" aria-label="City Representatives platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
           <span class="pt-badge bc">Core</span>
         </div>
         <div class="pt-ttl">City Representatives</div>
         <p class="pt-desc">Local nodes in every major city. Reps organize meetups, bridge builders with the ecosystem.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d3" onclick="location.href='daily-drop.html'">
+      <div class="plat-tile rv d3" onclick="location.href='daily-drop.html'" role="button" tabindex="0" aria-label="Daily Knowledge Drop platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
           <span class="pt-badge bc">Core</span>
         </div>
         <div class="pt-ttl">Daily Knowledge Drop</div>
         <p class="pt-desc">One curated lesson, resource, or insight every day — for early-stage founders navigating the chaos.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d4" onclick="location.href='index.html'">
+      <div class="plat-tile rv d4" onclick="location.href='index.html'" role="button" tabindex="0" aria-label="Proof of Build platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
           <span class="pt-badge bc">Core</span>
         </div>
         <div class="pt-ttl">Proof of Build (PoB)</div>
         <p class="pt-desc">A structured accountability system where founders document and verify real build progress — not just plans.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d1" onclick="location.href='micro-grants.html'">
+      <div class="plat-tile rv d1" onclick="location.href='micro-grants.html'" role="button" tabindex="0" aria-label="Micro-Grant Rounds platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
           <span class="pt-badge bn">New</span>
         </div>
         <div class="pt-ttl">Micro-Grant Rounds</div>
         <p class="pt-desc">Community-backed micro-funding. ₹5K to ₹1L — gated by PoB score, not connections or networks.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d2" onclick="location.href='build-wall.html'">
+      <div class="plat-tile rv d2" onclick="location.href='build-wall.html'" role="button" tabindex="0" aria-label="Build in Public Wall platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
           <span class="pt-badge bn">New</span>
         </div>
         <div class="pt-ttl">Build in Public Wall</div>
         <p class="pt-desc">A live wall where verified founders share real updates, wins, failures, and milestones.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d3" onclick="location.href='verify.html'">
+      <div class="plat-tile rv d3" onclick="location.href='verify.html'" role="button" tabindex="0" aria-label="Verification Badge platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--INKm)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--INKm)" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <span class="pt-badge bpr">Premium</span>
         </div>
         <div class="pt-ttl">Verification Badge</div>
         <p class="pt-desc">A community-issued credential for founders who pass identity and build checks. Signals authenticity.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d4" onclick="location.href='vaithra-open.html'">
+      <div class="plat-tile rv d4" onclick="location.href='vaithra-open.html'" role="button" tabindex="0" aria-label="Open Organization platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--OL)" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
           <span class="pt-badge bc">Core</span>
         </div>
         <div class="pt-ttl">Open Organization</div>
@@ -762,9 +790,9 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 </section>
 
 <!-- ⑥ WHY -->
-<section id="why">
-  <div class="why-grain"></div>
-  <div class="why-orn">V</div>
+<section id="why" aria-label="Why Vaithra exists">
+  <div class="why-grain" aria-hidden="true"></div>
+  <div class="why-orn" aria-hidden="true">V</div>
   <div class="why-in si">
     <div class="why-lft rl">
       <span class="ey" style="margin-bottom:14px">Why It Exists</span>
@@ -774,33 +802,33 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
     </div>
     <div class="rr">
       <div class="why-list">
-        <div class="why-item"><span class="wx">✕</span><span>Not courses designed to sell more courses</span></div>
-        <div class="why-item"><span class="wx">✕</span><span>Not influencers performing founder life</span></div>
-        <div class="why-item"><span class="wx">✕</span><span>Not Telegram groups full of noise</span></div>
-        <div class="why-item"><span class="wx">✕</span><span>Not fake communities with zero accountability</span></div>
-        <div class="why-item"><span class="wx">✕</span><span>Not another motivation reel ecosystem</span></div>
+        <div class="why-item"><span class="wx" aria-hidden="true">✕</span><span>Not courses designed to sell more courses</span></div>
+        <div class="why-item"><span class="wx" aria-hidden="true">✕</span><span>Not influencers performing founder life</span></div>
+        <div class="why-item"><span class="wx" aria-hidden="true">✕</span><span>Not Telegram groups full of noise</span></div>
+        <div class="why-item"><span class="wx" aria-hidden="true">✕</span><span>Not fake communities with zero accountability</span></div>
+        <div class="why-item"><span class="wx" aria-hidden="true">✕</span><span>Not another motivation reel ecosystem</span></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ⑦ HOW -->
-<section id="how">
+<section id="how" aria-label="How Vaithra works">
   <div class="how-in si">
     <span class="ey rv" style="margin-bottom:12px">Simple Process</span>
     <h2 class="sec-ttl rv d1">How Founders Use Vaithra</h2>
     <div class="how-steps">
-      <div class="how-step rv d1"><div class="hn">1</div><div class="ht"><h3>Explore Platforms</h3><p>Find what's relevant to your stage — learning, community, tools, verification, or grants. No onboarding fluff.</p></div></div>
-      <div class="how-step rv d2"><div class="hn">2</div><div class="ht"><h3>Join or Apply</h3><p>Some platforms are open. Some require an application. Verification is earned, not given.</p></div></div>
-      <div class="how-step rv d3"><div class="hn">3</div><div class="ht"><h3>Build with the Ecosystem</h3><p>Use the infrastructure to execute. Connect with peers who are actually building. That's it.</p></div></div>
+      <div class="how-step rv d1"><div class="hn" aria-hidden="true">1</div><div class="ht"><h3>Explore Platforms</h3><p>Find what's relevant to your stage — learning, community, tools, verification, or grants. No onboarding fluff.</p></div></div>
+      <div class="how-step rv d2"><div class="hn" aria-hidden="true">2</div><div class="ht"><h3>Join or Apply</h3><p>Some platforms are open. Some require an application. Verification is earned, not given.</p></div></div>
+      <div class="how-step rv d3"><div class="hn" aria-hidden="true">3</div><div class="ht"><h3>Build with the Ecosystem</h3><p>Use the infrastructure to execute. Connect with peers who are actually building. That's it.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- ⑧ FINAL CTA -->
-<section id="finalcta">
-  <div class="fc-grain"></div>
-  <div class="fc-orn">V</div>
+<section id="finalcta" aria-label="Call to action">
+  <div class="fc-grain" aria-hidden="true"></div>
+  <div class="fc-orn" aria-hidden="true">V</div>
   <div class="fc-in">
     <span class="fc-ey rv">Ready?</span>
     <h2 class="fc-ttl rv d1">Vaithra Is<br><em>Not for Everyone</em></h2>
@@ -809,7 +837,7 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
       <button class="bp" onclick="openApply()">Apply as Founder →</button>
       <button class="bs" onclick="document.getElementById('platform').scrollIntoView({behavior:'smooth'})">Explore Platforms</button>
     </div>
-    <div style="margin-top:60px;display:flex;justify-content:center;align-items:center;gap:14px;opacity:.15" class="rv d4">
+    <div style="margin-top:60px;display:flex;justify-content:center;align-items:center;gap:14px;opacity:.15" class="rv d4" aria-hidden="true">
       <div style="height:1px;width:32px;background:var(--W)"></div>
       <span style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--W)">Powered by Vaivaanith Pvt Ltd</span>
       <div style="height:1px;width:32px;background:var(--W)"></div>
@@ -825,8 +853,8 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
         <h3>VAITHRA</h3>
         <p>A structured ecosystem for founders who build. Identifying serious builders across India.</p>
         <div class="ft-soc">
-          <a href="https://instagram.com/wearevaithra" target="_blank">Instagram</a>
-          <a href="https://wa.me/918977855998" target="_blank">WhatsApp</a>
+          <a href="https://instagram.com/wearevaithra" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://wa.me/918977855998" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
       </div>
       <div class="ft-col"><h4>Platforms</h4><ul>
@@ -842,25 +870,79 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
         <li><a href="about.html">About Vaithra</a></li>
         <li><a href="#who">Who It's For</a></li>
         <li><a href="#how">How It Works</a></li>
-        <li><a href="https://wa.me/918977855998" target="_blank">Contact</a></li>
+        <li><a href="https://wa.me/918977855998" target="_blank" rel="noopener noreferrer">Contact</a></li>
       </ul></div>
       <div class="ft-col"><h4>Legal</h4><ul>
         <li><a href="privacy-policy.html">Privacy Policy</a></li>
         <li><a href="terms-conditions.html">Terms &amp; Conditions</a></li>
-        <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry" target="_blank">Official Clearance</a></li>
+        <li><a href="https://wa.me/918977855998?text=Clearance%20Inquiry" target="_blank" rel="noopener noreferrer">Official Clearance</a></li>
       </ul>
       <div style="margin-top:22px">
         <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--INK)">VAIVAANITH PVT LTD</div>
         <p style="font-size:10px;color:var(--INKm);margin-top:5px;line-height:1.5;font-weight:300">Holding entity for Vaithra &amp; Glowvai.in</p>
       </div></div>
     </div>
-    <div class="ft-bot"><span>&copy; 2026 Vaithra. All rights reserved.</span><span>Authored by Sardhar Musthafa</span></div>
+    <div class="ft-bot">
+      <span>&copy; 2026 Vaithra. All rights reserved.</span>
+      <span>Authored by Sardhar Musthafa</span>
+    </div>
   </div>
 </footer>
 
 </div><!-- #site -->
 
 <script>
+/* ══════════════════════════════════════════════════════════
+   HOW RETURNING USER DETECTION WORKS — EXPLANATION
+   ══════════════════════════════════════════════════════════
+   
+   This uses LOCALSTORAGE — browser-side key/value storage.
+   
+   When a user completes onboarding, we save:
+   localStorage.setItem('vaithra_user', JSON.stringify({name, phone}))
+   
+   On every subsequent page load, we check:
+   localStorage.getItem('vaithra_user') — if it exists, skip intro.
+   
+   ✅ Works across page reloads and browser restarts (same device/browser)
+   ❌ Does NOT persist across: different browsers, incognito mode,
+      different devices, or if user clears browser data.
+   
+   This is the standard industry approach for this use case.
+   IP-based detection requires a backend server + database.
+   ══════════════════════════════════════════════════════════ */
+
+/* ══ RETURNING USER CHECK — runs instantly on page load ══ */
+(function(){
+  try {
+    var saved = localStorage.getItem('vaithra_user');
+    if (saved) {
+      // FIX: Hide intro and ensure body can scroll
+      var intro = document.getElementById('intro');
+      var site = document.getElementById('site');
+      intro.style.display = 'none';
+      site.classList.add('visible');
+      // FIX: Ensure overflow is NOT hidden for returning users
+      document.body.classList.remove('no-scroll');
+      document.body.style.overflow = '';
+      // Init site after DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){ initSite(); });
+      } else {
+        initSite();
+      }
+    } else {
+      // New user: lock scroll for intro
+      document.body.classList.add('no-scroll');
+    }
+  } catch(e) {
+    // localStorage might be blocked (e.g. Safari private). 
+    // Gracefully fall through to show intro.
+    console.warn('localStorage not available:', e);
+    document.body.classList.add('no-scroll');
+  }
+})();
+
 /* ═══ GOOGLE SHEETS BACKEND ═══ */
 var SHEET = 'https://script.google.com/macros/s/AKfycbw262OdGPubRdKefldxhXwtbCCUKs4zO7iVH6AKD2aRZ7my30O1Gj1Aq_fSV8CrCGR7aw/exec';
 
@@ -883,11 +965,11 @@ async function saveToSheet(name, phone) {
 }
 
 /* ═══ INTRO SYSTEM ═══ */
-var obName='', obPhone='';
-document.body.style.overflow='hidden';
+var obName = '', obPhone = '';
 
 function switchScene(from, to) {
-  var f=document.getElementById(from), t=document.getElementById(to);
+  var f = document.getElementById(from);
+  var t = document.getElementById(to);
   f.classList.add('hidden');
   setTimeout(function(){
     f.classList.add('away');
@@ -896,423 +978,525 @@ function switchScene(from, to) {
   }, 550);
 }
 
-var msgs=['Initializing','Loading ecosystem','Connecting nodes','Almost ready'];
+var msgs = ['Initializing', 'Loading ecosystem', 'Connecting nodes', 'Almost ready'];
+
 function runSplash(){
-  var bar=document.getElementById('sBar'), lbl=document.getElementById('sLbl');
-  var p=0;
-  var iv=setInterval(function(){
-    p += (100-p)*.038 + .25;
-    if(p>=100) p=100;
-    bar.style.width=p+'%';
-    lbl.textContent=msgs[Math.min(Math.floor(p/100*msgs.length), msgs.length-1)];
-    if(p>=100){ clearInterval(iv); setTimeout(function(){ switchScene('scSplash','scOnboard'); }, 700); }
+  var bar = document.getElementById('sBar');
+  var lbl = document.getElementById('sLbl');
+  var p = 0;
+  var iv = setInterval(function(){
+    p += (100 - p) * .038 + .25;
+    if (p >= 100) p = 100;
+    bar.style.width = p + '%';
+    lbl.textContent = msgs[Math.min(Math.floor(p / 100 * msgs.length), msgs.length - 1)];
+    if (p >= 100) {
+      clearInterval(iv);
+      setTimeout(function(){ switchScene('scSplash', 'scOnboard'); }, 700);
+    }
   }, 55);
 }
 
 function setDots(step){
-  ['od0','od1','od2'].forEach(function(id,i){
-    var d=document.getElementById(id);
-    d.className='ob-dot '+(i<step?'dn':i===step?'cur':'nxt');
+  ['od0','od1','od2'].forEach(function(id, i){
+    var d = document.getElementById(id);
+    d.className = 'ob-dot ' + (i < step ? 'dn' : i === step ? 'cur' : 'nxt');
   });
 }
 
 function obStep(step){
-  if(step===0){
-    var v=document.getElementById('oName').value.trim();
-    if(!v||v.length<2){ document.getElementById('eN').style.display='block'; return; }
-    document.getElementById('eN').style.display='none';
-    obName=v;
-    document.getElementById('ob0').style.display='none';
-    document.getElementById('ob1').style.display='block';
+  if (step === 0) {
+    var v = document.getElementById('oName').value.trim();
+    if (!v || v.length < 2) { document.getElementById('eN').style.display = 'block'; return; }
+    document.getElementById('eN').style.display = 'none';
+    obName = v;
+    document.getElementById('ob0').style.display = 'none';
+    document.getElementById('ob1').style.display = 'block';
     setDots(1);
-  } else if(step===1){
-    var v=document.getElementById('oPhone').value.replace(/\D/g,'');
-    if(v.length<10){ document.getElementById('eP').style.display='block'; return; }
-    document.getElementById('eP').style.display='none';
-    obPhone=v;
-    document.getElementById('ob1').style.display='none';
-    document.getElementById('ob2').style.display='block';
+  } else if (step === 1) {
+    var v = document.getElementById('oPhone').value.replace(/\D/g, '');
+    if (v.length < 10) { document.getElementById('eP').style.display = 'block'; return; }
+    document.getElementById('eP').style.display = 'none';
+    obPhone = v;
+    document.getElementById('ob1').style.display = 'none';
+    document.getElementById('ob2').style.display = 'block';
     setDots(2);
   }
 }
 
+/* Allow Enter key in inputs */
+document.addEventListener('DOMContentLoaded', function(){
+  var nameInp = document.getElementById('oName');
+  var phoneInp = document.getElementById('oPhone');
+  if (nameInp) nameInp.addEventListener('keydown', function(e){ if(e.key==='Enter') obStep(0); });
+  if (phoneInp) phoneInp.addEventListener('keydown', function(e){ if(e.key==='Enter') obStep(1); });
+});
+
 async function obSubmit(){
-  var t=document.getElementById('cT').checked, p=document.getElementById('cP').checked;
-  if(!t||!p){ document.getElementById('eC').style.display='block'; return; }
-  document.getElementById('eC').style.display='none';
-  var btn=document.getElementById('obFinalBtn');
-  btn.textContent='Saving...'; btn.disabled=true;
+  var t = document.getElementById('cT').checked;
+  var p = document.getElementById('cP').checked;
+  if (!t || !p) { document.getElementById('eC').style.display = 'block'; return; }
+  document.getElementById('eC').style.display = 'none';
+  var btn = document.getElementById('obFinalBtn');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
   await saveToSheet(obName, obPhone);
-  document.getElementById('wName').textContent=obName.split(' ')[0];
-  switchScene('scOnboard','scWelcome');
+
+  /* Save to localStorage so returning visitors skip intro */
+  try {
+    localStorage.setItem('vaithra_user', JSON.stringify({ name: obName, phone: obPhone }));
+  } catch(e) {
+    console.warn('Could not save to localStorage:', e);
+  }
+
+  document.getElementById('wName').textContent = obName.split(' ')[0];
+  switchScene('scOnboard', 'scWelcome');
 }
 
 function enterSite(){
-  var intro=document.getElementById('intro');
-  intro.style.transition='opacity .85s ease, transform .85s ease';
-  intro.style.opacity='0'; intro.style.transform='scale(.97)';
+  var intro = document.getElementById('intro');
+  intro.style.transition = 'opacity .85s ease, transform .85s ease';
+  intro.style.opacity = '0';
+  intro.style.transform = 'scale(.97)';
   setTimeout(function(){
-    intro.style.display='none';
+    intro.style.display = 'none';
     document.getElementById('site').classList.add('visible');
-    document.body.style.overflow='';
+    // FIX: Remove no-scroll class, clear inline style
+    document.body.classList.remove('no-scroll');
+    document.body.style.overflow = '';
     initSite();
   }, 850);
 }
 
+/* ═══ SCROLL LOCK HELPERS ═══ 
+   Always use these instead of directly setting overflow.
+   This prevents the scroll bug from cascading. */
+function lockScroll(){
+  document.body.classList.add('no-scroll');
+}
+function unlockScroll(){
+  // Only unlock if no overlays are open
+  var applyOpen = document.getElementById('applyOv').classList.contains('open');
+  var hubOpen = document.getElementById('fHub').classList.contains('open');
+  var detOpen = document.getElementById('fDet').classList.contains('open');
+  var mobOpen = document.getElementById('mobDrawer').classList.contains('open');
+  if (!applyOpen && !hubOpen && !detOpen && !mobOpen) {
+    document.body.classList.remove('no-scroll');
+    document.body.style.overflow = '';
+  }
+}
+
 /* ═══ SITE INIT ═══ */
 function initSite(){
-  initReveal(); initNavScroll(); initTilt(); initCounters(); initTicker(); initHeroThree();
+  initReveal();
+  initNavScroll();
+  initTilt();
+  initCounters();
+  initTicker();
+  initHeroThree();
 }
 
 function initReveal(){
-  var ob=new IntersectionObserver(function(e){
-    e.forEach(function(x){ if(x.isIntersecting) x.target.classList.add('on'); });
-  },{threshold:.08, rootMargin:'0px 0px -30px 0px'});
+  var ob = new IntersectionObserver(function(e){
+    e.forEach(function(x){ if (x.isIntersecting) x.target.classList.add('on'); });
+  }, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
   document.querySelectorAll('.rv,.rl,.rr').forEach(function(el){ ob.observe(el); });
 }
 
 function initNavScroll(){
-  var nav=document.getElementById('mainNav');
-  window.addEventListener('scroll',function(){
-    nav.style.background=window.scrollY>60?'rgba(250,250,248,.97)':'rgba(250,250,248,.9)';
+  var nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', function(){
+    nav.style.background = window.scrollY > 60 ? 'rgba(250,250,248,.97)' : 'rgba(250,250,248,.9)';
   });
 }
 
 function initTilt(){
   document.querySelectorAll('.plat-tile').forEach(function(tile){
-    tile.addEventListener('mousemove',function(e){
-      var r=tile.getBoundingClientRect();
-      var x=((e.clientX-r.left)/r.width-.5)*14;
-      var y=((e.clientY-r.top)/r.height-.5)*-10;
-      tile.style.transform='translateY(-9px) rotateX('+y+'deg) rotateY('+x+'deg)';
+    tile.addEventListener('mousemove', function(e){
+      var r = tile.getBoundingClientRect();
+      var x = ((e.clientX - r.left) / r.width - .5) * 14;
+      var y = ((e.clientY - r.top) / r.height - .5) * -10;
+      tile.style.transform = 'translateY(-9px) rotateX(' + y + 'deg) rotateY(' + x + 'deg)';
     });
-    tile.addEventListener('mouseleave',function(){ tile.style.transform=''; });
+    tile.addEventListener('mouseleave', function(){ tile.style.transform = ''; });
+    /* Keyboard access for platform tiles */
+    tile.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tile.click(); }
+    });
   });
 }
 
 function initCounters(){
-  var ob=new IntersectionObserver(function(e){
+  var ob = new IntersectionObserver(function(e){
     e.forEach(function(x){
-      if(!x.isIntersecting) return;
+      if (!x.isIntersecting) return;
       x.target.querySelectorAll('.cnt').forEach(function(c){
-        if(c.dataset.s) return; c.dataset.s=1;
-        var t=parseInt(c.dataset.t), s=performance.now(), d=1800;
+        if (c.dataset.s) return;
+        c.dataset.s = 1;
+        var t = parseInt(c.dataset.t), s = performance.now(), d = 1800;
         (function tick(n){
-          var p=Math.min((n-s)/d,1), ep=1-Math.pow(1-p,4);
-          c.textContent=Math.floor(ep*t);
-          if(p<1) requestAnimationFrame(tick); else c.textContent=t;
+          var p = Math.min((n - s) / d, 1), ep = 1 - Math.pow(1 - p, 4);
+          c.textContent = Math.floor(ep * t);
+          if (p < 1) requestAnimationFrame(tick); else c.textContent = t;
         })(s);
       });
       ob.unobserve(x.target);
     });
-  },{threshold:.4});
+  }, { threshold: .4 });
   document.querySelectorAll('.hero-stats').forEach(function(el){ ob.observe(el); });
 }
 
-/* ═══ TICKER — SMOOTH WORD SWAP ═══ */
+/* ═══ TICKER ═══ */
 function initTicker(){
-  var phrases=['Build Without Noise','Execute Daily','Ship Real Work','Prove It. Build It.','Choose Output'];
-  var idx=0;
-  var cur=document.getElementById('tickerCur');
+  var phrases = ['Build Without Noise','Execute Daily','Ship Real Work','Prove It. Build It.','Choose Output'];
+  var idx = 0;
+  var cur = document.getElementById('tickerCur');
   setInterval(function(){
-    idx=(idx+1)%phrases.length;
-    var next=phrases[idx];
-    // Create new word above
-    var el=document.createElement('span');
-    el.className='ticker-word';
-    el.style.cssText='position:absolute;top:100%;left:0;width:100%;font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;';
-    el.textContent=next;
+    idx = (idx + 1) % phrases.length;
+    var next = phrases[idx];
+    var el = document.createElement('span');
+    el.className = 'ticker-word';
+    el.style.cssText = 'position:absolute;top:100%;left:0;width:100%;font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;';
+    el.textContent = next;
     cur.parentNode.appendChild(el);
-    // Animate both
-    var wrap=cur.parentNode;
-    wrap.style.position='relative';
-    // Slide up current
-    cur.style.transition='transform .52s cubic-bezier(.16,1,.3,1),opacity .35s';
-    cur.style.transform='translateY(-110%)';
-    cur.style.opacity='0';
-    // Slide in new
-    el.style.transition='transform .52s cubic-bezier(.16,1,.3,1)';
+    cur.parentNode.style.position = 'relative';
+    cur.style.transition = 'transform .52s cubic-bezier(.16,1,.3,1),opacity .35s';
+    cur.style.transform = 'translateY(-110%)';
+    cur.style.opacity = '0';
+    el.style.transition = 'transform .52s cubic-bezier(.16,1,.3,1)';
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        el.style.top='0';
-        el.style.transform='translateY(-100%)';
+        el.style.top = '0';
+        el.style.transform = 'translateY(-100%)';
       });
     });
     setTimeout(function(){
-      if(cur.parentNode) cur.parentNode.removeChild(cur);
-      el.style.position='';
-      el.style.top='';
-      el.style.transform='';
-      el.id='tickerCur';
-      cur=el;
-    },540);
+      if (cur.parentNode) cur.parentNode.removeChild(cur);
+      el.style.position = '';
+      el.style.top = '';
+      el.style.transform = '';
+      el.id = 'tickerCur';
+      cur = el;
+    }, 540);
   }, 2800);
 }
 
 /* ═══ MOBILE MENU ═══ */
-var mobOpen=false;
-function toggleMobMenu(){ mobOpen?closeMobMenu():openMobMenu(); }
+var mobMenuOpen = false;
+function toggleMobMenu(){ mobMenuOpen ? closeMobMenu() : openMobMenu(); }
 function openMobMenu(){
-  mobOpen=true;
+  mobMenuOpen = true;
   document.getElementById('mobDrawer').classList.add('open');
-  document.getElementById('mobMenuBtn').classList.add('open');
-  document.body.style.overflow='hidden';
+  var btn = document.getElementById('mobMenuBtn');
+  btn.classList.add('open');
+  btn.setAttribute('aria-expanded', 'true');
+  lockScroll();
 }
 function closeMobMenu(){
-  mobOpen=false;
+  mobMenuOpen = false;
   document.getElementById('mobDrawer').classList.remove('open');
-  document.getElementById('mobMenuBtn').classList.remove('open');
-  document.body.style.overflow='';
+  var btn = document.getElementById('mobMenuBtn');
+  btn.classList.remove('open');
+  btn.setAttribute('aria-expanded', 'false');
+  unlockScroll();
 }
 
 /* ═══ HERO THREE.JS ═══ */
 function initHeroThree(){
-  var cv=document.getElementById('hcv');
-  if(!cv||typeof THREE==='undefined') return;
-  var R=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
-  R.setPixelRatio(Math.min(devicePixelRatio,2));
-  var S=new THREE.Scene(), C=new THREE.PerspectiveCamera(70,1,.1,100);
-  C.position.z=5;
+  var cv = document.getElementById('hcv');
+  if (!cv || typeof THREE === 'undefined') return;
+  var R = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+  R.setPixelRatio(Math.min(devicePixelRatio, 2));
+  var S = new THREE.Scene(), C = new THREE.PerspectiveCamera(70, 1, .1, 100);
+  C.position.z = 5;
   function resize(){
-    var w=cv.clientWidth, h=cv.clientHeight;
-    R.setSize(w,h,false); C.aspect=w/h; C.updateProjectionMatrix();
+    var w = cv.clientWidth, h = cv.clientHeight;
+    R.setSize(w, h, false); C.aspect = w / h; C.updateProjectionMatrix();
   }
-  resize(); window.addEventListener('resize',resize);
-  var n=160, geo=new THREE.BufferGeometry(), pos=new Float32Array(n*3), vel=[];
-  for(var i=0;i<n;i++){
-    pos[i*3]=(Math.random()-.5)*16; pos[i*3+1]=(Math.random()-.5)*14; pos[i*3+2]=(Math.random()-.5)*5;
-    vel.push({x:(Math.random()-.5)*.003, y:(Math.random()-.5)*.003+.0015});
+  resize(); window.addEventListener('resize', resize);
+  var n = 160, geo = new THREE.BufferGeometry(), pos = new Float32Array(n * 3), vel = [];
+  for (var i = 0; i < n; i++){
+    pos[i*3] = (Math.random()-.5)*16;
+    pos[i*3+1] = (Math.random()-.5)*14;
+    pos[i*3+2] = (Math.random()-.5)*5;
+    vel.push({ x: (Math.random()-.5)*.003, y: (Math.random()-.5)*.003+.0015 });
   }
-  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  S.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0x6B7F58,size:.055,transparent:true,opacity:.7})));
-  var lm=new THREE.LineBasicMaterial({color:0x4A5C3A,opacity:.06,transparent:true});
-  for(var i=-8;i<=8;i+=2.4){
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  S.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x6B7F58, size: .055, transparent: true, opacity: .7 })));
+  var lm = new THREE.LineBasicMaterial({ color: 0x4A5C3A, opacity: .06, transparent: true });
+  for (var i = -8; i <= 8; i += 2.4){
     S.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-10,i,0),new THREE.Vector3(10,i,0)]),lm));
     S.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i,-10,0),new THREE.Vector3(i,10,0)]),lm));
   }
-  S.add(new THREE.AmbientLight(0xfaf8ee,.5));
-  var dl=new THREE.DirectionalLight(0x9aad80,1.2); dl.position.set(3,4,5); S.add(dl);
-  var mat=new THREE.MeshStandardMaterial({color:0x4A5C3A,roughness:.45,metalness:.18,transparent:true,opacity:.2});
-  var cube=new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9),mat); cube.position.set(4,1.5,-1); S.add(cube);
-  var torus=new THREE.Mesh(new THREE.TorusGeometry(.7,.12,10,40),mat); torus.position.set(-4.5,-1.2,-1); S.add(torus);
-  var cone=new THREE.Mesh(new THREE.ConeGeometry(.55,1.1,4),mat); cone.position.set(3.5,-2,-1.5); S.add(cone);
-  var sphere=new THREE.Mesh(new THREE.SphereGeometry(.48,14,14),mat); sphere.position.set(-3.5,1.8,-1); S.add(sphere);
-  var t=0;
+  S.add(new THREE.AmbientLight(0xfaf8ee, .5));
+  var dl = new THREE.DirectionalLight(0x9aad80, 1.2); dl.position.set(3,4,5); S.add(dl);
+  var mat = new THREE.MeshStandardMaterial({ color: 0x4A5C3A, roughness: .45, metalness: .18, transparent: true, opacity: .2 });
+  var cube = new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9), mat); cube.position.set(4,1.5,-1); S.add(cube);
+  var torus = new THREE.Mesh(new THREE.TorusGeometry(.7,.12,10,40), mat); torus.position.set(-4.5,-1.2,-1); S.add(torus);
+  var cone = new THREE.Mesh(new THREE.ConeGeometry(.55,1.1,4), mat); cone.position.set(3.5,-2,-1.5); S.add(cone);
+  var sphere = new THREE.Mesh(new THREE.SphereGeometry(.48,14,14), mat); sphere.position.set(-3.5,1.8,-1); S.add(sphere);
+  var t = 0;
   (function anim(){
-    requestAnimationFrame(anim); t+=.008;
-    var p=geo.attributes.position.array;
-    for(var i=0;i<n;i++){
-      p[i*3]+=vel[i].x; p[i*3+1]+=vel[i].y;
-      if(p[i*3+1]>8) p[i*3+1]=-8;
-      if(p[i*3]>9) p[i*3]=-9; if(p[i*3]<-9) p[i*3]=9;
+    requestAnimationFrame(anim); t += .008;
+    var p = geo.attributes.position.array;
+    for (var i = 0; i < n; i++){
+      p[i*3] += vel[i].x; p[i*3+1] += vel[i].y;
+      if (p[i*3+1] > 8) p[i*3+1] = -8;
+      if (p[i*3] > 9) p[i*3] = -9; if (p[i*3] < -9) p[i*3] = 9;
     }
-    geo.attributes.position.needsUpdate=true;
-    cube.rotation.x+=.007; cube.rotation.y+=.01; cube.position.y=1.5+Math.sin(t*.7)*.22;
-    torus.rotation.x+=.008; torus.rotation.z+=.006; torus.position.y=-1.2+Math.cos(t*.8)*.18;
-    cone.rotation.y+=.009; cone.position.y=-2+Math.sin(t*.6+1)*.16;
-    sphere.position.y=1.8+Math.cos(t*.9)*.2;
-    R.render(S,C);
+    geo.attributes.position.needsUpdate = true;
+    cube.rotation.x += .007; cube.rotation.y += .01; cube.position.y = 1.5 + Math.sin(t*.7)*.22;
+    torus.rotation.x += .008; torus.rotation.z += .006; torus.position.y = -1.2 + Math.cos(t*.8)*.18;
+    cone.rotation.y += .009; cone.position.y = -2 + Math.sin(t*.6+1)*.16;
+    sphere.position.y = 1.8 + Math.cos(t*.9)*.2;
+    R.render(S, C);
   })();
 }
 
 /* ═══ FEATURE DATA ═══ */
-var FEATURES=[
-  {id:'ip',badge:'core',bc:'bc',title:'Idea Promotion',sub:'Visibility Engine',page:'idea-promotion.html',
-   desc:'Founders promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and co-founders across all city nodes.',
-   items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Reps amplify promoted ideas in local communities.'}],shape:'pyramid',color:0x4A5C3A},
-  {id:'cr',badge:'core',bc:'bc',title:'City Representatives',sub:'Ground Network',page:'city-reps.html',
-   desc:'Local nodes in every major city. Reps organize meetups, bridge district builders with the ecosystem, and receive free idea promotion.',
-   items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct channel with Vaithra core.'}],shape:'network',color:0x6B7F58},
-  {id:'dk',badge:'core',bc:'bc',title:'Daily Knowledge Drop',sub:'Daily Signal',page:'daily-drop.html',
-   desc:'One curated lesson, resource, or topic every single day — for early-stage founders navigating product, growth, fundraising, and team building.',
-   items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full archive.'}],shape:'sphere',color:0x2E3A24},
-  {id:'pb',badge:'core',bc:'bc',title:'Proof of Build (PoB)',sub:'Accountability Engine',page:'index.html',
-   desc:'A structured accountability system where founders document and verify real build progress — not just plans.',
-   items:[{t:'Weekly Check-ins',p:'Log what you shipped, what you learned, what blocked you.'},{t:'PoB Score',p:'Your consistency score — the only metric Vaithra cares about.'},{t:'Peer Verification',p:'Community members verify your build claims.'}],shape:'blocks',color:0x2E3A24},
-  {id:'mg',badge:'new',bc:'bn',title:'Micro-Grant Rounds',sub:'New Feature',page:'micro-grants.html',
-   desc:'Community-backed micro-funding for vetted founders with real traction. ₹5K to ₹1L — gated by PoB score.',
-   items:[{t:'Three Tiers',p:'₹5K seed, ₹25K traction, ₹1L verified builder grant.'},{t:'PoB-Gated',p:'Minimum PoB score required to apply. No shortcuts.'},{t:'Community Vote',p:'Larger grants are allocated by community vote.'}],shape:'coin',color:0xB8A060},
-  {id:'bw',badge:'new',bc:'bn',title:'Build in Public Wall',sub:'New Feature',page:'build-wall.html',
-   desc:'A live public wall where verified founders share real updates, wins, failures, and milestones.',
-   items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type.'},{t:'Weekly Highlights',p:'Best updates featured in the weekly digest.'}],shape:'wall',color:0x6B7F58},
-  {id:'vb',badge:'premium',bc:'bpr',title:'Verification Badge',sub:'Premium Credential',page:'verify.html',
-   desc:'A community-issued credential for founders who pass protocol checks — signaling authenticity and network standing.',
-   items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by community.'},{t:'Profile Visibility',p:'Badge displayed on profile and grant applications.'}],shape:'badge',color:0x4A5C3A},
-  {id:'oo',badge:'core',bc:'bc',title:'Open Organization',sub:'Core Structure',page:'vaithra-open.html',
-   desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just commitment to founder-first culture.',
-   items:[{t:'Run Events',p:'Any member can organize Vaithra-branded events in their city.'},{t:'Contribution Vault',p:'Add guides, resources, and templates to the community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become City Representatives.'}],shape:'torus',color:0x4A5C3A},
+var FEATURES = [
+  { id:'ip', badge:'core', bc:'bc', title:'Idea Promotion', sub:'Visibility Engine', page:'idea-promotion.html',
+    desc:'Founders promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and co-founders across all city nodes.',
+    items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Reps amplify promoted ideas in local communities.'}],
+    shape:'pyramid', color:0x4A5C3A },
+  { id:'cr', badge:'core', bc:'bc', title:'City Representatives', sub:'Ground Network', page:'city-reps.html',
+    desc:'Local nodes in every major city. Reps organize meetups, bridge district builders with the ecosystem, and receive free idea promotion.',
+    items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct channel with Vaithra core.'}],
+    shape:'network', color:0x6B7F58 },
+  { id:'dk', badge:'core', bc:'bc', title:'Daily Knowledge Drop', sub:'Daily Signal', page:'daily-drop.html',
+    desc:'One curated lesson, resource, or topic every single day — for early-stage founders navigating product, growth, fundraising, and team building.',
+    items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full archive.'}],
+    shape:'sphere', color:0x2E3A24 },
+  { id:'pb', badge:'core', bc:'bc', title:'Proof of Build (PoB)', sub:'Accountability Engine', page:'index.html',
+    desc:'A structured accountability system where founders document and verify real build progress — not just plans.',
+    items:[{t:'Weekly Check-ins',p:'Log what you shipped, what you learned, what blocked you.'},{t:'PoB Score',p:'Your consistency score — the only metric Vaithra cares about.'},{t:'Peer Verification',p:'Community members verify your build claims.'}],
+    shape:'blocks', color:0x2E3A24 },
+  { id:'mg', badge:'new', bc:'bn', title:'Micro-Grant Rounds', sub:'New Feature', page:'micro-grants.html',
+    desc:'Community-backed micro-funding for vetted founders with real traction. ₹5K to ₹1L — gated by PoB score.',
+    items:[{t:'Three Tiers',p:'₹5K seed, ₹25K traction, ₹1L verified builder grant.'},{t:'PoB-Gated',p:'Minimum PoB score required to apply. No shortcuts.'},{t:'Community Vote',p:'Larger grants are allocated by community vote.'}],
+    shape:'coin', color:0xB8A060 },
+  { id:'bw', badge:'new', bc:'bn', title:'Build in Public Wall', sub:'New Feature', page:'build-wall.html',
+    desc:'A live public wall where verified founders share real updates, wins, failures, and milestones.',
+    items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type.'},{t:'Weekly Highlights',p:'Best updates featured in the weekly digest.'}],
+    shape:'wall', color:0x6B7F58 },
+  { id:'vb', badge:'premium', bc:'bpr', title:'Verification Badge', sub:'Premium Credential', page:'verify.html',
+    desc:'A community-issued credential for founders who pass protocol checks — signaling authenticity and network standing.',
+    items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by community.'},{t:'Profile Visibility',p:'Badge displayed on profile and grant applications.'}],
+    shape:'badge', color:0x4A5C3A },
+  { id:'oo', badge:'core', bc:'bc', title:'Open Organization', sub:'Core Structure', page:'vaithra-open.html',
+    desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just commitment to founder-first culture.',
+    items:[{t:'Run Events',p:'Any member can organize Vaithra-branded events in their city.'},{t:'Contribution Vault',p:'Add guides, resources, and templates to the community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become City Representatives.'}],
+    shape:'torus', color:0x4A5C3A },
 ];
 
-var curFPage=null, hubOpen=false;
+var curFPage = null;
+var hubIsOpen = false;
 
 function buildGrid(){
-  var g=document.getElementById('fGrid');
-  if(!g||g.children.length) return;
+  var g = document.getElementById('fGrid');
+  if (!g || g.children.length) return;
   FEATURES.forEach(function(f){
-    var el=document.createElement('div');
-    el.className='ft-card';
-    el.innerHTML='<canvas class="ft-cv" id="ftc-'+f.id+'" width="56" height="56"></canvas><span class="ft-badge '+f.bc+'">'+f.badge+'</span><h3>'+f.title+'</h3><p>'+f.desc.substring(0,90)+'...</p>';
-    el.onclick=function(){ openDet(f); };
+    var el = document.createElement('div');
+    el.className = 'ft-card';
+    el.innerHTML = '<canvas class="ft-cv" id="ftc-' + f.id + '" width="56" height="56"></canvas><span class="ft-badge ' + f.bc + '">' + f.badge + '</span><h3>' + f.title + '</h3><p>' + f.desc.substring(0,90) + '...</p>';
+    el.onclick = function(){ openDet(f); };
     g.appendChild(el);
-    setTimeout(function(){ makeMini(document.getElementById('ftc-'+f.id),f.shape,f.color); },60);
+    setTimeout(function(){ makeMini(document.getElementById('ftc-' + f.id), f.shape, f.color); }, 60);
   });
 }
 
-function toggleHub(){ hubOpen?closeHub():openHub(); }
+function toggleHub(){ hubIsOpen ? closeHub() : openHub(); }
+
 function openHub(){
-  hubOpen=true; buildGrid();
+  hubIsOpen = true;
+  buildGrid();
   document.getElementById('fHub').classList.add('open');
   document.getElementById('platBtn').classList.add('act');
-  document.body.style.overflow='hidden';
+  lockScroll();
 }
+
 function closeHub(){
-  hubOpen=false;
+  hubIsOpen = false;
   document.getElementById('fHub').classList.remove('open');
   document.getElementById('platBtn').classList.remove('act');
-  if(!document.getElementById('fDet').classList.contains('open')) document.body.style.overflow='';
+  unlockScroll();
 }
 
 /* ═══ FEATURE DETAIL THREE.JS ═══ */
-var fdR=null, fdRaf=null;
+var fdR = null, fdRaf = null;
+
 function openDet(f){
-  curFPage=f.page; closeHub();
-  document.getElementById('fdlbl').textContent=f.sub;
-  document.getElementById('fdey').textContent=f.sub;
-  document.getElementById('fdttl').textContent=f.title;
-  document.getElementById('fddesc').textContent=f.desc;
-  document.getElementById('fditems').innerHTML=f.items.map(function(it){
-    return '<div class="fd-item"><div class="fd-dot"></div><div><h5>'+it.t+'</h5><p>'+it.p+'</p></div></div>';
+  curFPage = f.page;
+  closeHub();
+  document.getElementById('fdlbl').textContent = f.sub;
+  document.getElementById('fdey').textContent = f.sub;
+  document.getElementById('fdttl').textContent = f.title;
+  document.getElementById('fddesc').textContent = f.desc;
+  document.getElementById('fditems').innerHTML = f.items.map(function(it){
+    return '<div class="fd-item"><div class="fd-dot"></div><div><h5>' + it.t + '</h5><p>' + it.p + '</p></div></div>';
   }).join('');
   document.getElementById('fDet').classList.add('open');
-  document.body.style.overflow='hidden';
-  if(fdRaf) cancelAnimationFrame(fdRaf);
-  if(fdR){ try{fdR.dispose();}catch(e){} fdR=null; }
+  lockScroll();
+  if (fdRaf) cancelAnimationFrame(fdRaf);
+  if (fdR) { try { fdR.dispose(); } catch(e){} fdR = null; }
   setTimeout(function(){
-    var cv=document.getElementById('fdcv');
-    var w=cv.offsetWidth||380, h=cv.offsetHeight||460;
-    fdR=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
-    fdR.setPixelRatio(Math.min(devicePixelRatio,2)); fdR.setSize(w,h);
-    var sc=new THREE.Scene(), cam=new THREE.PerspectiveCamera(54,w/h,.1,100); cam.position.z=4.8;
-    sc.add(new THREE.AmbientLight(0xfaf8ee,.38));
-    var dl=new THREE.DirectionalLight(0xfaf8ee,1.5); dl.position.set(3,4,5); sc.add(dl);
-    var dl2=new THREE.DirectionalLight(0x9aad80,.55); dl2.position.set(-3,-2,-2); sc.add(dl2);
-    var mat=new THREE.MeshStandardMaterial({color:f.color,roughness:.3,metalness:.22,transparent:true,opacity:.88});
-    var mesh=makeBigShape(f.shape,mat,f.color,sc);
-    var pGeo=new THREE.BufferGeometry(), pPos=new Float32Array(60*3);
-    for(var i=0;i<60;i++){pPos[i*3]=(Math.random()-.5)*9;pPos[i*3+1]=(Math.random()-.5)*9;pPos[i*3+2]=(Math.random()-.5)*4;}
-    pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
-    sc.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0x8EA070,size:.055,transparent:true,opacity:.3})));
-    var mx={x:0,y:0};
-    cv.onmousemove=function(e){ var r=cv.getBoundingClientRect(); mx.x=((e.clientX-r.left)/r.width-.5)*2; mx.y=-((e.clientY-r.top)/r.height-.5)*2; };
+    var cv = document.getElementById('fdcv');
+    var w = cv.offsetWidth || 380, h = cv.offsetHeight || 460;
+    fdR = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+    fdR.setPixelRatio(Math.min(devicePixelRatio, 2)); fdR.setSize(w, h);
+    var sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(54, w/h, .1, 100); cam.position.z = 4.8;
+    sc.add(new THREE.AmbientLight(0xfaf8ee, .38));
+    var dl = new THREE.DirectionalLight(0xfaf8ee, 1.5); dl.position.set(3,4,5); sc.add(dl);
+    var dl2 = new THREE.DirectionalLight(0x9aad80, .55); dl2.position.set(-3,-2,-2); sc.add(dl2);
+    var mat = new THREE.MeshStandardMaterial({ color: f.color, roughness: .3, metalness: .22, transparent: true, opacity: .88 });
+    var mesh = makeBigShape(f.shape, mat, f.color, sc);
+    var pGeo = new THREE.BufferGeometry(), pPos = new Float32Array(60*3);
+    for (var i = 0; i < 60; i++){
+      pPos[i*3] = (Math.random()-.5)*9;
+      pPos[i*3+1] = (Math.random()-.5)*9;
+      pPos[i*3+2] = (Math.random()-.5)*4;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    sc.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x8EA070, size: .055, transparent: true, opacity: .3 })));
+    var mx = { x:0, y:0 };
+    cv.onmousemove = function(e){
+      var r = cv.getBoundingClientRect();
+      mx.x = ((e.clientX - r.left) / r.width - .5) * 2;
+      mx.y = -((e.clientY - r.top) / r.height - .5) * 2;
+    };
     (function anim(){
-      fdRaf=requestAnimationFrame(anim);
-      if(mesh){ mesh.rotation.y+=.008; mesh.rotation.x+=(mx.y*.35-mesh.rotation.x)*.05; }
-      fdR.render(sc,cam);
+      fdRaf = requestAnimationFrame(anim);
+      if (mesh) { mesh.rotation.y += .008; mesh.rotation.x += (mx.y*.35 - mesh.rotation.x)*.05; }
+      fdR.render(sc, cam);
     })();
-  },60);
+  }, 60);
 }
 
-function makeBigShape(shape,mat,color,sc){
+function makeBigShape(shape, mat, color, sc){
   var mesh;
-  if(shape==='sphere') mesh=new THREE.Mesh(new THREE.SphereGeometry(1.35,32,32),mat);
-  else if(shape==='pyramid') mesh=new THREE.Mesh(new THREE.ConeGeometry(1.15,2.1,4),mat);
-  else if(shape==='coin') mesh=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,.26,36),mat);
-  else if(shape==='torus') mesh=new THREE.Mesh(new THREE.TorusGeometry(1.1,.36,16,80),mat);
-  else if(shape==='badge'){
-    var g=new THREE.Group();
-    g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3,1.3,.26,6),mat));
-    var sm=new THREE.Mesh(new THREE.SphereGeometry(.36,16,16),new THREE.MeshStandardMaterial({color:0xffffff,metalness:.4,roughness:.2}));
-    sm.position.y=.32; g.add(sm); mesh=g;
-  } else if(shape==='blocks'){
-    var g=new THREE.Group();
-    [0x4A5C3A,0x6B7F58,0x2E3A24,0x8EA070,0x4A5C3A].forEach(function(c,i){
-      var bk=new THREE.Mesh(new THREE.BoxGeometry(1.15,.42,1.15),new THREE.MeshStandardMaterial({color:c,roughness:.5,metalness:.1}));
-      bk.position.y=i*.52-1.1; g.add(bk);
-    }); mesh=g;
-  } else if(shape==='network'){
-    var g=new THREE.Group();
-    var nm=new THREE.MeshStandardMaterial({color:color,roughness:.4});
-    var lm=new THREE.LineBasicMaterial({color:0x8EA070,transparent:true,opacity:.45});
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.42,14,14),nm));
-    var ps=[];
-    for(var i=0;i<6;i++){
-      var a=(i/6)*Math.PI*2;
-      var sp=new THREE.Mesh(new THREE.SphereGeometry(.24,12,12),nm);
-      sp.position.set(Math.cos(a)*1.4,Math.sin(a)*1.4,0); g.add(sp); ps.push(sp.position.clone());
+  if (shape==='sphere') mesh = new THREE.Mesh(new THREE.SphereGeometry(1.35,32,32), mat);
+  else if (shape==='pyramid') mesh = new THREE.Mesh(new THREE.ConeGeometry(1.15,2.1,4), mat);
+  else if (shape==='coin') mesh = new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,.26,36), mat);
+  else if (shape==='torus') mesh = new THREE.Mesh(new THREE.TorusGeometry(1.1,.36,16,80), mat);
+  else if (shape==='badge'){
+    var g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3,1.3,.26,6), mat));
+    var sm = new THREE.Mesh(new THREE.SphereGeometry(.36,16,16), new THREE.MeshStandardMaterial({ color:0xffffff, metalness:.4, roughness:.2 }));
+    sm.position.y = .32; g.add(sm); mesh = g;
+  } else if (shape==='blocks'){
+    var g = new THREE.Group();
+    [0x4A5C3A,0x6B7F58,0x2E3A24,0x8EA070,0x4A5C3A].forEach(function(c, i){
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(1.15,.42,1.15), new THREE.MeshStandardMaterial({ color:c, roughness:.5, metalness:.1 }));
+      bk.position.y = i*.52 - 1.1; g.add(bk);
+    }); mesh = g;
+  } else if (shape==='network'){
+    var g = new THREE.Group();
+    var nm = new THREE.MeshStandardMaterial({ color:color, roughness:.4 });
+    var lm = new THREE.LineBasicMaterial({ color:0x8EA070, transparent:true, opacity:.45 });
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(.42,14,14), nm));
+    var ps = [];
+    for (var i = 0; i < 6; i++){
+      var a = (i/6)*Math.PI*2;
+      var sp = new THREE.Mesh(new THREE.SphereGeometry(.24,12,12), nm);
+      sp.position.set(Math.cos(a)*1.4, Math.sin(a)*1.4, 0); g.add(sp); ps.push(sp.position.clone());
     }
-    ps.forEach(function(p){ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),p]),lm)); });
-    mesh=g;
-  } else if(shape==='wall'){
-    var g=new THREE.Group();
+    ps.forEach(function(p){ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), p]), lm)); });
+    mesh = g;
+  } else if (shape==='wall'){
+    var g = new THREE.Group();
     [[-1,.58],[-.2,.58],[.6,.58],[-.6,.1],[.2,.1],[-1,-.38],[-.2,-.38],[.6,-.38]].forEach(function(r){
-      var bk=new THREE.Mesh(new THREE.BoxGeometry(.7,.36,.18),mat);
-      bk.position.set(r[0],r[1],0); g.add(bk);
-    }); mesh=g;
-  } else mesh=new THREE.Mesh(new THREE.BoxGeometry(1.6,1.6,1.6),mat);
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(.7,.36,.18), mat);
+      bk.position.set(r[0], r[1], 0); g.add(bk);
+    }); mesh = g;
+  } else {
+    mesh = new THREE.Mesh(new THREE.BoxGeometry(1.6,1.6,1.6), mat);
+  }
   sc.add(mesh); return mesh;
 }
 
-function makeMini(canvas,shape,color){
-  if(!canvas||typeof THREE==='undefined') return;
-  var r=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
-  r.setPixelRatio(Math.min(devicePixelRatio,2)); r.setSize(56,56);
-  var sc=new THREE.Scene(), cam=new THREE.PerspectiveCamera(52,1,.1,100); cam.position.z=3;
-  sc.add(new THREE.AmbientLight(0xffffff,.5));
-  var dl=new THREE.DirectionalLight(0xffffff,1.2); dl.position.set(2,3,4); sc.add(dl);
-  var mat=new THREE.MeshStandardMaterial({color:color,roughness:.4,metalness:.15});
+function makeMini(canvas, shape, color){
+  if (!canvas || typeof THREE === 'undefined') return;
+  var r = new THREE.WebGLRenderer({ canvas:canvas, alpha:true, antialias:true });
+  r.setPixelRatio(Math.min(devicePixelRatio, 2)); r.setSize(56, 56);
+  var sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(52, 1, .1, 100); cam.position.z = 3;
+  sc.add(new THREE.AmbientLight(0xffffff, .5));
+  var dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(2,3,4); sc.add(dl);
+  var mat = new THREE.MeshStandardMaterial({ color:color, roughness:.4, metalness:.15 });
   var mesh;
-  if(shape==='sphere') mesh=new THREE.Mesh(new THREE.SphereGeometry(.8,16,16),mat);
-  else if(shape==='pyramid') mesh=new THREE.Mesh(new THREE.ConeGeometry(.7,1.3,4),mat);
-  else if(shape==='coin') mesh=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.16,28),mat);
-  else if(shape==='torus') mesh=new THREE.Mesh(new THREE.TorusGeometry(.6,.22,10,44),mat);
-  else if(shape==='badge'){
-    var g=new THREE.Group();
-    g.add(new THREE.Mesh(new THREE.CylinderGeometry(.75,.75,.16,6),mat));
-    var sm=new THREE.Mesh(new THREE.SphereGeometry(.2,10,10),new THREE.MeshStandardMaterial({color:0xffffff,metalness:.3}));
-    sm.position.y=.18; g.add(sm); mesh=g;
-  } else if(shape==='blocks'){
-    var g=new THREE.Group();
-    [0x4A5C3A,0x6B7F58,0x2E3A24].forEach(function(c,i){
-      var bk=new THREE.Mesh(new THREE.BoxGeometry(.65,.28,.65),new THREE.MeshStandardMaterial({color:c,roughness:.5}));
-      bk.position.y=i*.32-.32; g.add(bk);
-    }); mesh=g;
-  } else if(shape==='network'){
-    var g=new THREE.Group();
-    var nm=new THREE.MeshStandardMaterial({color:color});
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.24,10,10),nm));
-    for(var i=0;i<5;i++){
-      var a=(i/5)*Math.PI*2;
-      var sp=new THREE.Mesh(new THREE.SphereGeometry(.14,8,8),nm);
-      sp.position.set(Math.cos(a)*.68,Math.sin(a)*.68,0); g.add(sp);
-    } mesh=g;
-  } else if(shape==='wall'){
-    var g=new THREE.Group();
+  if (shape==='sphere') mesh = new THREE.Mesh(new THREE.SphereGeometry(.8,16,16), mat);
+  else if (shape==='pyramid') mesh = new THREE.Mesh(new THREE.ConeGeometry(.7,1.3,4), mat);
+  else if (shape==='coin') mesh = new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.16,28), mat);
+  else if (shape==='torus') mesh = new THREE.Mesh(new THREE.TorusGeometry(.6,.22,10,44), mat);
+  else if (shape==='badge'){
+    var g = new THREE.Group();
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(.75,.75,.16,6), mat));
+    var sm = new THREE.Mesh(new THREE.SphereGeometry(.2,10,10), new THREE.MeshStandardMaterial({ color:0xffffff, metalness:.3 }));
+    sm.position.y = .18; g.add(sm); mesh = g;
+  } else if (shape==='blocks'){
+    var g = new THREE.Group();
+    [0x4A5C3A,0x6B7F58,0x2E3A24].forEach(function(c, i){
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(.65,.28,.65), new THREE.MeshStandardMaterial({ color:c, roughness:.5 }));
+      bk.position.y = i*.32 - .32; g.add(bk);
+    }); mesh = g;
+  } else if (shape==='network'){
+    var g = new THREE.Group();
+    var nm = new THREE.MeshStandardMaterial({ color:color });
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(.24,10,10), nm));
+    for (var i = 0; i < 5; i++){
+      var a = (i/5)*Math.PI*2;
+      var sp = new THREE.Mesh(new THREE.SphereGeometry(.14,8,8), nm);
+      sp.position.set(Math.cos(a)*.68, Math.sin(a)*.68, 0); g.add(sp);
+    } mesh = g;
+  } else if (shape==='wall'){
+    var g = new THREE.Group();
     [[-.5,.28],[.1,.28],[.6,.28],[-.2,-.05],[.45,-.05],[-.5,-.38],[.1,-.38],[.6,-.38]].forEach(function(row){
-      var bk=new THREE.Mesh(new THREE.BoxGeometry(.44,.22,.1),mat);
-      bk.position.set(row[0],row[1],0); g.add(bk);
-    }); mesh=g;
-  } else mesh=new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9),mat);
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(.44,.22,.1), mat);
+      bk.position.set(row[0], row[1], 0); g.add(bk);
+    }); mesh = g;
+  } else {
+    mesh = new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9), mat);
+  }
   sc.add(mesh);
-  (function anim(){ requestAnimationFrame(anim); if(mesh) mesh.rotation.y+=.013; r.render(sc,cam); })();
+  (function anim(){ requestAnimationFrame(anim); if (mesh) mesh.rotation.y += .013; r.render(sc, cam); })();
 }
 
 function closeDet(){
   document.getElementById('fDet').classList.remove('open');
-  if(!hubOpen) document.body.style.overflow='';
-  if(fdRaf) cancelAnimationFrame(fdRaf);
+  if (fdRaf) cancelAnimationFrame(fdRaf);
+  unlockScroll();
 }
-function goToFeature(){ if(curFPage) window.location.href=curFPage; }
+
+function goToFeature(){ if (curFPage) window.location.href = curFPage; }
 
 /* ═══ APPLY ═══ */
-function openApply(){ document.getElementById('applyOv').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeApply(){ document.getElementById('applyOv').classList.remove('open'); document.body.style.overflow=''; }
+function openApply(){
+  document.getElementById('applyOv').classList.add('open');
+  lockScroll();
+}
+function closeApply(){
+  document.getElementById('applyOv').classList.remove('open');
+  unlockScroll();
+}
 
-document.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){ closeApply(); closeDet(); closeHub(); closeMobMenu(); }
+/* ═══ KEYBOARD ═══ */
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape'){
+    closeApply();
+    closeDet();
+    closeHub();
+    closeMobMenu();
+  }
 });
 
 /* ═══ BOOT ═══ */
-runSplash();
+/* Only run splash for new users (returning users handled at top) */
+if (!localStorage.getItem('vaithra_user')) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runSplash);
+  } else {
+    runSplash();
+  }
+}
 </script>
 </body>
 </html>
