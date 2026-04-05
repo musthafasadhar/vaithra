@@ -20,16 +20,16 @@
   };
 
   const app = initializeApp(cfg);
-  const db = getFirestore(app);
+  const db  = getFirestore(app);
 
   const SEED = [
-    {startup:'AgriConnect',founder:'Priya Sharma',city:'Vijayawada',body:'Signed our first paying farmer this week. ₹0 in revenue last month. ₹500 this month. The jump from zero to any number changes everything. You stop asking "will anyone pay?" and start asking "how do I get 100 more?"',tags:['First Revenue','AgriTech'],reactions:{fire:18,clap:24,heart:12},createdAt:Date.now()-86400000},
-    {startup:'SkillBridge',founder:'Ravi Kumar',city:'Warangal',body:"Failed our first pilot. 40 signups. 2 exchanges happened. Platform works — behavior doesn't. Nobody wants to go first. Cold-start is real. Rethinking incentives from scratch.",tags:['Failure','Pivot'],reactions:{fire:12,clap:19,heart:7},createdAt:Date.now()-172800000},
-    {startup:'Glowvai',founder:'Rahimath',city:'Hyderabad',body:'Shipped v0.2 today after 3 months in actual salons listening. Zero paying users. But finally feels honest. Cold outreach starts tomorrow. Terrified but ready.',tags:['Launch','Week 8'],reactions:{fire:9,clap:16,heart:5},createdAt:Date.now()-259200000},
-    {startup:'MediRoute',founder:'Ananya Reddy',city:'Tirupati',body:'3 pharmacies signed MoUs. No tech built — just WhatsApp and a Google Sheet. Proving behaviour exists before writing code. Pre-product traction is underrated.',tags:['Pre-product','HealthTech'],reactions:{fire:14,clap:21,heart:9},createdAt:Date.now()-345600000},
-    {startup:'BuildBrick',founder:'Sai Kiran',city:'Hyderabad',body:'Stuck on pricing 3 weeks. Free = tire-kickers. Paid = zero conversions. Tried ₹199, ₹499, ₹999. Nothing sticks. Product works. Cannot crack Tier 2 India SMB pricing.',tags:['Pricing','Stuck'],reactions:{fire:6,clap:11,heart:8},createdAt:Date.now()-432000000},
-    {startup:'FarmFresh',founder:'Deepa Nair',city:'Guntur',body:'Our delivery radius was 5km. Expanded to 15km this week after one customer drove 12km to pick up because our app was down. Lesson: demand exists, infrastructure is the problem.',tags:['Growth','Logistics'],reactions:{fire:11,clap:17,heart:6},createdAt:Date.now()-518400000},
-    {startup:'EduPath',founder:'Vikram Rao',city:'Vizag',body:'Built for 6 months. Showed 10 teachers. 9 said they already use WhatsApp for this. One said she would pay. Talking to her tomorrow. The 1 matters more than the 9.',tags:['Validation','EdTech'],reactions:{fire:8,clap:14,heart:10},createdAt:Date.now()-604800000},
+    {startup:'AgriConnect',founder:'Priya Sharma',city:'Vijayawada',phone:'919876543210',body:'Signed our first paying farmer this week. ₹0 in revenue last month. ₹500 this month. The jump from zero to any number changes everything. You stop asking "will anyone pay?" and start asking "how do I get 100 more?"',tags:['First Revenue','AgriTech'],reactions:{fire:18,clap:24,heart:12},createdAt:Date.now()-86400000},
+    {startup:'SkillBridge',founder:'Ravi Kumar',city:'Warangal',phone:'919876543211',body:"Failed our first pilot. 40 signups. 2 exchanges happened. Platform works — behavior doesn't. Nobody wants to go first. Cold-start is real. Rethinking incentives from scratch.",tags:['Failure','Pivot'],reactions:{fire:12,clap:19,heart:7},createdAt:Date.now()-172800000},
+    {startup:'Glowvai',founder:'Rahimath',city:'Hyderabad',phone:'919876543212',body:'Shipped v0.2 today after 3 months in actual salons listening. Zero paying users. But finally feels honest. Cold outreach starts tomorrow. Terrified but ready.',tags:['Launch','Week 8'],reactions:{fire:9,clap:16,heart:5},createdAt:Date.now()-259200000},
+    {startup:'MediRoute',founder:'Ananya Reddy',city:'Tirupati',phone:'919876543213',body:'3 pharmacies signed MoUs. No tech built — just WhatsApp and a Google Sheet. Proving behaviour exists before writing code. Pre-product traction is underrated.',tags:['Pre-product','HealthTech'],reactions:{fire:14,clap:21,heart:9},createdAt:Date.now()-345600000},
+    {startup:'BuildBrick',founder:'Sai Kiran',city:'Hyderabad',phone:'919876543214',body:'Stuck on pricing 3 weeks. Free = tire-kickers. Paid = zero conversions. Tried ₹199, ₹499, ₹999. Nothing sticks. Product works. Cannot crack Tier 2 India SMB pricing.',tags:['Pricing','Stuck'],reactions:{fire:6,clap:11,heart:8},createdAt:Date.now()-432000000},
+    {startup:'FarmFresh',founder:'Deepa Nair',city:'Guntur',phone:'919876543215',body:'Our delivery radius was 5km. Expanded to 15km this week after one customer drove 12km to pick up because our app was down. Lesson: demand exists, infrastructure is the problem.',tags:['Growth','Logistics'],reactions:{fire:11,clap:17,heart:6},createdAt:Date.now()-518400000},
+    {startup:'EduPath',founder:'Vikram Rao',city:'Vizag',phone:'919876543216',body:'Built for 6 months. Showed 10 teachers. 9 said they already use WhatsApp for this. One said she would pay. Talking to her tomorrow. The 1 matters more than the 9.',tags:['Validation','EdTech'],reactions:{fire:8,clap:14,heart:10},createdAt:Date.now()-604800000},
   ];
 
   async function seed(){
@@ -55,7 +55,10 @@
     }catch(e){}
   };
 
-  window.fbHas = (id,e) => !!localStorage.getItem('r_'+id+'_'+e);
+  window.fbHas  = (id,e) => !!localStorage.getItem('r_'+id+'_'+e);
+  window.paidKey = id => 'vw_paid_'+id;
+  window.hasPaid = id => !!localStorage.getItem(window.paidKey(id));
+  window.markPaid = id => localStorage.setItem(window.paidKey(id),'1');
 
   window.fbListen = cb => {
     seed();
@@ -128,7 +131,6 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);overfl
   background:var(--bg2);
   padding:18px 24px;
   display:flex;align-items:center;gap:16px;
-  max-width:100%;
 }
 .fi-icon{
   width:40px;height:40px;border-radius:50%;
@@ -171,45 +173,22 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);overfl
   font-style:normal;
   font-family:'Geist',sans-serif;font-weight:700;
 }
-.hero p{
-  font-size:15px;color:var(--ink4);
-  line-height:1.8;max-width:520px;
-  margin:0 auto 32px;font-weight:400;
-}
-.hero-stats{
-  display:flex;align-items:center;justify-content:center;
-  gap:36px;flex-wrap:wrap;
-}
+.hero p{font-size:15px;color:var(--ink4);line-height:1.8;max-width:520px;margin:0 auto 32px;font-weight:400}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
 .hstat{text-align:center}
-.hstat-n{
-  font-family:'Instrument Serif',serif;
-  font-size:38px;font-style:italic;
-  color:var(--ink);line-height:1;
-}
-.hstat-l{
-  font-size:10px;color:var(--ink5);
-  font-weight:600;margin-top:3px;
-  text-transform:uppercase;letter-spacing:.08em;
-}
+.hstat-n{font-family:'Instrument Serif',serif;font-size:38px;font-style:italic;color:var(--ink);line-height:1}
+.hstat-l{font-size:10px;color:var(--ink5);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.08em}
 .hstat-div{width:1px;height:36px;background:var(--border)}
 
 /* ── WALL ── */
-.wall-wrap{
-  max-width:1440px;margin:0 auto;
-  padding:0 20px 0;
-}
+.wall-wrap{max-width:1440px;margin:0 auto;padding:0 20px}
 .wall-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:16px 0 20px;
-  border-top:1px solid var(--border);
+  padding:16px 0 20px;border-top:1px solid var(--border);
 }
 .wh-left{display:flex;align-items:center;gap:10px}
 .wh-title{font-size:13px;font-weight:600;color:var(--ink3);letter-spacing:.01em}
-.wh-count{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:6px;padding:2px 8px;
-  font-size:11px;font-weight:600;color:var(--ink4);
-}
+.wh-count{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;color:var(--ink4)}
 .wh-right{font-size:11px;color:var(--ink5)}
 
 /* ── MASONRY ── */
@@ -223,305 +202,196 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);overfl
   break-inside:avoid;
   background:var(--bg2);
   border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:12px;
+  border-radius:16px;padding:18px;margin-bottom:12px;
   cursor:pointer;
   transition:all .25s cubic-bezier(.16,1,.3,1);
-  position:relative;
-  overflow:hidden;
+  position:relative;overflow:hidden;
 }
-.card::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-  opacity:0;transition:opacity .25s;
-  border-radius:16px 16px 0 0;
-}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .25s;border-radius:16px 16px 0 0}
 .acc-green::before{background:linear-gradient(90deg,#16a34a,#4ade80)}
 .acc-blue::before{background:linear-gradient(90deg,#2563eb,#60a5fa)}
 .acc-purple::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
 .acc-amber::before{background:linear-gradient(90deg,#d97706,#fbbf24)}
 .acc-red::before{background:linear-gradient(90deg,#dc2626,#f87171)}
-
-.card:hover{
-  border-color:var(--border2);
-  background:var(--bg3);
-  transform:translateY(-4px);
-  box-shadow:0 16px 48px rgba(0,0,0,.6);
-}
+.card:hover{border-color:var(--border2);background:var(--bg3);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.6)}
 .card:hover::before{opacity:1}
-
 @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .card.new-card{animation:cardIn .4s cubic-bezier(.16,1,.3,1) both}
 
-/* Card Header */
 .c-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}
-
-/* FIX: Circle avatar */
 .c-av{
-  width:38px;height:38px;
-  border-radius:50%;           /* ← CIRCLE */
-  flex-shrink:0;
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;
-  font-family:'Geist',sans-serif;
-  letter-spacing:-.01em;
+  font-size:13px;font-weight:700;letter-spacing:-.01em;
   border:1.5px solid rgba(255,255,255,.12);
 }
 .c-meta{flex:1;min-width:0}
-.c-startup{
-  font-size:14px;font-weight:600;color:var(--ink);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  line-height:1.3;letter-spacing:-.01em;
-}
-.c-founder{
-  font-size:11px;color:var(--ink4);
-  display:inline-flex;align-items:center;gap:4px;
-  margin-top:1px;
-}
-.c-verified{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:13px;height:13px;
-  background:#3b82f6;
-  color:#fff;
-  font-size:7px;
-  border-radius:50%;
-  font-weight:900;
-  flex-shrink:0;
-}
-.c-city{
-  display:inline-flex;align-items:center;gap:3px;
-  font-size:10px;font-weight:500;color:var(--ink4);
-  background:var(--bg4);border:1px solid var(--border);
-  border-radius:100px;padding:2px 8px;
-  margin-left:auto;flex-shrink:0;
-  white-space:nowrap;
-}
-
-/* Card Body */
-.c-body{
-  font-size:13px;color:var(--ink2);
-  line-height:1.65;font-weight:400;
-  margin-bottom:12px;
-  display:-webkit-box;
-  -webkit-line-clamp:4;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-/* Tags */
+.c-startup{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;letter-spacing:-.01em}
+.c-founder{font-size:11px;color:var(--ink4);display:inline-flex;align-items:center;gap:4px;margin-top:1px}
+.c-verified{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;background:#3b82f6;color:#fff;font-size:7px;border-radius:50%;font-weight:900;flex-shrink:0}
+.c-city{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:500;color:var(--ink4);background:var(--bg4);border:1px solid var(--border);border-radius:100px;padding:2px 8px;margin-left:auto;flex-shrink:0;white-space:nowrap}
+.c-body{font-size:13px;color:var(--ink2);line-height:1.65;font-weight:400;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .c-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.c-tag{
-  font-size:10px;font-weight:500;color:var(--ink5);
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:5px;padding:2px 7px;
-}
-
-/* Footer */
-.c-foot{
-  display:flex;align-items:center;justify-content:space-between;
-  padding-top:11px;border-top:1px solid var(--border);
-}
-.c-reacts{
-  display:flex;gap:10px;
-  opacity:0;transition:opacity .25s;
-}
+.c-tag{font-size:10px;font-weight:500;color:var(--ink5);background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:2px 7px}
+.c-foot{display:flex;align-items:center;justify-content:space-between;padding-top:11px;border-top:1px solid var(--border)}
+.c-reacts{display:flex;gap:10px;opacity:0;transition:opacity .25s}
 .card:hover .c-reacts{opacity:1}
 .c-react{font-size:12px;color:var(--ink4);display:flex;align-items:center;gap:3px}
 .c-time{font-size:10px;color:var(--ink5)}
 
-/* ── MODAL ── */
+/* ── MODAL OVERLAY ── */
 #modal{
   position:fixed;inset:0;z-index:9000;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.7);
   backdrop-filter:blur(14px);
   display:none;align-items:center;justify-content:center;
   padding:20px;
 }
 #modal.open{display:flex}
 
+/* ── MODAL CONTAINER ── */
 .mc{
-  background:var(--bg2) !important;
-  border:1px solid var(--border) !important;
+  background:#0a0a0a;
+  border:1px solid #262626;
   border-radius:18px;
   width:100%;max-width:580px;
   max-height:90vh;overflow-y:auto;
   position:relative;
-  box-shadow:0 32px 80px rgba(0,0,0,.8);
+  box-shadow:0 32px 80px rgba(0,0,0,.9);
   animation:mIn .25s cubic-bezier(.16,1,.3,1);
-  color:var(--ink) !important;
+  color:#ffffff;
 }
 @keyframes mIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
 
 .mc-close{
   position:sticky;top:14px;float:right;margin:14px 14px 0 0;
   width:28px;height:28px;border-radius:8px;
-  border:1px solid var(--border);
-  background:var(--bg3);cursor:pointer;
-  color:var(--ink4);font-size:14px;
+  border:1px solid #262626;background:#141414;cursor:pointer;
+  color:#737373;font-size:14px;
   display:flex;align-items:center;justify-content:center;
-  transition:all .15s;z-index:10;
-  flex-shrink:0;
+  transition:all .15s;z-index:10;flex-shrink:0;
 }
-.mc-close:hover{background:var(--bg4);color:var(--ink)}
+.mc-close:hover{background:#1a1a1a;color:#ffffff}
 
-.mc-body{padding:24px 28px 28px}
+.mc-body{padding:24px 28px 28px;clear:both}
 
 .mc-head{
   display:flex;align-items:flex-start;gap:13px;
   margin-bottom:18px;padding-bottom:18px;
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid #262626;
 }
-/* FIX: Circle avatar in modal */
 .mc-av{
-  width:46px;height:46px;border-radius:50%;      /* ← CIRCLE */
+  width:46px;height:46px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-size:16px;font-weight:700;flex-shrink:0;
   border:1.5px solid rgba(255,255,255,.12);
 }
-.mc-startup{
-  font-size:20px;font-weight:700;
-  color:var(--ink) !important;
-  margin-bottom:4px;letter-spacing:-.02em;
-}
-.mc-sub{
-  font-size:12px;color:var(--ink4);
-  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
-}
-.mc-dot{color:var(--border2)}
+.mc-startup{font-size:20px;font-weight:700;color:#ffffff;margin-bottom:4px;letter-spacing:-.02em}
+.mc-sub{font-size:12px;color:#737373;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mc-dot{color:#333333}
 
-.mc-text{
-  font-size:14px;
-  color:var(--ink2) !important;
-  line-height:1.85;font-weight:400;
-  margin-bottom:18px;white-space:pre-wrap;
-}
+.mc-text{font-size:14px;color:#e5e5e5;line-height:1.85;font-weight:400;margin-bottom:18px;white-space:pre-wrap}
 
 .mc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
-.mc-tag{
-  font-size:10px;font-weight:500;color:var(--ink4);
-  background:var(--bg);border:1px solid var(--border);
-  border-radius:5px;padding:3px 9px;
-}
+.mc-tag{font-size:10px;font-weight:500;color:#737373;background:#000000;border:1px solid #262626;border-radius:5px;padding:3px 9px}
 
 .mc-reacts{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
 .rpill{
   display:flex;align-items:center;gap:7px;
-  padding:8px 14px;border:1px solid var(--border);border-radius:8px;
-  background:var(--bg3);cursor:pointer;font-size:13px;
+  padding:8px 14px;border:1px solid #262626;border-radius:8px;
+  background:#141414;cursor:pointer;font-size:13px;
   transition:all .2s cubic-bezier(.175,.885,.32,1.275);
-  color:var(--ink3);
+  color:#a3a3a3;
 }
-.rpill:hover{border-color:var(--border2);background:var(--bg4);color:var(--ink)}
+.rpill:hover{border-color:#333333;background:#1a1a1a;color:#ffffff}
 .rpill:active{transform:scale(1.15)}
-.rpill.reacted{background:rgba(255,255,255,.06);border-color:var(--ink4);animation:reactionPop .4s ease-out}
+.rpill.reacted{background:rgba(255,255,255,.06);border-color:#737373;animation:reactionPop .4s ease-out}
 @keyframes reactionPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
 
-/* ── CONTACT CARD (replaces cbox) ── */
+/* ── CONTACT CARD ── */
 .contact-card{
-  background:var(--bg3);
-  border:1px solid var(--border2);
-  border-radius:14px;
-  padding:22px;
+  background:#141414;
+  border:1px solid #333333;
+  border-radius:14px;padding:22px;
   position:relative;overflow:hidden;
 }
 .contact-card::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,#16a34a,#4ade80);
 }
-.cc-title{
-  font-size:16px;font-weight:600;
-  color:var(--ink);margin-bottom:4px;
-  letter-spacing:-.01em;
+.cc-title{font-size:16px;font-weight:600;color:#ffffff;margin-bottom:4px;letter-spacing:-.01em}
+.cc-sub{font-size:12px;color:#737373;line-height:1.6;margin-bottom:18px;font-weight:400}
+.cc-sub strong{color:#e5e5e5;font-weight:500}
+.cc-instruction{
+  font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:#22c55e;margin-bottom:12px;opacity:.8;
 }
-.cc-sub{
-  font-size:12px;color:var(--ink4);
-  line-height:1.6;margin-bottom:18px;font-weight:400;
-}
-.cc-sub strong{color:var(--ink2);font-weight:500}
 
-/* UPI direct pay button */
-.upi-pay-btn{
-  width:100%;
-  background:linear-gradient(135deg,#4ade80,#16a34a);
-  color:#000;border:none;
-  padding:14px 20px;border-radius:10px;
-  font-family:'Geist',sans-serif;
-  font-size:14px;font-weight:700;letter-spacing:-.01em;
-  cursor:pointer;transition:all .2s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  margin-bottom:10px;
-}
-.upi-pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,.3)}
-.upi-pay-btn:active{transform:translateY(0)}
-
-/* UPI app rows */
-.upi-apps{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
-  margin-bottom:14px;
-}
+/* UPI app buttons */
+.upi-apps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .upi-app-btn{
-  background:var(--bg4);border:1px solid var(--border);
-  border-radius:9px;padding:10px 8px;
+  background:#1a1a1a;border:1px solid #262626;
+  border-radius:9px;padding:12px 8px;
   display:flex;flex-direction:column;align-items:center;gap:5px;
-  cursor:pointer;transition:all .15s;
-  font-size:11px;font-weight:500;color:var(--ink3);
+  cursor:pointer;transition:all .18s;
+  font-size:11px;font-weight:600;color:#a3a3a3;
   text-decoration:none;
 }
-.upi-app-btn:hover{border-color:var(--border2);background:var(--bg3);color:var(--ink);transform:translateY(-2px)}
-.upi-app-btn span.app-icon{font-size:20px}
+.upi-app-btn:hover{border-color:#22c55e;background:#0f1f0f;color:#22c55e;transform:translateY(-2px);box-shadow:0 6px 20px rgba(34,197,94,.15)}
+.upi-app-btn .app-icon{font-size:22px}
+.upi-app-btn .app-label{font-size:10px;font-weight:600;letter-spacing:.04em}
 
-/* Contact info revealed after pay */
+/* Reveal section */
 .contact-reveal{
   display:none;
-  background:var(--greenl);
+  background:rgba(34,197,94,.08);
   border:1px solid rgba(34,197,94,.2);
   border-radius:10px;padding:16px;
   margin-top:10px;
+  animation:slideDown .3s ease;
 }
 .contact-reveal.show{display:block}
-.cr-title{
-  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--green);margin-bottom:10px;
-}
-.cr-row{
-  display:flex;align-items:center;gap:10px;
-  padding:8px 0;border-bottom:1px solid rgba(34,197,94,.1);
-}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+.cr-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#22c55e;margin-bottom:12px}
+.cr-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(34,197,94,.1)}
 .cr-row:last-child{border-bottom:none}
-.cr-label{font-size:11px;color:var(--ink4);font-weight:500;min-width:70px}
-.cr-value{font-size:13px;color:var(--ink);font-weight:600}
+.cr-label{font-size:11px;color:#737373;font-weight:500;min-width:70px;flex-shrink:0}
+.cr-value{font-size:13px;color:#ffffff;font-weight:600;word-break:break-all}
 .cr-copy{
-  margin-left:auto;
+  margin-left:auto;flex-shrink:0;
   background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.2);
-  color:var(--green);
-  font-size:10px;font-weight:600;
-  padding:3px 8px;border-radius:5px;cursor:pointer;
-  transition:all .15s;border-width:0;
+  color:#22c55e;font-size:10px;font-weight:600;
+  padding:3px 8px;border-radius:5px;cursor:pointer;transition:all .15s;
 }
 .cr-copy:hover{background:rgba(34,197,94,.25)}
-
-.pay-note-txt{
-  font-size:10px;color:var(--ink5);
-  text-align:center;line-height:1.6;
-  margin-top:10px;
+.cr-wa{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:#000;text-decoration:none;
+  font-size:13px;font-weight:700;
+  padding:10px 16px;border-radius:8px;
+  transition:all .2s;width:100%;justify-content:center;
+  margin-top:8px;
 }
+.cr-wa:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,197,94,.3)}
 
-/* ── POST FORM ── */
+.pay-note-txt{font-size:10px;color:#525252;text-align:center;line-height:1.6;margin-top:10px}
+
+/* ── POST FORM OVERLAY ── */
 #flay{
   position:fixed;inset:0;z-index:10000;
-  background:rgba(0,0,0,.6);backdrop-filter:blur(14px);
+  background:rgba(0,0,0,.7);backdrop-filter:blur(14px);
   display:none;align-items:center;justify-content:center;padding:20px;
 }
 #flay.open{display:flex}
 
 .fc{
-  background:var(--bg2) !important;
-  border:1px solid var(--border) !important;
+  background:#0a0a0a;
+  border:1px solid #262626;
   border-radius:16px;
   width:100%;max-width:500px;max-height:92vh;overflow-y:auto;
-  box-shadow:0 32px 80px rgba(0,0,0,.8);
+  box-shadow:0 32px 80px rgba(0,0,0,.9);
   animation:mIn .25s cubic-bezier(.16,1,.3,1);
   position:relative;
 }
@@ -529,48 +399,37 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);overfl
 .fclose{
   position:sticky;top:14px;float:right;margin:14px 14px 0 0;
   width:28px;height:28px;border-radius:8px;
-  border:1px solid var(--border);background:var(--bg3);
-  cursor:pointer;color:var(--ink4);font-size:14px;
+  border:1px solid #262626;background:#141414;
+  cursor:pointer;color:#737373;font-size:14px;
   display:flex;align-items:center;justify-content:center;
   transition:all .15s;z-index:2;
 }
-.fclose:hover{background:var(--bg4);color:var(--ink)}
+.fclose:hover{background:#1a1a1a;color:#ffffff}
 
 .fhead{padding:24px 24px 0;clear:both}
 .fhead h2{
   font-family:'Instrument Serif',serif;
   font-size:26px;font-style:italic;font-weight:400;
-  color:var(--ink) !important;
-  margin-bottom:4px;letter-spacing:-.02em;
+  color:#ffffff;margin-bottom:4px;letter-spacing:-.02em;
 }
-.fhead p{font-size:12px;color:var(--ink4) !important;line-height:1.7;margin-bottom:18px}
+.fhead p{font-size:12px;color:#737373;line-height:1.7;margin-bottom:18px}
 
 .fbody{padding:0 24px 24px}
 .fr{margin-bottom:12px}
-.fr label{
-  font-size:11px;font-weight:600;
-  color:var(--ink3) !important;
-  display:block;margin-bottom:5px;letter-spacing:.01em;
-}
+.fr label{font-size:11px;font-weight:600;color:#a3a3a3;display:block;margin-bottom:5px;letter-spacing:.01em}
 .fr input,.fr textarea{
-  width:100%;
-  border:1px solid var(--border);border-radius:8px;
-  padding:10px 13px;font-size:13px;
-  color:var(--ink) !important;
-  background:var(--bg3) !important;
-  font-family:'Geist',sans-serif;outline:none;transition:all .15s;
+  width:100%;border:1px solid #262626;border-radius:8px;
+  padding:10px 13px;font-size:13px;color:#ffffff;
+  background:#141414;font-family:'Geist',sans-serif;outline:none;transition:all .15s;
 }
-.fr input:focus,.fr textarea:focus{
-  border-color:var(--border2);
-  box-shadow:0 0 0 3px rgba(255,255,255,.04);
-}
-.fr input::placeholder,.fr textarea::placeholder{color:var(--ink5)}
+.fr input:focus,.fr textarea:focus{border-color:#333333;box-shadow:0 0 0 3px rgba(255,255,255,.04)}
+.fr input::placeholder,.fr textarea::placeholder{color:#525252}
 .fr textarea{resize:vertical;min-height:96px;line-height:1.6}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.char-count{font-size:10px;color:var(--ink5);text-align:right;margin-top:3px}
+.char-count{font-size:10px;color:#525252;text-align:right;margin-top:3px}
 
 .fsbtn{
-  width:100%;background:var(--ink);color:#000;border:none;
+  width:100%;background:#ffffff;color:#000;border:none;
   padding:13px;border-radius:9px;
   font-family:'Geist',sans-serif;font-size:13px;font-weight:700;letter-spacing:-.01em;
   cursor:pointer;transition:all .2s;margin-top:4px;
@@ -583,75 +442,35 @@ body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);overfl
 .fsbtn.loading .lt{display:none}
 @keyframes sp{to{transform:rotate(360deg)}}
 
-.fnote{font-size:11px;color:var(--ink5);text-align:center;margin-top:8px;line-height:1.6}
+.fnote{font-size:11px;color:#525252;text-align:center;margin-top:8px;line-height:1.6}
 
 .fsuc{display:none;padding:52px 28px;text-align:center}
 .fsuc.show{display:block}
-.fsuc-icon{
-  width:52px;height:52px;border-radius:50%;
-  background:var(--greenl);border:1px solid rgba(34,197,94,.2);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 18px;font-size:22px;
-}
-.fsuc h3{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:8px}
-.fsuc p{font-size:13px;color:var(--ink4);line-height:1.7}
-.fsuc-btn{margin-top:20px;background:var(--ink);color:#000;border:none;padding:11px 24px;border-radius:8px;font-family:'Geist',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.fsuc-icon{width:52px;height:52px;border-radius:50%;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:22px}
+.fsuc h3{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;font-weight:400;color:#ffffff;margin-bottom:8px}
+.fsuc p{font-size:13px;color:#737373;line-height:1.7}
+.fsuc-btn{margin-top:20px;background:#ffffff;color:#000;border:none;padding:11px 24px;border-radius:8px;font-family:'Geist',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
 .fsuc-btn:hover{background:#e5e5e5}
 
 /* ── EMPTY ── */
 .empty-wall{text-align:center;padding:80px 20px}
-.empty-wall h3{font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;font-weight:400;color:var(--ink);margin-bottom:8px}
-.empty-wall p{font-size:14px;color:var(--ink4)}
+.empty-wall h3{font-family:'Instrument Serif',serif;font-size:24px;font-style:italic;font-weight:400;color:#ffffff;margin-bottom:8px}
+.empty-wall p{font-size:14px;color:#737373}
 
-/* ── EMOTIONAL QUOTE STRIP ── */
+/* ── QUOTE STRIP ── */
 .quote-strip{
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:60px 24px;
-  text-align:center;
-  position:relative;overflow:hidden;
-  background:var(--bg2);
-  margin-top:0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:60px 24px;text-align:center;position:relative;overflow:hidden;
+  background:var(--bg2);margin-top:0;
 }
-.quote-strip::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 50%,rgba(34,197,94,.04),transparent 70%);
-  pointer-events:none;
-}
-.qs-eyebrow{
-  font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--green);opacity:.7;margin-bottom:20px;display:block;
-}
-.qs-quote{
-  font-family:'Instrument Serif',serif;
-  font-size:clamp(22px,4vw,42px);
-  font-style:italic;font-weight:400;
-  color:var(--ink);
-  line-height:1.25;letter-spacing:-.02em;
-  max-width:760px;margin:0 auto 20px;
-  position:relative;z-index:1;
-}
-.qs-quote::before{
-  content:'"';
-  font-size:clamp(80px,12vw,140px);
-  color:rgba(255,255,255,.04);
-  position:absolute;top:-30px;left:-20px;
-  font-family:'Instrument Serif',serif;
-  font-style:italic;line-height:1;
-  pointer-events:none;
-  z-index:-1;
-}
-.qs-author{
-  font-size:12px;color:var(--ink5);
-  font-weight:500;letter-spacing:.04em;
-}
+.quote-strip::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(34,197,94,.04),transparent 70%);pointer-events:none}
+.qs-eyebrow{font-size:9px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--green);opacity:.7;margin-bottom:20px;display:block}
+.qs-quote{font-family:'Instrument Serif',serif;font-size:clamp(22px,4vw,42px);font-style:italic;font-weight:400;color:var(--ink);line-height:1.25;letter-spacing:-.02em;max-width:760px;margin:0 auto 20px;position:relative;z-index:1}
+.qs-quote::before{content:'"';font-size:clamp(80px,12vw,140px);color:rgba(255,255,255,.04);position:absolute;top:-30px;left:-20px;font-family:'Instrument Serif',serif;font-style:italic;line-height:1;pointer-events:none;z-index:-1}
+.qs-author{font-size:12px;color:var(--ink5);font-weight:500;letter-spacing:.04em}
 
 /* ── FOOTER ── */
-footer{
-  background:var(--bg);
-  border-top:1px solid var(--border);
-  padding:28px 24px;text-align:center;
-}
+footer{background:var(--bg);border-top:1px solid var(--border);padding:28px 24px;text-align:center}
 footer a{font-size:12px;color:var(--ink5);text-decoration:none;font-weight:500;transition:color .2s}
 footer a:hover{color:var(--ink)}
 
@@ -685,7 +504,7 @@ footer a:hover{color:var(--ink)}
   <div class="fi-icon">🧱</div>
   <div class="fi-text">
     <h4>Build in Public Wall</h4>
-    <p>Post your startup progress — a win, a failure, a pivot, a lesson. Real founders browse this wall, react to your story, and can connect with you directly for ₹1. No middlemen. No filters. Just honest building.</p>
+    <p>Post your startup progress — a win, a failure, a pivot, a lesson. Real founders browse this wall, react to your story, and connect with you directly for ₹1. No middlemen. No filters. Just honest building.</p>
   </div>
   <span class="fi-badge">Real-time</span>
 </div>
@@ -698,20 +517,11 @@ footer a:hover{color:var(--ink)}
   <h1>Build in <strong>Public</strong><br><em>Wall</em></h1>
   <p>Every card is a real founder's story — before the product, before the users, before the funding. Post your progress. Get seen. Get connected directly.</p>
   <div class="hero-stats">
-    <div class="hstat">
-      <div class="hstat-n" id="hs-posts">—</div>
-      <div class="hstat-l">Updates</div>
-    </div>
+    <div class="hstat"><div class="hstat-n" id="hs-posts">—</div><div class="hstat-l">Updates</div></div>
     <div class="hstat-div"></div>
-    <div class="hstat">
-      <div class="hstat-n" id="hs-reacts">—</div>
-      <div class="hstat-l">Reactions</div>
-    </div>
+    <div class="hstat"><div class="hstat-n" id="hs-reacts">—</div><div class="hstat-l">Reactions</div></div>
     <div class="hstat-div"></div>
-    <div class="hstat">
-      <div class="hstat-n" id="hs-cities">—</div>
-      <div class="hstat-l">Cities</div>
-    </div>
+    <div class="hstat"><div class="hstat-n" id="hs-cities">—</div><div class="hstat-l">Cities</div></div>
   </div>
 </div>
 
@@ -722,12 +532,12 @@ footer a:hover{color:var(--ink)}
       <span class="wh-title">The Wall</span>
       <span class="wh-count" id="wh-count">Loading…</span>
     </div>
-    <span class="wh-right" id="wh-right">Sorted by newest · Real-time</span>
+    <span class="wh-right">Sorted by newest · Real-time</span>
   </div>
   <div class="masonry" id="masonry"></div>
 </div>
 
-<!-- EMOTIONAL QUOTE STRIP -->
+<!-- QUOTE STRIP -->
 <div class="quote-strip">
   <span class="qs-eyebrow">For Every Founder Grinding Alone</span>
   <p class="qs-quote">The ones who build in the dark, ship without applause, and keep going anyway — they're the ones who change things.</p>
@@ -748,7 +558,7 @@ footer a:hover{color:var(--ink)}
             <span class="mc-dot">·</span>
             <span id="mci"></span>
             <span class="mc-dot">·</span>
-            <span id="mt" style="color:var(--ink5)"></span>
+            <span id="mt" style="color:#525252"></span>
           </div>
         </div>
       </div>
@@ -759,22 +569,19 @@ footer a:hover{color:var(--ink)}
       <!-- CONTACT CARD -->
       <div class="contact-card">
         <div class="cc-title" id="cct">Connect with this founder</div>
-        <div class="cc-sub" id="ccn">Pay ₹1 directly to unlock contact details instantly — no WhatsApp required.</div>
+        <div class="cc-sub" id="ccn">Pay ₹1 directly to unlock contact details — no WhatsApp needed.</div>
+        <div class="cc-instruction">↓ Choose your UPI app to pay ₹1</div>
 
-        <!-- Direct UPI Pay -->
-        <div class="upi-apps" id="upi-apps-grid">
-          <!-- populated by JS -->
-        </div>
+        <div class="upi-apps" id="upi-apps-grid"></div>
 
-        <!-- Reveal contact -->
+        <!-- Reveal contact after pay -->
         <div class="contact-reveal" id="contact-reveal">
           <div class="cr-title">✓ Contact Unlocked</div>
-          <div id="cr-rows"><!-- populated by JS --></div>
+          <div id="cr-rows"></div>
         </div>
 
-        <p class="pay-note-txt">Pay ₹1 via any app above → contact details appear instantly on this screen.</p>
+        <p class="pay-note-txt" id="pay-note-txt">Tap any app above → pay ₹1 → contact details appear here instantly.</p>
       </div>
-
     </div>
   </div>
 </div>
@@ -786,7 +593,7 @@ footer a:hover{color:var(--ink)}
     <div id="fwrap">
       <div class="fhead">
         <h2>Share your <em>update</em></h2>
-        <p>Your update goes live instantly for everyone. Raw and honest beats polished every time.</p>
+        <p>Your update goes live instantly. Raw and honest beats polished every time.</p>
       </div>
       <div class="fbody">
         <div class="fr2">
@@ -803,7 +610,7 @@ footer a:hover{color:var(--ink)}
           <div class="char-count"><span id="charcount">0</span>/600</div>
         </div>
         <div class="fr">
-          <label>Tags <span style="font-weight:400;color:var(--ink5)">(comma separated)</span></label>
+          <label>Tags <span style="font-weight:400;color:#525252">(comma separated)</span></label>
           <input id="ft" placeholder="Revenue, Launch, Pivot, Week 4…" maxlength="100">
         </div>
         <button class="fsbtn" id="fsb" onclick="doSubmit()">
@@ -837,8 +644,8 @@ const YOUR_NAME    = 'Vaithra';
 /* ════════════════════════════════════
    STATE
 ════════════════════════════════════ */
-let POSTS  = [];
-let curId  = null;
+let POSTS   = [];
+let curId   = null;
 let curPost = null;
 
 /* ════════════════════════════════════
@@ -889,12 +696,10 @@ function updateStats(){
 function render(newIds=[]){
   updateStats();
   const g = document.getElementById('masonry');
-
   if(!POSTS.length){
     g.innerHTML=`<div class="empty-wall"><h3>No updates yet</h3><p>Be the first to share your startup journey.</p></div>`;
     return;
   }
-
   g.innerHTML = POSTS.map(p => {
     const a=av(p.founder), ac=acc(p.founder), isN=newIds.includes(p.id);
     return `<div class="card ${ac}${isN?' new-card':''}" onclick="openModal('${p.id}')">
@@ -902,10 +707,7 @@ function render(newIds=[]){
         <div class="c-av" style="background:${a.b};color:${a.f}">${esc(ini(p.founder))}</div>
         <div class="c-meta">
           <div class="c-startup">${esc(p.startup)}</div>
-          <div class="c-founder">
-            ${esc(p.founder)}
-            <span class="c-verified" title="Verified">✓</span>
-          </div>
+          <div class="c-founder">${esc(p.founder)}<span class="c-verified">✓</span></div>
         </div>
         ${p.city?`<div class="c-city">📍 ${esc(p.city)}</div>`:''}
       </div>
@@ -932,11 +734,11 @@ window.openModal = function(id){
   curId   = id;
   curPost = p;
 
-  const a = av(p.founder);
+  const a  = av(p.founder);
   const ma = document.getElementById('mav');
-  ma.textContent        = ini(p.founder);
-  ma.style.background   = a.b;
-  ma.style.color        = a.f;
+  ma.textContent      = ini(p.founder);
+  ma.style.background = a.b;
+  ma.style.color      = a.f;
 
   document.getElementById('mst').textContent = p.startup;
   document.getElementById('mf').textContent  = p.founder;
@@ -948,43 +750,44 @@ window.openModal = function(id){
   buildReacts(p);
   buildContactCard(p);
 
-  // Reset reveal
-  document.getElementById('contact-reveal').classList.remove('show');
-
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 };
 
 /* ════════════════════════════════════
-   CONTACT CARD — Direct UPI + Reveal
+   CONTACT CARD — UPI deep links + reveal
 ════════════════════════════════════ */
 function buildContactCard(p){
   document.getElementById('cct').textContent = 'Connect with ' + p.founder;
   document.getElementById('ccn').innerHTML   =
-    `<strong>${esc(p.founder)}</strong> is building <strong>${esc(p.startup)}</strong>${p.city?' in '+esc(p.city):''}. Pay ₹1 via UPI to unlock their contact details instantly — right here, no WhatsApp needed.`;
+    `<strong>${esc(p.founder)}</strong> is building <strong>${esc(p.startup)}</strong>${p.city?' in '+esc(p.city):''}. Pay ₹1 via any UPI app below to unlock their contact details instantly — right here on screen.`;
 
-  // Build UPI app deep links
-  const amount   = 1;
-  const note     = encodeURIComponent('Vaithra Connect - ' + p.startup);
-  const upiBase  = `upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`;
+  const amount  = 1;
+  const note    = encodeURIComponent('Vaithra Connect - ' + p.startup);
+  const upiBase = `upi://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`;
 
   const apps = [
     {name:'GPay',    icon:'🟡', url:`tez://upi/pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
     {name:'PhonePe', icon:'🟣', url:`phonepe://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
     {name:'Paytm',   icon:'🔵', url:`paytmmp://pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
     {name:'BHIM',    icon:'🟠', url:upiBase},
-    {name:'NaviPay', icon:'⚫', url:upiBase},
+    {name:'NaviPay', icon:'⚫', url:`navi://upi/pay?pa=${YOUR_UPI_ID}&pn=${encodeURIComponent(YOUR_NAME)}&am=${amount}&cu=INR&tn=${note}`},
     {name:'Any UPI', icon:'💳', url:upiBase},
   ];
 
   document.getElementById('upi-apps-grid').innerHTML = apps.map(app =>
-    `<a class="upi-app-btn" href="${app.url}" onclick="onPayClick(event,'${id}')">
+    `<a class="upi-app-btn" href="${app.url}" onclick="onPayClick(event)" target="_blank">
       <span class="app-icon">${app.icon}</span>
-      <span>${app.name}</span>
+      <span class="app-label">${app.name}</span>
     </a>`
   ).join('');
 
-  // Reveal rows (shown after pay)
+  // Build contact reveal rows
+  const phoneClean = (p.phone||'').replace(/\D/g,'');
+  const phoneDisplay = phoneClean
+    ? ('+'+phoneClean).replace(/(\+\d{2})(\d{5})(\d{5})/,'$1 $2 $3')
+    : null;
+
   document.getElementById('cr-rows').innerHTML = `
     <div class="cr-row">
       <span class="cr-label">Founder</span>
@@ -994,49 +797,61 @@ function buildContactCard(p){
       <span class="cr-label">Startup</span>
       <span class="cr-value">${esc(p.startup)}</span>
     </div>
-    ${p.phone?`
+    ${p.city?`<div class="cr-row"><span class="cr-label">City</span><span class="cr-value">${esc(p.city)}</span></div>`:''}
+    ${phoneDisplay?`
     <div class="cr-row">
       <span class="cr-label">WhatsApp</span>
-      <span class="cr-value">+${p.phone.replace(/\D/g,'').replace(/^91/,'91').replace(/^(\d{2})(\d{5})(\d{5})/,'+$1 $2 $3')}</span>
-      <button class="cr-copy" onclick="copyVal('+${p.phone.replace(/\D/g,'')}')">Copy</button>
-    </div>
-    <div class="cr-row">
-      <span class="cr-label">Chat</span>
-      <span class="cr-value" style="color:var(--green)">
-        <a href="https://wa.me/${p.phone.replace(/\D/g,'')}" target="_blank" style="color:var(--green);text-decoration:none">Open on WhatsApp →</a>
-      </span>
+      <span class="cr-value">${phoneDisplay}</span>
+      <button class="cr-copy" onclick="copyVal('${phoneClean}',this)">Copy</button>
     </div>
     `:''}
-    ${p.city?`<div class="cr-row"><span class="cr-label">City</span><span class="cr-value">${esc(p.city)}</span></div>`:''}
+    ${phoneClean?`
+    <a class="cr-wa" href="https://wa.me/${phoneClean}?text=${encodeURIComponent('Hi '+p.founder+'! I saw your post on Vaithra Build in Public Wall about '+p.startup+'. Would love to connect!')}" target="_blank">
+      💬 Open WhatsApp Chat →
+    </a>
+    `:''}
   `;
-}
 
-/* Called when user taps any UPI app — marks as paid and reveals contact */
-window.onPayClick = function(event, postId){
-  // Mark paid in localStorage so they don't pay again
-  const key = 'paid_'+curId;
-  localStorage.setItem(key, '1');
-  // Reveal after 1.5s (give time to complete payment)
-  setTimeout(revealContact, 1500);
-};
-
-function revealContact(){
-  document.getElementById('contact-reveal').classList.add('show');
-  document.getElementById('contact-reveal').scrollIntoView({behavior:'smooth', block:'nearest'});
-}
-
-// Check on open if already paid
-function checkAlreadyPaid(){
-  if(localStorage.getItem('paid_'+curId)){
-    document.getElementById('contact-reveal').classList.add('show');
+  // If already paid before, show reveal immediately
+  if(window.hasPaid && window.hasPaid(id)) {
+    showReveal();
+  } else {
+    document.getElementById('contact-reveal').classList.remove('show');
+    document.getElementById('pay-note-txt').style.display = 'block';
   }
 }
 
-window.copyVal = function(val){
+function showReveal(){
+  document.getElementById('contact-reveal').classList.add('show');
+  document.getElementById('pay-note-txt').style.display = 'none';
+  // Scroll the reveal into view within the modal
+  setTimeout(()=>{
+    const el = document.getElementById('contact-reveal');
+    if(el) el.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 200);
+}
+
+/* Called when user taps any UPI app button */
+window.onPayClick = function(event){
+  if(!curId) return;
+  // Mark as paid in localStorage
+  if(window.markPaid) window.markPaid(curId);
+  // Wait 1.5s (time for UPI app to open), then reveal contact
+  setTimeout(showReveal, 1500);
+};
+
+window.copyVal = function(val, btn){
   navigator.clipboard.writeText(val).then(()=>{
-    const btn = event.target;
     btn.textContent = 'Copied!';
-    setTimeout(()=>btn.textContent='Copy', 2000);
+    setTimeout(()=>{ btn.textContent = 'Copy'; }, 2000);
+  }).catch(()=>{
+    // fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = val; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied!';
+    setTimeout(()=>{ btn.textContent = 'Copy'; }, 2000);
   });
 };
 
@@ -1097,23 +912,21 @@ window.doSubmit = async function(){
   const body    = document.getElementById('fb_').value.trim();
   const tags    = document.getElementById('ft').value.split(',').map(t=>t.trim()).filter(Boolean);
 
-  if(!name)   { document.getElementById('fn').focus();  return; }
-  if(!startup){ document.getElementById('fs').focus();  return; }
-  if(!city)   { document.getElementById('fci').focus(); return; }
-  if(!phone)  { document.getElementById('fp').focus();  return; }
+  if(!name)        { document.getElementById('fn').focus();  return; }
+  if(!startup)     { document.getElementById('fs').focus();  return; }
+  if(!city)        { document.getElementById('fci').focus(); return; }
+  if(!phone)       { document.getElementById('fp').focus();  return; }
   if(body.length<15){ document.getElementById('fb_').focus(); return; }
 
   const btn = document.getElementById('fsb');
-  btn.disabled = true;
-  btn.classList.add('loading');
+  btn.disabled = true; btn.classList.add('loading');
 
   const ok = await window.fbSave({
     founder: name, startup, city, phone, body,
     tags: tags.length ? tags : ['Update']
   });
 
-  btn.disabled = false;
-  btn.classList.remove('loading');
+  btn.disabled = false; btn.classList.remove('loading');
 
   if(ok){
     ['fn','fs','fci','fp','fb_','ft'].forEach(id => document.getElementById(id).value = '');
@@ -1126,20 +939,20 @@ window.doSubmit = async function(){
 };
 
 /* ════════════════════════════════════
-   KEYBOARD + OVERLAY CLICK
+   CLOSE ON BACKDROP / ESC
 ════════════════════════════════════ */
-document.getElementById('modal').onclick = e => {
-  if(e.target === document.getElementById('modal')) closeModal();
-};
-document.getElementById('flay').onclick = e => {
-  if(e.target === document.getElementById('flay')) closeForm();
-};
+document.getElementById('modal').addEventListener('click', e => {
+  if(e.target === document.getElementById('modal')) window.closeModal();
+});
+document.getElementById('flay').addEventListener('click', e => {
+  if(e.target === document.getElementById('flay')) window.closeForm();
+});
 document.addEventListener('keydown', e => {
-  if(e.key==='Escape'){ closeModal(); closeForm(); }
+  if(e.key==='Escape'){ window.closeModal(); window.closeForm(); }
 });
 
 /* ════════════════════════════════════
-   FIREBASE REAL-TIME
+   FIREBASE REAL-TIME LISTENER
 ════════════════════════════════════ */
 function init(){
   if(typeof window.fbListen === 'function'){
@@ -1148,9 +961,10 @@ function init(){
       POSTS = posts;
       document.getElementById('liveind').style.opacity = '1';
       render(newIds);
+      // Refresh reactions if modal is open
       if(curId){
         const p = POSTS.find(x=>x.id===curId);
-        if(p){ buildReacts(p); }
+        if(p) buildReacts(p);
       }
     });
   } else {
