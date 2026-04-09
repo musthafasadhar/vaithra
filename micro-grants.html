@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, doc, addDoc, onSnapshot, runTransaction, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, collection, doc, addDoc, onSnapshot, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCPyeuBWigjDQRvsxuC8CNERkQ7VF_tPk8",
@@ -16,56 +15,61 @@
     projectId: "vaithra-grants",
     storageBucket: "vaithra-grants.firebasestorage.app",
     messagingSenderId: "655290922548",
-    appId: "1:655290922548:web:991b339e2475aa9f443c61",
-    measurementId: "G-PGMC34PLKR"
+    appId: "1:655290922548:web:991b339e2475aa9f443c61"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // Submit a new idea — instantly appears for ALL users
-  window.submitNewIdea = async function(ideaData) {
+  const SHEET_WEBHOOK = "https://script.google.com/macros/s/AKfycbxYlViayps0to6AN1BzdwPzkpVZ6DiVskmYmDYmQKWd8Zx4qzOek66eer36q5gstNJLkg/exec";
+
+  async function saveToSheet(d) {
     try {
-      const ref = await addDoc(collection(db, 'ideas'), {
-        name: ideaData.name,
-        founder: ideaData.founder + ' · ' + ideaData.city,
-        desc: ideaData.desc,
-        votes: 0,
-        category: ideaData.category,
-        tags: ideaData.tags,
-        createdAt: Date.now()
+      await fetch(SHEET_WEBHOOK, {
+        method:"POST", mode:"no-cors",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+          action:"add_idea", name:d.name, founder:d.founder, city:d.city,
+          desc:d.desc, category:d.category, tags:(d.tags||[]).join(", "),
+          phone:d.phone||"", timestamp:new Date().toISOString()
+        })
       });
-      return { success: true, id: ref.id };
-    } catch(e) {
-      console.error('Submit error:', e);
-      return { success: false, error: e.message };
-    }
+    } catch(e){ console.warn("Sheet:",e); }
+  }
+
+  window.submitNewIdea = async function(d) {
+    try {
+      const ref = await addDoc(collection(db,'ideas'),{
+        name:d.name, founder:d.founder+' · '+d.city,
+        desc:d.desc, votes:0, category:d.category,
+        tags:d.tags, createdAt:Date.now()
+      });
+      await saveToSheet(d);
+      return { success:true, id:ref.id };
+    } catch(e){ return { success:false, error:e.message }; }
   };
 
-  // Vote — atomic, one per user per idea
   window.castVote = async function(ideaId) {
-    if (localStorage.getItem('voted_' + ideaId)) return;
+    if (localStorage.getItem('voted_'+ideaId)) return { alreadyVoted:true };
     try {
-      const ideaRef = doc(db, 'ideas', ideaId);
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(ideaRef);
-        if (!snap.exists()) return;
-        tx.update(ideaRef, { votes: snap.data().votes + 1 });
+      await runTransaction(db, async(tx) => {
+        const snap = await tx.get(doc(db,'ideas',ideaId));
+        if (snap.exists()) tx.update(doc(db,'ideas',ideaId),{ votes:snap.data().votes+1 });
       });
-      localStorage.setItem('voted_' + ideaId, '1');
+      localStorage.setItem('voted_'+ideaId,'1');
       window.updateVoteUI && window.updateVoteUI(ideaId);
-    } catch(e) { console.error('Vote error:', e); }
+      return { success:true };
+    } catch(e){ return { success:false }; }
   };
 
-  window.hasVoted = (id) => !!localStorage.getItem('voted_' + id);
+  window.hasVoted = id => !!localStorage.getItem('voted_'+id);
 
-  // Real-time listener — fires for votes AND new ideas
-  window.startRealtime = function(onUpdate) {
-    return onSnapshot(collection(db, 'ideas'), (snapshot) => {
+  window.startRealtime = function(cb) {
+    return onSnapshot(collection(db,'ideas'), snap => {
       const ideas = [];
-      snapshot.forEach(d => ideas.push({ ...d.data(), id: d.id }));
-      ideas.sort((a, b) => b.votes - a.votes);
-      onUpdate(ideas);
+      snap.forEach(d => ideas.push({...d.data(), id:d.id}));
+      ideas.sort((a,b) => (b.votes||0)-(a.votes||0));
+      cb(ideas);
     });
   };
 </script>
@@ -77,7 +81,6 @@
   --INK:#18160F;--INKm:#6B6456;--INKl:#9E9488;
   --GD:#B8A060;--GDl:#D4BB80;
   --BD:rgba(74,92,58,.1);--BD2:rgba(74,92,58,.22);
-  --GREEN:#2D6A2D;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -88,10 +91,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 /* NAV */
 .nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:93%;max-width:1320px;padding:11px 22px;background:rgba(250,250,248,.92);backdrop-filter:blur(22px);border-radius:100px;border:1px solid var(--BD2);display:flex;justify-content:space-between;align-items:center;z-index:8000;box-shadow:0 4px 24px rgba(24,22,15,.06)}
 .nav-logo{font-family:'Syne',sans-serif;font-size:12px;font-weight:800;letter-spacing:.22em;color:var(--INK);text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:10px}
 .nav-back{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--INKm);text-decoration:none}
 .nav-back:hover{color:var(--OL)}
-.nav-submit-btn{background:var(--OL);color:var(--W);border:none;padding:9px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.nav-submit-btn{background:var(--OL);color:var(--W);border:none;padding:9px 16px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
 .nav-submit-btn:hover{background:var(--OLd)}
+.nav-submit-btn.locked{background:var(--INKl);cursor:not-allowed}
+.nav-submit-btn.locked:hover{background:var(--INKl)}
 
 /* LIVE DOT */
 .live-dot{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;background:rgba(74,92,58,.08);border:1px solid rgba(74,92,58,.18);border-radius:100px}
@@ -103,101 +109,122 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 #hero{min-height:80vh;background:var(--OLd);display:flex;flex-direction:column;justify-content:flex-end;padding:120px 5% 80px;position:relative;overflow:hidden}
 .hero-bg{position:absolute;font-family:'Cormorant Garamond',serif;font-size:480px;font-weight:600;font-style:italic;color:rgba(255,255,255,.025);bottom:-60px;right:-30px;pointer-events:none;line-height:1}
 .hero-in{max-width:1280px;margin:0 auto;width:100%;position:relative;z-index:1}
-.round-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(212,187,128,.12);border:1px solid rgba(212,187,128,.25);border-radius:100px;margin-bottom:24px}
+.round-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(212,187,128,.12);border:1px solid rgba(212,187,128,.25);border-radius:100px;margin-bottom:12px}
 .round-badge span{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--GDl)}
-.hero-timer{display:inline-flex;align-items:center;gap:16px;padding:12px 24px;background:rgba(107,127,88,.1);border:1px solid rgba(107,127,88,.2);border-radius:100px;margin-bottom:32px;width:fit-content}
+
+/* DEADLINE PILL */
+.deadline-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;margin-bottom:24px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase}
+.deadline-pill::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.deadline-pill.open{background:rgba(74,92,58,.15);border:1px solid rgba(74,92,58,.3);color:#7FB87A}
+.deadline-pill.open::before{background:#4A7C44;animation:pulse 1.6s ease-in-out infinite}
+.deadline-pill.closed{background:rgba(139,46,46,.12);border:1px solid rgba(139,46,46,.3);color:#E07070}
+.deadline-pill.closed::before{background:#C0392B}
+
+.hero-timer{display:inline-flex;align-items:center;padding:12px 24px;background:rgba(107,127,88,.1);border:1px solid rgba(107,127,88,.2);border-radius:100px;margin-bottom:32px;width:fit-content}
 .timer-units{display:flex;gap:16px;align-items:center}
 .tu{text-align:center}
 .tu-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;color:var(--GDl);line-height:1;display:block}
 .tu-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.3);display:block}
-.tu-sep{font-family:'Cormorant Garamond',serif;font-size:28px;color:rgba(107,127,88,.3)}
+.tu-sep{font-family:'Cormorant Garamond',serif;font-size:28px;color:rgba(107,127,88,.3);padding:0 2px}
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,10vw,120px);font-weight:300;line-height:.85;letter-spacing:-.04em;color:var(--W);margin-bottom:28px}
 .hero-title em{font-style:italic;color:var(--GDl)}
 .hero-desc{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.48);max-width:540px;line-height:1.9;font-weight:300;margin-bottom:32px}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
 .btn-primary{background:var(--GDl);color:var(--OLd);border:none;padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .btn-primary:hover{background:var(--GD);transform:translateY(-2px)}
+.btn-primary.locked{background:rgba(250,250,248,.12);color:rgba(250,250,248,.35);cursor:not-allowed;border:1px solid rgba(250,250,248,.12)}
+.btn-primary.locked:hover{transform:none}
 .btn-ghost{background:transparent;color:rgba(250,250,248,.7);border:1px solid rgba(250,250,248,.2);padding:14px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .btn-ghost:hover{background:rgba(255,255,255,.08);color:var(--W)}
 
 /* STATS BAR */
 .stats-bar{background:var(--OL);padding:16px 5%}
-.stats-inner{max-width:1280px;margin:0 auto;display:flex;gap:40px;align-items:center;flex-wrap:wrap}
+.stats-inner{max-width:1280px;margin:0 auto;display:flex;gap:32px;align-items:center;flex-wrap:wrap}
 .stat-item{display:flex;align-items:baseline;gap:8px}
 .stat-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--GDl)}
 .stat-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.5)}
 
 /* BOARD */
-#board{background:var(--W2);padding:100px 5%}
+#board{background:var(--W2);padding:80px 5%}
 .board-inner{max-width:1280px;margin:0 auto}
-.board-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:48px;flex-wrap:wrap;gap:20px}
+.board-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px;flex-wrap:wrap;gap:20px}
 .filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.ftab{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:8px 18px;border-radius:100px;border:1px solid var(--BD2);background:transparent;cursor:pointer;color:var(--INKm);transition:all .2s}
+.ftab{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:8px 16px;border-radius:100px;border:1px solid var(--BD2);background:transparent;cursor:pointer;color:var(--INKm);transition:all .2s}
 .ftab.active,.ftab:hover{background:var(--INK);color:var(--W);border-color:var(--INK)}
 .idea-list{display:flex;flex-direction:column;gap:12px}
 
+/* STATUS BANNERS */
+.board-banner{border-radius:12px;padding:13px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px}
+.board-banner.warn{background:rgba(184,160,96,.08);border:1px solid rgba(184,160,96,.22)}
+.board-banner.alert{background:rgba(139,46,46,.07);border:1px solid rgba(139,46,46,.18)}
+.board-banner p{font-size:12px;font-weight:300;line-height:1.6}
+.board-banner.warn p{color:var(--INKm)}
+.board-banner.alert p{color:#8B3030}
+.board-banner strong{font-weight:600}
+
 /* IDEA ROW */
-.idea-row{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:24px 28px;display:grid;grid-template-columns:52px 1fr 140px 120px;gap:20px;align-items:center;cursor:pointer;transition:all .3s;animation:rowIn .4s cubic-bezier(.16,1,.3,1)}
+.idea-row{background:var(--W);border:1px solid var(--BD);border-radius:16px;padding:20px 24px;display:grid;grid-template-columns:48px 1fr 100px;gap:16px;align-items:center;cursor:pointer;transition:all .3s;animation:rowIn .4s cubic-bezier(.16,1,.3,1)}
 @keyframes rowIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .idea-row:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,92,58,.1);border-color:var(--BD2)}
 .idea-row.rank1{border-color:var(--GD);background:linear-gradient(135deg,rgba(184,160,96,.06),var(--W))}
 .idea-row.rank2{border-color:rgba(74,92,58,.3)}
 .idea-row.rank3{border-color:rgba(74,92,58,.2)}
-.idea-row.new-idea{border-color:var(--OL);animation:newRowIn .6s cubic-bezier(.16,1,.3,1)}
-@keyframes newRowIn{from{opacity:0;transform:translateY(-20px) scale(.98);background:rgba(74,92,58,.08)}to{opacity:1;transform:none}}
-.rank-badge{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;flex-shrink:0}
+.rank-badge{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;font-weight:600;flex-shrink:0}
 .rank1 .rank-badge{background:rgba(184,160,96,.15);color:var(--GD);border:1px solid rgba(184,160,96,.3)}
 .rank2 .rank-badge{background:rgba(74,92,58,.1);color:var(--OL);border:1px solid var(--BD2)}
 .rank3 .rank-badge{background:rgba(74,92,58,.07);color:var(--OLl);border:1px solid var(--BD)}
 .rank-other .rank-badge{background:var(--W2);color:var(--INKl);border:1px solid var(--BD)}
-.idea-info h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:4px}
+.idea-info h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:3px;line-height:1.2}
 .idea-founder{font-size:11px;color:var(--INKl);font-weight:300}
 .idea-category{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:3px 10px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl);display:inline-block;margin-top:6px}
-.vote-section{display:flex;flex-direction:column;align-items:center;gap:6px}
-.vote-bar-wrap{width:100%;height:6px;background:var(--W3);border-radius:3px;overflow:hidden}
-.vote-bar{height:100%;background:linear-gradient(90deg,var(--OL),var(--OLl));border-radius:3px;transition:width .6s cubic-bezier(.16,1,.3,1)}
-.vote-count{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--OL);line-height:1;transition:all .3s}
-.vote-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INKl)}
-.vote-btn{background:var(--OL);color:var(--W);border:none;padding:10px 20px;border-radius:100px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
-.vote-btn:hover{background:var(--OLd)}
-.vote-btn.voted{background:var(--W3);color:var(--INKl);cursor:default}
-@keyframes voteFlash{0%{transform:scale(1)}40%{transform:scale(1.3);color:#3B6B2E}100%{transform:scale(1)}}
+.row-votes{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.row-vote-num{font-family:'Cormorant Garamond',serif;font-size:26px;font-style:italic;font-weight:600;color:var(--OL);line-height:1}
+.row-vote-lbl{font-family:'Syne',sans-serif;font-size:7px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INKl)}
+.row-click-hint{font-size:10px;color:var(--INKl);margin-top:3px;font-weight:300;font-style:italic}
+@keyframes voteFlash{0%{transform:scale(1)}40%{transform:scale(1.35);color:#2D6A2D}100%{transform:scale(1)}}
 .vote-flash{animation:voteFlash .4s ease-out}
 .loading-state{text-align:center;padding:60px;color:var(--INKl);font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic}
 
 /* IDEA MODAL */
-#ideaModal{position:fixed;inset:0;z-index:9000;background:rgba(24,22,15,.65);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:20px}
+#ideaModal{position:fixed;inset:0;z-index:9000;background:rgba(24,22,15,.65);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px}
 #ideaModal.open{display:flex}
-.im-box{background:var(--W);border-radius:24px;width:100%;max-width:760px;max-height:88vh;overflow-y:auto;padding:52px;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
+.im-box{background:var(--W);border-radius:24px;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;padding:48px;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
 @keyframes mpop{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:none}}
-.im-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;color:var(--INK);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.im-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;border:1px solid var(--BD2);background:none;cursor:pointer;color:var(--INK);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .im-close:hover{background:var(--INK);color:var(--W)}
-.im-rank{font-family:'Cormorant Garamond',serif;font-size:72px;font-style:italic;font-weight:600;color:var(--OL);opacity:.15;line-height:1;margin-bottom:4px}
-.im-name{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-style:italic;font-weight:600;color:var(--INK);margin-bottom:8px}
-.im-founder{font-size:12px;color:var(--INKl);font-weight:300;margin-bottom:28px}
-.im-desc{font-size:14px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:32px;padding:24px;background:var(--W2);border-radius:14px}
-.im-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.im-rank{font-family:'Cormorant Garamond',serif;font-size:56px;font-style:italic;font-weight:600;color:var(--OL);opacity:.15;line-height:1;margin-bottom:4px}
+.im-name{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,50px);font-style:italic;font-weight:600;color:var(--INK);margin-bottom:6px;line-height:1.1}
+.im-founder{font-size:12px;color:var(--INKl);font-weight:300;margin-bottom:18px}
+.im-cat{display:inline-block;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:4px 12px;border-radius:100px;border:1px solid var(--BD2);color:var(--INKl);margin-bottom:18px}
+.im-desc{font-size:14px;color:var(--INKm);line-height:1.9;font-weight:300;margin-bottom:22px;padding:22px;background:var(--W2);border-radius:14px}
+.im-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
 .im-tag{font-size:9px;font-family:'Syne',sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;border-radius:100px;border:1px solid var(--BD);color:var(--INKl)}
-.im-vote-area{display:flex;align-items:center;gap:20px;padding:24px;background:var(--W2);border-radius:14px}
-.im-vote-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-style:italic;font-weight:600;color:var(--OL);line-height:1}
-.im-vote-info{flex:1}
-.im-vote-info h4{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--INK);margin-bottom:4px}
-.im-vote-info p{font-size:12px;color:var(--INKl);font-weight:300}
+.im-vote-box{background:var(--OLd);border-radius:18px;padding:28px;display:flex;align-items:center;gap:24px}
+.im-vote-left{text-align:center;flex-shrink:0}
+.im-vote-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-style:italic;font-weight:600;color:var(--GDl);line-height:1;transition:all .3s}
+.im-vote-lbl{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,248,.4);margin-top:2px}
+.im-vote-right{flex:1}
+.im-vote-right h4{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:600;color:var(--W);margin-bottom:6px}
+.im-vote-right p{font-size:12px;color:rgba(250,250,248,.5);font-weight:300;line-height:1.7;margin-bottom:16px}
+.im-vote-btn{background:var(--GDl);color:var(--OLd);border:none;padding:13px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .3s;width:100%}
+.im-vote-btn:hover{background:var(--GD);transform:translateY(-1px)}
+.im-vote-btn.voted{background:rgba(250,250,248,.08);color:rgba(250,250,248,.4);cursor:default;border:1px solid rgba(250,250,248,.1)}
+.im-vote-btn.voted:hover{transform:none}
 
 /* SUBMIT MODAL */
-#submitModal{position:fixed;inset:0;z-index:9500;background:rgba(24,22,15,.7);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:20px}
+#submitModal{position:fixed;inset:0;z-index:9500;background:rgba(24,22,15,.7);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;padding:16px}
 #submitModal.open{display:flex}
-.sm-box{background:var(--W);border-radius:28px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
-.sm-header{background:var(--OLd);padding:40px 48px 32px;border-radius:28px 28px 0 0;position:relative}
-.sm-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-style:italic;font-weight:300;color:var(--W);margin-bottom:8px}
+.sm-box{background:var(--W);border-radius:28px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;animation:mpop .35s cubic-bezier(.16,1,.3,1);position:relative}
+.sm-header{background:var(--OLd);padding:36px 44px 28px;border-radius:28px 28px 0 0;position:relative}
+.sm-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,42px);font-style:italic;font-weight:300;color:var(--W);margin-bottom:6px}
 .sm-header h2 em{color:var(--GDl)}
 .sm-header p{font-size:12px;color:rgba(250,250,248,.5);font-weight:300}
-.sm-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer;color:var(--W);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sm-close{position:absolute;top:18px;right:18px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer;color:var(--W);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .sm-close:hover{background:rgba(255,255,255,.1)}
-.sm-body{padding:40px 48px}
-.fr{margin-bottom:20px}
-.fr label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:8px}
-.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:13px 16px;font-size:13px;color:var(--INK);background:var(--W2);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.sm-body{padding:36px 44px}
+.fr{margin-bottom:18px}
+.fr label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--INK);display:block;margin-bottom:7px}
+.fr input,.fr textarea,.fr select{width:100%;border:1px solid var(--BD2);border-radius:12px;padding:12px 15px;font-size:13px;color:var(--INK);background:var(--W2);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
 .fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--OL);background:var(--W)}
 .fr textarea{resize:vertical;min-height:90px}
 .fr-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -205,9 +232,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .tag-input-wrap:focus-within{border-color:var(--OL);background:var(--W)}
 .tag-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:var(--OL);color:var(--W);border-radius:100px;font-size:11px;font-family:'Syne',sans-serif;font-weight:700}
 .tag-pill button{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:12px;padding:0;line-height:1}
-.tag-pill button:hover{color:var(--W)}
 .tag-text-input{border:none;background:none;outline:none;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--INK);min-width:80px;flex:1}
-.submit-idea-btn{width:100%;background:var(--OLd);color:var(--W);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-idea-btn{width:100%;background:var(--OLd);color:var(--W);border:none;padding:17px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px}
 .submit-idea-btn:hover{background:var(--OL)}
 .submit-idea-btn:disabled{background:var(--W3);color:var(--INKl);cursor:not-allowed}
 .submit-idea-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .6s linear infinite;display:none}
@@ -215,14 +241,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .submit-idea-btn.loading .btn-text{display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* SUCCESS STATE */
+/* LOCKED PANEL */
+.locked-panel{padding:48px 44px;text-align:center}
+.locked-icon{width:64px;height:64px;border-radius:50%;background:rgba(139,46,46,.08);border:1px solid rgba(139,46,46,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:26px}
+.locked-panel h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:10px}
+.locked-panel p{font-size:13px;color:var(--INKm);line-height:1.8;font-weight:300;margin-bottom:24px}
+.locked-cta{background:var(--OL);color:var(--W);border:none;padding:12px 28px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.locked-cta:hover{background:var(--OLd)}
+
+/* SUCCESS */
 .success-state{text-align:center;padding:48px;display:none}
 .success-state.show{display:block}
 .success-icon{width:64px;height:64px;border-radius:50%;background:rgba(74,92,58,.1);border:2px solid var(--OL);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px}
 .success-state h3{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:600;color:var(--INK);margin-bottom:10px}
 .success-state p{font-size:13px;color:var(--INKm);line-height:1.8;font-weight:300}
 
-/* SUBMIT SECTION (bottom of page) */
+/* SUBMIT SECTION */
 #submit-section{background:var(--W);padding:100px 5%}
 .ss-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 .ss-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;font-style:italic;line-height:.9;margin-bottom:20px}
@@ -231,29 +265,81 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 .prize-list{display:flex;flex-direction:column}
 .prize-row{display:flex;gap:16px;padding:18px 0;border-top:1px solid var(--BD);align-items:flex-start}
 .prize-row:last-child{border-bottom:1px solid var(--BD)}
-.prize-amt{color:var(--OL);font-weight:700;flex-shrink:0;font-size:15px;min-width:36px}
+.prize-amt{color:var(--OL);font-weight:700;flex-shrink:0;font-size:15px;min-width:40px}
 .prize-rank{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:3px}
 .prize-name{font-size:12px;color:var(--INKm);font-weight:300}
-.ss-cta-box{background:var(--OLd);border-radius:24px;padding:52px;text-align:center}
-.ss-cta-box h3{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;font-weight:300;color:var(--W);margin-bottom:12px}
+.ss-cta-box{background:var(--OLd);border-radius:24px;padding:48px}
+.ss-cta-box h3{font-family:'Cormorant Garamond',serif;font-size:34px;font-style:italic;font-weight:300;color:var(--W);margin-bottom:10px}
 .ss-cta-box h3 em{color:var(--GDl)}
-.ss-cta-box p{font-size:13px;color:rgba(250,250,248,.5);font-weight:300;margin-bottom:32px;line-height:1.8}
-.ss-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;text-align:left}
+.ss-cta-box>p{font-size:13px;color:rgba(250,250,248,.5);font-weight:300;margin-bottom:28px;line-height:1.8}
+.ss-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
 .ss-step{display:flex;gap:14px;align-items:flex-start}
 .ss-step-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;font-weight:600;color:var(--GDl);min-width:20px;line-height:1.2}
 .ss-step-txt{font-size:12px;color:rgba(250,250,248,.6);font-weight:300;line-height:1.7}
 .big-submit-btn{width:100%;background:var(--GDl);color:var(--OLd);border:none;padding:18px;border-radius:100px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s}
 .big-submit-btn:hover{background:var(--GD);transform:translateY(-2px)}
+.big-submit-btn.locked{background:rgba(250,250,248,.08);color:rgba(250,250,248,.35);cursor:not-allowed;border:1px solid rgba(250,250,248,.1)}
+.big-submit-btn.locked:hover{transform:none}
 
-@media(max-width:1024px){
-  .idea-row{grid-template-columns:40px 1fr 100px}
-  .ss-inner{grid-template-columns:1fr}
-  .fr-row{grid-template-columns:1fr}
-}
+/* RULES STRIP */
+.rules-strip{background:var(--OLd);padding:48px 5%}
+.rules-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.rule-item{}
+.rule-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-style:italic;color:var(--GDl);opacity:.35;line-height:1;margin-bottom:8px}
+.rule-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,250,248,.65);margin-bottom:6px}
+.rule-body{font-size:12px;color:rgba(250,250,248,.38);font-weight:300;line-height:1.7}
+
+/* MOBILE */
 @media(max-width:768px){
-  .idea-row{grid-template-columns:40px 1fr}
-  .vote-section{display:none}
-  .sm-body,.sm-header{padding:28px}
+  .nav{top:10px;width:96%;padding:10px 16px}
+  .nav-logo{font-size:10px;letter-spacing:.16em}
+  .nav-right{gap:8px}
+  .nav-submit-btn{padding:8px 12px;font-size:8px}
+  .nav-back{display:none}
+  .live-dot{padding:5px 10px}
+
+  #hero{padding:96px 4% 56px;min-height:68vh}
+  .hero-bg{font-size:180px}
+  .hero-title{font-size:clamp(40px,13vw,70px)}
+  .hero-timer{padding:10px 16px}
+  .tu-num{font-size:22px}
+  .hero-cta{flex-direction:column;gap:10px}
+  .btn-primary,.btn-ghost{width:100%;text-align:center}
+
+  .stats-inner{gap:14px}
+  .stat-num{font-size:22px}
+
+  #board{padding:52px 4%}
+  .board-header{flex-direction:column;align-items:flex-start;gap:14px}
+  .filter-tabs{gap:6px}
+  .ftab{font-size:8px;padding:7px 12px}
+
+  .idea-row{grid-template-columns:36px 1fr;grid-template-rows:auto auto;gap:10px 12px;padding:16px}
+  .rank-badge{width:34px;height:34px;font-size:15px}
+  .idea-info h3{font-size:17px}
+  .row-votes{grid-column:2;flex-direction:row;align-items:center;gap:8px;justify-content:flex-start}
+  .row-vote-num{font-size:18px}
+  .row-click-hint{margin-top:0}
+
+  .im-box{padding:24px 20px;border-radius:20px}
+  .im-name{font-size:clamp(24px,7vw,36px)}
+  .im-vote-box{flex-direction:column;gap:14px;padding:20px}
+  .im-vote-left{display:flex;align-items:baseline;gap:10px}
+  .im-vote-num{font-size:38px}
+
+  .sm-box{border-radius:20px}
+  .sm-header{padding:26px 22px 20px;border-radius:20px 20px 0 0}
+  .sm-body,.locked-panel{padding:24px 22px}
+  .fr-row{grid-template-columns:1fr}
+
+  #submit-section{padding:56px 5%}
+  .ss-inner{grid-template-columns:1fr;gap:36px}
+  .ss-cta-box{padding:28px 22px}
+
+  .rules-inner{grid-template-columns:1fr 1fr;gap:24px}
+}
+@media(max-width:480px){
+  .rules-inner{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -261,30 +347,31 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 
 <nav class="nav">
   <a href="index.html" class="nav-logo">VAITHRA</a>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div class="nav-right">
     <div class="live-dot" id="liveDot" style="opacity:0;transition:opacity .5s"><span>Live</span></div>
-    <button class="nav-submit-btn" onclick="openSubmitModal()">+ Submit Idea</button>
-    <a href="index.html" class="nav-back" style="margin-left:4px">← Home</a>
+    <button class="nav-submit-btn" id="navSubmitBtn" onclick="openSubmitModal()">+ Submit Idea</button>
+    <a href="index.html" class="nav-back">← Home</a>
   </div>
 </nav>
 
 <section id="hero">
   <div class="hero-bg">₹</div>
   <div class="hero-in">
-    <div class="round-badge"><span>Round 1 · April 2026</span></div>
+    <div class="round-badge"><span id="roundBadgeText">Round 1 · Loading…</span></div>
+    <div class="deadline-pill open" id="deadlinePill">Loading…</div>
     <div class="hero-timer">
       <div class="timer-units">
-        <div class="tu"><span class="tu-num" id="tD">00</span><span class="tu-lbl">Days</span></div>
+        <div class="tu"><span class="tu-num" id="tD">--</span><span class="tu-lbl">Days</span></div>
         <span class="tu-sep">:</span>
-        <div class="tu"><span class="tu-num" id="tH">00</span><span class="tu-lbl">Hours</span></div>
+        <div class="tu"><span class="tu-num" id="tH">--</span><span class="tu-lbl">Hours</span></div>
         <span class="tu-sep">:</span>
-        <div class="tu"><span class="tu-num" id="tM">00</span><span class="tu-lbl">Mins</span></div>
+        <div class="tu"><span class="tu-num" id="tM">--</span><span class="tu-lbl">Mins</span></div>
       </div>
     </div>
     <h1 class="hero-title">Micro-<em>Grant</em><br>Rounds</h1>
     <p class="hero-desc">Submit your idea, vote for others. Every month the top 3 ranked ideas receive community funding — no pitch decks, no gatekeepers.</p>
     <div class="hero-cta">
-      <button class="btn-primary" onclick="openSubmitModal()">Submit Your Idea →</button>
+      <button class="btn-primary" id="heroSubmitBtn" onclick="openSubmitModal()">Submit Your Idea →</button>
       <button class="btn-ghost" onclick="document.getElementById('board').scrollIntoView({behavior:'smooth'})">See Leaderboard</button>
     </div>
   </div>
@@ -292,10 +379,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
 
 <div class="stats-bar">
   <div class="stats-inner">
-    <div class="stat-item"><span class="stat-num" id="statIdeas">0</span><span class="stat-lbl">Ideas this round</span></div>
+    <div class="stat-item"><span class="stat-num" id="statIdeas">0</span><span class="stat-lbl">/ 10 slots filled</span></div>
     <div class="stat-item"><span class="stat-num" id="statVotes">0</span><span class="stat-lbl">Total votes cast</span></div>
-    <div class="stat-item"><span class="stat-num">₹10K</span><span class="stat-lbl">Total prize pool</span></div>
-    <div class="stat-item"><span class="stat-num">10</span><span class="stat-lbl">Days remaining</span></div>
+    <div class="stat-item"><span class="stat-num">₹10K</span><span class="stat-lbl">Prize pool</span></div>
+    <div class="stat-item"><span class="stat-num" id="statDays">--</span><span class="stat-lbl">Days to vote</span></div>
   </div>
 </div>
 
@@ -303,10 +390,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
   <div class="board-inner">
     <div class="board-header">
       <div>
-        <span class="ey" style="margin-bottom:10px">April 2026 Round</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-weight:300;font-style:italic;color:var(--INK)">Live Leaderboard</h2>
+        <span class="ey" id="boardRoundLabel" style="margin-bottom:10px">Loading…</span>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;font-style:italic;color:var(--INK)">Live Leaderboard</h2>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;width:100%">
         <div class="live-dot" id="liveDot2" style="opacity:0;transition:opacity .5s"><span>Syncing live</span></div>
         <div class="filter-tabs">
           <button class="ftab active" onclick="filterIdeas('all',this)">All</button>
@@ -317,6 +404,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
         </div>
       </div>
     </div>
+
+    <div class="board-banner warn" id="bannerFull" style="display:none">
+      <p>📋 <strong>All 10 slots for this round are filled.</strong> Submissions are closed. Voting continues until month end — support your favourite idea below.</p>
+    </div>
+    <div class="board-banner alert" id="bannerDeadline" style="display:none">
+      <p>🔒 <strong>Submission deadline passed.</strong> Ideas could only be registered until the 15th. Voting remains open — cast your vote before the month ends.</p>
+    </div>
+
     <div class="idea-list" id="ideaList">
       <div class="loading-state">Connecting to live feed…</div>
     </div>
@@ -330,27 +425,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
     <div class="im-rank" id="imRank"></div>
     <div class="im-name" id="imName"></div>
     <div class="im-founder" id="imFounder"></div>
+    <span class="im-cat" id="imCat"></span>
     <p class="im-desc" id="imDesc"></p>
     <div class="im-tags" id="imTags"></div>
-    <div class="im-vote-area">
-      <div class="im-vote-num" id="imVotes"></div>
-      <div class="im-vote-info">
-        <h4>Community Votes</h4>
-        <p>Top 3 at end of April get funded.</p>
+    <div class="im-vote-box">
+      <div class="im-vote-left">
+        <div class="im-vote-num" id="imVotes">0</div>
+        <div class="im-vote-lbl">Votes</div>
       </div>
-      <button class="vote-btn" id="imVoteBtn" onclick="voteFromModal()">Vote →</button>
+      <div class="im-vote-right">
+        <h4>Support this idea</h4>
+        <p>Top 3 at end of this month receive a real grant — no interviews, no gatekeepers.</p>
+        <button class="im-vote-btn" id="imVoteBtn" onclick="voteFromModal()">Cast My Vote →</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- SUBMIT IDEA MODAL -->
+<!-- SUBMIT MODAL -->
 <div id="submitModal">
   <div class="sm-box">
     <div class="sm-header">
       <button class="sm-close" onclick="closeSubmitModal()">✕</button>
-      <h2>Submit Your <em>Idea</em></h2>
-      <p>Goes live instantly · Community votes · Top 3 get funded</p>
+      <h2 id="smTitle">Submit Your <em>Idea</em></h2>
+      <p id="smSubtitle">Goes live instantly · Community votes · Top 3 get funded</p>
     </div>
+
+    <!-- FORM -->
     <div class="sm-body" id="smForm">
       <div class="fr-row">
         <div class="fr"><label>Idea / Startup Name *</label><input type="text" id="f-name" placeholder="e.g. AgriConnect" maxlength="60"></div>
@@ -372,22 +473,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
         <textarea id="f-desc" placeholder="What problem are you solving? Who is it for? What have you built so far?" rows="4"></textarea>
       </div>
       <div class="fr">
-        <label>Tags (press Enter or comma to add, max 3)</label>
+        <label>Tags (press Enter or comma, max 3)</label>
         <div class="tag-input-wrap" id="tagWrap" onclick="document.getElementById('tagText').focus()">
           <input type="text" id="tagText" class="tag-text-input" placeholder="e.g. SaaS, HealthTech…" maxlength="20">
         </div>
       </div>
-      <div class="fr"><label>WhatsApp (for updates)</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX"></div>
+      <div class="fr"><label>WhatsApp (for grant updates)</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX"></div>
       <button class="submit-idea-btn" id="submitBtn" onclick="handleIdeaSubmit()">
         <div class="spinner"></div>
         <span class="btn-text">Submit — Go Live Instantly →</span>
       </button>
-      <p style="font-size:11px;color:var(--INKl);text-align:center;margin-top:12px;font-weight:300">Your idea appears on the leaderboard immediately for everyone to vote on.</p>
+      <p style="font-size:11px;color:var(--INKl);text-align:center;margin-top:12px;font-weight:300">Appears on the leaderboard immediately for all users to vote on.</p>
     </div>
+
+    <!-- LOCKED -->
+    <div class="locked-panel" id="smLocked" style="display:none">
+      <div class="locked-icon">🔒</div>
+      <h3 id="lockedTitle">Submissions Closed</h3>
+      <p id="lockedBody">Submissions are currently closed.</p>
+      <button class="locked-cta" onclick="closeSubmitModal()">Got it →</button>
+    </div>
+
+    <!-- SUCCESS -->
     <div class="success-state" id="smSuccess">
       <div class="success-icon">✓</div>
       <h3>You're on the leaderboard!</h3>
-      <p>Your idea is now live and visible to everyone.<br>Share the page to get more votes!</p>
+      <p>Your idea is now live and visible to everyone.<br>Share the page to collect votes and climb the ranks!</p>
       <button onclick="closeSubmitModal()" style="margin-top:24px;background:var(--OL);color:var(--W);border:none;padding:12px 32px;border-radius:100px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer">See My Idea →</button>
     </div>
   </div>
@@ -398,7 +509,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
     <div class="ss-left">
       <span class="ey" style="margin-bottom:16px">How It Works</span>
       <h2>Your Idea.<br><em>Funded.</em></h2>
-      <p>Anyone can submit a startup idea. The community votes every month. Top 3 ideas at the end of the round receive real money — no panels, no gatekeepers.</p>
+      <p>Submit before the <strong>15th of each month</strong>. Only 10 ideas per round. The community votes all month — top 3 win real money.</p>
       <div class="prize-list">
         <div class="prize-row"><span class="prize-amt">₹5K</span><div><div class="prize-rank">Rank 1</div><div class="prize-name">Seed Spark Grant</div></div></div>
         <div class="prize-row"><span class="prize-amt">₹3K</span><div><div class="prize-rank">Rank 2</div><div class="prize-name">Growth Boost Grant</div></div></div>
@@ -407,253 +518,309 @@ body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overf
     </div>
     <div class="ss-cta-box">
       <h3>Ready to <em>list</em> your idea?</h3>
-      <p>Takes 2 minutes. Goes live the second you submit.</p>
+      <p id="ssCopy">Takes 2 minutes. Goes live the second you submit.</p>
       <div class="ss-steps">
-        <div class="ss-step"><div class="ss-step-num">1</div><div class="ss-step-txt">Fill in your idea name, description and category</div></div>
-        <div class="ss-step"><div class="ss-step-num">2</div><div class="ss-step-txt">Hit submit — your idea appears instantly on the leaderboard</div></div>
-        <div class="ss-step"><div class="ss-step-num">3</div><div class="ss-step-txt">Share with your network, collect votes, climb the ranks</div></div>
-        <div class="ss-step"><div class="ss-step-num">4</div><div class="ss-step-txt">Top 3 at end of month receive the grant — no interviews needed</div></div>
+        <div class="ss-step"><div class="ss-step-num">1</div><div class="ss-step-txt">Submit before the <strong style="color:rgba(250,250,248,.8)">15th of the month</strong> — only 10 slots per round</div></div>
+        <div class="ss-step"><div class="ss-step-num">2</div><div class="ss-step-txt">Your idea appears instantly on the leaderboard for everyone to see</div></div>
+        <div class="ss-step"><div class="ss-step-num">3</div><div class="ss-step-txt">Click any idea to read the full pitch, then vote deliberately</div></div>
+        <div class="ss-step"><div class="ss-step-num">4</div><div class="ss-step-txt">Top 3 at month end receive the grant — no interviews needed</div></div>
       </div>
-      <button class="big-submit-btn" onclick="openSubmitModal()">Submit Your Idea Now →</button>
+      <button class="big-submit-btn" id="ssSubmitBtn" onclick="openSubmitModal()">Submit Your Idea Now →</button>
     </div>
   </div>
 </section>
 
-<footer style="background:var(--W3);padding:48px 5%;text-align:center;border-top:1px solid var(--BD)">
+<div class="rules-strip">
+  <div class="rules-inner">
+    <div class="rule-item">
+      <div class="rule-num">10</div>
+      <div class="rule-title">Ideas per round</div>
+      <div class="rule-body">Each monthly round is capped at 10 ideas. First come, first listed. Secure your slot early.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">15th</div>
+      <div class="rule-title">Submission deadline</div>
+      <div class="rule-body">Ideas must be submitted by the 15th of every month. Voting remains open until the last day.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">1×</div>
+      <div class="rule-title">One vote per idea</div>
+      <div class="rule-body">Each person gets one vote per idea. Click an idea to read the full pitch, then vote deliberately.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">Top 3</div>
+      <div class="rule-title">Winners funded</div>
+      <div class="rule-body">The three highest-voted ideas at month end receive ₹5K, ₹3K, and ₹2K respectively — no panel, no pitch.</div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--W3);padding:40px 5%;text-align:center;border-top:1px solid var(--BD)">
   <a href="index.html" style="font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--INKl);text-decoration:none">← VAITHRA HOME</a>
 </footer>
 
 <script type="module">
-// ── STATE ─────────────────────────────────
-let IDEAS = [];
-let currentFilter = 'all';
-let currentIdeaId = null;
-let tags = [];
+const MAX_IDEAS   = 10;
+const CUTOFF_DAY  = 15; // submissions close after the 15th
 
-// ── STATS ─────────────────────────────────
-function updateStats() {
-  document.getElementById('statIdeas').textContent = IDEAS.length;
-  const totalVotes = IDEAS.reduce((s, i) => s + (i.votes || 0), 0);
-  document.getElementById('statVotes').textContent = totalVotes;
+let IDEAS = [], currentFilter = 'all', currentIdeaId = null, tags = [];
+
+// ── date helpers ──────────────────────────────────────────────────────────
+const isSubmissionOpen = () => new Date().getDate() <= CUTOFF_DAY;
+const slotsLeft        = () => Math.max(0, MAX_IDEAS - IDEAS.length);
+const canSubmit        = () => isSubmissionOpen() && slotsLeft() > 0;
+
+function nextMonthFirst() {
+  const n = new Date();
+  return new Date(n.getFullYear(), n.getMonth()+1, 1)
+    .toLocaleString('en-IN',{month:'long', day:'numeric'});
 }
 
-// ── FILTER ────────────────────────────────
+// ── timer (countdown to month end) ───────────────────────────────────────
+function updateTimer() {
+  const now = new Date();
+  const end = new Date(now.getFullYear(), now.getMonth()+1, 0, 23, 59, 59, 999);
+  const diff = end - now;
+  const days = Math.max(0, Math.floor(diff/86400000));
+  document.getElementById('tD').textContent = String(days).padStart(2,'0');
+  document.getElementById('tH').textContent = String(Math.max(0,Math.floor((diff%86400000)/3600000))).padStart(2,'0');
+  document.getElementById('tM').textContent = String(Math.max(0,Math.floor((diff%3600000)/60000))).padStart(2,'0');
+  document.getElementById('statDays').textContent = days;
+  const mn = now.toLocaleString('en-IN',{month:'long'});
+  document.getElementById('roundBadgeText').textContent = `Round 1 · ${mn} ${now.getFullYear()}`;
+  document.getElementById('boardRoundLabel').textContent = `${mn} ${now.getFullYear()} Round`;
+}
+setInterval(updateTimer, 30000); updateTimer();
+
+// ── submission UI state ───────────────────────────────────────────────────
+function updateSubmissionUI() {
+  const open  = isSubmissionOpen();
+  const slots = slotsLeft();
+  const ok    = open && slots > 0;
+
+  // Deadline pill
+  const pill = document.getElementById('deadlinePill');
+  if (!open) {
+    pill.className = 'deadline-pill closed';
+    pill.textContent = 'Submissions closed — deadline was the 15th';
+  } else if (slots === 0) {
+    pill.className = 'deadline-pill closed';
+    pill.textContent = 'All 10 slots filled for this round';
+  } else {
+    pill.className = 'deadline-pill open';
+    pill.textContent = `${slots} of 10 slots remaining · Closes 15th`;
+  }
+
+  // Buttons
+  ['navSubmitBtn','heroSubmitBtn','ssSubmitBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.toggle('locked', !ok);
+  });
+  document.getElementById('heroSubmitBtn').textContent =
+    ok ? 'Submit Your Idea →' : 'Submissions Closed';
+  document.getElementById('ssSubmitBtn').textContent =
+    ok ? 'Submit Your Idea Now →' : 'Submissions Closed';
+
+  // Section copy
+  document.getElementById('ssCopy').textContent = ok
+    ? `Takes 2 minutes. ${slots} slot${slots!==1?'s':''} remaining this round.`
+    : 'Submissions reopen on ' + nextMonthFirst() + '.';
+
+  // Board banners
+  document.getElementById('bannerFull').style.display     = (!open || slots > 0) ? 'none' : 'flex';
+  document.getElementById('bannerDeadline').style.display = !open ? 'flex' : 'none';
+}
+
+// ── stats ─────────────────────────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('statIdeas').textContent = IDEAS.length;
+  document.getElementById('statVotes').textContent = IDEAS.reduce((s,i)=>s+(i.votes||0),0);
+  updateSubmissionUI();
+}
+
+// ── filter ────────────────────────────────────────────────────────────────
 window.filterIdeas = function(cat, btn) {
   currentFilter = cat;
-  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   buildList();
 };
 
-// ── BUILD LIST ────────────────────────────
+// ── list ──────────────────────────────────────────────────────────────────
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
 function buildList() {
   const list = document.getElementById('ideaList');
-  const filtered = currentFilter === 'all' ? IDEAS : IDEAS.filter(i => i.category === currentFilter);
-  if (!filtered.length) {
-    list.innerHTML = `<div class="loading-state">No ideas in this category yet — <a href="#" onclick="openSubmitModal();return false;" style="color:var(--OL)">be the first!</a></div>`;
+  const set  = currentFilter==='all' ? IDEAS : IDEAS.filter(i=>i.category===currentFilter);
+  if (!set.length) {
+    list.innerHTML=`<div class="loading-state">No ideas yet — <a href="#" onclick="openSubmitModal();return false;" style="color:var(--OL)">be the first!</a></div>`;
     return;
   }
-  const maxVotes = Math.max(filtered[0].votes || 1, 1);
-  list.innerHTML = filtered.map((idea, i) => {
-    const rank = i + 1;
-    const rankClass = rank===1?'rank1':rank===2?'rank2':rank===3?'rank3':'rank-other';
-    const pct = Math.round(((idea.votes || 0) / maxVotes) * 100);
-    const isVoted = window.hasVoted && window.hasVoted(idea.id);
-    return `<div class="idea-row ${rankClass}" onclick="openIdeaModal('${idea.id}')">
-      <div class="rank-badge">${rank}</div>
+  list.innerHTML = set.map((idea,i) => {
+    const r  = i+1;
+    const rc = r===1?'rank1':r===2?'rank2':r===3?'rank3':'rank-other';
+    return `<div class="idea-row ${rc}" onclick="openIdeaModal('${idea.id}')">
+      <div class="rank-badge">${r}</div>
       <div class="idea-info">
-        <h3>${escHtml(idea.name)}</h3>
-        <div class="idea-founder">${escHtml(idea.founder)}</div>
-        <span class="idea-category">${escHtml(idea.tags && idea.tags[0] ? idea.tags[0] : idea.category)}</span>
+        <h3>${esc(idea.name)}</h3>
+        <div class="idea-founder">${esc(idea.founder)}</div>
+        <span class="idea-category">${esc(idea.tags&&idea.tags[0]?idea.tags[0]:idea.category)}</span>
       </div>
-      <div class="vote-section">
-        <span class="vote-count" id="vc-${idea.id}">${idea.votes || 0}</span>
-        <span class="vote-lbl">Votes</span>
-        <div class="vote-bar-wrap"><div class="vote-bar" style="width:${pct}%"></div></div>
+      <div class="row-votes">
+        <span class="row-vote-num" id="vc-${idea.id}">${idea.votes||0}</span>
+        <span class="row-vote-lbl">votes</span>
+        <span class="row-click-hint">tap to vote</span>
       </div>
-      <button class="vote-btn${isVoted?' voted':''}" id="vb-${idea.id}"
-        onclick="event.stopPropagation();doVote('${idea.id}')">${isVoted?'Voted ✓':'Vote →'}</button>
     </div>`;
   }).join('');
 }
 
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── VOTE ──────────────────────────────────
+// ── vote ──────────────────────────────────────────────────────────────────
 window.doVote = async function(ideaId) {
   if (window.hasVoted && window.hasVoted(ideaId)) return;
-  if (window.castVote) await window.castVote(ideaId);
+  const btn = document.getElementById('imVoteBtn');
+  if (btn){ btn.disabled=true; btn.textContent='Voting…'; }
+  const res = await window.castVote(ideaId);
+  if (res && res.alreadyVoted && btn){
+    btn.className='im-vote-btn voted'; btn.textContent='Already Voted ✓'; btn.disabled=false;
+  }
 };
 
 window.updateVoteUI = function(ideaId) {
-  const btn = document.getElementById('vb-' + ideaId);
-  if (btn) { btn.className = 'vote-btn voted'; btn.textContent = 'Voted ✓'; }
-  const vc = document.getElementById('vc-' + ideaId);
-  if (vc) { vc.classList.remove('vote-flash'); void vc.offsetWidth; vc.classList.add('vote-flash'); }
-  if (currentIdeaId === ideaId) {
-    const idea = IDEAS.find(i => i.id === ideaId);
-    const el = document.getElementById('imVotes');
-    if (el && idea) el.textContent = idea.votes || 0;
+  const vc = document.getElementById('vc-'+ideaId);
+  if (vc){ vc.classList.remove('vote-flash'); void vc.offsetWidth; vc.classList.add('vote-flash'); }
+  if (currentIdeaId===ideaId) {
+    const idea = IDEAS.find(i=>i.id===ideaId);
+    const el   = document.getElementById('imVotes');
+    if (el && idea) el.textContent = idea.votes||0;
     const mb = document.getElementById('imVoteBtn');
-    if (mb) { mb.className = 'vote-btn voted'; mb.textContent = 'Voted ✓'; }
+    if (mb){ mb.className='im-vote-btn voted'; mb.textContent='Voted ✓'; mb.disabled=false; }
   }
 };
 
-// ── IDEA MODAL ────────────────────────────
+// ── idea modal ────────────────────────────────────────────────────────────
 window.openIdeaModal = function(ideaId) {
-  const idea = IDEAS.find(i => i.id === ideaId);
-  if (!idea) return;
+  const idea = IDEAS.find(i=>i.id===ideaId); if (!idea) return;
   currentIdeaId = ideaId;
-  const rank = IDEAS.indexOf(idea) + 1;
-  document.getElementById('imRank').textContent = '#' + rank;
-  document.getElementById('imName').textContent = idea.name;
+  document.getElementById('imRank').textContent    = '#'+(IDEAS.indexOf(idea)+1);
+  document.getElementById('imName').textContent    = idea.name;
   document.getElementById('imFounder').textContent = idea.founder;
-  document.getElementById('imDesc').textContent = idea.desc;
-  document.getElementById('imVotes').textContent = idea.votes || 0;
-  document.getElementById('imTags').innerHTML = (idea.tags||[]).map(t => `<span class="im-tag">${escHtml(t)}</span>`).join('');
+  document.getElementById('imCat').textContent     = idea.category;
+  document.getElementById('imDesc').textContent    = idea.desc;
+  document.getElementById('imVotes').textContent   = idea.votes||0;
+  document.getElementById('imTags').innerHTML      = (idea.tags||[]).map(t=>`<span class="im-tag">${esc(t)}</span>`).join('');
   const isVoted = window.hasVoted && window.hasVoted(ideaId);
   const btn = document.getElementById('imVoteBtn');
-  btn.className = 'vote-btn' + (isVoted ? ' voted' : '');
-  btn.textContent = isVoted ? 'Voted ✓' : 'Vote →';
+  btn.className = 'im-vote-btn'+(isVoted?' voted':'');
+  btn.textContent = isVoted ? 'Already Voted ✓' : 'Cast My Vote →';
+  btn.disabled = false;
   document.getElementById('ideaModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow='hidden';
 };
-
-window.voteFromModal = async function() {
-  if (!currentIdeaId) return;
-  await doVote(currentIdeaId);
-};
-
-window.closeIdeaModal = function() {
+window.voteFromModal = async function(){ if (currentIdeaId) await doVote(currentIdeaId); };
+window.closeIdeaModal = function(){
   document.getElementById('ideaModal').classList.remove('open');
-  document.body.style.overflow = '';
-  currentIdeaId = null;
+  document.body.style.overflow=''; currentIdeaId=null;
 };
 
-// ── SUBMIT MODAL ──────────────────────────
+// ── submit modal ──────────────────────────────────────────────────────────
 window.openSubmitModal = function() {
-  document.getElementById('smForm').style.display = 'block';
+  const ok    = canSubmit();
+  const slots = slotsLeft();
+  const open  = isSubmissionOpen();
+
+  document.getElementById('smForm').style.display    = ok ? 'block' : 'none';
+  document.getElementById('smLocked').style.display  = ok ? 'none'  : 'block';
   document.getElementById('smSuccess').classList.remove('show');
+
+  if (!ok) {
+    document.getElementById('smTitle').innerHTML     = 'Submissions <em>Closed</em>';
+    document.getElementById('smSubtitle').textContent = slots===0
+      ? 'All 10 idea slots for this round have been filled.'
+      : 'The submission window closed on the 15th.';
+    document.getElementById('lockedTitle').textContent = slots===0
+      ? 'All 10 Slots Filled'
+      : 'Deadline Passed';
+    document.getElementById('lockedBody').textContent = slots===0
+      ? `This round has reached its 10-idea limit. New submissions open on ${nextMonthFirst()} for the next round. You can still vote for your favourite idea on the leaderboard.`
+      : `Idea registrations for this round closed on the 15th. The next submission window opens on ${nextMonthFirst()}. Voting is still live — cast your vote below.`;
+  } else {
+    document.getElementById('smTitle').innerHTML      = 'Submit Your <em>Idea</em>';
+    document.getElementById('smSubtitle').textContent = `Goes live instantly · ${slots} slot${slots!==1?'s':''} remaining`;
+  }
+
   document.getElementById('submitModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow='hidden';
 };
-
-window.closeSubmitModal = function() {
+window.closeSubmitModal = function(){
   document.getElementById('submitModal').classList.remove('open');
-  document.body.style.overflow = '';
+  document.body.style.overflow='';
 };
 
-// ── TAG INPUT ─────────────────────────────
+// ── tag input ─────────────────────────────────────────────────────────────
 const tagText = document.getElementById('tagText');
-tagText.addEventListener('keydown', function(e) {
-  if ((e.key === 'Enter' || e.key === ',') && this.value.trim()) {
-    e.preventDefault();
-    addTag(this.value.replace(',','').trim());
-    this.value = '';
+tagText.addEventListener('keydown', function(e){
+  if ((e.key==='Enter'||e.key===',') && this.value.trim()){
+    e.preventDefault(); addTag(this.value.replace(',','').trim()); this.value='';
   }
-  if (e.key === 'Backspace' && !this.value && tags.length) {
-    removeTag(tags.length - 1);
-  }
+  if (e.key==='Backspace' && !this.value && tags.length) removeTag(tags.length-1);
 });
-
-function addTag(val) {
-  if (!val || tags.length >= 3 || tags.includes(val)) return;
-  tags.push(val);
-  renderTags();
-}
-
-function removeTag(i) {
-  tags.splice(i, 1);
-  renderTags();
-}
-
+function addTag(v){ if(!v||tags.length>=3||tags.includes(v)) return; tags.push(v); renderTags(); }
+function removeTag(i){ tags.splice(i,1); renderTags(); }
 window.removeTag = removeTag;
-
-function renderTags() {
-  const wrap = document.getElementById('tagWrap');
-  const input = document.getElementById('tagText');
-  wrap.innerHTML = '';
-  tags.forEach((t, i) => {
-    const pill = document.createElement('span');
-    pill.className = 'tag-pill';
-    pill.innerHTML = `${escHtml(t)}<button onclick="removeTag(${i})">×</button>`;
-    wrap.appendChild(pill);
+function renderTags(){
+  const wrap=document.getElementById('tagWrap'), input=document.getElementById('tagText');
+  wrap.innerHTML='';
+  tags.forEach((t,i)=>{
+    const p=document.createElement('span'); p.className='tag-pill';
+    p.innerHTML=`${esc(t)}<button onclick="removeTag(${i})">×</button>`;
+    wrap.appendChild(p);
   });
   wrap.appendChild(input);
-  if (tags.length >= 3) input.style.display = 'none';
-  else input.style.display = '';
+  input.style.display=tags.length>=3?'none':'';
 }
 
-// ── HANDLE SUBMIT ─────────────────────────
-window.handleIdeaSubmit = async function() {
-  const name = document.getElementById('f-name').value.trim();
-  const founder = document.getElementById('f-founder').value.trim();
-  const city = document.getElementById('f-city').value.trim() || 'India';
-  const desc = document.getElementById('f-desc').value.trim();
-  const cat = document.getElementById('f-cat').value;
-
-  if (!name) { document.getElementById('f-name').focus(); return; }
-  if (!founder) { document.getElementById('f-founder').focus(); return; }
-  if (!desc || desc.length < 20) { document.getElementById('f-desc').focus(); return; }
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.classList.add('loading');
-
-  const ideaTags = tags.length ? tags : [cat.charAt(0).toUpperCase() + cat.slice(1)];
-
-  const result = await window.submitNewIdea({ name, founder, city, desc, category: cat, tags: ideaTags });
-
-  btn.disabled = false;
-  btn.classList.remove('loading');
-
-  if (result && result.success) {
-    // Reset form
-    ['f-name','f-founder','f-city','f-desc','f-phone'].forEach(id => document.getElementById(id).value = '');
-    tags = [];
-    renderTags();
-    document.getElementById('smForm').style.display = 'none';
+// ── handle submit ─────────────────────────────────────────────────────────
+window.handleIdeaSubmit = async function(){
+  if (!canSubmit()){ openSubmitModal(); return; }
+  const name=document.getElementById('f-name').value.trim();
+  const founder=document.getElementById('f-founder').value.trim();
+  const city=document.getElementById('f-city').value.trim()||'India';
+  const desc=document.getElementById('f-desc').value.trim();
+  const cat=document.getElementById('f-cat').value;
+  const phone=document.getElementById('f-phone').value.trim();
+  if (!name){document.getElementById('f-name').focus();return;}
+  if (!founder){document.getElementById('f-founder').focus();return;}
+  if (!desc||desc.length<20){document.getElementById('f-desc').focus();return;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.classList.add('loading');
+  const ideaTags=tags.length?tags:[cat.charAt(0).toUpperCase()+cat.slice(1)];
+  const res=await window.submitNewIdea({name,founder,city,desc,category:cat,tags:ideaTags,phone});
+  btn.disabled=false; btn.classList.remove('loading');
+  if (res&&res.success){
+    ['f-name','f-founder','f-city','f-desc','f-phone'].forEach(id=>document.getElementById(id).value='');
+    tags=[]; renderTags();
+    document.getElementById('smForm').style.display='none';
     document.getElementById('smSuccess').classList.add('show');
-    setTimeout(() => document.getElementById('board').scrollIntoView({behavior:'smooth'}), 1800);
-  } else {
-    alert('Something went wrong. Please try again.');
-  }
+    setTimeout(()=>document.getElementById('board').scrollIntoView({behavior:'smooth'}),1800);
+  } else { alert('Something went wrong. Please try again.'); }
 };
 
-// ── COUNTDOWN ─────────────────────────────
-function updateTimer() {
-  const now = new Date();
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-  const diff = end - now;
-  document.getElementById('tD').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
-  document.getElementById('tH').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
-  document.getElementById('tM').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
-}
-setInterval(updateTimer, 60000);
-updateTimer();
+// ── backdrop / esc close ──────────────────────────────────────────────────
+document.getElementById('ideaModal').onclick  = e=>{ if(e.target===document.getElementById('ideaModal'))  closeIdeaModal(); };
+document.getElementById('submitModal').onclick = e=>{ if(e.target===document.getElementById('submitModal')) closeSubmitModal(); };
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){closeIdeaModal();closeSubmitModal();} });
 
-// ── CLOSE ON BACKDROP ─────────────────────
-document.getElementById('ideaModal').onclick = e => { if (e.target === document.getElementById('ideaModal')) closeIdeaModal(); };
-document.getElementById('submitModal').onclick = e => { if (e.target === document.getElementById('submitModal')) closeSubmitModal(); };
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeIdeaModal(); closeSubmitModal(); }
-});
-
-// ── START FIREBASE ────────────────────────
-function init() {
-  if (typeof window.startRealtime === 'function') {
-    window.startRealtime((ideas) => {
-      IDEAS = ideas;
-      document.getElementById('liveDot').style.opacity = '1';
-      document.getElementById('liveDot2').style.opacity = '1';
-      buildList();
-      updateStats();
+// ── firebase init ─────────────────────────────────────────────────────────
+function init(){
+  if (typeof window.startRealtime==='function'){
+    window.startRealtime(ideas=>{
+      IDEAS=ideas;
+      document.getElementById('liveDot').style.opacity='1';
+      document.getElementById('liveDot2').style.opacity='1';
+      buildList(); updateStats();
     });
-  } else {
-    setTimeout(init, 200);
-  }
+  } else { setTimeout(init,200); }
 }
 init();
 </script>
