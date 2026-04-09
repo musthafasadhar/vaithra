@@ -75,7 +75,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--W);color:var(--INK);overflow-x:hidden}
-/* FIX: default overflow to auto so scrolling always works */
 body.no-scroll{overflow:hidden}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--OL);border-radius:2px}
 
@@ -94,6 +93,60 @@ body.no-scroll{overflow:hidden}
 .rr{opacity:0;transform:translateX(34px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
 .rr.on{opacity:1;transform:none}
 .d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}.d5{transition-delay:.5s!important}
+
+/* ══════════════ LOCKED TILE ══════════════ */
+.plat-tile.locked{
+  opacity:.5;
+  cursor:not-allowed;
+  pointer-events:none;
+  position:relative;
+}
+.plat-tile.locked::after{display:none!important} /* hide the → arrow on locked */
+.locked-notice{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:'Syne',sans-serif;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--INKm);
+  background:rgba(24,22,15,.06);
+  border:1px solid rgba(24,22,15,.12);
+  border-radius:100px;
+  padding:5px 11px;
+  margin-top:4px;
+}
+.locked-notice .lk-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#c05540;flex-shrink:0;
+}
+
+/* Locked feature card in hub grid */
+.ft-card.locked-card{
+  opacity:.5;
+  cursor:not-allowed;
+  pointer-events:none;
+}
+.ft-card.locked-card::after{display:none!important}
+.ft-locked-tag{
+  font-family:'Syne',sans-serif;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#c05540;
+  background:rgba(192,85,64,.08);
+  border:1px solid rgba(192,85,64,.2);
+  border-radius:100px;
+  padding:3px 9px;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  width:fit-content;
+  margin-top:4px;
+}
 
 /* ══════════════ INTRO ══════════════ */
 #intro{position:fixed;inset:0;z-index:9999;background:var(--OLd);overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -270,7 +323,6 @@ body.no-scroll{overflow:hidden}
 .hero-title em{font-style:italic;color:var(--GDl)}
 .hero-title .hb{font-style:italic;font-weight:600;color:rgba(250,250,248,.92)}
 .hero-ticker-wrap{display:inline-block;position:relative;overflow:hidden;height:1.05em;vertical-align:bottom;min-width:240px}
-.hero-ticker{display:flex;flex-direction:column;animation:none}
 .ticker-word{font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;display:block}
 .hero-sub{font-size:clamp(13px,1.4vw,16px);color:rgba(250,250,248,.52);max-width:540px;margin:0 auto 14px;line-height:1.9;font-weight:300}
 .hero-cta-line{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,1.8vw,20px);font-style:italic;font-weight:300;color:var(--GDl);margin-bottom:40px;opacity:.85}
@@ -749,15 +801,18 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
         <p class="pt-desc">A structured accountability system where founders document and verify real build progress — not just plans.</p>
         <div class="pt-cta">View Platform →</div>
       </div>
-      <div class="plat-tile rv d1" onclick="location.href='micro-grants.html'" role="button" tabindex="0" aria-label="Micro-Grant Rounds platform">
+
+      <!-- ★ MICRO-GRANT — LOCKED ★ -->
+      <div class="plat-tile locked rv d1" aria-label="Micro-Grant Rounds — temporarily unavailable" aria-disabled="true">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
           <span class="pt-badge bn">New</span>
         </div>
         <div class="pt-ttl">Micro-Grant Rounds</div>
         <p class="pt-desc">Community-backed micro-funding. ₹5K to ₹1L — gated by PoB score, not connections or networks.</p>
-        <div class="pt-cta">View Platform →</div>
+        <div class="locked-notice"><span class="lk-dot"></span>Relaunching after April</div>
       </div>
+
       <div class="plat-tile rv d2" onclick="location.href='build-wall.html'" role="button" tabindex="0" aria-label="Build in Public Wall platform">
         <div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div class="pt-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="var(--GD)" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
@@ -861,7 +916,7 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
         <li><a href="idea-promotion.html">Idea Promotion</a></li>
         <li><a href="city-reps.html">City Reps</a></li>
         <li><a href="daily-drop.html">Daily Drop</a></li>
-        <li><a href="micro-grants.html">Micro Grants</a></li>
+        <li><a href="micro-grants.html" style="opacity:.45;pointer-events:none">Micro Grants</a></li>
         <li><a href="build-wall.html">Build Wall</a></li>
         <li><a href="verify.html">Verification</a></li>
         <li><a href="vaithra-open.html">Open Org</a></li>
@@ -893,51 +948,30 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 
 <script>
 /* ══════════════════════════════════════════════════════════
-   HOW RETURNING USER DETECTION WORKS — EXPLANATION
-   ══════════════════════════════════════════════════════════
-   
-   This uses LOCALSTORAGE — browser-side key/value storage.
-   
-   When a user completes onboarding, we save:
-   localStorage.setItem('vaithra_user', JSON.stringify({name, phone}))
-   
-   On every subsequent page load, we check:
-   localStorage.getItem('vaithra_user') — if it exists, skip intro.
-   
-   ✅ Works across page reloads and browser restarts (same device/browser)
-   ❌ Does NOT persist across: different browsers, incognito mode,
-      different devices, or if user clears browser data.
-   
-   This is the standard industry approach for this use case.
-   IP-based detection requires a backend server + database.
+   RETURNING USER DETECTION
+   Uses localStorage — persists on same device/browser.
+   Cleared on: different browser, incognito, cleared data.
    ══════════════════════════════════════════════════════════ */
 
-/* ══ RETURNING USER CHECK — runs instantly on page load ══ */
 (function(){
   try {
     var saved = localStorage.getItem('vaithra_user');
     if (saved) {
-      // FIX: Hide intro and ensure body can scroll
       var intro = document.getElementById('intro');
-      var site = document.getElementById('site');
+      var site  = document.getElementById('site');
       intro.style.display = 'none';
       site.classList.add('visible');
-      // FIX: Ensure overflow is NOT hidden for returning users
       document.body.classList.remove('no-scroll');
       document.body.style.overflow = '';
-      // Init site after DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function(){ initSite(); });
       } else {
         initSite();
       }
     } else {
-      // New user: lock scroll for intro
       document.body.classList.add('no-scroll');
     }
   } catch(e) {
-    // localStorage might be blocked (e.g. Safari private). 
-    // Gracefully fall through to show intro.
     console.warn('localStorage not available:', e);
     document.body.classList.add('no-scroll');
   }
@@ -946,30 +980,26 @@ footer{background:var(--W);padding:90px 5% 40px;border-top:1px solid var(--BD)}
 /* ═══ GOOGLE SHEETS BACKEND ═══ */
 var SHEET = 'https://script.google.com/macros/s/AKfycbw262OdGPubRdKefldxhXwtbCCUKs4zO7iVH6AKD2aRZ7my30O1Gj1Aq_fSV8CrCGR7aw/exec';
 
-async function saveToSheet(name, phone) {
+function saveToSheet(name, phone) {
   var params = new URLSearchParams();
   params.append('name', name);
   params.append('phone', phone);
   params.append('timestamp', new Date().toISOString());
   params.append('source', 'vaithra_onboarding');
-  try {
-    await fetch(SHEET, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: params.toString()
-    });
-  } catch(e) {
-    console.warn('Sheet save failed:', e);
-  }
+  return fetch(SHEET, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: params.toString()
+  }).catch(function(e){ console.warn('Sheet save failed:', e); });
 }
 
 /* ═══ INTRO SYSTEM ═══ */
 var obName = '', obPhone = '';
 
-function switchScene(from, to) {
-  var f = document.getElementById(from);
-  var t = document.getElementById(to);
+function switchScene(fromId, toId) {
+  var f = document.getElementById(fromId);
+  var t = document.getElementById(toId);
   f.classList.add('hidden');
   setTimeout(function(){
     f.classList.add('away');
@@ -1005,33 +1035,34 @@ function setDots(step){
 
 function obStep(step){
   if (step === 0) {
-    var v = document.getElementById('oName').value.trim();
-    if (!v || v.length < 2) { document.getElementById('eN').style.display = 'block'; return; }
+    var nameVal = document.getElementById('oName').value.trim();
+    if (!nameVal || nameVal.length < 2) { document.getElementById('eN').style.display = 'block'; return; }
     document.getElementById('eN').style.display = 'none';
-    obName = v;
+    obName = nameVal;
     document.getElementById('ob0').style.display = 'none';
     document.getElementById('ob1').style.display = 'block';
     setDots(1);
+    document.getElementById('oPhone').focus();
   } else if (step === 1) {
-    var v = document.getElementById('oPhone').value.replace(/\D/g, '');
-    if (v.length < 10) { document.getElementById('eP').style.display = 'block'; return; }
+    var phoneVal = document.getElementById('oPhone').value.replace(/\D/g, '');
+    if (phoneVal.length < 10) { document.getElementById('eP').style.display = 'block'; return; }
     document.getElementById('eP').style.display = 'none';
-    obPhone = v;
+    obPhone = phoneVal;
     document.getElementById('ob1').style.display = 'none';
     document.getElementById('ob2').style.display = 'block';
     setDots(2);
   }
 }
 
-/* Allow Enter key in inputs */
+/* Enter key in onboarding inputs */
 document.addEventListener('DOMContentLoaded', function(){
-  var nameInp = document.getElementById('oName');
+  var nameInp  = document.getElementById('oName');
   var phoneInp = document.getElementById('oPhone');
-  if (nameInp) nameInp.addEventListener('keydown', function(e){ if(e.key==='Enter') obStep(0); });
+  if (nameInp)  nameInp.addEventListener('keydown',  function(e){ if(e.key==='Enter') obStep(0); });
   if (phoneInp) phoneInp.addEventListener('keydown', function(e){ if(e.key==='Enter') obStep(1); });
 });
 
-async function obSubmit(){
+function obSubmit(){
   var t = document.getElementById('cT').checked;
   var p = document.getElementById('cP').checked;
   if (!t || !p) { document.getElementById('eC').style.display = 'block'; return; }
@@ -1040,17 +1071,15 @@ async function obSubmit(){
   btn.textContent = 'Saving...';
   btn.disabled = true;
 
-  await saveToSheet(obName, obPhone);
-
-  /* Save to localStorage so returning visitors skip intro */
-  try {
-    localStorage.setItem('vaithra_user', JSON.stringify({ name: obName, phone: obPhone }));
-  } catch(e) {
-    console.warn('Could not save to localStorage:', e);
-  }
-
-  document.getElementById('wName').textContent = obName.split(' ')[0];
-  switchScene('scOnboard', 'scWelcome');
+  saveToSheet(obName, obPhone).then(function(){
+    try {
+      localStorage.setItem('vaithra_user', JSON.stringify({ name: obName, phone: obPhone }));
+    } catch(e) {
+      console.warn('Could not save to localStorage:', e);
+    }
+    document.getElementById('wName').textContent = obName.split(' ')[0];
+    switchScene('scOnboard', 'scWelcome');
+  });
 }
 
 function enterSite(){
@@ -1061,25 +1090,21 @@ function enterSite(){
   setTimeout(function(){
     intro.style.display = 'none';
     document.getElementById('site').classList.add('visible');
-    // FIX: Remove no-scroll class, clear inline style
     document.body.classList.remove('no-scroll');
     document.body.style.overflow = '';
     initSite();
   }, 850);
 }
 
-/* ═══ SCROLL LOCK HELPERS ═══ 
-   Always use these instead of directly setting overflow.
-   This prevents the scroll bug from cascading. */
+/* ═══ SCROLL LOCK HELPERS ═══ */
 function lockScroll(){
   document.body.classList.add('no-scroll');
 }
 function unlockScroll(){
-  // Only unlock if no overlays are open
   var applyOpen = document.getElementById('applyOv').classList.contains('open');
-  var hubOpen = document.getElementById('fHub').classList.contains('open');
-  var detOpen = document.getElementById('fDet').classList.contains('open');
-  var mobOpen = document.getElementById('mobDrawer').classList.contains('open');
+  var hubOpen   = document.getElementById('fHub').classList.contains('open');
+  var detOpen   = document.getElementById('fDet').classList.contains('open');
+  var mobOpen   = document.getElementById('mobDrawer').classList.contains('open');
   if (!applyOpen && !hubOpen && !detOpen && !mobOpen) {
     document.body.classList.remove('no-scroll');
     document.body.style.overflow = '';
@@ -1097,8 +1122,8 @@ function initSite(){
 }
 
 function initReveal(){
-  var ob = new IntersectionObserver(function(e){
-    e.forEach(function(x){ if (x.isIntersecting) x.target.classList.add('on'); });
+  var ob = new IntersectionObserver(function(entries){
+    entries.forEach(function(x){ if (x.isIntersecting) x.target.classList.add('on'); });
   }, { threshold: .08, rootMargin: '0px 0px -30px 0px' });
   document.querySelectorAll('.rv,.rl,.rr').forEach(function(el){ ob.observe(el); });
 }
@@ -1106,20 +1131,21 @@ function initReveal(){
 function initNavScroll(){
   var nav = document.getElementById('mainNav');
   window.addEventListener('scroll', function(){
-    nav.style.background = window.scrollY > 60 ? 'rgba(250,250,248,.97)' : 'rgba(250,250,248,.9)';
-  });
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(250,250,248,.97)'
+      : 'rgba(250,250,248,.9)';
+  }, { passive: true });
 }
 
 function initTilt(){
-  document.querySelectorAll('.plat-tile').forEach(function(tile){
+  document.querySelectorAll('.plat-tile:not(.locked)').forEach(function(tile){
     tile.addEventListener('mousemove', function(e){
       var r = tile.getBoundingClientRect();
-      var x = ((e.clientX - r.left) / r.width - .5) * 14;
-      var y = ((e.clientY - r.top) / r.height - .5) * -10;
+      var x = ((e.clientX - r.left) / r.width  - .5) * 14;
+      var y = ((e.clientY - r.top)  / r.height - .5) * -10;
       tile.style.transform = 'translateY(-9px) rotateX(' + y + 'deg) rotateY(' + x + 'deg)';
     });
     tile.addEventListener('mouseleave', function(){ tile.style.transform = ''; });
-    /* Keyboard access for platform tiles */
     tile.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tile.click(); }
     });
@@ -1127,18 +1153,22 @@ function initTilt(){
 }
 
 function initCounters(){
-  var ob = new IntersectionObserver(function(e){
-    e.forEach(function(x){
+  var ob = new IntersectionObserver(function(entries){
+    entries.forEach(function(x){
       if (!x.isIntersecting) return;
       x.target.querySelectorAll('.cnt').forEach(function(c){
-        if (c.dataset.s) return;
-        c.dataset.s = 1;
-        var t = parseInt(c.dataset.t), s = performance.now(), d = 1800;
-        (function tick(n){
-          var p = Math.min((n - s) / d, 1), ep = 1 - Math.pow(1 - p, 4);
-          c.textContent = Math.floor(ep * t);
-          if (p < 1) requestAnimationFrame(tick); else c.textContent = t;
-        })(s);
+        if (c.dataset.started) return;
+        c.dataset.started = '1';
+        var target = parseInt(c.dataset.t, 10);
+        var start  = performance.now();
+        var dur    = 1800;
+        (function tick(now){
+          var prog = Math.min((now - start) / dur, 1);
+          var ease = 1 - Math.pow(1 - prog, 4);
+          c.textContent = Math.floor(ease * target);
+          if (prog < 1) requestAnimationFrame(tick);
+          else c.textContent = target;
+        })(start);
       });
       ob.unobserve(x.target);
     });
@@ -1150,33 +1180,40 @@ function initCounters(){
 function initTicker(){
   var phrases = ['Build Without Noise','Execute Daily','Ship Real Work','Prove It. Build It.','Choose Output'];
   var idx = 0;
-  var cur = document.getElementById('tickerCur');
+  var curEl = document.getElementById('tickerCur');
+  if (!curEl) return;
+
   setInterval(function(){
     idx = (idx + 1) % phrases.length;
-    var next = phrases[idx];
-    var el = document.createElement('span');
-    el.className = 'ticker-word';
-    el.style.cssText = 'position:absolute;top:100%;left:0;width:100%;font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;';
-    el.textContent = next;
-    cur.parentNode.appendChild(el);
-    cur.parentNode.style.position = 'relative';
-    cur.style.transition = 'transform .52s cubic-bezier(.16,1,.3,1),opacity .35s';
-    cur.style.transform = 'translateY(-110%)';
-    cur.style.opacity = '0';
-    el.style.transition = 'transform .52s cubic-bezier(.16,1,.3,1)';
+    var wrap = curEl.parentNode;
+    if (!wrap) return;
+
+    var next = document.createElement('span');
+    next.className = 'ticker-word';
+    next.style.cssText = 'position:absolute;top:100%;left:0;width:100%;font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;';
+    next.textContent = phrases[idx];
+    wrap.style.position = 'relative';
+    wrap.appendChild(next);
+
+    /* animate out current */
+    curEl.style.transition = 'transform .52s cubic-bezier(.16,1,.3,1),opacity .35s';
+    curEl.style.transform  = 'translateY(-110%)';
+    curEl.style.opacity    = '0';
+
+    /* animate in next — double rAF for reliable start */
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        el.style.top = '0';
-        el.style.transform = 'translateY(-100%)';
+        next.style.transition = 'transform .52s cubic-bezier(.16,1,.3,1),top .52s cubic-bezier(.16,1,.3,1)';
+        next.style.top = '0';
       });
     });
+
     setTimeout(function(){
-      if (cur.parentNode) cur.parentNode.removeChild(cur);
-      el.style.position = '';
-      el.style.top = '';
-      el.style.transform = '';
-      el.id = 'tickerCur';
-      cur = el;
+      var old = curEl;
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      next.style.cssText = 'font-style:italic;font-weight:600;color:var(--GDl);white-space:nowrap;line-height:1.05;position:static;';
+      next.id = 'tickerCur';
+      curEl = next;
     }, 540);
   }, 2800);
 }
@@ -1189,7 +1226,7 @@ function openMobMenu(){
   document.getElementById('mobDrawer').classList.add('open');
   var btn = document.getElementById('mobMenuBtn');
   btn.classList.add('open');
-  btn.setAttribute('aria-expanded', 'true');
+  btn.setAttribute('aria-expanded','true');
   lockScroll();
 }
 function closeMobMenu(){
@@ -1197,7 +1234,7 @@ function closeMobMenu(){
   document.getElementById('mobDrawer').classList.remove('open');
   var btn = document.getElementById('mobMenuBtn');
   btn.classList.remove('open');
-  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-expanded','false');
   unlockScroll();
 }
 
@@ -1205,103 +1242,140 @@ function closeMobMenu(){
 function initHeroThree(){
   var cv = document.getElementById('hcv');
   if (!cv || typeof THREE === 'undefined') return;
-  var R = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
-  R.setPixelRatio(Math.min(devicePixelRatio, 2));
-  var S = new THREE.Scene(), C = new THREE.PerspectiveCamera(70, 1, .1, 100);
-  C.position.z = 5;
+  var renderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  var scene  = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(70, 1, .1, 100);
+  camera.position.z = 5;
+
   function resize(){
-    var w = cv.clientWidth, h = cv.clientHeight;
-    R.setSize(w, h, false); C.aspect = w / h; C.updateProjectionMatrix();
+    var w = cv.clientWidth, h = cv.clientHeight || window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
   }
-  resize(); window.addEventListener('resize', resize);
-  var n = 160, geo = new THREE.BufferGeometry(), pos = new Float32Array(n * 3), vel = [];
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  var n = 160;
+  var geo = new THREE.BufferGeometry();
+  var pos = new Float32Array(n * 3);
+  var vel = [];
   for (var i = 0; i < n; i++){
-    pos[i*3] = (Math.random()-.5)*16;
-    pos[i*3+1] = (Math.random()-.5)*14;
-    pos[i*3+2] = (Math.random()-.5)*5;
-    vel.push({ x: (Math.random()-.5)*.003, y: (Math.random()-.5)*.003+.0015 });
+    pos[i*3]   = (Math.random() - .5) * 16;
+    pos[i*3+1] = (Math.random() - .5) * 14;
+    pos[i*3+2] = (Math.random() - .5) * 5;
+    vel.push({ x: (Math.random() - .5) * .003, y: (Math.random() - .5) * .003 + .0015 });
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  S.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x6B7F58, size: .055, transparent: true, opacity: .7 })));
+  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x6B7F58, size: .055, transparent: true, opacity: .7 })));
+
   var lm = new THREE.LineBasicMaterial({ color: 0x4A5C3A, opacity: .06, transparent: true });
-  for (var i = -8; i <= 8; i += 2.4){
-    S.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-10,i,0),new THREE.Vector3(10,i,0)]),lm));
-    S.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i,-10,0),new THREE.Vector3(i,10,0)]),lm));
+  for (var gi = -8; gi <= 8; gi += 2.4){
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-10, gi, 0), new THREE.Vector3(10, gi, 0)]), lm));
+    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gi, -10, 0), new THREE.Vector3(gi, 10, 0)]), lm));
   }
-  S.add(new THREE.AmbientLight(0xfaf8ee, .5));
-  var dl = new THREE.DirectionalLight(0x9aad80, 1.2); dl.position.set(3,4,5); S.add(dl);
+
+  scene.add(new THREE.AmbientLight(0xfaf8ee, .5));
+  var dl = new THREE.DirectionalLight(0x9aad80, 1.2);
+  dl.position.set(3, 4, 5);
+  scene.add(dl);
+
   var mat = new THREE.MeshStandardMaterial({ color: 0x4A5C3A, roughness: .45, metalness: .18, transparent: true, opacity: .2 });
-  var cube = new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9), mat); cube.position.set(4,1.5,-1); S.add(cube);
-  var torus = new THREE.Mesh(new THREE.TorusGeometry(.7,.12,10,40), mat); torus.position.set(-4.5,-1.2,-1); S.add(torus);
-  var cone = new THREE.Mesh(new THREE.ConeGeometry(.55,1.1,4), mat); cone.position.set(3.5,-2,-1.5); S.add(cone);
-  var sphere = new THREE.Mesh(new THREE.SphereGeometry(.48,14,14), mat); sphere.position.set(-3.5,1.8,-1); S.add(sphere);
+  var cube   = new THREE.Mesh(new THREE.BoxGeometry(.9, .9, .9), mat);          cube.position.set(4, 1.5, -1);    scene.add(cube);
+  var torus  = new THREE.Mesh(new THREE.TorusGeometry(.7, .12, 10, 40), mat);   torus.position.set(-4.5, -1.2, -1); scene.add(torus);
+  var cone   = new THREE.Mesh(new THREE.ConeGeometry(.55, 1.1, 4), mat);        cone.position.set(3.5, -2, -1.5);  scene.add(cone);
+  var sphere = new THREE.Mesh(new THREE.SphereGeometry(.48, 14, 14), mat);      sphere.position.set(-3.5, 1.8, -1); scene.add(sphere);
+
   var t = 0;
   (function anim(){
-    requestAnimationFrame(anim); t += .008;
-    var p = geo.attributes.position.array;
-    for (var i = 0; i < n; i++){
-      p[i*3] += vel[i].x; p[i*3+1] += vel[i].y;
-      if (p[i*3+1] > 8) p[i*3+1] = -8;
-      if (p[i*3] > 9) p[i*3] = -9; if (p[i*3] < -9) p[i*3] = 9;
+    requestAnimationFrame(anim);
+    t += .008;
+    var pa = geo.attributes.position.array;
+    for (var ii = 0; ii < n; ii++){
+      pa[ii*3]   += vel[ii].x;
+      pa[ii*3+1] += vel[ii].y;
+      if (pa[ii*3+1] > 8)  pa[ii*3+1] = -8;
+      if (pa[ii*3]   > 9)  pa[ii*3]   = -9;
+      if (pa[ii*3]   < -9) pa[ii*3]   =  9;
     }
     geo.attributes.position.needsUpdate = true;
-    cube.rotation.x += .007; cube.rotation.y += .01; cube.position.y = 1.5 + Math.sin(t*.7)*.22;
-    torus.rotation.x += .008; torus.rotation.z += .006; torus.position.y = -1.2 + Math.cos(t*.8)*.18;
-    cone.rotation.y += .009; cone.position.y = -2 + Math.sin(t*.6+1)*.16;
-    sphere.position.y = 1.8 + Math.cos(t*.9)*.2;
-    R.render(S, C);
+    cube.rotation.x   += .007; cube.rotation.y  += .01;  cube.position.y  = 1.5  + Math.sin(t * .7) * .22;
+    torus.rotation.x  += .008; torus.rotation.z += .006; torus.position.y = -1.2 + Math.cos(t * .8) * .18;
+    cone.rotation.y   += .009;                            cone.position.y  = -2   + Math.sin(t * .6 + 1) * .16;
+    sphere.position.y  = 1.8 + Math.cos(t * .9) * .2;
+    renderer.render(scene, camera);
   })();
 }
 
 /* ═══ FEATURE DATA ═══ */
 var FEATURES = [
-  { id:'ip', badge:'core', bc:'bc', title:'Idea Promotion', sub:'Visibility Engine', page:'idea-promotion.html',
+  { id:'ip', badge:'core', bc:'bc', title:'Idea Promotion', sub:'Visibility Engine', page:'idea-promotion.html', locked:false,
     desc:'Founders promote their validated ideas inside the Vaithra network, reaching vetted collaborators, early adopters, and co-founders across all city nodes.',
     items:[{t:'Targeted Distribution',p:'Your idea reaches founders filtered by city, vertical, and stage.'},{t:'Traction Signals',p:'Ideas with PoB proof get higher placement automatically.'},{t:'Rep Amplification',p:'City Reps amplify promoted ideas in local communities.'}],
     shape:'pyramid', color:0x4A5C3A },
-  { id:'cr', badge:'core', bc:'bc', title:'City Representatives', sub:'Ground Network', page:'city-reps.html',
+  { id:'cr', badge:'core', bc:'bc', title:'City Representatives', sub:'Ground Network', page:'city-reps.html', locked:false,
     desc:'Local nodes in every major city. Reps organize meetups, bridge district builders with the ecosystem, and receive free idea promotion.',
     items:[{t:'Free Idea Promotion',p:'Every city rep gets their venture promoted across the full network.'},{t:'Event Authority',p:'Reps can run official Vaithra-branded events in their city.'},{t:'Direct Line',p:'Reps have a direct channel with Vaithra core.'}],
     shape:'network', color:0x6B7F58 },
-  { id:'dk', badge:'core', bc:'bc', title:'Daily Knowledge Drop', sub:'Daily Signal', page:'daily-drop.html',
+  { id:'dk', badge:'core', bc:'bc', title:'Daily Knowledge Drop', sub:'Daily Signal', page:'daily-drop.html', locked:false,
     desc:'One curated lesson, resource, or topic every single day — for early-stage founders navigating product, growth, fundraising, and team building.',
     items:[{t:'Curated Daily',p:'Each drop is researched and written by the Vaithra core team.'},{t:'Email and WhatsApp',p:'Delivered before 7 AM every morning.'},{t:'Archive Access',p:'Verified members get access to the full archive.'}],
     shape:'sphere', color:0x2E3A24 },
-  { id:'pb', badge:'core', bc:'bc', title:'Proof of Build (PoB)', sub:'Accountability Engine', page:'index.html',
+  { id:'pb', badge:'core', bc:'bc', title:'Proof of Build (PoB)', sub:'Accountability Engine', page:'index.html', locked:false,
     desc:'A structured accountability system where founders document and verify real build progress — not just plans.',
     items:[{t:'Weekly Check-ins',p:'Log what you shipped, what you learned, what blocked you.'},{t:'PoB Score',p:'Your consistency score — the only metric Vaithra cares about.'},{t:'Peer Verification',p:'Community members verify your build claims.'}],
     shape:'blocks', color:0x2E3A24 },
-  { id:'mg', badge:'new', bc:'bn', title:'Micro-Grant Rounds', sub:'New Feature', page:'micro-grants.html',
+  /* ★ LOCKED ★ */
+  { id:'mg', badge:'new', bc:'bn', title:'Micro-Grant Rounds', sub:'Coming Soon', page:'micro-grants.html', locked:true,
     desc:'Community-backed micro-funding for vetted founders with real traction. ₹5K to ₹1L — gated by PoB score.',
     items:[{t:'Three Tiers',p:'₹5K seed, ₹25K traction, ₹1L verified builder grant.'},{t:'PoB-Gated',p:'Minimum PoB score required to apply. No shortcuts.'},{t:'Community Vote',p:'Larger grants are allocated by community vote.'}],
     shape:'coin', color:0xB8A060 },
-  { id:'bw', badge:'new', bc:'bn', title:'Build in Public Wall', sub:'New Feature', page:'build-wall.html',
+  { id:'bw', badge:'new', bc:'bn', title:'Build in Public Wall', sub:'New Feature', page:'build-wall.html', locked:false,
     desc:'A live public wall where verified founders share real updates, wins, failures, and milestones.',
     items:[{t:'Verified Posts Only',p:'Only Vaithra Verified founders can post.'},{t:'Tag System',p:'Posts tagged by stage, vertical, and milestone type.'},{t:'Weekly Highlights',p:'Best updates featured in the weekly digest.'}],
     shape:'wall', color:0x6B7F58 },
-  { id:'vb', badge:'premium', bc:'bpr', title:'Verification Badge', sub:'Premium Credential', page:'verify.html',
+  { id:'vb', badge:'premium', bc:'bpr', title:'Verification Badge', sub:'Premium Credential', page:'verify.html', locked:false,
     desc:'A community-issued credential for founders who pass protocol checks — signaling authenticity and network standing.',
     items:[{t:'Identity Check',p:'Real person, real founder. No anonymous profiles.'},{t:'Build Check',p:'At least one completed PoB milestone confirmed by community.'},{t:'Profile Visibility',p:'Badge displayed on profile and grant applications.'}],
     shape:'badge', color:0x4A5C3A },
-  { id:'oo', badge:'core', bc:'bc', title:'Open Organization', sub:'Core Structure', page:'vaithra-open.html',
+  { id:'oo', badge:'core', bc:'bc', title:'Open Organization', sub:'Core Structure', page:'vaithra-open.html', locked:false,
     desc:'Participate, contribute, and run events under the Vaithra umbrella. No gatekeeping, just commitment to founder-first culture.',
     items:[{t:'Run Events',p:'Any member can organize Vaithra-branded events in their city.'},{t:'Contribution Vault',p:'Add guides, resources, and templates to the community vault.'},{t:'Rep Pathway',p:'Active contributors can apply to become City Representatives.'}],
     shape:'torus', color:0x4A5C3A },
 ];
 
-var curFPage = null;
+var curFPage  = null;
 var hubIsOpen = false;
 
 function buildGrid(){
   var g = document.getElementById('fGrid');
   if (!g || g.children.length) return;
+
   FEATURES.forEach(function(f){
     var el = document.createElement('div');
-    el.className = 'ft-card';
-    el.innerHTML = '<canvas class="ft-cv" id="ftc-' + f.id + '" width="56" height="56"></canvas><span class="ft-badge ' + f.bc + '">' + f.badge + '</span><h3>' + f.title + '</h3><p>' + f.desc.substring(0,90) + '...</p>';
-    el.onclick = function(){ openDet(f); };
+
+    if (f.locked) {
+      el.className = 'ft-card locked-card';
+      el.setAttribute('aria-disabled', 'true');
+      el.innerHTML =
+        '<canvas class="ft-cv" id="ftc-' + f.id + '" width="56" height="56"></canvas>' +
+        '<span class="ft-badge ' + f.bc + '">' + f.badge + '</span>' +
+        '<h3>' + f.title + '</h3>' +
+        '<p>' + f.desc.substring(0, 90) + '...</p>' +
+        '<div class="ft-locked-tag">&#9679; System maintenance — relaunching after April</div>';
+    } else {
+      el.className = 'ft-card';
+      el.innerHTML =
+        '<canvas class="ft-cv" id="ftc-' + f.id + '" width="56" height="56"></canvas>' +
+        '<span class="ft-badge ' + f.bc + '">' + f.badge + '</span>' +
+        '<h3>' + f.title + '</h3>' +
+        '<p>' + f.desc.substring(0, 90) + '...</p>';
+      el.onclick = function(){ openDet(f); };
+    }
+
     g.appendChild(el);
-    setTimeout(function(){ makeMini(document.getElementById('ftc-' + f.id), f.shape, f.color); }, 60);
+    setTimeout(function(){ makeMini(document.getElementById('ftc-' + f.id), f.shape, f.color); }, 80);
   });
 }
 
@@ -1323,146 +1397,172 @@ function closeHub(){
 }
 
 /* ═══ FEATURE DETAIL THREE.JS ═══ */
-var fdR = null, fdRaf = null;
+var fdRenderer = null, fdRaf = null;
 
 function openDet(f){
   curFPage = f.page;
   closeHub();
-  document.getElementById('fdlbl').textContent = f.sub;
-  document.getElementById('fdey').textContent = f.sub;
-  document.getElementById('fdttl').textContent = f.title;
+  document.getElementById('fdlbl').textContent  = f.sub;
+  document.getElementById('fdey').textContent   = f.sub;
+  document.getElementById('fdttl').textContent  = f.title;
   document.getElementById('fddesc').textContent = f.desc;
-  document.getElementById('fditems').innerHTML = f.items.map(function(it){
+  document.getElementById('fditems').innerHTML  = f.items.map(function(it){
     return '<div class="fd-item"><div class="fd-dot"></div><div><h5>' + it.t + '</h5><p>' + it.p + '</p></div></div>';
   }).join('');
   document.getElementById('fDet').classList.add('open');
   lockScroll();
-  if (fdRaf) cancelAnimationFrame(fdRaf);
-  if (fdR) { try { fdR.dispose(); } catch(e){} fdR = null; }
+
+  /* Clean up previous renderer */
+  if (fdRaf) { cancelAnimationFrame(fdRaf); fdRaf = null; }
+  if (fdRenderer) { try { fdRenderer.dispose(); } catch(e){} fdRenderer = null; }
+
   setTimeout(function(){
     var cv = document.getElementById('fdcv');
-    var w = cv.offsetWidth || 380, h = cv.offsetHeight || 460;
-    fdR = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
-    fdR.setPixelRatio(Math.min(devicePixelRatio, 2)); fdR.setSize(w, h);
-    var sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(54, w/h, .1, 100); cam.position.z = 4.8;
+    if (!cv || typeof THREE === 'undefined') return;
+    var w = cv.offsetWidth  || 380;
+    var h = cv.offsetHeight || 460;
+
+    fdRenderer = new THREE.WebGLRenderer({ canvas: cv, alpha: true, antialias: true });
+    fdRenderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    fdRenderer.setSize(w, h);
+
+    var sc  = new THREE.Scene();
+    var cam = new THREE.PerspectiveCamera(54, w / h, .1, 100);
+    cam.position.z = 4.8;
+
     sc.add(new THREE.AmbientLight(0xfaf8ee, .38));
-    var dl = new THREE.DirectionalLight(0xfaf8ee, 1.5); dl.position.set(3,4,5); sc.add(dl);
-    var dl2 = new THREE.DirectionalLight(0x9aad80, .55); dl2.position.set(-3,-2,-2); sc.add(dl2);
-    var mat = new THREE.MeshStandardMaterial({ color: f.color, roughness: .3, metalness: .22, transparent: true, opacity: .88 });
+    var dl1 = new THREE.DirectionalLight(0xfaf8ee, 1.5); dl1.position.set(3, 4, 5); sc.add(dl1);
+    var dl2 = new THREE.DirectionalLight(0x9aad80, .55); dl2.position.set(-3, -2, -2); sc.add(dl2);
+
+    var mat  = new THREE.MeshStandardMaterial({ color: f.color, roughness: .3, metalness: .22, transparent: true, opacity: .88 });
     var mesh = makeBigShape(f.shape, mat, f.color, sc);
-    var pGeo = new THREE.BufferGeometry(), pPos = new Float32Array(60*3);
-    for (var i = 0; i < 60; i++){
-      pPos[i*3] = (Math.random()-.5)*9;
-      pPos[i*3+1] = (Math.random()-.5)*9;
-      pPos[i*3+2] = (Math.random()-.5)*4;
+
+    var pGeo = new THREE.BufferGeometry();
+    var pPos = new Float32Array(60 * 3);
+    for (var pi = 0; pi < 60; pi++){
+      pPos[pi*3]   = (Math.random() - .5) * 9;
+      pPos[pi*3+1] = (Math.random() - .5) * 9;
+      pPos[pi*3+2] = (Math.random() - .5) * 4;
     }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
     sc.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x8EA070, size: .055, transparent: true, opacity: .3 })));
-    var mx = { x:0, y:0 };
+
+    var mx = { x: 0, y: 0 };
     cv.onmousemove = function(e){
       var r = cv.getBoundingClientRect();
-      mx.x = ((e.clientX - r.left) / r.width - .5) * 2;
-      mx.y = -((e.clientY - r.top) / r.height - .5) * 2;
+      mx.x =  ((e.clientX - r.left) / r.width  - .5) * 2;
+      mx.y = -((e.clientY - r.top)  / r.height - .5) * 2;
     };
+
     (function anim(){
       fdRaf = requestAnimationFrame(anim);
-      if (mesh) { mesh.rotation.y += .008; mesh.rotation.x += (mx.y*.35 - mesh.rotation.x)*.05; }
-      fdR.render(sc, cam);
+      if (mesh) {
+        mesh.rotation.y += .008;
+        mesh.rotation.x += (mx.y * .35 - mesh.rotation.x) * .05;
+      }
+      fdRenderer.render(sc, cam);
     })();
   }, 60);
 }
 
 function makeBigShape(shape, mat, color, sc){
   var mesh;
-  if (shape==='sphere') mesh = new THREE.Mesh(new THREE.SphereGeometry(1.35,32,32), mat);
-  else if (shape==='pyramid') mesh = new THREE.Mesh(new THREE.ConeGeometry(1.15,2.1,4), mat);
-  else if (shape==='coin') mesh = new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,.26,36), mat);
-  else if (shape==='torus') mesh = new THREE.Mesh(new THREE.TorusGeometry(1.1,.36,16,80), mat);
-  else if (shape==='badge'){
+  if (shape === 'sphere')   mesh = new THREE.Mesh(new THREE.SphereGeometry(1.35, 32, 32), mat);
+  else if (shape === 'pyramid') mesh = new THREE.Mesh(new THREE.ConeGeometry(1.15, 2.1, 4), mat);
+  else if (shape === 'coin')    mesh = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, .26, 36), mat);
+  else if (shape === 'torus')   mesh = new THREE.Mesh(new THREE.TorusGeometry(1.1, .36, 16, 80), mat);
+  else if (shape === 'badge'){
     var g = new THREE.Group();
-    g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3,1.3,.26,6), mat));
-    var sm = new THREE.Mesh(new THREE.SphereGeometry(.36,16,16), new THREE.MeshStandardMaterial({ color:0xffffff, metalness:.4, roughness:.2 }));
+    g.add(new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, .26, 6), mat));
+    var sm = new THREE.Mesh(new THREE.SphereGeometry(.36, 16, 16), new THREE.MeshStandardMaterial({ color:0xffffff, metalness:.4, roughness:.2 }));
     sm.position.y = .32; g.add(sm); mesh = g;
-  } else if (shape==='blocks'){
+  } else if (shape === 'blocks'){
     var g = new THREE.Group();
-    [0x4A5C3A,0x6B7F58,0x2E3A24,0x8EA070,0x4A5C3A].forEach(function(c, i){
-      var bk = new THREE.Mesh(new THREE.BoxGeometry(1.15,.42,1.15), new THREE.MeshStandardMaterial({ color:c, roughness:.5, metalness:.1 }));
-      bk.position.y = i*.52 - 1.1; g.add(bk);
+    [0x4A5C3A, 0x6B7F58, 0x2E3A24, 0x8EA070, 0x4A5C3A].forEach(function(c, i){
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(1.15, .42, 1.15), new THREE.MeshStandardMaterial({ color:c, roughness:.5, metalness:.1 }));
+      bk.position.y = i * .52 - 1.1; g.add(bk);
     }); mesh = g;
-  } else if (shape==='network'){
+  } else if (shape === 'network'){
     var g = new THREE.Group();
-    var nm = new THREE.MeshStandardMaterial({ color:color, roughness:.4 });
+    var nm = new THREE.MeshStandardMaterial({ color: color, roughness:.4 });
     var lm = new THREE.LineBasicMaterial({ color:0x8EA070, transparent:true, opacity:.45 });
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.42,14,14), nm));
-    var ps = [];
-    for (var i = 0; i < 6; i++){
-      var a = (i/6)*Math.PI*2;
-      var sp = new THREE.Mesh(new THREE.SphereGeometry(.24,12,12), nm);
-      sp.position.set(Math.cos(a)*1.4, Math.sin(a)*1.4, 0); g.add(sp); ps.push(sp.position.clone());
+    g.add(new THREE.Mesh(new THREE.SphereGeometry(.42, 14, 14), nm));
+    var nps = [];
+    for (var ni = 0; ni < 6; ni++){
+      var a = (ni / 6) * Math.PI * 2;
+      var sp = new THREE.Mesh(new THREE.SphereGeometry(.24, 12, 12), nm);
+      sp.position.set(Math.cos(a) * 1.4, Math.sin(a) * 1.4, 0); g.add(sp); nps.push(sp.position.clone());
     }
-    ps.forEach(function(p){ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), p]), lm)); });
+    nps.forEach(function(np){ g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), np]), lm)); });
     mesh = g;
-  } else if (shape==='wall'){
+  } else if (shape === 'wall'){
     var g = new THREE.Group();
-    [[-1,.58],[-.2,.58],[.6,.58],[-.6,.1],[.2,.1],[-1,-.38],[-.2,-.38],[.6,-.38]].forEach(function(r){
-      var bk = new THREE.Mesh(new THREE.BoxGeometry(.7,.36,.18), mat);
-      bk.position.set(r[0], r[1], 0); g.add(bk);
+    [[-1,.58],[-.2,.58],[.6,.58],[-.6,.1],[.2,.1],[-1,-.38],[-.2,-.38],[.6,-.38]].forEach(function(row){
+      var bk = new THREE.Mesh(new THREE.BoxGeometry(.7, .36, .18), mat);
+      bk.position.set(row[0], row[1], 0); g.add(bk);
     }); mesh = g;
   } else {
-    mesh = new THREE.Mesh(new THREE.BoxGeometry(1.6,1.6,1.6), mat);
+    mesh = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.6, 1.6), mat);
   }
-  sc.add(mesh); return mesh;
+  sc.add(mesh);
+  return mesh;
 }
 
 function makeMini(canvas, shape, color){
   if (!canvas || typeof THREE === 'undefined') return;
-  var r = new THREE.WebGLRenderer({ canvas:canvas, alpha:true, antialias:true });
-  r.setPixelRatio(Math.min(devicePixelRatio, 2)); r.setSize(56, 56);
-  var sc = new THREE.Scene(), cam = new THREE.PerspectiveCamera(52, 1, .1, 100); cam.position.z = 3;
-  sc.add(new THREE.AmbientLight(0xffffff, .5));
-  var dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(2,3,4); sc.add(dl);
-  var mat = new THREE.MeshStandardMaterial({ color:color, roughness:.4, metalness:.15 });
-  var mesh;
-  if (shape==='sphere') mesh = new THREE.Mesh(new THREE.SphereGeometry(.8,16,16), mat);
-  else if (shape==='pyramid') mesh = new THREE.Mesh(new THREE.ConeGeometry(.7,1.3,4), mat);
-  else if (shape==='coin') mesh = new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.16,28), mat);
-  else if (shape==='torus') mesh = new THREE.Mesh(new THREE.TorusGeometry(.6,.22,10,44), mat);
-  else if (shape==='badge'){
-    var g = new THREE.Group();
-    g.add(new THREE.Mesh(new THREE.CylinderGeometry(.75,.75,.16,6), mat));
-    var sm = new THREE.Mesh(new THREE.SphereGeometry(.2,10,10), new THREE.MeshStandardMaterial({ color:0xffffff, metalness:.3 }));
-    sm.position.y = .18; g.add(sm); mesh = g;
-  } else if (shape==='blocks'){
-    var g = new THREE.Group();
-    [0x4A5C3A,0x6B7F58,0x2E3A24].forEach(function(c, i){
-      var bk = new THREE.Mesh(new THREE.BoxGeometry(.65,.28,.65), new THREE.MeshStandardMaterial({ color:c, roughness:.5 }));
-      bk.position.y = i*.32 - .32; g.add(bk);
-    }); mesh = g;
-  } else if (shape==='network'){
-    var g = new THREE.Group();
-    var nm = new THREE.MeshStandardMaterial({ color:color });
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(.24,10,10), nm));
-    for (var i = 0; i < 5; i++){
-      var a = (i/5)*Math.PI*2;
-      var sp = new THREE.Mesh(new THREE.SphereGeometry(.14,8,8), nm);
-      sp.position.set(Math.cos(a)*.68, Math.sin(a)*.68, 0); g.add(sp);
-    } mesh = g;
-  } else if (shape==='wall'){
-    var g = new THREE.Group();
-    [[-.5,.28],[.1,.28],[.6,.28],[-.2,-.05],[.45,-.05],[-.5,-.38],[.1,-.38],[.6,-.38]].forEach(function(row){
-      var bk = new THREE.Mesh(new THREE.BoxGeometry(.44,.22,.1), mat);
-      bk.position.set(row[0], row[1], 0); g.add(bk);
-    }); mesh = g;
-  } else {
-    mesh = new THREE.Mesh(new THREE.BoxGeometry(.9,.9,.9), mat);
-  }
-  sc.add(mesh);
-  (function anim(){ requestAnimationFrame(anim); if (mesh) mesh.rotation.y += .013; r.render(sc, cam); })();
+  /* Ensure canvas is visible/sized before rendering */
+  requestAnimationFrame(function(){
+    var r = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    r.setPixelRatio(Math.min(devicePixelRatio, 2));
+    r.setSize(56, 56);
+    var sc  = new THREE.Scene();
+    var cam = new THREE.PerspectiveCamera(52, 1, .1, 100);
+    cam.position.z = 3;
+    sc.add(new THREE.AmbientLight(0xffffff, .5));
+    var dl = new THREE.DirectionalLight(0xffffff, 1.2); dl.position.set(2, 3, 4); sc.add(dl);
+    var mat  = new THREE.MeshStandardMaterial({ color: color, roughness: .4, metalness: .15 });
+    var mesh;
+    if (shape === 'sphere')       mesh = new THREE.Mesh(new THREE.SphereGeometry(.8, 16, 16), mat);
+    else if (shape === 'pyramid') mesh = new THREE.Mesh(new THREE.ConeGeometry(.7, 1.3, 4), mat);
+    else if (shape === 'coin')    mesh = new THREE.Mesh(new THREE.CylinderGeometry(.85, .85, .16, 28), mat);
+    else if (shape === 'torus')   mesh = new THREE.Mesh(new THREE.TorusGeometry(.6, .22, 10, 44), mat);
+    else if (shape === 'badge'){
+      var g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.CylinderGeometry(.75, .75, .16, 6), mat));
+      var sm = new THREE.Mesh(new THREE.SphereGeometry(.2, 10, 10), new THREE.MeshStandardMaterial({ color:0xffffff, metalness:.3 }));
+      sm.position.y = .18; g.add(sm); mesh = g;
+    } else if (shape === 'blocks'){
+      var g = new THREE.Group();
+      [0x4A5C3A, 0x6B7F58, 0x2E3A24].forEach(function(c, i){
+        var bk = new THREE.Mesh(new THREE.BoxGeometry(.65, .28, .65), new THREE.MeshStandardMaterial({ color:c, roughness:.5 }));
+        bk.position.y = i * .32 - .32; g.add(bk);
+      }); mesh = g;
+    } else if (shape === 'network'){
+      var g = new THREE.Group();
+      var nm = new THREE.MeshStandardMaterial({ color: color });
+      g.add(new THREE.Mesh(new THREE.SphereGeometry(.24, 10, 10), nm));
+      for (var mi = 0; mi < 5; mi++){
+        var a = (mi / 5) * Math.PI * 2;
+        var sp = new THREE.Mesh(new THREE.SphereGeometry(.14, 8, 8), nm);
+        sp.position.set(Math.cos(a) * .68, Math.sin(a) * .68, 0); g.add(sp);
+      } mesh = g;
+    } else if (shape === 'wall'){
+      var g = new THREE.Group();
+      [[-.5,.28],[.1,.28],[.6,.28],[-.2,-.05],[.45,-.05],[-.5,-.38],[.1,-.38],[.6,-.38]].forEach(function(row){
+        var bk = new THREE.Mesh(new THREE.BoxGeometry(.44, .22, .1), mat);
+        bk.position.set(row[0], row[1], 0); g.add(bk);
+      }); mesh = g;
+    } else {
+      mesh = new THREE.Mesh(new THREE.BoxGeometry(.9, .9, .9), mat);
+    }
+    sc.add(mesh);
+    (function anim(){ requestAnimationFrame(anim); if (mesh) mesh.rotation.y += .013; r.render(sc, cam); })();
+  });
 }
 
 function closeDet(){
   document.getElementById('fDet').classList.remove('open');
-  if (fdRaf) cancelAnimationFrame(fdRaf);
+  if (fdRaf) { cancelAnimationFrame(fdRaf); fdRaf = null; }
   unlockScroll();
 }
 
@@ -1489,14 +1589,17 @@ document.addEventListener('keydown', function(e){
 });
 
 /* ═══ BOOT ═══ */
-/* Only run splash for new users (returning users handled at top) */
-if (!localStorage.getItem('vaithra_user')) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runSplash);
-  } else {
-    runSplash();
+(function(){
+  var hasUser = false;
+  try { hasUser = !!localStorage.getItem('vaithra_user'); } catch(e){}
+  if (!hasUser) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runSplash);
+    } else {
+      runSplash();
+    }
   }
-}
+})();
 </script>
 </body>
 </html>
