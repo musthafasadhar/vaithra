@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>vaithra. — Under Construction</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,35 +13,31 @@
     --dark:#2b2a28;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{width:100%; height:100%;}
+  html,body{width:100%; min-height:100vh;}
+  
   body{
     font-family:'Poppins', sans-serif;
     overflow-x:hidden;
+    background: url('images/hero.jpg') no-repeat center center fixed;
+    background-size: cover;
   }
 
   .page{
     position:relative;
     width:100%;
     min-height:100vh;
-    background:linear-gradient(180deg,
-        #eaf5f8 0%,
-        #cdeaf0 8%,
-        #a9dfe8 16%,
-        #7fd0dd 26%,
-        #57c0d4 38%,
-        #3fb0c8 50%,
-        #2f9fbb 62%,
-        #2590ac 74%,
-        #1f7c96 86%,
-        #1a6a82 100%);
-    overflow:hidden;
+    background: rgba(0, 0, 0, 0.15); /* Soft overlay to keep text readable */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 40px;
   }
 
   /* ---------- Header ---------- */
   header{
     position:relative;
     z-index:5;
-    padding:28px 0 0 32px;
+    padding:32px 0 0 40px;
   }
   .logo{
     font-family:'Syne', sans-serif;
@@ -49,6 +46,7 @@
     color:var(--blue);
     line-height:1;
     letter-spacing:-1px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
   .tagline{
     font-family:'Poppins', sans-serif;
@@ -56,7 +54,7 @@
     font-size:11px;
     letter-spacing:2px;
     color:#1c1c1c;
-    margin-top:2px;
+    margin-top:4px;
     margin-left:3px;
   }
 
@@ -64,7 +62,7 @@
   .hero-text{
     position:relative;
     z-index:5;
-    padding:70px 0 0 70px;
+    padding:40px 0 40px 40px;
     max-width:640px;
   }
   .hero-text h1{
@@ -73,28 +71,19 @@
     font-size:44px;
     color:var(--dark);
     line-height:1.25;
-    text-shadow: 1px 1px 0 rgba(255,255,255,0.15);
+    text-shadow: 0 1px 4px rgba(255,255,255,0.6);
   }
   .hero-text p.blurb{
     font-family:'Poppins', sans-serif;
     font-style:italic;
     font-weight:500;
     font-size:13.5px;
-    line-height:1.55;
-    color:#f4fbfc;
-    max-width:460px;
+    line-height:1.6;
+    color:#ffffff;
+    max-width:480px;
     margin-top:18px;
-    text-shadow:0 1px 3px rgba(0,0,0,0.25);
+    text-shadow:0 1px 4px rgba(0,0,0,0.6);
   }
-
-  /* ---------- Scene (SVG) ---------- */
-.custom-hero-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 16px; /* Smooth rounded corners */
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Subtle shadow effect */
-  object-fit: cover;
-}
 
   /* ---------- Countdown timer (split-flap style) ---------- */
   .timer-wrap{
@@ -105,8 +94,7 @@
     align-items:flex-start;
     gap:26px;
     flex-wrap:wrap;
-    padding:0 20px 40px;
-    margin-top:-10px;
+    padding:20px 20px 40px;
   }
   .timer-group{
     display:flex;
@@ -147,7 +135,7 @@
     font-size:15px;
     color:#f4fbfc;
     margin-top:10px;
-    text-shadow:0 1px 3px rgba(0,0,0,0.25);
+    text-shadow:0 1px 3px rgba(0,0,0,0.5);
   }
   .timer-sep{
     display:flex;
@@ -162,7 +150,7 @@
     height:5px;
     border-radius:50%;
     background:#f4fbfc;
-    opacity:0.6;
+    opacity:0.8;
   }
 
   /* ---------- Waitlist ---------- */
@@ -170,11 +158,12 @@
     position:relative;
     z-index:5;
     max-width:480px;
-    margin:0 auto 60px;
+    margin:0 auto 40px;
     padding:32px 30px;
     background:rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
     border-radius:18px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.18);
+    box-shadow:0 12px 30px rgba(0,0,0,0.25);
     text-align:center;
   }
   .waitlist h2{
@@ -236,20 +225,21 @@
     position:relative;
     z-index:5;
     text-align:center;
-    padding:0 20px 50px;
+    padding:0 20px 20px;
   }
   .contact h3{
     font-family:'Baloo 2', sans-serif;
     font-weight:700;
     font-size:19px;
     color:#fff;
-    text-shadow:0 1px 3px rgba(0,0,0,0.25);
+    text-shadow:0 1px 4px rgba(0,0,0,0.5);
   }
   .contact p{
     font-family:'Poppins', sans-serif;
     font-size:13px;
     color:#eafcff;
     margin-top:6px;
+    text-shadow:0 1px 3px rgba(0,0,0,0.4);
   }
   .contact .links{
     margin-top:14px;
@@ -265,25 +255,27 @@
     color:#fff;
     text-decoration:none;
     padding:8px 18px;
-    border:1.5px solid rgba(255,255,255,0.6);
+    border:1.5px solid rgba(255,255,255,0.7);
     border-radius:30px;
+    background: rgba(0,0,0,0.15);
     transition:background 0.2s;
   }
   .contact .links a:hover{
-    background:rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.25);
   }
 
   @media (max-width:700px){
+    header{padding:20px 0 0 20px;}
     .logo{font-size:38px;}
-    .hero-text{padding:40px 0 0 28px;}
+    .hero-text{padding:30px 20px 20px 20px;}
     .hero-text h1{font-size:26px;}
-    .hero-text p.blurb{font-size:12px; max-width:90%;}
+    .hero-text p.blurb{font-size:12px; max-width:100%;}
     .flip-card{width:36px; height:52px;}
     .flip-card .digit{font-size:36px; line-height:52px;}
     .timer-group .lbl{font-size:11px;}
     .timer-wrap{gap:14px;}
     .timer-group .digits{gap:3px;}
-    .waitlist{margin:0 16px 50px;}
+    .waitlist{margin:0 16px 40px;}
   }
 </style>
 </head>
@@ -291,74 +283,74 @@
 
 <div class="page">
 
-  <header>
-    <div class="logo">vaithra.</div>
-    <div class="tagline">INDIAN FOUNDER'S DESTINATION</div>
-  </header>
+  <div>
+    <header>
+      <div class="logo">vaithra.</div>
+      <div class="tagline">INDIAN FOUNDER'S DESTINATION</div>
+    </header>
 
-  <div class="hero-text">
-    <h1>We are under construction!!<br>will update you soon !!</h1>
-    <p class="blurb">Vaithra is building India's home for founders — a place to find your people, share what you're building, and grow together. We're starting with a tour across all 28 districts of Andhra Pradesh, before opening it up to founders in every state.</p>
-  </div>
-
- <div class="custom-hero-image">
-  <img src="images/hero.jpg" alt="Vaithra Preview">
-</div>
-
-  <!-- Countdown timer (split-flap style) -->
-  <div class="timer-wrap" id="timer">
-    <div class="timer-group">
-      <div class="digits">
-        <div class="flip-card"><div class="digit" id="d-days-0">0</div></div>
-        <div class="flip-card"><div class="digit" id="d-days-1">0</div></div>
-      </div>
-      <div class="lbl">Days</div>
-    </div>
-    <div class="timer-sep"><span></span><span></span></div>
-    <div class="timer-group">
-      <div class="digits">
-        <div class="flip-card"><div class="digit" id="d-hours-0">0</div></div>
-        <div class="flip-card"><div class="digit" id="d-hours-1">0</div></div>
-      </div>
-      <div class="lbl">Hours</div>
-    </div>
-    <div class="timer-sep"><span></span><span></span></div>
-    <div class="timer-group">
-      <div class="digits">
-        <div class="flip-card"><div class="digit" id="d-mins-0">0</div></div>
-        <div class="flip-card"><div class="digit" id="d-mins-1">0</div></div>
-      </div>
-      <div class="lbl">Minutes</div>
-    </div>
-    <div class="timer-sep"><span></span><span></span></div>
-    <div class="timer-group">
-      <div class="digits">
-        <div class="flip-card"><div class="digit" id="d-secs-0">0</div></div>
-        <div class="flip-card"><div class="digit" id="d-secs-1">0</div></div>
-      </div>
-      <div class="lbl">Seconds</div>
+    <div class="hero-text">
+      <h1>We are under construction!!<br>will update you soon !!</h1>
+      <p class="blurb">Vaithra is building India's home for founders — a place to find your people, share what you're building, and grow together. We're starting with a tour across all 28 districts of Andhra Pradesh, before opening it up to founders in every state.</p>
     </div>
   </div>
 
-  <!-- Waitlist -->
-  <div class="waitlist">
-    <h2>Join the Waitlist</h2>
-    <p>Be the first to know when vaithra. goes live. Drop your phone number below.</p>
-    <form id="waitlist-form">
-      <input type="text" id="wl-name" placeholder="Your name" required>
-      <input type="tel" id="wl-phone" placeholder="Phone number (e.g. +91 98765 43210)" required>
-      <button type="submit">Join Waitlist</button>
-    </form>
-    <div class="msg" id="wl-msg"></div>
-  </div>
+  <div>
+    <!-- Countdown timer (split-flap style) -->
+    <div class="timer-wrap" id="timer">
+      <div class="timer-group">
+        <div class="digits">
+          <div class="flip-card"><div class="digit" id="d-days-0">0</div></div>
+          <div class="flip-card"><div class="digit" id="d-days-1">0</div></div>
+        </div>
+        <div class="lbl">Days</div>
+      </div>
+      <div class="timer-sep"><span></span><span></span></div>
+      <div class="timer-group">
+        <div class="digits">
+          <div class="flip-card"><div class="digit" id="d-hours-0">0</div></div>
+          <div class="flip-card"><div class="digit" id="d-hours-1">0</div></div>
+        </div>
+        <div class="lbl">Hours</div>
+      </div>
+      <div class="timer-sep"><span></span><span></span></div>
+      <div class="timer-group">
+        <div class="digits">
+          <div class="flip-card"><div class="digit" id="d-mins-0">0</div></div>
+          <div class="flip-card"><div class="digit" id="d-mins-1">0</div></div>
+        </div>
+        <div class="lbl">Minutes</div>
+      </div>
+      <div class="timer-sep"><span></span><span></span></div>
+      <div class="timer-group">
+        <div class="digits">
+          <div class="flip-card"><div class="digit" id="d-secs-0">0</div></div>
+          <div class="flip-card"><div class="digit" id="d-secs-1">0</div></div>
+        </div>
+        <div class="lbl">Seconds</div>
+      </div>
+    </div>
 
-  <!-- Contact -->
-  <div class="contact">
-    <h3>Have a question?</h3>
-    <p>Reach out for any queries — we'd love to hear from you.</p>
-    <div class="links">
-      <a href="mailto:support@glowvai.in">support@glowvai.in</a>
-      <a href="tel:+910000000000">+91 00000 00000</a>
+    <!-- Waitlist -->
+    <div class="waitlist">
+      <h2>Join the Waitlist</h2>
+      <p>Be the first to know when vaithra. goes live. Drop your phone number below.</p>
+      <form id="waitlist-form">
+        <input type="text" id="wl-name" placeholder="Your name" required>
+        <input type="tel" id="wl-phone" placeholder="Phone number (e.g. +91 98765 43210)" required>
+        <button type="submit">Join Waitlist</button>
+      </form>
+      <div class="msg" id="wl-msg"></div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact">
+      <h3>Have a question?</h3>
+      <p>Reach out for any queries — we'd love to hear from you.</p>
+      <div class="links">
+        <a href="mailto:support@glowvai.in">support@glowvai.in</a>
+        <a href="tel:+91 8977855998">+91 8977855998</a>
+      </div>
     </div>
   </div>
 
@@ -394,8 +386,7 @@
   updateTimer();
   setInterval(updateTimer, 1000);
 
-  // Waitlist form — client-side only. Wire this up to your backend / Google Sheet / CRM
-  // (e.g. a simple form endpoint like Formspree, or your own API) to actually store numbers.
+  // Waitlist form submission
   var waitlistEntries = [];
   document.getElementById("waitlist-form").addEventListener("submit", function(e){
     e.preventDefault();
