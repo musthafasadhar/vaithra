@@ -36,7 +36,7 @@
   .page-overlay {
     min-height: 100vh;
     width: 100%;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.4) 100%);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.45) 100%);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -83,7 +83,7 @@
 
   /* ---------- Clean Hero Typography ---------- */
   .hero-section {
-    padding: 60px 0 40px;
+    padding: 40px 0 30px;
     max-width: 650px;
   }
   .hero-badge {
@@ -298,7 +298,7 @@
     .nav-bar { padding: 10px 20px; }
     .logo { font-size: 26px; }
     .tagline { font-size: 9px; letter-spacing: 1px; }
-    .hero-section { padding: 30px 0; }
+    .hero-section { padding: 20px 0; }
     .hero-section h1 { font-size: 30px; }
     .hero-section p.blurb { font-size: 13.5px; }
     .flip-card { width: 38px; height: 54px; }
@@ -369,8 +369,8 @@
       <p>Be the first to know when vaithra. goes live. Drop your details below.</p>
       <form id="waitlist-form">
         <input type="text" id="wl-name" placeholder="Your name" required>
-        <input type="tel" id="wl-phone" placeholder="Phone number (e.g. +91 98765 43210)" required>
-        <button type="submit">Join Waitlist</button>
+        <input type="tel" id="wl-phone" placeholder="Phone number (e.g. +91 89778 55998)" required>
+        <button type="submit" id="wl-btn">Join Waitlist</button>
       </form>
       <div class="msg" id="wl-msg"></div>
     </div>
@@ -381,7 +381,8 @@
       <p>Reach out for any queries — we'd love to hear from you.</p>
       <div class="links">
         <a href="mailto:support@glowvai.in">support@glowvai.in</a>
-        <a href="tel:+910000000000">+91 00000 00000</a>
+        <a href="tel:+918977855998">+91 89778 55998</a>
+        <a href="https://wa.me/918977855998?text=Hi%20Vaithra%20Team,%20I%20have%20a%20query." target="_blank">WhatsApp Us</a>
       </div>
     </footer>
   </div>
@@ -389,7 +390,8 @@
 </div>
 
 <script>
-  var targetDate = new Date("2027-02-07T00:00:00").getTime();
+  // Countdown Timer — target Aug 29, 2026, 6:00 PM IST
+  var targetDate = new Date("2026-08-29T18:00:00+05:30").getTime();
 
   function pad(n){ return n < 10 ? "0" + n : "" + n; }
 
@@ -417,12 +419,15 @@
   updateTimer();
   setInterval(updateTimer, 1000);
 
-  var waitlistEntries = [];
+  // ---------- Google Sheets Form Submission ----------
+  var SPREADSHEET_URL = 'https://script.google.com/macros/s/AKfycbxKX1pcgMK-pqmYhd-cD9uSdLxcI3iEn9eitVZ9CKsalegkAHPfZcIwmSVqCJjU887BeQ/exec';
+
   document.getElementById("waitlist-form").addEventListener("submit", function(e){
     e.preventDefault();
     var name = document.getElementById("wl-name").value.trim();
     var phone = document.getElementById("wl-phone").value.trim();
     var msgEl = document.getElementById("wl-msg");
+    var btn = document.getElementById("wl-btn");
 
     var phoneDigits = phone.replace(/[^0-9]/g, "");
     if (phoneDigits.length < 10){
@@ -431,10 +436,27 @@
       return;
     }
 
-    waitlistEntries.push({ name: name, phone: phone });
-    msgEl.textContent = "You're on the list! We'll text you when we launch.";
-    msgEl.className = "msg success";
-    document.getElementById("waitlist-form").reset();
+    msgEl.textContent = "Saving your details...";
+    msgEl.className = "msg";
+    btn.disabled = true;
+
+    fetch(SPREADSHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: name, phone: phone })
+    })
+    .then(function() {
+      msgEl.textContent = "You're on the list! We'll text you when we launch.";
+      msgEl.className = "msg success";
+      document.getElementById("waitlist-form").reset();
+      btn.disabled = false;
+    })
+    .catch(function(err) {
+      msgEl.textContent = "Something went wrong. Please try again.";
+      msgEl.className = "msg error";
+      btn.disabled = false;
+    });
   });
 </script>
 
